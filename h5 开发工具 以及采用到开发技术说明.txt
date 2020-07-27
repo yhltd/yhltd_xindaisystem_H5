@@ -1,0 +1,6 @@
+本产品采用 WebStorm 开发工具
+
+使用 node.js css js mssql 技术
+ 
+
+数据库采用: sqlserver  yhocn.cn   库 wenliuxian
