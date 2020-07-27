@@ -1,0 +1,11 @@
+/*.logos{*/
+/*    border-width: 1px;*/
+/*    border-style: solid;*/
+/*    border-color: aqua;*/
+
+/*}*/
+.logo{
+    background-color: lightseagreen;
+    font-weight: bold;
+    color: beige;
+}

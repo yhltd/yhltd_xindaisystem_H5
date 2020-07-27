@@ -1,0 +1,63 @@
+
+body{
+	margin:0
+
+}
+.img{
+	padding-top:-50px;
+	padding-left: 150px;
+	float: left;
+	padding-left: 10%;
+	position: absolute;
+}
+
+.loto{
+	float: right;
+	margin-top: -50px;
+	margin-right: 100px;
+}
+.loto a{
+	text-decoration: none;
+	font-size: 25px;
+	color: #00008B;
+}
+#wrapper .header .logo{
+	font-size: larger;/* 字体加粗 */
+	color: black;/* 字体颜色 */
+	/* padding: 10px;/* 内边距 */
+	padding-right: 20%;
+	/* text-align:center;/* 居中显示 */
+	margin:0 auto;
+} 
+
+.header .nav{
+	width:100%;
+	background-color: darkcyan;
+	/*overflow: auto; 整行填充 */
+	text-align:center;
+}
+
+.header .nav a{
+		background-color: darkcyan;/* 背景颜色 */
+		font-size: 20px;/* 字体大小 */
+		color: beige;
+		/* padding:10px;/* 内边距 */ 
+		text-decoration: none;/* 去掉下划线 */
+		text-align: center;
+		
+}
+.header .nav a:hover{/* 鼠标移入 */
+	
+	background-color: turquoise;
+	color: aquamarine;
+}
+.pics{
+	width: 60%;
+	height: 40%;
+	float: right;
+	margin-right: 50px;
+	margin-top: -450px;
+}
+.mess{
+	margin-left: 50px;
+}
