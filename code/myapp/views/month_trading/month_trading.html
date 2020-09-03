@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>日交易记录</title>
+    <style>
+
+        .and a{
+            text-decoration: none;
+            color: red;
+            padding-left:50px
+        }
+        tr a{
+            text-decoration: none;
+            color: blue;
+        }
+
+    </style>
+</head>
+<body background="../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
+<form action="/month_trading/ass" method="post">
+    <h1 class="sss" align="center">月交易记录</h1>
+
+
+    <table width="100%" border="1">
+        <tr align="center">
+            <th>序号</th>
+            <th>收卡人</th>
+            <th>付款人</th>
+            <th>持卡人</th>
+            <th>发卡行</th>
+            <th>账单日</th>
+            <th>还款日</th>
+            <th>总金额</th>
+            <th>应还款</th>
+            <th>剩余额</th>
+            <th>借款额</th>
+            <th>已还款</th>
+            <th>已刷额</th>
+            <th>未刷金额</th>
+            <th>总手续费</th>
+            <th>应收金额</th>
+            <th>利润</th>
+
+        </tr>
+        {% for item in datas %}
+        <tr align="center">
+            <td>{{item.id}}</td>
+            <td>{{item.recipient}}</td>
+            <td>{{item.cardholder}}</td>
+            <td>{{item.drawee}}</td>
+            <td>{{item.issuing_bank}}</td>
+            <td>{{item.bill_day}}</td>
+            <td>{{item.repayment_date}}</td>
+            <td>{{item.total}}</td>
+            <td>{{item.repayable}}</td>
+            <td>{{item.balance}}</td>
+            <td>{{item.loan}}</td>
+            <td>{{item.repayment}}</td>
+            <td>{{item.swipe}}</td>
+            <td>{{item.balance_of_credit_card}}</td>
+            <td>{{item.the_total_fee}}</td>
+            <td>{{item.collected_amount}}</td>
+            <td>{{item.profit}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</form>
+</body>
+</html>

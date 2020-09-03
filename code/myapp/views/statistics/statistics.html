@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计信息</title>
+    <style>
+
+        .and a{
+            text-decoration: none;
+            color: red;
+            padding-left:50px
+        }
+        tr a{
+            text-decoration: none;
+            color: blue;
+        }
+
+    </style>
+</head>
+<body background="../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
+<form action="/statistics/ass" method="post">
+    <h1 class="sss" align="center">统计信息</h1>
+
+    <table width="100%" border="1">
+        <tr align="center">
+            <th>日期</th>
+            <th>交易额</th>
+            <th>已刷额</th>
+            <!--<th>未刷额</th>-->
+            <th>手续费</th>
+           <!-- <th>本金</th>-->
+           <!-- <th>备注</th>-->
+            <!--<th>总补</th>-->
+            <th>利润</th>
+
+
+        </tr>
+        {% for item in datas %}
+        <tr align="center">
+
+            <td>{{item.date1}}</td>
+            <td>{{item.repayment}}</td>
+            <td>{{item.swipe}}</td>
+            <td>{{item.the_total_fee}}</td>
+            <td>{{item.profit}}</td>
+
+<!--            <td>{{item.remark}}</td>
+            <td>{{item.principal}}</td>
+            <td>{{item.remark}}</td>-->
+        </tr>
+        {% endfor %}
+    </table>
+
+</form>
+</body>
+</html>

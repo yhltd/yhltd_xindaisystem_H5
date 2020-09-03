@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增页面</title>
+    <style>
+
+        .tts{
+            color: #ff0000;
+            margin-top: 100px;
+        }
+        .ttx{
+
+            margin-top: 20px;
+            margin-left: 200px;
+        }
+    </style>
+</head>
+<body background="/images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
+<h1 class="sss" align="center">日交易录入</h1>
+
+<form class="tts" action="/day_trading/add" method="post" align="center">
+
+    <input type="hidden" value="{{datas[0].id}}" name="id">
+    已&nbsp还&nbsp金&nbsp额：<input type="text" name="repayment" ><br>
+    商&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp户：<input type="text" name="commercial" ><br>
+    刷&nbsp卡&nbsp金&nbsp额：<input type="text" name="swipe" ><br>
+    费&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp率：<input type="text" name="rate" ><br>
+    到&nbsp账&nbsp金&nbsp额：<input type="text" name="arrival_amount" ><br>
+    基础手续费：<input type="text" name="basics_service_charge" ><br>
+    其他手续费：<input type="text" name="other_service_charge" ><br>
+    <input class="ttx" type="submit" value="提交">
+</form>
+</body>
+</html>

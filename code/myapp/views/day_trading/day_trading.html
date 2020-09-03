@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>日交易记录</title>
+    <style>
+
+        .and a{
+            text-decoration: none;
+            color: red;
+            padding-left:50px
+        }
+        tr a{
+            text-decoration: none;
+            color: blue;
+        }
+
+    </style>
+</head>
+<body background="/images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
+<form action="/day_trading/ass" method="post">
+        <div ><h1 class="sss" align="center">日交易记录</h1></div>
+        <h3 class="and"><a href="/day_trading/insert/{{datas[0].id}}" >录入信息</a></h3>
+        <table width="100%" border="1">
+            <tr align="center">
+                <th>序号</th>
+                <th>收卡人</th>
+                <th>付款人</th>
+                <th>持卡人</th>
+                <th>发卡行</th>
+                <th>账单日</th>
+                <th>还款日</th>
+                <th>总金额</th>
+                <th>应还款</th>
+                <th>剩余额</th>
+                <th>借款额</th>
+                <th>备注</th>
+                <th>电话号</th>
+                <th>密码</th>
+                <th>员工</th>
+            </tr>
+            <tr align="center">
+                <td>{{datas[0].id}}</td>
+                <td>{{datas[0].recipient}}</td>
+                <td>{{datas[0].cardholder}}</td>
+                <td>{{datas[0].drawee}}</td>
+                <td>{{datas[0].issuing_bank}}</td>
+                <td>{{datas[0].bill_day}}</td>
+                <td>{{datas[0].repayment_date}}</td>
+                <td>{{datas[0].total}}</td>
+                <td>{{datas[0].repayable}}</td>
+                <td>{{datas[0].balance}}</td>
+                <td>{{datas[0].loan}}</td>
+                <td>{{datas[0].service_charge}}</td>
+                <td>{{datas[0].telephone}}</td>
+                <td>{{datas[0].password}}</td>
+                <td>{{datas[0].staff}}</td>
+            </tr>
+        </table>
+    <br>
+
+        <table width="100%" border="1">
+            <tr align="center">
+                <th>编号</th>
+                <th>日期</th>
+                <th>已还款</th>
+                <th>商户</th>
+                <th>刷卡额</th>
+                <th>费率</th>
+                <th>到账金额</th>
+                <th>基础手续费</th>
+                <th>其他手续费</th>
+
+                <th>修改功能</th>
+                <th>删除功能</th>
+            </tr>
+            {% for item in datas %}
+            <tr align="center">
+                <th>{{item.did}}</th>
+                <th>{{item.date_time}}</th>
+                <th>{{item.repayment}}</th>
+                <th>{{item.commercial_tenant}}</th>
+                <th>{{item.swipe}}</th>
+                <th>{{item.rate}}</th>
+                <th>{{item.arrival_amount}}</th>
+                <th>{{item.basics_service_charge}}</th>
+                <th>{{item.other_service_charge}}</th>
+
+                <th><a href="/day_trading/toUpdate/{{item.did}}">修改</a></th>
+                <th><a href="/day_trading/del/{{item.did}}">删除</a></th>
+            </tr>
+            {% endfor %}
+        </table>
+</form>
+</body>
+</html>

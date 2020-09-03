@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增页面</title>
+    <style>
+
+        .tts{
+            color: #ff0000;
+            margin-top: 100px;
+        }
+        .ttx{
+
+            margin-top: 20px;
+            margin-left: 200px;
+        }
+    </style>
+</head>
+<body background="../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
+<h1 class="sss" align="center">客户信息录入</h1>
+<form class="tts" action="/customer/add" method="post" align="center">
+    收卡人：<input type="text" name="recipient"><br>
+    付款人：<input type="text" name="cardholder" ><br>
+    持卡人：<input type="text" name="drawee" ><br>
+    发卡行：<input type="text" name="issuing_bank" ><br>
+    账单日：<input type="text" name="bill_day" ><br>
+    还款日：<input type="text" name="repayment_date" ><br>
+    总金额：<input type="text" name="total" ><br>
+    应还款：<input type="text" name="repayable" ><br>
+    余款额：<input type="text" name="balance" ><br>
+    借款额：<input type="text" name="loan" ><br>
+    手续费：<input type="text" name="service_charge" ><br>
+    电话号：<input type="text" name="telephone" ><br>
+    密&nbsp;&nbsp;&nbsp;码：<input type="text" name="password" ><br>
+    员&nbsp;&nbsp;&nbsp;工：<input type="text" name="staff" ><br>
+    <input class="ttx" type="submit" value="提交">
+</form>
+</body>
+</html>

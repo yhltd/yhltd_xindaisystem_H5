@@ -1,0 +1,8 @@
+
+下载完成后，只需npm i装上依赖包，cd 到 项目代码根目录 npm start就可以运行了
+
+创建数据库用.sql文件
+
+
+//不一定要用
+npm install mysql express --save

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>客户信息</title>
+    <!--<link rel="stylesheet" type="text/css" href="css/custom.css"/>-->
+    <style>
+
+        .and a{
+            text-decoration: none;
+            color: red;
+            padding-left:50px
+        }
+        tr a{
+            text-decoration: none;
+            color: blue;
+        }
+
+    </style>
+
+</head>
+<body background="../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
+<form action="/customer/ass" method="post">
+   <h1 class="sss" align="center">客户信息</h1>
+    <h3 class="and"><a href="/customer/add" >录入信息</a></h3>
+
+    <table  width="100%" border="1">
+        <tr align="center">
+            <th>序号</th>
+            <th>收卡人</th>
+            <th>付款人</th>
+            <th>持卡人</th>
+            <th>发卡行</th>
+            <th>账单日</th>
+            <th>还款日</th>
+            <th>总金额</th>
+            <th>应还款</th>
+            <th>剩余额</th>
+            <th>借款额</th>
+            <th>手续费</th>
+            <th>电话号</th>
+            <th>密码</th>
+            <th>员工</th>
+            <th>查看功能</th>
+            <th>删除功能</th>
+            <th>修改功能</th>
+        </tr>
+        {% for item in datas %}
+        <tr align="center">
+            <td>{{item.id}}</td>
+            <td>{{item.recipient}}</td>
+            <td>{{item.cardholder}}</td>
+            <td>{{item.drawee}}</td>
+            <td>{{item.issuing_bank}}</td>
+            <td>{{item.bill_day}}</td>
+            <td>{{item.repayment_date}}</td>
+            <td>{{item.total}}</td>
+            <td>{{item.repayable}}</td>
+            <td>{{item.balance}}</td>
+            <td>{{item.loan}}</td>
+            <td>{{item.service_charge}}</td>
+            <td>{{item.telephone}}</td>
+            <td>{{item.password}}</td>
+            <td>{{item.staff}}</td>
+            <td><a href="/day_trading/select_day/{{item.id}}">查看</a></td>
+            <td><a href="/customer/del/{{item.id}}">删除</a></td>
+            <td><a href="/customer/toUpdate/{{item.id}}">修改</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</form>
+</body>
+</html>

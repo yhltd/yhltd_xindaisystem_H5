@@ -1,0 +1,13 @@
+
+/*.sss{*/
+/*    text-align: center;*/
+/*}*/
+#wrapper .header .nav{
+    background-color: darkcyan;
+
+}
+.nav a{
+    text-decoration: none;
+    color: beige;
+    font-weight: bold;
+}
