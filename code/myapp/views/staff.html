@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>员工信息</title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/table.css"/>
+</head>
+<body background="../../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
+<form action="/ass" method="post">
+    <h1 class="sss" align="center">员工信息</h1>
+    <h3 class="and" ><a href="/users/uadd" >新增员工</a></h3>
+    <div class="tablebox" style="width: 100%;height: 600px">
+    <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
+        <tr align="center">
+            <th>序号</th>
+            <th>公司名称</th>
+            <th>职位</th>
+            <th>员工</th>
+            <th>账号</th>
+            <th>密码</th>
+            <th>删除功能</th>
+            <th>修改功能</th>
+        </tr>
+        {% for item in datas %}
+        <tr align="center">
+            <td>{{item.id}}</td>
+            <td>{{item.company}}</td>
+            <td>{{item.position}}</td>
+            <td>{{item.uname}}</td>
+            <td>{{item.account}}</td>
+            <td>{{item.password}}</td>
+            <td><a href="/users/del/{{item.id}}" onclick="return confirm('您确认要删除本记录么？')">删除</a></td>
+            <td><a href="/users/toUpdate/{{item.id}}">修改</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+
+</form>
+
+</body>
+<SCRIPT Language=VBScript></SCRIPT>

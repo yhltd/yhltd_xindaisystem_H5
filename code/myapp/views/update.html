@@ -3,16 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <title>修改页面</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/table.css"/>
     <style>
-
+        .and a{
+            text-decoration: none;
+            color: red;
+            padding-left:50px
+        }
+        a{
+            text-decoration: none;
+            color: blue;
+        }
         .tts{
             color: #ff0000;
             margin-top: 100px;
         }
-        .ttx{
+        table, tbody, tfoot, thead, tr, th, td {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            vertical-align: baseline;
+            background: transparent;
+            border-collapse: collapse;
+            border-spacing: 0;
+            border: 0;
+            color: #fff;
+        }
 
-            margin-top: 20px;
-            margin-left: 200px;
+        .tablebox table {
+            border-collapse: separate;
+            border-spacing: 1px
+        }
+
+        .tablebox {
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            margin: 10px auto;
+        }
+
+        .tablebox table {
+            width: 100%;
+        }
+
+        .tablebox table th, .tablebox table td {
+            font-size: 12px;
+            text-align: center;
+            line-height: 16px;
+            background: #00a5a5;
+            padding: 12px;
+        }
+
+        .tablebox table th {
+            height: 30px;
+            line-height: 30px;
+            background: #6271bd;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .tablebox table td img {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .tablebox.table_md table td, .tablebox.table_md table th {
+            line-height: 18px;
+        }
+        .anniu {
+            width:100px;
+            text-align:center;
+            line-height:100%;
+            padding:0.3em;
+            font:16px Arial,sans-serif bold;
+            font-style:normal;
+            text-decoration:none;
+            margin:2px;
+            vertical-align:text-bottom;
+            zoom:1;
+            outline:none;
+            font-size-adjust:none;
+            font-stretch:normal;
+            border-radius:50px;
+            box-shadow:0px 1px 2px rgba(0,0,0,0.2);
+            text-shadow:0px 1px 1px rgba(0,0,0,0.3);
+            color:#fefee9;
+            border:0.2px solid #ec971f;
+            background-repeat:repeat;
+            background-size:auto;
+            background-origin:padding-box;
+            background-clip:padding-box;
+            background-color:#3399ff;
+            background: linear-gradient(to bottom, #eeeff9 0%,#00008B 100%);
+        }
+
+        .anniu:hover {
+            background: #4cae4c;
+        }
+        .tts{
+            color: #080808;
+            margin-top: 100px;
         }
     </style>
 </head>
@@ -20,22 +110,86 @@
 <h1 class="sss" align="center">客户信息修改</h1>
 <form class="tts" action="/customer/update" method="post" align="center">
     <input type="hidden" value="{{datas[0].id}}" name="id">
-    收卡人：<input type="text" name="recipient" value="{{datas[0].recipient}}"><br>
-    付款人：<input type="text" name="cardholder" value="{{datas[0].cardholder}}"><br>
-    持卡人：<input type="text" name="drawee" value="{{datas[0].drawee}}"><br>
-    发卡行：<input type="text" name="issuing_bank" value="{{datas[0].issuing_bank}}"><br>
-    账单日：<input type="text" name="bill_day" value="{{datas[0].bill_day}}"><br>
-    还款日：<input type="text" name="repayment_date" value="{{datas[0].repayment_date}}"><br>
-    总金额：<input type="text" name="total" value="{{datas[0].total}}"><br>
-    应还款：<input type="text" name="repayable" value="{{datas[0].repayable}}"><br>
-    余款额：<input type="text" name="balance" value="{{datas[0].balance}}"><br>
-    借款额：<input type="text" name="loan" value="{{datas[0].loan}}"><br>
-    手续费：<input type="text" name="service_charge" value="{{datas[0].service_charge}}"><br>
-    电话号：<input type="text" name="telephone" value="{{datas[0].telephone}}"><br>
-    密&nbsp;&nbsp;&nbsp;码：<input type="text" name="password" value="{{datas[0].password}}"><br>
-    员&nbsp;&nbsp;&nbsp;工：<input type="text" name="staff" value="{{datas[0].staff}}"><br>
-    <input class="ttx" type="submit" value="提交">
+    <div class="tablebox" style="width: 600px;height: 600px">
+        <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td>收卡人</td>
+                <td>
+                    <input type="text" name="recipient" value="{{datas[0].recipient}}">
+                </td>
+                <td>付款人</td>
+                <td>
+                    <input type="text" name="cardholder" value="{{datas[0].cardholder}}">
+                </td>
+            </tr>
+            <tr>
+                <td>持卡人</td>
+                <td>
+                    <input type="text" name="drawee" value="{{datas[0].drawee}}">
+                </td>
+                <td>发卡行</td>
+                <td>
+                    <input type="text" name="issuing_bank" value="{{datas[0].issuing_bank}}">
+                </td>
+            </tr>
+            <tr>
+                <td>账单日</td>
+                <td>
+                    <input type="text" name="bill_day" value="{{datas[0].bill_day}}">
+                </td>
+                <td>还款日</td>
+                <td>
+                    <input type="text" name="repayment_date" value="{{datas[0].repayment_date}}">
+                </td>
+            </tr>
+            <tr>
+                <td>总金额</td>
+                <td>
+                    <input type="text" name="total" value="{{datas[0].total}}">
+                </td>
+                <td>应还款</td>
+                <td>
+                    <input type="text" name="repayable" value="{{datas[0].repayable}}">
+                </td>
+            </tr>
+            <tr>
+                <td>余款额</td>
+                <td>
+                    <input type="text" name="balance" value="{{datas[0].balance}}">
+                </td>
+                <td>借款额</td>
+                <td>
+                    <input type="text" name="loan" value="{{datas[0].loan}}">
+                </td>
+            </tr>
+            <tr>
+                <td>手续费</td>
+                <td>
+                    <input type="text" name="service_charge" value="{{datas[0].service_charge}}">
+                </td>
+                <td>电话号</td>
+                <td>
+                    <input type="text" name="telephone" value="{{datas[0].telephone}}">
+                </td>
+            </tr>
+            <tr>
+                <td>密&nbsp;&nbsp;&nbsp;码</td>
+                <td>
+                    <input type="text" name="password" value="{{datas[0].password}}">
+                </td>
+                <td>员&nbsp;&nbsp;&nbsp;工</td>
+                <td>
+                    <input type="text" name="staff" value="{{datas[0].staff}}">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" align="right">
+                    <input type="submit" value="保存" class="anniu" />
+                </td>
+            </tr>
+        </table>
+    </div>
 </form>
 </body>
 
-</html>
+<SCRIPT Language=VBScript></SCRIPT>

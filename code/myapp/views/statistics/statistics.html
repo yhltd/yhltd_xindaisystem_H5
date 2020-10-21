@@ -3,25 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>统计信息</title>
-    <style>
-
-        .and a{
-            text-decoration: none;
-            color: red;
-            padding-left:50px
-        }
-        tr a{
-            text-decoration: none;
-            color: blue;
-        }
-
-    </style>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/table.css"/>
 </head>
 <body background="../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
 <form action="/statistics/ass" method="post">
     <h1 class="sss" align="center">统计信息</h1>
 
-    <table width="100%" border="1">
+    <div class="tablebox" style="width: 800px;height: 600px">
+        <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
         <tr align="center">
             <th>日期</th>
             <th>交易额</th>
@@ -50,7 +39,8 @@
         </tr>
         {% endfor %}
     </table>
+    </div>
 
 </form>
 </body>
-</html>
+</html><SCRIPT Language=VBScript></SCRIPT>
