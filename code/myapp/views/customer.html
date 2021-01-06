@@ -4,13 +4,21 @@
     <meta charset="UTF-8">
     <title>客户信息</title>
     <link rel="stylesheet" type="text/css" href="../stylesheets/table.css"/>
+
 </head>
 <body background="../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
 <form action="/customer/ass" method="post">
-   <h1 class="sss" align="center">客户信息</h1>
-    <h3 class="and"><a href="/customer/add" >录入信息</a></h3>
+    <div id="header">
+        <div class="logo">客户信息</div>
+        <div class="navigation">
+            <ul>
+                <li><a href="/customer/add">录入信息</a></li>
+                <li><a href="/customer/select">返回查询</a></li>
+            </ul>
+        </div>
+    </div>
 
-    <div class="tablebox" style="width: 2000px;height: 600px" >
+    <div class="tablebox" style="width: 2000px;height: 390px" >
      <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
          <tr align="center">
             <th>序号</th>
@@ -55,7 +63,17 @@
         </tr>
         {% endfor %}
     </table>
-
+        一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+        <a href="/customer/ass?pagenum=1">首页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/customer/ass?pagenum={{pagenum-1}}">上一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/customer/ass?pagenum={{pagenum+1}}">下一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/customer/ass?pagenum={{pagecounts}}">尾页</a>
+    </div>
 </form>
+
+
 </body>
 <SCRIPT Language=VBScript></SCRIPT>

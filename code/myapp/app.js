@@ -1,8 +1,9 @@
 var createError = require('http-errors');
+var cookieParser = require('cookie-parser')
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -11,6 +12,8 @@ var day_tradingRouter = require('./routes/day_trading');
 var month_tradingRouter = require('./routes/month_trading');
 var statisticsRouter = require('./routes/statistics');
 var app = express();
+
+
 
 // view engine setup  更换模板引擎
 // app.set('views', path.join(__dirname, 'views'));
@@ -37,6 +40,7 @@ app.use('/customer', customerRouter);
 app.use('/day_trading', day_tradingRouter);
 app.use('/month_trading', month_tradingRouter);
 app.use('/statistics', statisticsRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

@@ -3,119 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <title>修改页面</title>
-    <link rel="stylesheet" type="text/css" href="../stylesheets/table.css"/>
-    <style>
-        .and a{
-            text-decoration: none;
-            color: red;
-            padding-left:50px
-        }
-        a{
-            text-decoration: none;
-            color: blue;
-        }
-        .tts{
-            color: #ff0000;
-            margin-top: 100px;
-        }
-        table, tbody, tfoot, thead, tr, th, td {
-            margin: 0;
-            padding: 0;
-            outline: 0;
-            vertical-align: baseline;
-            background: transparent;
-            border-collapse: collapse;
-            border-spacing: 0;
-            border: 0;
-            color: #fff;
+    <link rel="stylesheet" type="text/css" href="../../../stylesheets/table.css"/>
+    <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+    <script>
+
+        function submitForm(){
+            var formData = $('#formData').serialize();
+            var params = JSON.parse(formToJson(decodeURIComponent(formData, true)))
+            $("#checkFormCheckBox").attr('checked', checkForm(params));
         }
 
-        .tablebox table {
-            border-collapse: separate;
-            border-spacing: 1px
+        function checkForm(params){
+            if(params.repayment==""){
+                alert("已还金额不能为空")
+                return false
+            }else if(params.commercial == ""){
+                alert("商户不能为空")
+                return false
+            }else if(params.swipe == ""){
+                alert("刷卡金额不能为空")
+                return false
+            }else if(params.rate == ""){
+                alert("费率不能为空")
+                return false
+            }else if(params.arrival_amount == ""){
+                alert("到账金额不能为空")
+                return false
+            }else if(params.basics_service_charge == ""){
+                alert("基础手续费不能为空")
+                return false
+            }else if(params.other_service_charge == ""){
+                alert("其他手续费不能为空")
+                return false
+            }
+            return true
         }
+        function formToJson(data) {
+            data = data.replace(/&/g, "\",\"").replace(/=/g, "\":\"").replace(/\+/g, " ").replace(/[\r\n]/g, "<br>");
+            data = "{\"" + data + "\"}";
+            return data;
+        }
+    </script>
 
-        .tablebox {
-            width: 100%;
-            height: auto;
-            overflow: hidden;
-            margin: 10px auto;
-        }
-
-        .tablebox table {
-            width: 100%;
-        }
-
-        .tablebox table th, .tablebox table td {
-            font-size: 12px;
-            text-align: center;
-            line-height: 16px;
-            background: #00a5a5;
-            padding: 12px;
-        }
-
-        .tablebox table th {
-            height: 30px;
-            line-height: 30px;
-            background: #6271bd;
-            font-size: 14px;
-            font-weight: normal;
-        }
-
-        .tablebox table td img {
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .tablebox.table_md table td, .tablebox.table_md table th {
-            line-height: 18px;
-        }
-        .anniu {
-            width:100px;
-            text-align:center;
-            line-height:100%;
-            padding:0.3em;
-            font:16px Arial,sans-serif bold;
-            font-style:normal;
-            text-decoration:none;
-            margin:2px;
-            vertical-align:text-bottom;
-            zoom:1;
-            outline:none;
-            font-size-adjust:none;
-            font-stretch:normal;
-            border-radius:50px;
-            box-shadow:0px 1px 2px rgba(0,0,0,0.2);
-            text-shadow:0px 1px 1px rgba(0,0,0,0.3);
-            color:#fefee9;
-            border:0.2px solid #ec971f;
-            background-repeat:repeat;
-            background-size:auto;
-            background-origin:padding-box;
-            background-clip:padding-box;
-            background-color:#3399ff;
-            background: linear-gradient(to bottom, #eeeff9 0%,#00008B 100%);
-        }
-
-        .anniu:hover {
-            background: #4cae4c;
-        }
-        .tts{
-            color: #080808;
-            margin-top: 100px;
-        }
-    </style>
 </head>
 <body background="/images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
-<h1 class="sss" align="center">日记录修改</h1>
-<form class="tts" action="/day_trading/update" method="post" align="center">
+<form class="tts" action="/day_trading/update" id="formData"  onsubmit="submitForm()" method="post" align="center">
     <input type="hidden" value="{{datas[0].did}}" name="did">
-    <div class="tablebox" style="width: 500px;height: 800px">
+    <div id="header">
+        <div class="logo">日记录修改</div>
+        <div class="navigation">
+            <ul>
+                <li><a href="/customer/select">返回查询</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="tablebox" style="width: 500px;height: 480px; margin-top:80px;">
         <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>已还金额</td>
                 <td>
-                    <input type="text" name="repayment" value="{{datas[0].repayment}}">
+                    <input type="number" step="0.01" name="repayment" value="{{datas[0].repayment}}">
                 </td>
             </tr>
             <tr>
@@ -127,31 +74,31 @@
             <tr>
                 <td>刷卡金额</td>
                 <td>
-                    <input type="text" name="swipe" value="{{datas[0].swipe}}">
+                    <input type="number" step="0.01" name="swipe" value="{{datas[0].swipe}}">
                 </td>
             </tr>
             <tr>
                 <td>费率</td>
                 <td>
-                    <input type="text" name="rate" value="{{datas[0].rate}}">
+                    <input type="number" step="0.01" name="rate" value="{{datas[0].rate}}">
                 </td>
             </tr>
             <tr>
                 <td>到账金额</td>
                 <td>
-                    <input type="text" name="arrival_amount" value="{{datas[0].arrival_amount}}">
+                    <input type="number" step="0.01" name="arrival_amount" value="{{datas[0].arrival_amount}}">
                 </td>
             </tr>
             <tr>
                 <td>基础手续费</td>
                 <td>
-                    <input type="text" name="basics_service_charge" value="{{datas[0].basics_service_charge}}">
+                    <input type="number" step="0.01" name="basics_service_charge" value="{{datas[0].basics_service_charge}}">
                 </td>
             </tr>
             <tr>
                 <td>其他手续费</td>
                 <td>
-                    <input type="text" name="other_service_charge" value="{{datas[0].other_service_charge}}">
+                    <input type="number" step="0.01" name="other_service_charge" value="{{datas[0].other_service_charge}}">
                 </td>
             </tr>
             <tr>
@@ -160,6 +107,8 @@
                 </td>
             </tr>
         </table>
+    </div>
+    <input id="checkFormCheckBox" name="checkForm" type="checkbox" checked="" style="display: none"/>
 </form>
 </body>
 

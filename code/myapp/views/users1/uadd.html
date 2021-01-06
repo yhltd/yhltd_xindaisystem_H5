@@ -7,9 +7,13 @@
 </head>
 
 <body background="../../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
-<h1 class="sss" align="center">新增员工</h1>
 <form action="/users/uadd" method="post" align="center">
-    <div class="tablebox" style="width: 400px;height: 600px">
+    <div id="header">
+        <div class="logo">新增员工</div>
+        <div class="navigation">
+        </div>
+    </div>
+    <div class="tablebox" style="width: 400px;height: 600px; margin-top:80px;">
     <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td>公司名称</td>
@@ -43,7 +47,7 @@
         </tr>
         <tr>
             <td colspan="2" align="right">
-                <input type="submit" value="保存" class="anniu" />
+                <input type="submit" value="保存"  />
             </td>
         </tr>
     </table>

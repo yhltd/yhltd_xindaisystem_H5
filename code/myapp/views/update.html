@@ -3,114 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>修改页面</title>
-    <link rel="stylesheet" type="text/css" href="stylesheets/table.css"/>
-    <style>
-        .and a{
-            text-decoration: none;
-            color: red;
-            padding-left:50px
-        }
-        a{
-            text-decoration: none;
-            color: blue;
-        }
-        .tts{
-            color: #ff0000;
-            margin-top: 100px;
-        }
-        table, tbody, tfoot, thead, tr, th, td {
-            margin: 0;
-            padding: 0;
-            outline: 0;
-            vertical-align: baseline;
-            background: transparent;
-            border-collapse: collapse;
-            border-spacing: 0;
-            border: 0;
-            color: #fff;
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+    <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+    <script>
+
+        function submitForm(){
+            var formData = $('#formData').serialize();
+            var params = JSON.parse(formToJson(decodeURIComponent(formData, true)))
+            $("#checkFormCheckBox").attr('checked', checkForm(params));
         }
 
-        .tablebox table {
-            border-collapse: separate;
-            border-spacing: 1px
+        function checkForm(params){
+            if(params.bill_day==""){
+                alert("账单日不能为空")
+                return false
+            }else if(params.repayment_date == ""){
+                alert("还款日不能为空")
+                return false
+            }else if(params.total == ""){
+                alert("总金额不能为空")
+                return false
+            }else if(params.repayable == ""){
+                alert("应还款不能为空")
+                return false
+            }else if(params.balance == ""){
+                alert("余款额不能为空")
+                return false
+            }else if(params.loan == ""){
+                alert("借款额不能为空")
+                return false
+            }else if(params.service_charge == ""){
+                alert("手续费不能为空")
+                return false
+            }
+            return true
         }
 
-        .tablebox {
-            width: 100%;
-            height: auto;
-            overflow: hidden;
-            margin: 10px auto;
+        function formToJson(data) {
+            data = data.replace(/&/g, "\",\"").replace(/=/g, "\":\"").replace(/\+/g, " ").replace(/[\r\n]/g, "<br>");
+            data = "{\"" + data + "\"}";
+            return data;
         }
-
-        .tablebox table {
-            width: 100%;
-        }
-
-        .tablebox table th, .tablebox table td {
-            font-size: 12px;
-            text-align: center;
-            line-height: 16px;
-            background: #00a5a5;
-            padding: 12px;
-        }
-
-        .tablebox table th {
-            height: 30px;
-            line-height: 30px;
-            background: #6271bd;
-            font-size: 14px;
-            font-weight: normal;
-        }
-
-        .tablebox table td img {
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .tablebox.table_md table td, .tablebox.table_md table th {
-            line-height: 18px;
-        }
-        .anniu {
-            width:100px;
-            text-align:center;
-            line-height:100%;
-            padding:0.3em;
-            font:16px Arial,sans-serif bold;
-            font-style:normal;
-            text-decoration:none;
-            margin:2px;
-            vertical-align:text-bottom;
-            zoom:1;
-            outline:none;
-            font-size-adjust:none;
-            font-stretch:normal;
-            border-radius:50px;
-            box-shadow:0px 1px 2px rgba(0,0,0,0.2);
-            text-shadow:0px 1px 1px rgba(0,0,0,0.3);
-            color:#fefee9;
-            border:0.2px solid #ec971f;
-            background-repeat:repeat;
-            background-size:auto;
-            background-origin:padding-box;
-            background-clip:padding-box;
-            background-color:#3399ff;
-            background: linear-gradient(to bottom, #eeeff9 0%,#00008B 100%);
-        }
-
-        .anniu:hover {
-            background: #4cae4c;
-        }
-        .tts{
-            color: #080808;
-            margin-top: 100px;
-        }
-    </style>
+    </script>
 </head>
 <body background="../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
-<h1 class="sss" align="center">客户信息修改</h1>
-<form class="tts" action="/customer/update" method="post" align="center">
+<form id="formData" class="tts" action="/customer/update" method="post" onsubmit="submitForm()" align="center">
+    <div id="header">
+        <div class="logo">客户信息修改</div>
+        <div class="navigation">
+            <ul>
+                <li><a href="/customer/select">返回查询</a></li>
+            </ul>
+        </div>
+    </div>
     <input type="hidden" value="{{datas[0].id}}" name="id">
-    <div class="tablebox" style="width: 600px;height: 600px">
+    <div class="tablebox" style="width: 100%;height: 480px; margin-top:80px;">
         <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>收卡人</td>
@@ -135,37 +82,37 @@
             <tr>
                 <td>账单日</td>
                 <td>
-                    <input type="text" name="bill_day" value="{{datas[0].bill_day}}">
+                    <input type="date" name="bill_day" value="{{datas[0].bill_day}}">
                 </td>
                 <td>还款日</td>
                 <td>
-                    <input type="text" name="repayment_date" value="{{datas[0].repayment_date}}">
+                    <input type="date" name="repayment_date" value="{{datas[0].repayment_date}}">
                 </td>
             </tr>
             <tr>
                 <td>总金额</td>
                 <td>
-                    <input type="text" name="total" value="{{datas[0].total}}">
+                    <input type="number" step="0.01" name="total" value="{{datas[0].total}}">
                 </td>
                 <td>应还款</td>
                 <td>
-                    <input type="text" name="repayable" value="{{datas[0].repayable}}">
+                    <input type="number" step="0.01" name="repayable" value="{{datas[0].repayable}}">
                 </td>
             </tr>
             <tr>
                 <td>余款额</td>
                 <td>
-                    <input type="text" name="balance" value="{{datas[0].balance}}">
+                    <input type="number" step="0.01" name="balance" value="{{datas[0].balance}}">
                 </td>
                 <td>借款额</td>
                 <td>
-                    <input type="text" name="loan" value="{{datas[0].loan}}">
+                    <input type="number" step="0.01" name="loan" value="{{datas[0].loan}}">
                 </td>
             </tr>
             <tr>
                 <td>手续费</td>
                 <td>
-                    <input type="text" name="service_charge" value="{{datas[0].service_charge}}">
+                    <input type="number" step="0.01" name="service_charge" value="{{datas[0].service_charge}}">
                 </td>
                 <td>电话号</td>
                 <td>
@@ -183,12 +130,13 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4" align="right">
+                <td colspan="4">
                     <input type="submit" value="保存" class="anniu" />
                 </td>
             </tr>
         </table>
     </div>
+    <input id="checkFormCheckBox" name="checkForm" type="checkbox" checked="" style="display: none"/>
 </form>
 </body>
 

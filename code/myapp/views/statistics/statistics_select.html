@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+
+    <title>Title</title>
+
+
+<!--<script type="text/javascript" language="javascript">-->
+<!--    var idTmr;-->
+<!--    function  getExplorer() {-->
+<!--        var explorer = window.navigator.userAgent ;-->
+<!--        if(explorer.indexOf("Chrome") >= 0){-->
+<!--            return 'Chrome';-->
+<!--        }else{-->
+<!--            alert("非chrome浏览器");-->
+<!--            return false;-->
+<!--        }-->
+<!--    }-->
+<!--    function method1(tableid) {//整个表格拷贝到EXCEL中-->
+<!--        tableToExcel('tableId')-->
+<!--    }-->
+<!--    var tableToExcel = (function(tableId) {-->
+<!--        //设置类型-->
+<!--        var uri = 'data:application/vnd.ms-excel;base64,',-->
+<!--            template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head>&lt;!&ndash;[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]&ndash;&gt;</head><body><table>{table}</table></body></html>',-->
+<!--            //base64加密处理-->
+<!--            base64 = function(s) {-->
+<!--                return window.btoa(unescape(encodeURIComponent(s)))-->
+<!--            },-->
+<!--            //格式化处理-->
+<!--            format = function(s, c) {-->
+<!--                return s.replace(/{(\w+)}/g,-->
+<!--                    function(m, p) {-->
+<!--                        return c[p];-->
+<!--                    }-->
+<!--                )-->
+<!--            };-->
+<!--        //自动执行-->
+<!--        return function(tableId, name) {-->
+<!--            var aLink=document.getElementById("dlink");-->
+<!--            var table = document.getElementById(tableId);-->
+<!--            // 获取表单的名字和表单查询的内容-->
+<!--            var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML};-->
+<!--            // format()函数：通过格式操作使任意类型的数据转换成一个字符串-->
+<!--            // base64()：进行编码-->
+<!--            aLink.href = uri + base64(format(template, ctx))-->
+<!--            aLink.download="test.xls";-->
+<!--            aLink.click();-->
+<!--        }-->
+<!--    })()-->
+<!--</script>-->
+</head>
+<div id="header">
+    <div class="logo">统计信息查询</div>
+    <div class="navigation">
+    </div>
+</div>
+
+<div>
+    <form action="/statistics/ass " method="post">
+        <table>
+            <tr>
+                <td style="color: #000c17" >查询日期：</td>
+                <td>
+                    <input  type="date" name="date1" >
+                </td>
+                <td colspan="2" align="right">
+                    <input type="submit" value="查询">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="tablebox" style="width: 1000px;height: 600px">
+    <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
+        <tr align="center">
+            <th>日期</th>
+            <th>交易额</th>
+            <th>已刷额</th>
+            <!--<th>未刷额</th>-->
+            <th>手续费</th>
+            <!-- <th>本金</th>-->
+            <!-- <th>备注</th>-->
+            <!--<th>总补</th>-->
+            <th>利润</th>
+
+
+        </tr>
+        {% for item in datas %}
+        <tr align="center">
+
+            <td>{{item.date_time}}</td>
+            <td>{{item.repayment}}</td>
+            <td>{{item.swipe}}</td>
+            <td>{{item.the_total_fee}}</td>
+            <td>{{item.profit}}</td>
+
+            <!--            <td>{{item.remark}}</td>
+                        <td>{{item.principal}}</td>
+                        <td>{{item.remark}}</td>-->
+        </tr>
+        {% endfor %}
+    </table>
+    一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+    <a href="/statistics/ass?pagenum=1">首页</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/statistics/ass?pagenum={{pagenum-1}}">上一页</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/statistics/ass?pagenum={{pagenum+1}}">下一页</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/statistics/ass?pagenum={{pagecounts}}">尾页</a>
+    <a href="/statistics/Excel">导出EXCEL</a>
+</div>
+<!--<a id="dlink" style="display: none;"></a>-->
+
+<!--<input type="submit" value="导出EXCEL" onclick="method1('tableId')" />-->
+</body>
+</html><SCRIPT Language=VBScript><</SCRIPT>

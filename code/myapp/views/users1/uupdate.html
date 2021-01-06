@@ -8,10 +8,14 @@
 
 </body>
 <body background="../../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
-<h1 class="sss" align="center">员工信息修改</h1>
 <form class="tts" action="/users/update" method="post" align="center">
+    <div id="header">
+        <div class="logo">员工信息修改</div>
+        <div class="navigation">
+        </div>
+    </div>
     <input type="hidden" value="{{datas[0].id}}" name="id">
-    <div class="tablebox" style="width: 400px;height: 600px">
+    <div class="tablebox" style="width: 400px;height: 600px; margin-top:80px;">
         <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>公司名称</td>

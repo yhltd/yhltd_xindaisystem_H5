@@ -1,0 +1,82 @@
+body{
+    background-image:url(../images/001.png);
+    background-repeat: no-repeat;
+    background-size:100% ;
+
+}
+/*.box::before{*/
+/*    !*content:"";*!*/
+/*    !*-webkit-filter: opacity(50%);*/
+/*    filter: opacity(50%); *!*/
+/*    background-image:url(../images/nice.jpg);*/
+/*    opacity:0.5;//透明度设置*/
+/*z-index:-1;*/
+/*    background-size:500px 300px;*/
+/*    width:500px;*/
+/*    height:300px;*/
+/*    position:absolute;*/
+/*//一定要设置position:absolute,这样才能设置z-index，让背景处于内容的下一层*/
+/*top:0px;*/
+/*    left:0px;*/
+/*    border-radius:40px;*/
+/*}*/
+/*.box{*/
+/*    position:fixed;*/
+/*    left:50%;*/
+/*    top:100px;*/
+/*    width:500px;*/
+/*    height:300px;*/
+/*    margin-left:-250px;*/
+/*    border-radius:40px;*/
+/*    box-shadow: 10px 10px 5px #888;*/
+/*    border:1px solid #666;*/
+
+/*    text-align:center;*/
+/*}*/
+form{
+    display:inline-block;
+    margin-top:80px;
+    margin-left: 10px;
+}
+input{
+    display:block;
+    width:50px;
+    height:20px;
+    background-color: #f6f6f6;
+    border:1px solid #2c2e2f;
+    outline:none;
+    border-radius:10px;
+}
+input[type="submit"]{
+    width:50px;
+    text-align:center;
+    line-height:100%;
+    padding:0.3em;
+    font:16px Arial,sans-serif bold;
+    font-style:normal;
+    text-decoration:none;
+    margin-left: 50%;
+    vertical-align:text-bottom;
+    zoom:1;
+    outline:none;
+    font-size-adjust:none;
+    font-stretch:normal;
+    border-radius:50px;
+    box-shadow:0px 1px 2px rgba(0,0,0,0.2);
+    text-shadow:0px 1px 1px rgba(0,0,0,0.3);
+    color:#080808;
+    border:0.2px solid #ec971f;
+    background-repeat:repeat;
+    background-size:auto;
+    background-origin:padding-box;
+    background-clip:padding-box;
+    background-color:#3399ff;
+    background: linear-gradient(to bottom, #eeeff9 0%,#00008B 100%);
+}
+input:hover {
+    background: #f6f6f6;
+}
+span{
+    color:red;
+    font-size:15px;
+}

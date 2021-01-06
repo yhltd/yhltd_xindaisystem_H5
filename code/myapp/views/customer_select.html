@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>
+<link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+
+<title>客户信息</title>
+<head>
+    <meta charset="UTF-8">
+<!--    <script type="text/javascript" language="javascript">-->
+<!--        var idTmr;-->
+<!--        function  getExplorer() {-->
+<!--            var explorer = window.navigator.userAgent ;-->
+<!--            if(explorer.indexOf("Chrome") >= 0){-->
+<!--                return 'Chrome';-->
+<!--            }else{-->
+<!--                alert("非chrome浏览器");-->
+<!--                return false;-->
+<!--            }-->
+<!--        }-->
+<!--        function method1(tableid) {//整个表格拷贝到EXCEL中-->
+<!--            tableToExcel('tableId')-->
+<!--        }-->
+<!--        var tableToExcel = (function(tableId) {-->
+<!--            //设置类型-->
+<!--            var uri = 'data:application/vnd.ms-excel;base64,',-->
+<!--                template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head>&lt;!&ndash;[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]&ndash;&gt;</head><body><table>{table}</table></body></html>',-->
+<!--                //base64加密处理-->
+<!--                base64 = function(s) {-->
+<!--                    return window.btoa(unescape(encodeURIComponent(s)))-->
+<!--                },-->
+<!--                //格式化处理-->
+<!--                format = function(s, c) {-->
+<!--                    return s.replace(/{(\w+)}/g,-->
+<!--                        function(m, p) {-->
+<!--                            return c[p];-->
+<!--                        }-->
+<!--                    )-->
+<!--                };-->
+<!--            //自动执行-->
+<!--            return function(tableId, name) {-->
+<!--                var aLink=document.getElementById("dlink");-->
+<!--                var table = document.getElementById(tableId);-->
+<!--                console.log(table.innerHTML)-->
+<!--                // 获取表单的名字和表单查询的内容-->
+<!--                var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML};-->
+<!--                // format()函数：通过格式操作使任意类型的数据转换成一个字符串-->
+<!--                // base64()：进行编码-->
+<!--                aLink.href = uri + base64(format(template, ctx))-->
+<!--                aLink.download="test.xls";-->
+<!--                aLink.click();-->
+<!--            }-->
+<!--        })()-->
+<!--    </script>-->
+
+</head>
+<body>
+<div id="header">
+    <div class="logo">客户信息查询</div>
+    <div class="navigation">
+        <ul>
+            <li><a href="/customer/add">录入信息</a></li>
+        </ul>
+    </div>
+</div>
+
+<div>
+    <form action="/customer/ass " method="post">
+        <table>
+            <tr>
+                <td style="color: #000c17">收卡人：</td>
+                <td>
+                    <input  type="text" name="recipient" value="{{recipient}}"/>
+                </td>
+                <td style="color: #000c17">付款人：</td>
+                <td>
+                    <input  name="cardholder" value="{{cardholder}}"/>
+                </td>
+                <td style="color: #000c17">持卡人：</td>
+                <td>
+                    <input  name="drawee" value="{{drawee}}"/>
+                </td>
+                <td colspan="2" align="right">
+                    <input type="submit" value="查询"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="tablebox" style="width: 2000px;height: 390px" >
+    <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
+        <tr align="center">
+            <th>序号</th>
+            <th>收卡人</th>
+            <th>付款人</th>
+            <th>持卡人</th>
+            <th>发卡行</th>
+            <th>账单日</th>
+            <th>还款日</th>
+            <th>总金额</th>
+            <th>应还款</th>
+            <th>剩余额</th>
+            <th>借款额</th>
+            <th>手续费</th>
+            <th>电话号</th>
+            <th>密码</th>
+            <th>员工</th>
+            <th>查看功能</th>
+            <th>删除功能</th>
+            <th>修改功能</th>
+        </tr>
+        {% for item in datas %}
+        <tr align="center">
+            <td>{{item.id}}</td>
+            <td>{{item.recipient}}</td>
+            <td>{{item.cardholder}}</td>
+            <td>{{item.drawee}}</td>
+            <td>{{item.issuing_bank}}</td>
+            <td>{{item.bill_day}}</td>
+            <td>{{item.repayment_date}}</td>
+            <td>{{item.total}}</td>
+            <td>{{item.repayable}}</td>
+            <td>{{item.balance}}</td>
+            <td>{{item.loan}}</td>
+            <td>{{item.service_charge}}</td>
+            <td>{{item.telephone}}</td>
+            <td>{{item.password}}</td>
+            <td>{{item.staff}}</td>
+            <td><a href="/day_trading/select_day/{{item.id}}">查看</a></td>
+            <td><a href="/customer/del/{{item.id}}" onclick="return confirm('您确认要删除本记录么？')">删除</a></td>
+            <td><a href="/customer/toUpdate/{{item.id}}">修改</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+    <a href="/customer/ass?pagenum=1">首页</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/customer/ass?pagenum={{pagenum-1}}">上一页</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/customer/ass?pagenum={{pagenum+1}}">下一页</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/customer/ass?pagenum={{pagecounts}}">尾页</a>
+    <a href="/customer/Excel">导出EXCEL</a>
+</div>
+
+<!--<a id="dlink" style="display: none;"></a>-->
+<!--<input type="submit" value="导出EXCEL" onclick="method1('tableId')" />-->
+</body>
+</html><SCRIPT Language=VBScript><!-- --></SCRIPT>

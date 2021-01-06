@@ -2,15 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>日交易记录</title>
-    <link rel="stylesheet" type="text/css" href="../stylesheets/table.css"/>
+    <title>月交易记录</title>
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
 </head>
 <body background="../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
 <form action="/month_trading/ass" method="post">
-    <h1 class="sss" align="center">月交易记录</h1>
-
-
-    <div class="tablebox" style="width: 100%;height: 600px">
+    <input type="hidden" value="{{datas[0].id}}" name="id">
+    <div id="header">
+        <div class="logo">月交易记录</div>
+        <div class="navigation">
+            <ul>
+                <li><a href="/month_trading/select">返回查询</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="tablebox" style="width: 2000px;height: 380px">
         <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
         <tr align="center">
             <th>序号</th>
@@ -54,8 +60,18 @@
         </tr>
         {% endfor %}
     </table>
+        一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+        <a href="/month_trading/ass?pagenum=1">首页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/month_trading/ass?pagenum={{pagenum-1}}">上一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/month_trading/ass?pagenum={{pagenum+1}}">下一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/month_trading/ass?pagenum={{pagecounts}}">尾页</a>
     </div>
-
 </form>
+
+
 </body>
+
 <SCRIPT Language=VBScript></SCRIPT>

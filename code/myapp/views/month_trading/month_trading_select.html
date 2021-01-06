@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>
+<link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+
+<title>月交易记录</title>
+<head>
+    <meta charset="UTF-8">
+
+
+</head>
+<body>
+<div id="header">
+    <div class="logo">月交易记录</div>
+    <div class="navigation">
+    </div>
+</div>
+<form action="/month_trading/ass " method="post">
+    <table>
+        <tr>
+            <td style="color: #000c17">收卡人:</td>
+            <td>
+                <input  type="text" name="recipient" >
+            </td>
+            <td style="color: #000c17">付款人:</td>
+            <td>
+                <input  name="cardholder" >
+            </td>
+            <td style="color: #000c17">持卡人：</td>
+            <td>
+                <input  name="drawee" >
+            </td>
+            <td colspan="2" align="right">
+                <input type="submit" value="查询">
+            </td>
+        </tr>
+    </table>
+</form>
+<div>
+    <input type="hidden" value="{{datas[0].id}}" name="id">
+
+    <div class="tablebox" style="width: 2000px;height: 380px">
+        <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
+            <tr align="center">
+                <th>序号</th>
+                <th>收卡人</th>
+                <th>付款人</th>
+                <th>持卡人</th>
+                <th>发卡行</th>
+                <th>账单日</th>
+                <th>还款日</th>
+                <th>总金额</th>
+                <th>应还款</th>
+                <th>剩余额</th>
+                <th>借款额</th>
+                <th>已还款</th>
+                <th>已刷额</th>
+                <th>未刷金额</th>
+                <th>总手续费</th>
+                <th>应收金额</th>
+                <th>利润</th>
+
+            </tr>
+            {% for item in datas %}
+            <tr align="center">
+                <td>{{item.id}}</td>
+                <td>{{item.recipient}}</td>
+                <td>{{item.cardholder}}</td>
+                <td>{{item.drawee}}</td>
+                <td>{{item.issuing_bank}}</td>
+                <td>{{item.bill_day}}</td>
+                <td>{{item.repayment_date}}</td>
+                <td>{{item.total}}</td>
+                <td>{{item.repayable}}</td>
+                <td>{{item.balance}}</td>
+                <td>{{item.loan}}</td>
+                <td>{{item.repayment}}</td>
+                <td>{{item.swipe}}</td>
+                <td>{{item.balance_of_credit_card}}</td>
+                <td>{{item.the_total_fee}}</td>
+                <td>{{item.collected_amount}}</td>
+                <td>{{item.profit}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+        <a href="/month_trading/ass?pagenum=1">首页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/month_trading/ass?pagenum={{pagenum-1}}">上一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/month_trading/ass?pagenum={{pagenum+1}}">下一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/month_trading/ass?pagenum={{pagecounts}}">尾页</a>
+        <a href="/month_trading/Excel">下载到EXCEL</a>
+    </div>
+</div>
+
+
+</body>
+</html><SCRIPT Language=VBScript><!-- --></SCRIPT>
