@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>
+<!--<link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>-->
 <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
 
 <title>月交易记录</title>
@@ -14,33 +14,39 @@
 <div id="header">
     <div class="logo">月交易记录</div>
     <div class="navigation">
+        <ul>
+            <li><a href="/month_trading/Excel"><img src="../../images/excel.png" title="导出到excel" style="width: 30px;height: 35px;"/></a></li>
+        </ul>
     </div>
 </div>
-<form action="/month_trading/ass " method="post">
-    <table>
-        <tr>
-            <td style="color: #000c17">收卡人:</td>
-            <td>
-                <input  type="text" name="recipient" >
-            </td>
-            <td style="color: #000c17">付款人:</td>
-            <td>
-                <input  name="cardholder" >
-            </td>
-            <td style="color: #000c17">持卡人：</td>
-            <td>
-                <input  name="drawee" >
-            </td>
-            <td colspan="2" align="right">
-                <input type="submit" value="查询">
-            </td>
-        </tr>
-    </table>
-</form>
+<div class="select">
+    <form action="/month_trading/ass " method="post">
+        <table width="95%" border="1" cellpadding="0" cellspacing="0">
+            <tr>
+                <!--                <td style="color: #000c17">收卡人：</td>-->
+                <td>
+                    <input  type="text" name="recipient" placeholder="请输入收卡人" value="{{recipient}}" />
+                </td>
+                <!--                <td style="color: #000c17">付款人：</td>-->
+                <td>
+                    <input  type="text" name="cardholder" placeholder="请输入付款人" value="{{cardholder}}"/>
+                </td>
+                <!--                <td style="color: #000c17">持卡人：</td>-->
+                <td>
+                    <input  type="text" name="drawee" placeholder="请输入持卡人" value="{{drawee}}"/>
+                </td>
+                <td>
+                    <input type="submit" value="查询"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
 <div>
     <input type="hidden" value="{{datas[0].id}}" name="id">
 
-    <div class="tablebox" style="width: 2000px;height: 380px">
+    <div class="tablebox">
         <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
             <tr align="center">
                 <th>序号</th>
@@ -92,7 +98,7 @@
         <a href="/month_trading/ass?pagenum={{pagenum+1}}">下一页</a>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <a href="/month_trading/ass?pagenum={{pagecounts}}">尾页</a>
-        <a href="/month_trading/Excel">下载到EXCEL</a>
+
     </div>
 </div>
 

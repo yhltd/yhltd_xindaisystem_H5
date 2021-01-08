@@ -60,7 +60,7 @@ router.all('/ass', function (req, res, next) {
             }else{
                 result.rowcounts = value[0].count
                 result.pagecounts = Math.ceil(result.rowcounts/result.pageSize)
-                result.pagenum = req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum;
+                result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
             }
 
             let sql2 = "select * from customer " + whereSql + "limit " + (result.pagenum-1)*result.pageSize + "," + result.pageSize;

@@ -58,7 +58,7 @@ router.all('/ass', function (req, res, next) {
                 result.rowcounts = value[0].count
                 console.log("value[0].count =>",value[0].count)
                 result.pagecounts = Math.ceil(result.rowcounts/result.pageSize)
-                result.pagenum = req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum;
+                result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
             }
 
             let sql = "select a.date_time,sum(a.repayment) as repayment,sum(a.swipe) as swipe,(sum(a.basics_service_charge)+sum(a.other_service_charge)) as the_total_fee,sum(a.swipe)*(b.service_charge)-sum(a.basics_service_charge)+sum(a.other_service_charge) as profit from day_trading as a,customer as b " + whereSql;

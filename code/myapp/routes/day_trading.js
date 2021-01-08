@@ -143,6 +143,7 @@ router.get('/ass/:id', function (req, res, next) {
 router.all('/select_day/:id', function (req, res, next) {
     var id = req.params.id;
     let isSelect = req.query.pagenum == undefined;
+
     let sql1 = "select Count(*) as count from day_trading right join customer on customer.id = day_trading.id where customer.id=" + id;
     console.log(sql1);
     db.query(sql1,function (err,rows) {
@@ -167,7 +168,7 @@ router.all('/select_day/:id', function (req, res, next) {
                 result.rowcounts = value[0].count
                 console.log("value[0].count =>",value[0].count)
                 result.pagecounts = Math.ceil(result.rowcounts/result.pageSize)
-                result.pagenum = req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum;
+                result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
             }
             let sql = "select * from day_trading right join customer on customer.id = day_trading.id where customer.id=" + id;
             sql += " limit " + (result.pagenum-1)*result.pageSize + "," + result.pageSize;
