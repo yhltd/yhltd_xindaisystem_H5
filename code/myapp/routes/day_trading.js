@@ -4,18 +4,45 @@ var router = express.Router();
 var db = require("./db.js");
 var nodeExcel = require('excel-export');
 
+const crypto = require("crypto");
+//const path = require("path")
+//LocalStorage = require('node-localstorage')
+function encrypt (key, iv, data) {
+    let decipher = crypto.createCipheriv('aes-128-cbc', key, iv);
+    // decipher.setAutoPadding(true);
+    return decipher.update(data, 'binary', 'base64') + decipher.final('base64');
+}
+
+function decrypt (key, iv, crypted) {
+    crypted = new Buffer(crypted, 'base64').toString('binary');
+    let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
+    return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
+}
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+}
 /**
  * 删
  */
 router.get('/del/:did', function (req, res) {
-    var did = req.params.did;
-    db.query("delete from day_trading where did=" + did, function (err, rows) {
-        if (err) {
-            res.end('删除失败：' + err)
-        } else {
-            res.redirect('select_day/'+ id);
-        }
-    });
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["2"].del == 1){
+        let did = req.params.did;
+        db.query("delete from day_trading where did=" + did, function (err, rows) {
+            if (err) {
+                res.end('删除失败：' + err)
+            } else {
+                res.redirect('select_day/'+ id);
+            }
+        });
+    }else{
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限删除' });
+    }
+
 });
 
 
@@ -50,26 +77,43 @@ router.post('/update', function (req, res) {
  * 修改
  */
 router.get('/toUpdate/:did', function (req, res) {
-    var did = req.params.did;
-    db.query("select * from day_trading where did=" + did, function (err, rows) {
-        if (err) {
-            res.end('修改页面跳转失败：' + err);
-        } else {
-            res.render("../views/day_trading/day_trading_update.html", {datas: rows});       //直接跳转
-        }
-    });
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["2"].upd == 1){
+        var did = req.params.did;
+        db.query("select * from day_trading where did=" + did, function (err, rows) {
+            if (err) {
+                res.end('修改页面跳转失败：' + err);
+            } else {
+                res.render("../views/day_trading/day_trading_update.html", {datas: rows});       //直接跳转
+            }
+        });
+    }else{
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限修改' });
+    }
 });
 
 
 router.get('/insert/:id', function (req, res) {
-    var id = req.params.id;
-    db.query("select * from customer where id=" + id, function (err, rows) {
-        if (err) {
-            res.end('修改页面跳转失败：' + err);
-        } else {
-            res.render("../views/day_trading/day_trading_add.html", {datas: rows});       //直接跳转
-        }
-    });
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["2"].add == 1){
+        var id = req.params.id;
+        db.query("select * from customer where id=" + id, function (err, rows) {
+            if (err) {
+                res.end('修改页面跳转失败：' + err);
+            } else {
+                res.render("../views/day_trading/day_trading_add.html", {datas: rows});       //直接跳转
+            }
+        });
+    }else{
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限录入' });
+    }
+
 });
 
 router.get('/add', function (req, res) {
@@ -141,6 +185,15 @@ router.get('/ass/:id', function (req, res, next) {
 //     })
 // });
 router.all('/select_day/:id', function (req, res, next) {
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["2"].sel != 1){
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限查看' });
+        return;
+    }
+
     var id = req.params.id;
     let isSelect = req.query.pagenum == undefined;
     let sql1 = "select Count(*) as count from day_trading right join customer on customer.id = day_trading.id where customer.id=" + id;
@@ -162,12 +215,10 @@ router.all('/select_day/:id', function (req, res, next) {
                 result.rowcounts = value[0].count
                 result.pagecounts = Math.ceil(result.rowcounts/result.pageSize)
                 result.pagenum = 1
-                console.log("value[0].count =>",value[0].count)
             }else{
                 result.rowcounts = value[0].count
-                console.log("value[0].count =>",value[0].count)
                 result.pagecounts = Math.ceil(result.rowcounts/result.pageSize)
-                result.pagenum = req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum;
+                result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
             }
             let sql = "select * from day_trading right join customer on customer.id = day_trading.id where customer.id=" + id;
             sql += " limit " + (result.pagenum-1)*result.pageSize + "," + result.pageSize;
@@ -179,14 +230,10 @@ router.all('/select_day/:id', function (req, res, next) {
                     console.log("result=>",result)
                     res.render('../views/day_trading/day_trading.html', {
                         title: 'Express',
-
                         ...result
                     });
                 }
             })
-            let sql2 = JSON.stringify(sql);
-            let sql3 = JSON.parse(sql2);
-            console.log(sql3);
         }
     });
 });

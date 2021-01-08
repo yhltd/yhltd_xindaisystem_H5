@@ -3,15 +3,41 @@ var router = express.Router();
 //引入数据库包
 var db = require("./db.js");
 var nodeExcel = require('excel-export');
+
+const crypto = require("crypto");
+//const path = require("path")
+//LocalStorage = require('node-localstorage')
+function encrypt (key, iv, data) {
+    let decipher = crypto.createCipheriv('aes-128-cbc', key, iv);
+    // decipher.setAutoPadding(true);
+    return decipher.update(data, 'binary', 'base64') + decipher.final('base64');
+}
+
+function decrypt (key, iv, crypted) {
+    crypted = new Buffer(crypted, 'base64').toString('binary');
+    let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
+    return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
+}
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+}
 /**
  * 查询列表页
  */
 router.get('/select', function(req, res, next) {
-    res.render('../views/month_trading/month_trading_select.html');
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["3"].sel == 1){
+        res.render('../views/month_trading/month_trading_select.html');
+    }else{
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限查看' });
+    }
 });
 
 router.all('/ass', function (req, res, next) {
-    console.log("pagenum=>",req.query.pagenum)
     let company = req.cookies.company
     let isSelect = req.query.pagenum == undefined;
     let selectParams = {

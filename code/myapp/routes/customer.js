@@ -9,16 +9,45 @@ if (typeof localStorage === "undefined" || localStorage === null) {
     localStorage = new LocalStorage('./scratch');
 }
 
+const crypto = require("crypto");
+
+function encrypt (key, iv, data) {
+    let decipher = crypto.createCipheriv('aes-128-cbc', key, iv);
+    return decipher.update(data, 'binary', 'base64') + decipher.final('base64');
+}
+
+function decrypt (key, iv, crypted) {
+    crypted = new Buffer(crypted, 'base64').toString('binary');
+    let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
+    return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
+}
+
 /**
  * 查询列表页
  */
 router.get('/select', function(req, res, next) {
-    res.render('customer_select.html', { title: 'ExpressTitle' });
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["1"].sel == 1){
+        res.render('customer_select.html', { title: 'ExpressTitle' });
+    }else{
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限查看' });
+    }
 });
 
 router.all('/ass', function (req, res, next) {
     let isSelect = req.query.pagenum == undefined;
-    let company = req.cookies.company
+    let token = localStorage.getItem("token")
+    let key = '123456789abcdefg';
+    //console.log('加密的key:', key);
+    let iv = 'abcdefg123456789';
+    //console.log('加密的iv:', iv);
+    let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    let company = value[0];
+
     let selectParams = {
         recipient : '',
         cardholder: '',
@@ -32,8 +61,6 @@ router.all('/ass', function (req, res, next) {
     }else{
         selectParams = JSON.parse(localStorage.getItem("selectParams"));
     }
-
-    console.log("selectParams=>",selectParams);
 
     let whereSql = " where gongsi = '" + company+"' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%"+selectParams.cardholder+"%' and drawee like '%"+selectParams.drawee+"%'"
 
@@ -84,8 +111,15 @@ router.all('/ass', function (req, res, next) {
     });
 });
 router.get('/add', function (req, res) {
-
-    res.render('add.html');
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["1"].add == 1){
+        res.render('add.html');
+    }else{
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限录入' });
+    }
 });
 router.post('/add', function (req, res) {
 
@@ -130,14 +164,22 @@ router.get('/asd', function (req, res) {
  * 删
  */
 router.get('/del/:id', function (req, res) {
-    var id = req.params.id;
-    db.query("delete from customer where id=" + id, function (err, rows) {
-        if (err) {
-            res.end('删除失败：' + err)
-        } else {
-            res.redirect('/customer/ass')
-        }
-    });
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["1"].del == 1){
+        var id = req.params.id;
+        db.query("delete from customer where id=" + id, function (err, rows) {
+            if (err) {
+                res.end('删除失败：' + err)
+            } else {
+                res.redirect('/customer/ass')
+            }
+        });
+    }else{
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限删除' });
+    }
 });
 
 
@@ -146,14 +188,23 @@ router.get('/del/:id', function (req, res) {
  * 修改
  */
 router.get('/toUpdate/:id', function (req, res) {
-    var id = req.params.id;
-    db.query("select * from customer where id=" + id, function (err, rows) {
-        if (err) {
-            res.end('修改页面跳转失败：' + err);
-        } else {
-            res.render("update.html", {datas: rows});       //直接跳转
-        }
-    });
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["1"].upd == 1){
+        var id = req.params.id;
+        db.query("select * from customer where id=" + id, function (err, rows) {
+            if (err) {
+                res.end('修改页面跳转失败：' + err);
+            } else {
+                res.render("update.html", {datas: rows});       //直接跳转
+            }
+        });
+    }else{
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限修改' });
+    }
+
 });
 /**
  * 修改用户信息

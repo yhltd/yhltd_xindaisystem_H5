@@ -50,51 +50,68 @@ router.get('/', function(req, res, next) {
  * 登录
  */
 router.post('/search', function (req, res) {
-    var company = req.body.company;
-    var account = req.body.account;
-    var password = req.body.password;
-    var isRem = req.body.isRem;
-    //console.log(company, account, password,isRem);
-    var sql="select * from users where company='" + company+"'and account='" +account+ "'and password='"+password+"'" ;
+    let company = req.body.company;
+    let account = req.body.account;
+    let password = req.body.password;
+    let isRem = req.body.isRem;
+    let sql="select u.*,m.`Add`,m.`Del`,m.`Upd`,m.`Sel`,m.`Table` from users as u left join management as m on u.id = m.Uid where u.company = '"+company+"' and u.account='"+account+"' and u.`password` = '"+password+"'" ;
     db.query(sql, function(err, rows){
-        var value = JSON.stringify(rows);						//将rows转为字符串
-        var value = JSON.parse(value);                          //再转换为为 JavaScript 对象
-
-        console.log(value);
+        let value = JSON.stringify(rows);						//将rows转为字符串
+        value = JSON.parse(value);                          //再转换为为 JavaScript 对象
         if (err) {
             res.end('登录失败：' + err);
         }
-        for(var i=0;i<value.length;i++){						//因为得到的value值是一个数据，所以需要将它循环
-            if(company === value[i].company && account === value[i].account && password === value[i].password){	//判断输入的内容是否与数据库的内容相等。
+        if(rows.length>0){
+            if(company === value[0].company && account === value[0].account && password === value[0].password){	//判断输入的内容是否与数据库的内容相等。
                 console.log('登陆成功')//登陆成功后将用户和密码写入Cookie，maxAge为cookie过期时间
 
-                res.cookie('account', value[i].account, { maxAge: 1000*60*60*24 }) //生成一个cookie，并交给浏览器保存
-                res.cookie('company',value[i].company,{ maxAge: 1000*60*60*24 })
+
+                res.cookie('account', value[0].account, { maxAge: 1000*60*60*24 }) //生成一个cookie，并交给浏览器保存
+                res.cookie('company',value[0].company,{ maxAge: 1000*60*60*24 })
+
                 if (isRem){
                     let key = '123456789abcdefg';
-                    //console.log('加密的key:', key);
                     let iv = 'abcdefg123456789';
-                    //console.log('加密的iv:', iv);
 
-                    var datas = {
-                        company: value[i].company,
-                        account: value[i].account,
-                        password: value[i].password
+
+                    let findTable = function(id,value){
+                        for(let index=0;index<value.length;index++){
+                            if(value[index].Table==id){
+                                return {
+                                    add: value[index].Add,
+                                    del: value[index].Del,
+                                    upd: value[index].Upd,
+                                    sel: value[index].Sel
+                                }
+                            }
+                        }
+                    }
+                    let table = {
+                        1: findTable(1,value),
+                        2: findTable(2,value),
+                        3: findTable(3,value),
+                        4: findTable(4,value),
+                        5: findTable(5,value)
+                    }
+
+                    let datas = {
+                        company: value[0].company,
+                        account: value[0].account,
+                        password: value[0].password,
+                        table : table
                     };
-                    //console.log(typeof datas)
+                    console.log(datas)
                     datas = encrypt(key, iv, JSON.stringify(datas));
-                    //console.log("数据加密后:", datas);
-                   localStorage.setItem("token", datas);
+                    localStorage.setItem("token", datas);
                 }
                 if (isRem == undefined){
                     localStorage.removeItem("token")
                 }
                 res.render("index.html", { datas: rows });
-                return;
             }
+        }else{
+            res.redirect('/users')
         }
-        console.log('公司名称或账户或密码错误');
-        res.redirect("/users");
     });
 
 
@@ -105,30 +122,40 @@ router.post('/search', function (req, res) {
  */
 
 router.get('/ass', function (req, res, next) {
-    //var id = req.params.id;
-    var account = req.cookies.account
-    console.log(account);
-    var sql = 'select * from users';
-    if(account == '000001'){
-         sql = sql;
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["5"].sel == 1){
+        var account = req.cookies.account
+        console.log(account);
+        var sql = 'select * from users';
+        db.query(sql , function (err, rows) {
+            if (err) {
+                res.render('staff.html', {title: 'Express', datas: []});
+            } else {
+                res.render('staff.html', {title: 'Express', datas: rows});
+            }
+        })
     }else{
-         sql += ' where account = "' +account+'"';
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限查看' });
     }
-    db.query(sql , function (err, rows) {
-        console.log('==========');
-        if (err) {
-            res.render('staff.html', {title: 'Express', datas: []});
-        } else {
-            res.render('staff.html', {title: 'Express', datas: rows});
-        }
-    })
 });
 /**
  * 新增页面跳转
  */
 
 router.get('/uadd', function (req, res) {
-    res.render('users1/uadd.html');
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["5"].add == 1){
+        res.render('users1/uadd.html');
+    }else{
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限录入' });
+    }
+
 });
 router.post('/uadd', function (req, res) {
     var company = req.body.company;
@@ -150,29 +177,119 @@ router.post('/uadd', function (req, res) {
  * 删
  */
 router.get('/del/:id', function (req, res) {
-    var id = req.params.id;
-    db.query("delete from users where id=" + id, function (err, rows) {
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["5"].del == 1){
+        var id = req.params.id;
+        db.query("delete from users where id=" + id, function (err, rows) {
 
-        if (err) {
-            res.end('删除失败：' + err)
-        } else {
-            res.redirect('/users/ass')
-        }
-    });
+            if (err) {
+                res.end('删除失败：' + err)
+            } else {
+                res.redirect('/users/ass')
+            }
+        });
+    }else{
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限删除' });
+    }
+
 });
 /**
  * 修改
  */
 router.get('/toUpdate/:id', function (req, res) {
-    var id = req.params.id;
-    db.query("select * from users where id=" + id, function (err, rows) {
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["5"].upd == 1){
+        var id = req.params.id;
+        db.query("select * from users where id= '"+id+"'", function (err, rows) {
+            if (err) {
+                res.end('修改页面跳转失败：' + err);
+            } else {
+                res.render("users1/uupdate.html", {datas: rows});       //直接跳转
+            }
+        });
+    }else{
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限修改' });
+    }
+});
+
+/**
+ * 获取权限
+ */
+router.post('/getTableMe', function (req, res) {
+    let userId = req.body.userId;
+    let tableId = req.body.tableId;
+    db.query("select `Add`,Del,Sel,Upd from management where Uid = '"+userId+"' and `Table` = '"+tableId+"'", function (err, rows) {
         if (err) {
-            res.end('修改页面跳转失败：' + err);
+            res.end('获取失败：' + err);
         } else {
-            res.render("users1/uupdate.html", {datas: rows});       //直接跳转
+            let result = JSON.stringify(rows)
+            res.json(result);
         }
     });
 });
+
+/**
+ * 修改权限
+ */
+router.post('/setTableMe', function (req, res) {
+    let result = {
+        code: '',
+        msg: '',
+        data: []
+    }
+    let me = JSON.parse(req.body.me);
+    let tableId = req.body.tableId;
+    let userId = req.body.userId;
+    db.query("select count(*) as count from management where Sel = 1 and `Table` = 5", function (err, rows) {
+        if(err){
+            result.code = 500;
+            result.msg = "修改失败，请稍后再试。";
+            res.json(JSON.stringify(result));
+            res.end('获取失败：' + err);
+        }else{
+            console.log("rows->",rows)
+            let count = rows[0].count;
+            if((count == 1 && tableId == 5) && (me.sel == 0 || (me.upd == 0 && me.sel == 1))){
+                result.code = 402;
+                result.msg = "必须存在一个可以修改和查看员工信息表的管理员";
+                res.json(JSON.stringify(result));
+            }else{
+                db.query("update management set `Add` = '"+me.add+"',Del = '"+me.del+"',Sel = '"+me.sel+"',Upd = '"+me.upd+"' where Uid = '"+userId+"' and `Table` = '"+tableId+"'", function (err, rows) {
+                    if (err) {
+                        res.end('获取失败：' + err);
+                    } else {
+                        if(rows.affectedRows > 0){
+                            let token = localStorage.getItem("token");
+                            let key = '123456789abcdefg';
+                            let iv = 'abcdefg123456789';
+                            let data = JSON.parse(decrypt(key,iv,token));
+                            data.table[tableId].add = me.add
+                            data.table[tableId].del = me.del
+                            data.table[tableId].sel = me.sel
+                            data.table[tableId].upd = me.upd
+                            let newToken = encrypt(key,iv,JSON.stringify(data))
+                            localStorage.setItem("token",newToken);
+
+                            result.code = 200;
+                            result.msg = "修改成功"
+                        }else{
+                            result.code = 500;
+                            result.msg = "未修改"
+                        }
+                        res.json(JSON.stringify(result));
+                    }
+                });
+            }
+        }
+    })
+});
+
 router.post('/update', function (req, res) {
     var id = req.body.id;
     var company = req.body.company;
