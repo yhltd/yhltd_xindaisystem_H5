@@ -38,7 +38,15 @@ router.get('/select', function(req, res, next) {
 });
 
 router.all('/ass', function (req, res, next) {
-    let company = req.cookies.company
+    let token = localStorage.getItem("token")
+    let key = '123456789abcdefg';
+    //console.log('加密的key:', key);
+    let iv = 'abcdefg123456789';
+    //console.log('加密的iv:', iv);
+    let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    let company = value[0];
+    //let company = req.cookies.company
     let isSelect = req.query.pagenum == undefined;
     let selectParams = {
         recipient : '',
@@ -124,7 +132,15 @@ router.all('/Excel', function(req, res, next) {
         cardholder: '',
         drawee: ''
     }
-    let company = req.cookies.company
+    let token = localStorage.getItem("token")
+    let key = '123456789abcdefg';
+    //console.log('加密的key:', key);
+    let iv = 'abcdefg123456789';
+    //console.log('加密的iv:', iv);
+    let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    let company = value[0];
+    //let company = req.cookies.company
     selectParams = JSON.parse(localStorage.getItem("selectParams"));
     // console.log("selectParams.date1-->"+selectParams.date1)
     // console.log(typeof selectParams.date1)

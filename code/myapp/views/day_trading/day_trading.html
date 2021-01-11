@@ -6,50 +6,6 @@
     <link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>
     <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
 </head>
-<!--<script type="text/javascript" language="javascript">-->
-<!--    var idTmr;-->
-<!--    function  getExplorer() {-->
-<!--        var explorer = window.navigator.userAgent ;-->
-<!--        if(explorer.indexOf("Chrome") >= 0){-->
-<!--            return 'Chrome';-->
-<!--        }else{-->
-<!--            alert("非chrome浏览器");-->
-<!--            return false;-->
-<!--        }-->
-<!--    }-->
-<!--    function method1(tableid) {//整个表格拷贝到EXCEL中-->
-<!--        tableToExcel('tableId')-->
-<!--    }-->
-<!--    var tableToExcel = (function(tableId) {-->
-<!--        //设置类型-->
-<!--        var uri = 'data:application/vnd.ms-excel;base64,',-->
-<!--            template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head>&lt;!&ndash;[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]&ndash;&gt;</head><body><table>{table}</table></body></html>',-->
-<!--            //base64加密处理-->
-<!--            base64 = function(s) {-->
-<!--                return window.btoa(unescape(encodeURIComponent(s)))-->
-<!--            },-->
-<!--            //格式化处理-->
-<!--            format = function(s, c) {-->
-<!--                return s.replace(/{(\w+)}/g,-->
-<!--                    function(m, p) {-->
-<!--                        return c[p];-->
-<!--                    }-->
-<!--                )-->
-<!--            };-->
-<!--        //自动执行-->
-<!--        return function(tableId, name) {-->
-<!--            var aLink=document.getElementById("dlink");-->
-<!--            var table = document.getElementById(tableId);-->
-<!--            // 获取表单的名字和表单查询的内容-->
-<!--            var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML};-->
-<!--            // format()函数：通过格式操作使任意类型的数据转换成一个字符串-->
-<!--            // base64()：进行编码-->
-<!--            aLink.href = uri + base64(format(template, ctx))-->
-<!--            aLink.download="test.xls";-->
-<!--            aLink.click();-->
-<!--        }-->
-<!--    })()-->
-<!--</script>-->
 
 <body background="/images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
 <form action="/day_trading/ass" method="post">

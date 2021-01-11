@@ -121,7 +121,15 @@ router.get('/add', function (req, res) {
 });
 router.post('/add', function (req, res) {
     var ck = req.body.checkForm
-    let company = req.cookies.company
+    let token = localStorage.getItem("token")
+    let key = '123456789abcdefg';
+    //console.log('加密的key:', key);
+    let iv = 'abcdefg123456789';
+    //console.log('加密的iv:', iv);
+    let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    let company = value[0];
+    //let company = req.cookies.company
     console.log("ck=>"+ck)
     if(req.body.checkForm) {
         var id = req.body.id;
@@ -204,6 +212,7 @@ router.all('/select_day/:id', function (req, res, next) {
             console.log(err);
         }else {
             let value = rows;
+
             let result = {
                 datas: [],
                 rowcounts: 0,

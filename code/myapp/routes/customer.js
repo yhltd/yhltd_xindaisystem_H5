@@ -72,6 +72,7 @@ router.all('/ass', function (req, res, next) {
             console.log(err);
         }else {
             let value = rows;
+            //console.log("value-->"+value)
             let result = {
                 datas: [],
                 rowcounts: 0,
@@ -124,7 +125,15 @@ router.get('/add', function (req, res) {
 router.post('/add', function (req, res) {
 
     if(req.body.checkForm){
-        let company = req.cookies.company
+        let token = localStorage.getItem("token")
+        let key = '123456789abcdefg';
+        //console.log('加密的key:', key);
+        let iv = 'abcdefg123456789';
+        //console.log('加密的iv:', iv);
+        let data = JSON.parse(decrypt(key, iv, token));
+        let value = Object.values(data);
+        let company = value[0];
+        //let company = req.cookies.company
         var recipient = req.body.recipient;
         var cardholder = req.body.cardholder;
         var drawee = req.body.drawee;
@@ -214,7 +223,15 @@ router.post('/update', function (req, res) {
 
     console.log(ck)
     if(req.body.checkForm) {
-        let company = req.cookies.company
+        let token = localStorage.getItem("token")
+        let key = '123456789abcdefg';
+        //console.log('加密的key:', key);
+        let iv = 'abcdefg123456789';
+        //console.log('加密的iv:', iv);
+        let data = JSON.parse(decrypt(key, iv, token));
+        let value = Object.values(data);
+        let company = value[0];
+        //let company = req.cookies.company
         var id = req.body.id;
         var recipient = req.body.recipient;
         var cardholder = req.body.cardholder;
@@ -251,7 +268,15 @@ router.all('/Excel', function(req, res, next) {
         cardholder: '',
         drawee: ''
     }
-    let company = req.cookies.company
+    let token = localStorage.getItem("token")
+    let key = '123456789abcdefg';
+    //console.log('加密的key:', key);
+    let iv = 'abcdefg123456789';
+    //console.log('加密的iv:', iv);
+    let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    let company = value[0];
+    //let company = req.cookies.company
     selectParams = JSON.parse(localStorage.getItem("selectParams"));
     // console.log("selectParams.date1-->"+selectParams.date1)
     // console.log(typeof selectParams.date1)
