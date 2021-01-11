@@ -9,26 +9,16 @@
 
 </head>
 <div id="header">
-    <div class="logo">统计信息查询</div>
-    <div class="navigation">
-        <ul>
-            <li><a href="/statistics/Excel"><img src="../../images/excel.png" title="导出到excel" style="width: 30px;height: 35px;"/></a></li>
-        </ul>
-    </div>
+    <div class="header-text">统计信息查询</div>
 </div>
 
 <div class="select">
-    <form action="/statistics/ass " method="post">
-        <table>
-            <tr>
-                <td>
-                    <input  type="date" name="date1" >
-                </td>
-                <td>
-                    <input type="submit" value="查询">
-                </td>
-            </tr>
-        </table>
+    <form class="select_form" action="/statistics/ass " method="post">
+        <input class="select_input" type="date" name="date1" >
+        <input class="select_btn" type="submit" value="查询">
+        <div class="header-item">
+            <a href="/statistics/Excel"><img class="header-icon" src="../../images/excel.png" title="导出到excel"/></a>
+        </div>
     </form>
 </div>
 <div class="tablebox" >

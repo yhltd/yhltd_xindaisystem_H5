@@ -9,45 +9,43 @@
 <body background="../../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
 <form action="/users/uadd" method="post" align="center">
     <div id="header">
-        <div class="logo">新增员工</div>
-        <div class="navigation">
-        </div>
+        <div class="header-text">新增员工</div>
     </div>
-    <div class="tablebox" style="width: 400px;height: 600px; margin-top:80px;">
-    <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
+    <div class="tablebox" style="width: 400px;height: 600px; margin-top:60px;">
+    <table id="tableId" style="width: 400px" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td>公司名称</td>
             <td>
-                <input  name="company"  />
+                <input class="form_input" name="company"  />
             </td>
         </tr>
         <tr>
             <td>职位</td>
             <td>
-                <input  name="position"  />
+                <input class="form_input" name="position"  />
             </td>
         </tr>
         <tr>
             <td>员工</td>
             <td>
-                <input  name="uname"  />
+                <input class="form_input" name="uname"  />
             </td>
         </tr>
         <tr>
             <td>账号</td>
             <td>
-                <input  name="account"  />
+                <input class="form_input" name="account"  />
             </td>
         </tr>
         <tr>
             <td>密码</td>
             <td>
-                <input  name="password"  />
+                <input class="form_input" name="password"  />
             </td>
         </tr>
         <tr>
             <td colspan="2" align="right">
-                <input type="submit" value="保存"  />
+                <input class="form_btn" type="submit" value="保存"  />
             </td>
         </tr>
     </table>

@@ -46,63 +46,63 @@
     </script>
 </head>
 <body background="/images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
-<form class="tts" action="/day_trading/add" method="post" id="formData"  onsubmit="submitForm()" align="center">
+<form action="/day_trading/add" method="post" id="formData"  onsubmit="submitForm()" align="center">
     <input type="hidden" value="{{datas[0].id}}" name="id">
     <div id="header">
-        <div class="logo">新增日交易记录</div>
-        <div class="navigation">
-            <ul>
-                <li><a href="/customer/select">返回查询</a></li>
-            </ul>
+        <div class="header-text">新增日交易记录</div>
+        <div class="header-item">
+            <a style="line-height: 0" class="right" href="/customer/select" title="返回查询">
+                <img class="header-icon" src="../../images/back.png"/>
+            </a>
         </div>
     </div>
-    <div class="tablebox" style="width: 400px;height: 480px; margin-top:80px;">
-        <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
+    <div class="tablebox" style="width: 400px;height: 480px; margin-top:60px;">
+        <table id="tableId" style="width: 400px;margin: 0 auto" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>已还金额</td>
                 <td>
-                    <input type="number" step="0.01" name="repayment" >
+                    <input class="form_input" type="number" step="0.01" name="repayment" >
                 </td>
             </tr>
             <tr>
                 <td>商户</td>
                 <td>
-                    <input type="text" name="commercial" >
+                    <input class="form_input" type="text" name="commercial" >
                 </td>
             </tr>
             <tr>
                 <td>刷卡金额</td>
                 <td>
-                    <input type="number" step="0.01" name="swipe" >
+                    <input class="form_input" type="number" step="0.01" name="swipe" >
                 </td>
             </tr>
             <tr>
                 <td>费率</td>
                 <td>
-                    <input type="number" step="0.01" name="rate" >
+                    <input class="form_input" type="number" step="0.01" name="rate" >
                 </td>
             </tr>
             <tr>
                 <td>到账金额</td>
                 <td>
-                    <input type="number" step="0.01" name="arrival_amount" >
+                    <input class="form_input" type="number" step="0.01" name="arrival_amount" >
                 </td>
             </tr>
             <tr>
                 <td>基础手续费</td>
                 <td>
-                    <input type="number" step="0.01" name="basics_service_charge" >
+                    <input class="form_input" type="number" step="0.01" name="basics_service_charge" >
                 </td>
             </tr>
             <tr>
                 <td>其他手续费</td>
                 <td>
-                    <input type="number" step="0.01" name="other_service_charge" >
+                    <input class="form_input" type="number" step="0.01" name="other_service_charge" >
                 </td>
             </tr>
             <tr>
                 <td colspan="2" align="right">
-                    <input type="submit" value="保存" class="anniu" />
+                    <input class="form_btn" type="submit" value="保存" class="anniu" />
                 </td>
             </tr>
         </table>

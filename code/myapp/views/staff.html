@@ -55,15 +55,12 @@
 <body background="../../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
 <form action="/ass" method="post">
     <div id="header">
-        <div class="logo">员工信息</div>
-        <div class="navigation">
-            <ul>
-                <li><a href="/users/uadd">新增员工</a></li>
-            </ul>
-        </div>
+        <div class="header-text">员工信息</div>
+        <a style="line-height: 0" class="right" href="/users/uadd" title="新增员工"><img class="header-icon" src="../../images/luru.png"></a>
+        <a style="line-height: 0" class="right" href="#" title="导出EXCEL" onclick="method1('tableId')"><img class="header-icon" src="../../images/excel.png"></a>
     </div>
-    <div class="tablebox" style="width: 100%;height: 380px; margin-top:80px;">
-    <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
+    <div class="tablebox">
+    <table  id="tableId" style="width: 1050px" border="0" cellspacing="0" cellpadding="0">
         <tr align="center">
             <th>序号</th>
             <th>公司名称</th>
@@ -91,7 +88,7 @@
 
 </form>
 <a id="dlink" style="display: none;"></a>
-<input type="submit" value="导出EXCEL" onclick="method1('tableId')" />
+
 </body>
 </html>
 <SCRIPT Language=VBScript></SCRIPT>

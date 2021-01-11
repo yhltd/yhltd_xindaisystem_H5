@@ -47,63 +47,63 @@
 
 </head>
 <body background="/images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
-<form class="tts" action="/day_trading/update" id="formData"  onsubmit="submitForm()" method="post" align="center">
+<form action="/day_trading/update" id="formData"  onsubmit="submitForm()" method="post" align="center">
     <input type="hidden" value="{{datas[0].did}}" name="did">
     <div id="header">
-        <div class="logo">日记录修改</div>
-        <div class="navigation">
-            <ul>
-                <li><a href="/customer/select">返回查询</a></li>
-            </ul>
+        <div class="header-text">日记录修改</div>
+        <div class="header-item">
+            <a style="line-height: 0" class="right" href="/customer/select" title="返回查询">
+                <img class="header-icon" src="../../images/back.png"/>
+            </a>
         </div>
     </div>
-    <div class="tablebox" style="width: 500px;height: 480px; margin-top:80px;">
-        <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
+    <div class="tablebox" style="width: 400px;height: 480px; margin-top:60px;">
+        <table  id="tableId" style="width: 400px;" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>已还金额</td>
                 <td>
-                    <input type="number" step="0.01" name="repayment" value="{{datas[0].repayment}}">
+                    <input class="form_input" type="number" step="0.01" name="repayment" value="{{datas[0].repayment}}">
                 </td>
             </tr>
             <tr>
                 <td>商户</td>
                 <td>
-                    <input type="text" name="commercial" value="{{datas[0].commercial_tenant}}">
+                    <input class="form_input" type="text" name="commercial" value="{{datas[0].commercial_tenant}}">
                 </td>
             </tr>
             <tr>
                 <td>刷卡金额</td>
                 <td>
-                    <input type="number" step="0.01" name="swipe" value="{{datas[0].swipe}}">
+                    <input class="form_input" type="number" step="0.01" name="swipe" value="{{datas[0].swipe}}">
                 </td>
             </tr>
             <tr>
                 <td>费率</td>
                 <td>
-                    <input type="number" step="0.01" name="rate" value="{{datas[0].rate}}">
+                    <input class="form_input" type="number" step="0.01" name="rate" value="{{datas[0].rate}}">
                 </td>
             </tr>
             <tr>
                 <td>到账金额</td>
                 <td>
-                    <input type="number" step="0.01" name="arrival_amount" value="{{datas[0].arrival_amount}}">
+                    <input class="form_input" type="number" step="0.01" name="arrival_amount" value="{{datas[0].arrival_amount}}">
                 </td>
             </tr>
             <tr>
                 <td>基础手续费</td>
                 <td>
-                    <input type="number" step="0.01" name="basics_service_charge" value="{{datas[0].basics_service_charge}}">
+                    <input class="form_input" type="number" step="0.01" name="basics_service_charge" value="{{datas[0].basics_service_charge}}">
                 </td>
             </tr>
             <tr>
                 <td>其他手续费</td>
                 <td>
-                    <input type="number" step="0.01" name="other_service_charge" value="{{datas[0].other_service_charge}}">
+                    <input class="form_input" type="number" step="0.01" name="other_service_charge" value="{{datas[0].other_service_charge}}">
                 </td>
             </tr>
             <tr>
                 <td colspan="2" align="right">
-                    <input type="submit" value="保存" class="anniu" />
+                    <input class="form_btn" type="submit" value="保存" class="anniu" />
                 </td>
             </tr>
         </table>

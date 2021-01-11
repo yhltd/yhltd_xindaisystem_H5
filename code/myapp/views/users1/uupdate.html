@@ -209,6 +209,15 @@
 
                     let userId = $("#user_id").val();
                     let tableId = this.dataset.index;
+                    if(tableId == 3 || tableId == 4){
+                        $(".me-item:eq(0)").css('display', 'none');
+                        $(".me-item:eq(1)").css('display', 'none');
+                        $(".me-item:eq(2)").css('display', 'none');
+                    }else{
+                        $(".me-item:eq(0)").css('display', 'flex');
+                        $(".me-item:eq(1)").css('display', 'flex');
+                        $(".me-item:eq(2)").css('display', 'flex');
+                    }
 
                     $.ajax({
                         type: 'post',
@@ -296,7 +305,7 @@
 <body background="../../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
 
 
-<form class="tts" action="/users/update" method="post" align="center">
+<form action="/users/update" method="post" align="center">
     <div id="upd-menagement-window" style="display: none">
         <div class="me-header">
             <div class="me-header-item" data-index="1">客户信息</div>
@@ -331,13 +340,13 @@
     <div class="iframe_d" style="display: none"></div>
 
     <div id="header">
-        <div class="logo">员工信息修改</div>
+        <div class="header-text">员工信息修改</div>
         <div class="navigation">
         </div>
     </div>
     <input id="user_id" type="hidden" value="{{datas[0].id}}" name="id">
-    <div class="tablebox" style="width: 400px;height: 600px; margin-top:80px;">
-        <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
+    <div class="tablebox" style="width: 400px;height: 600px; margin-top:55px;">
+        <table  id="tableId" style="width: 400px;" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>权限</td>
                 <td>
@@ -347,36 +356,36 @@
             <tr>
                 <td>公司名称</td>
                 <td>
-                    <input type="text" name="company" value="{{datas[0].company}}">
+                    <input class="form_input" type="text" name="company" value="{{datas[0].company}}">
                 </td>
             </tr>
             <tr>
                 <td>职位</td>
                 <td>
-                    <input type="text" name="position" value="{{datas[0].position}}">
+                    <input class="form_input" type="text" name="position" value="{{datas[0].position}}">
                 </td>
             </tr>
             <tr>
                 <td>员工</td>
                 <td>
-                    <input type="text" name="uname" value="{{datas[0].uname}}">
+                    <input class="form_input" type="text" name="uname" value="{{datas[0].uname}}">
                 </td>
             </tr>
             <tr>
                 <td>账号</td>
                 <td>
-                    <input type="text" name="account" value="{{datas[0].account}}">
+                    <input class="form_input" type="text" name="account" value="{{datas[0].account}}">
                 </td>
             </tr>
             <tr>
                 <td>密码</td>
                 <td>
-                    <input type="text" name="password" value="{{datas[0].password}}">
+                    <input class="form_input" type="text" name="password" value="{{datas[0].password}}">
                 </td>
             </tr>
             <tr>
                 <td colspan="2" align="right">
-                    <input type="submit" value="保存" class="anniu" />
+                    <input class="form_btn" type="submit" value="保存" class="anniu" />
                 </td>
             </tr>
         </table>
