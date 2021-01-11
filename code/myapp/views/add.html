@@ -47,91 +47,89 @@
     </script>
 </head>
 <body background="../../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
-<form  class="tts" action="/customer/add" id="formData" onsubmit="submitForm()" method="post" align="center">
+<form  action="/customer/add" id="formData" onsubmit="submitForm()" method="post" align="center">
     <div id="header">
-        <div class="logo">客户信息录入</div>
-        <div class="navigation">
-            <ul>
-                <li><a href="/customer/select">返回查询</a></li>
-            </ul>
-        </div>
+        <div class="header-text">客户信息录入</div>
+        <a style="line-height: 0" class="right" href="/customer/select" title="返回查询">
+            <img class="header-icon" src="../../images/back.png">
+        </a>
     </div>
-    <div class="tablebox" style="width: 100%;height: 480px; margin-top:80px;">
-        <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
+    <div class="tablebox" style="width: 100%;height: 480px; margin-top:60px;">
+        <table id="tableId" style="width: 80%;margin: 0 auto" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>收卡人</td>
                 <td>
-                    <input type="text" name="recipient">
+                    <input class="form_input" type="text" name="recipient">
                 </td>
                 <td>付款人</td>
                 <td>
-                    <input type="text" name="cardholder" >
+                    <input class="form_input" type="text" name="cardholder" >
                 </td>
             </tr>
             <tr>
                 <td>持卡人</td>
                 <td>
-                    <input type="text" name="drawee" >
+                    <input class="form_input" type="text" name="drawee" >
                 </td>
                 <td>发卡行</td>
                 <td>
-                    <input type="text" name="issuing_bank" >
+                    <input class="form_input" type="text" name="issuing_bank" >
                 </td>
             </tr>
             <tr>
                 <td>账单日</td>
                 <td>
-                    <input type="date" name="bill_day"/>
+                    <input class="form_input" type="date" name="bill_day"/>
                 </td>
                 <td>还款日</td>
                 <td>
-                    <input type="date" name="repayment_date"/>
+                    <input class="form_input" type="date" name="repayment_date"/>
                 </td>
             </tr>
             <tr>
                 <td>总金额</td>
                 <td>
-                    <input type="number" step="0.01" name="total"/>
+                    <input class="form_input" type="number" step="0.01" name="total"/>
 
                 </td>
                 <td>应还款</td>
                 <td>
-                    <input type="number" step="0.01" name="repayable"/>
+                    <input class="form_input" type="number" step="0.01" name="repayable"/>
                 </td>
             </tr>
             <tr>
                 <td>余款额</td>
                 <td>
-                    <input type="number" step="0.01" name="balance"/>
+                    <input class="form_input" type="number" step="0.01" name="balance"/>
                 </td>
                 <td>借款额</td>
                 <td>
-                    <input type="number" step="0.01" name="loan"/>
+                    <input class="form_input" type="number" step="0.01" name="loan"/>
                 </td>
             </tr>
             <tr>
                 <td>手续费</td>
                 <td>
-                    <input type="number" step="0.01" name="service_charge"/>
+                    <input class="form_input" type="number" step="0.01" name="service_charge"/>
                 </td>
                 <td>电话号</td>
                 <td>
-                    <input type="number" autocomplete="off" name="telephone" >
+                    <input class="form_input" type="number" autocomplete="off" name="telephone" >
                 </td>
             </tr>
             <tr>
                 <td>密&nbsp;&nbsp;&nbsp;码</td>
                 <td>
-                    <input type="text" autocomplete="off" name="password" >
+                    <input class="form_input" type="text" autocomplete="off" name="password" >
                 </td>
                 <td>员&nbsp;&nbsp;&nbsp;工</td>
                 <td>
-                    <input type="text" autocomplete="off" name="staff" >
+                    <input class="form_input" type="text" autocomplete="off" name="staff" >
                 </td>
             </tr>
             <tr>
                 <td colspan="4" >
-                    <input type="submit" value="保存" class="anniu" align="right" />
+                    <input class="form_btn" type="submit" value="保存" class="anniu" align="right" />
                 </td>
             </tr>
 

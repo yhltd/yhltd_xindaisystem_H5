@@ -47,91 +47,91 @@
     </script>
 </head>
 <body background="../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
-<form id="formData" class="tts" action="/customer/update" method="post" onsubmit="submitForm()" align="center">
+<form id="formData" action="/customer/update" method="post" onsubmit="submitForm()" align="center">
     <div id="header">
-        <div class="logo">客户信息修改</div>
-        <div class="navigation">
-            <ul>
-                <li><a href="/customer/select">返回查询</a></li>
-            </ul>
+        <div class="header-text">客户信息修改</div>
+        <div class="header-item">
+            <a style="line-height: 0" class="right" href="/customer/select" title="返回查询">
+                <img class="header-icon" src="../../images/back.png">
+            </a>
         </div>
     </div>
     <input type="hidden" value="{{datas[0].id}}" name="id">
-    <div class="tablebox" style="width: 100%;height: 480px; margin-top:80px;">
-        <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
+    <div class="tablebox">
+        <table  id="tableId" style="width: 80%;margin: 0 auto" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>收卡人</td>
                 <td>
-                    <input type="text" name="recipient" value="{{datas[0].recipient}}">
+                    <input class="form_input" type="text" name="recipient" value="{{datas[0].recipient}}">
                 </td>
                 <td>付款人</td>
                 <td>
-                    <input type="text" name="cardholder" value="{{datas[0].cardholder}}">
+                    <input class="form_input" type="text" name="cardholder" value="{{datas[0].cardholder}}">
                 </td>
             </tr>
             <tr>
                 <td>持卡人</td>
                 <td>
-                    <input type="text" name="drawee" value="{{datas[0].drawee}}">
+                    <input class="form_input" type="text" name="drawee" value="{{datas[0].drawee}}">
                 </td>
                 <td>发卡行</td>
                 <td>
-                    <input type="text" name="issuing_bank" value="{{datas[0].issuing_bank}}">
+                    <input class="form_input" type="text" name="issuing_bank" value="{{datas[0].issuing_bank}}">
                 </td>
             </tr>
             <tr>
                 <td>账单日</td>
                 <td>
-                    <input type="date" name="bill_day" value="{{datas[0].bill_day}}">
+                    <input class="form_input" type="date" name="bill_day" value="{{datas[0].bill_day}}">
                 </td>
                 <td>还款日</td>
                 <td>
-                    <input type="date" name="repayment_date" value="{{datas[0].repayment_date}}">
+                    <input class="form_input" type="date" name="repayment_date" value="{{datas[0].repayment_date}}">
                 </td>
             </tr>
             <tr>
                 <td>总金额</td>
                 <td>
-                    <input type="number" step="0.01" name="total" value="{{datas[0].total}}">
+                    <input class="form_input" type="number" step="0.01" name="total" value="{{datas[0].total}}">
                 </td>
                 <td>应还款</td>
                 <td>
-                    <input type="number" step="0.01" name="repayable" value="{{datas[0].repayable}}">
+                    <input class="form_input" type="number" step="0.01" name="repayable" value="{{datas[0].repayable}}">
                 </td>
             </tr>
             <tr>
                 <td>余款额</td>
                 <td>
-                    <input type="number" step="0.01" name="balance" value="{{datas[0].balance}}">
+                    <input class="form_input" type="number" step="0.01" name="balance" value="{{datas[0].balance}}">
                 </td>
                 <td>借款额</td>
                 <td>
-                    <input type="number" step="0.01" name="loan" value="{{datas[0].loan}}">
+                    <input class="form_input" type="number" step="0.01" name="loan" value="{{datas[0].loan}}">
                 </td>
             </tr>
             <tr>
                 <td>手续费</td>
                 <td>
-                    <input type="number" step="0.01" name="service_charge" value="{{datas[0].service_charge}}">
+                    <input class="form_input" type="number" step="0.01" name="service_charge" value="{{datas[0].service_charge}}">
                 </td>
                 <td>电话号</td>
                 <td>
-                    <input type="text" name="telephone" value="{{datas[0].telephone}}">
+                    <input class="form_input" type="text" name="telephone" value="{{datas[0].telephone}}">
                 </td>
             </tr>
             <tr>
                 <td>密&nbsp;&nbsp;&nbsp;码</td>
                 <td>
-                    <input type="text" name="password" value="{{datas[0].password}}">
+                    <input class="form_input" type="text" name="password" value="{{datas[0].password}}">
                 </td>
                 <td>员&nbsp;&nbsp;&nbsp;工</td>
                 <td>
-                    <input type="text" name="staff" value="{{datas[0].staff}}">
+                    <input class="form_input" type="text" name="staff" value="{{datas[0].staff}}">
                 </td>
             </tr>
             <tr>
                 <td colspan="4">
-                    <input type="submit" value="保存" class="anniu" />
+                    <input class="form_btn" type="submit" value="保存" class="anniu" />
                 </td>
             </tr>
         </table>

@@ -10,15 +10,17 @@
 <body background="/images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
 <form action="/day_trading/ass" method="post">
     <div id="header">
-        <div class="logo">日交易记录</div>
-        <div class="navigation">
-            <ul>
-                <li><a href="/day_trading/insert/{{datas[0].id}}">录入信息</a></li>
-                <li><a href="/customer/select">返回查询</a></li>
-            </ul>
+        <div class="header-text">日交易记录</div>
+        <div class="header-item">
+            <a style="line-height: 0" class="right" href="/day_trading/insert/{{datas[0].id}}" title="录入信息">
+                <img class="header-icon" src="../../images/luru.png">
+            </a>
+            <a style="line-height: 0" class="right" href="/customer/select" title="返回查询">
+                <img class="header-icon" src="../../images/back.png">
+            </a>
         </div>
     </div>
-    <div class="tablebox" style="width: 100%;height: 600px">
+    <div class="tablebox" style="width: 100%;height: 450px">
         <table  id="tableId1" border="0" cellspacing="0" cellpadding="0">
             <tr align="center">
                 <th>序号</th>
@@ -89,17 +91,16 @@
             </tr>
             {% endfor %}
         </table>
-
-        一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
-        <a href="/day_trading/select_day/{{datas[0].id}}?pagenum=1">首页</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum-1}}">上一页</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum+1}}">下一页</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagecounts}}">尾页</a>
-        <a href="/day_trading/Excel?id={{datas[0].id}}">导出EXCEL</a>
     </div>
+    一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+    <a href="/day_trading/select_day/{{datas[0].id}}?pagenum=1">首页</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum-1}}">上一页</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum+1}}">下一页</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagecounts}}">尾页</a>
+    <a href="/day_trading/Excel?id={{datas[0].id}}">导出EXCEL</a>
 </form>
 <!--<a id="dlink" style="display: none;"></a>-->
 <!--<input type="submit" value="导出EXCEL" onclick="method1('tableId')" />-->
