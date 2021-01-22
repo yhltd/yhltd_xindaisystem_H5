@@ -4,7 +4,7 @@
 <!--<link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>-->
 <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
 
-<title>月交易记录</title>
+<title>日交易记录查询</title>
 <head>
     <meta charset="UTF-8">
 
@@ -12,19 +12,15 @@
 </head>
 <body>
 <div id="header">
-    <div class="header-text">月交易记录</div>
+    <div class="header-text">日交易记录</div>
 </div>
 <div class="select">
-    <form class="select_form" action="/month_trading/ass " method="post">
+    <form class="select_form" action="/day_trading/select " method="post">
         <input class="select_input right" type="text" name="recipient" placeholder="请输入收卡人" value="{{recipient}}" />
         <input class="select_input right" type="text" name="cardholder" placeholder="请输入付款人" value="{{cardholder}}"/>
         <input class="select_input right" type="text" name="drawee" placeholder="请输入持卡人" value="{{drawee}}"/>
         <input class="select_input right" type="date" name="date1" >
         <input class="select_btn right" type="submit" value="查询"/>
-
-        <div class="header-item">
-            <a href="/month_trading/Excel"><img class="header-icon" src="../../images/excel.png" title="导出到excel"/></a>
-        </div>
     </form>
 </div>
 <input type="hidden" value="{{datas[0].id}}" name="id">
@@ -43,16 +39,18 @@
             <th>剩余额</th>
             <th>借款额</th>
             <th>已还款</th>
-            <th>已刷额</th>
-            <th>未刷金额</th>
-            <th>总手续费</th>
-            <th>应收金额</th>
-            <th>利润</th>
+            <th>日期</th>
+            <th>商户</th>
+            <th>刷卡额</th>
+            <th>费率</th>
+            <th>到账金额</th>
+            <th>基础手续费</th>
+            <th>其他手续费</th>
 
         </tr>
         {% for item in datas %}
         <tr align="center">
-            <td>{{item.id}}</td>
+            <td>{{item.did}}</td>
             <td>{{item.recipient}}</td>
             <td>{{item.cardholder}}</td>
             <td>{{item.drawee}}</td>
@@ -64,22 +62,24 @@
             <td>{{item.balance}}</td>
             <td>{{item.loan}}</td>
             <td>{{item.repayment}}</td>
+            <td>{{item.date_time}}</td>
+            <td>{{item.commercial_tenant}}</td>
             <td>{{item.swipe}}</td>
-            <td>{{item.balance_of_credit_card}}</td>
-            <td>{{item.the_total_fee}}</td>
-            <td>{{item.collected_amount}}</td>
-            <td>{{item.profit}}</td>
+            <td>{{item.rate}}</td>
+            <td>{{item.arrival_amount}}</td>
+            <td>{{item.basics_service_charge}}</td>
+            <td>{{item.other_service_charge}}</td>
         </tr>
         {% endfor %}
     </table>
     一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
-    <a href="/month_trading/ass?pagenum=1">首页</a>
+    <a href="/day_trading/select?pagenum=1">首页</a>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/month_trading/ass?pagenum={{pagenum-1}}">上一页</a>
+    <a href="/day_trading/select?pagenum={{pagenum-1}}">上一页</a>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/month_trading/ass?pagenum={{pagenum+1}}">下一页</a>
+    <a href="/day_trading/select?pagenum={{pagenum+1}}">下一页</a>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/month_trading/ass?pagenum={{pagecounts}}">尾页</a>
+    <a href="/day_trading/select?pagenum={{pagecounts}}">尾页</a>
 </div>
 </body>
 </html><SCRIPT Language=VBScript><!-- --></SCRIPT>

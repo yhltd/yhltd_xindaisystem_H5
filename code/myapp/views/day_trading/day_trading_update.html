@@ -47,7 +47,7 @@
 
 </head>
 <body background="/images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
-<form action="/day_trading/update" id="formData"  onsubmit="submitForm()" method="post" align="center">
+<form action="/day_trading/update?id={{id}}" id="formData"  onsubmit="submitForm()" method="post" align="center">
     <input type="hidden" value="{{datas[0].did}}" name="did">
     <div id="header">
         <div class="header-text">日记录修改</div>

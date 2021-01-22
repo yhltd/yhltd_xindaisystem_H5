@@ -39,7 +39,7 @@ router.get('/select', function(req, res, next) {
 });
 router.all('/ass', function (req, res, next) {
 
-    console.log("pagenum=>",req.query.pagenum)
+    //console.log("pagenum=>",req.query.pagenum)
     let token = localStorage.getItem("token")
     let key = '123456789abcdefg';
     //console.log('加密的key:', key);
@@ -50,7 +50,7 @@ router.all('/ass', function (req, res, next) {
     let company = value[0];
     //let company = req.cookies.company
     let isSelect = req.query.pagenum == undefined;
-    console.log("isSelect-->"+isSelect)
+    //console.log("isSelect-->"+isSelect)
     let selectParams = {
         date1 : ''
     }
@@ -61,15 +61,15 @@ router.all('/ass', function (req, res, next) {
         selectParams = JSON.parse(localStorage.getItem("selectParams"));
     }
 
-    console.log("selectParams=>",selectParams);
-    console.log(typeof selectParams.date1)
+    // console.log("selectParams=>",selectParams);
+    // console.log(typeof selectParams.date1)
 
     let whereSql = "where a.id=b.id and a.gongsi = '" + company + "' and a.date_time like '%" + selectParams.date1 +"%'"
 
 
     let sql1 = "select Count(c.date_time) as count from(select a.date_time from day_trading as a,customer as b  " + whereSql +" group by a.date_time ) as c";
 
-    console.log(sql1);
+    //console.log(sql1);
     db.query(sql1,function (err,rows) {
         if(err){
             console.log(err);
@@ -82,15 +82,15 @@ router.all('/ass', function (req, res, next) {
                 pagenum: 0,
                 pageSize: 6
             }
-            console.log("isSelect=>",isSelect)
+            //console.log("isSelect=>",isSelect)
             if(isSelect){
                 result.rowcounts = value[0].count
                 result.pagecounts = Math.ceil(result.rowcounts/result.pageSize)
                 result.pagenum = 1
-                console.log("value[0].count =>",value[0].count)
+                //console.log("value[0].count =>",value[0].count)
             }else{
                 result.rowcounts = value[0].count
-                console.log("value[0].count =>",value[0].count)
+                //console.log("value[0].count =>",value[0].count)
                 result.pagecounts = Math.ceil(result.rowcounts/result.pageSize)
                 result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
             }
@@ -108,7 +108,7 @@ router.all('/ass', function (req, res, next) {
                     res.render('../views/statistics/statistics_select.html', {title: 'Express', ...result});
                 } else {
                     result.datas = rows
-                    console.log("result=>",result)
+                    //console.log("result=>",result)
                     res.render('../views/statistics/statistics_select.html', {
                         title: 'Express',
 
@@ -116,9 +116,9 @@ router.all('/ass', function (req, res, next) {
                     });
                 }
             })
-            let sql2 = JSON.stringify(sql);
-            let sql3 = JSON.parse(sql2);
-            console.log(sql3);
+            // let sql2 = JSON.stringify(sql);
+            // let sql3 = JSON.parse(sql2);
+            // console.log(sql3);
         }
     });
 });
@@ -149,18 +149,18 @@ router.all('/Excel', function(req, res, next) {
             console.log(err);
         } else {
             let values = rows
-            console.log("value=>",values)
+            //console.log("value=>",values)
         }
         let sql2 = JSON.stringify(sql);
         let sql3 = JSON.parse(sql2);
-        console.log(sql3);
+        //console.log(sql3);
         var conf ={};
         conf.stylesXmlFile = "styles.xml";
         conf.name = "mysheet";
         conf.cols = [
             {
                 caption:'日期',
-                type:'date'
+                type:'string'
             },{
                 caption:'交易额',
                 type:'number'
@@ -187,7 +187,7 @@ router.all('/Excel', function(req, res, next) {
         }
         var result = nodeExcel.execute(conf);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-        res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+        res.setHeader("Content-Disposition", "attachment; filename=" + "统计交易总额.xlsx");
         res.end(result, 'binary');
     });
 });

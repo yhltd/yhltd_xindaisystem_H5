@@ -102,7 +102,7 @@ router.post('/search', function (req, res) {
                     table : table,
                     isRem:isRem
                 };
-                console.log(datas)
+                //console.log(datas)
                 datas = encrypt(key, iv, JSON.stringify(datas));
                 localStorage.setItem("token", datas);
                 // if (isRem){
@@ -139,7 +139,7 @@ router.get('/ass', function (req, res, next) {
         // var account = req.cookies.account
         // console.log(account);
         let isSelect = req.query.pagenum == undefined;
-        let sql1 = 'select count(*) as count from users';
+        let sql1 = "select count(*) as count from users where company = '" + data.company +"'";
         db.query(sql1,function (err,rows) {
             if(err){
                 console.log(err);
@@ -152,7 +152,7 @@ router.get('/ass', function (req, res, next) {
                     pagenum: 0,
                     pageSize: 6
                 }
-                console.log("isSelect=>", isSelect)
+                //console.log("isSelect=>", isSelect)
                 if (isSelect) {
                     result.rowcounts = value[0].count
                     result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
@@ -162,7 +162,6 @@ router.get('/ass', function (req, res, next) {
                     result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
                     result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
                 }
-                //console.log("result-->"+result)
                 let sql = "select * from users where company = '" + data.company +"'";
                 sql += " limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
                 db.query(sql, function (err, rows) {
@@ -170,7 +169,7 @@ router.get('/ass', function (req, res, next) {
                         res.render('staff.html', {title: 'Express', datas: []});
                     } else {
                         result.datas = rows
-                        console.log("result=>",result)
+                        //console.log("result=>",result)
                         res.render('staff.html', {
                             title: 'Express',
                             ...result
@@ -209,13 +208,13 @@ router.post('/uadd', function (req, res) {
         } else {
             db.query("select max(id) as uid from users",function (err,rows){
                 let value = rows;
-                console.log("value-->"+value)
+                //console.log("value-->"+value)
                 let uid = value[0].uid
                 for(var i=1;i<=5;i++){
                     let sql = "insert into management(Uid,`Add`,Del,Upd,Sel,`Table`) " +
                         "values("+ uid + ",'0','0','0','0','" + i + "')";
                     //"values("+ uid + ",'"+ 0 +"','"+0+"','"+0+"','"+0+"','" + i + "')";
-                    console.log(sql)
+                    //console.log(sql)
                     db.query(sql,function (err, rows) {
                         if(err){
                             res.end('新增失败：' + err);
@@ -315,7 +314,7 @@ router.post('/setTableMe', function (req, res) {
             res.json(JSON.stringify(result));
             res.end('获取失败：' + err);
         }else{
-            console.log("rows->",rows)
+            //console.log("rows->",rows)
             let count = rows[0].count;
             if((count == 1 && tableId == 5) && (me.sel == 0 || (me.upd == 0 && me.sel == 1))){
                 result.code = 402;
@@ -379,11 +378,11 @@ router.all('/Excel', function(req, res, next) {
             console.log(err);
         } else {
             let values = rows
-            console.log("value=>",values)
+            //console.log("value=>",values)
         }
         let sql2 = JSON.stringify(sql);
         let sql3 = JSON.parse(sql2);
-        console.log(sql3);
+        //console.log(sql3);
         var conf ={};
         conf.stylesXmlFile = "styles.xml";
         conf.name = "mysheet";
@@ -421,7 +420,7 @@ router.all('/Excel', function(req, res, next) {
         }
         var result = nodeExcel.execute(conf);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-        res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+        res.setHeader("Content-Disposition", "attachment; filename=" + "员工信息.xlsx");
         res.end(result, 'binary');
     });
 });

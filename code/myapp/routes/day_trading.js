@@ -32,11 +32,14 @@ router.get('/del/:did', function (req, res) {
     let data = JSON.parse(decrypt(key,iv,token));
     if(data.table["2"].del == 1){
         let did = req.params.did;
+        let id = req.query.id;
+        //console.log("id==>"+id)
         db.query("delete from day_trading where did=" + did, function (err, rows) {
             if (err) {
                 res.end('删除失败：' + err)
             } else {
-                res.redirect('select_day/'+ id);
+
+                res.redirect('/day_trading/select_day/'+id);
             }
         });
     }else{
@@ -44,10 +47,6 @@ router.get('/del/:did', function (req, res) {
     }
 
 });
-
-
-
-
 /**
  * 修改用户信息
  */
@@ -62,12 +61,13 @@ router.post('/update', function (req, res) {
         var arrival_amount = req.body.arrival_amount;
         var basics_service_charge = req.body.basics_service_charge;
         var other_service_charge = req.body.other_service_charge;
-
+        var id = req.query.id;
+        //console.log("id-->"+id)
         db.query("update day_trading set repayment='" + repayment + "',commercial_tenant='" + commercial + "',swipe='" + swipe + "',rate='" + rate + "',arrival_amount='" + arrival_amount + "',basics_service_charge='" + basics_service_charge + "',other_service_charge='" + other_service_charge + "',gongsi = '" + company + "' where did='" + did + "'", function (err, rows) {
             if (err) {
                 res.end('修改失败：' + err);
             } else {
-                res.redirect('select_day/'+ id);
+                res.redirect('select_day/'+id);
             }
         });
     }
@@ -83,11 +83,13 @@ router.get('/toUpdate/:did', function (req, res) {
     let data = JSON.parse(decrypt(key,iv,token));
     if(data.table["2"].upd == 1){
         var did = req.params.did;
+        var id = req.query.id;
+        //console.log("id--》"+id)
         db.query("select * from day_trading where did=" + did, function (err, rows) {
             if (err) {
                 res.end('修改页面跳转失败：' + err);
             } else {
-                res.render("../views/day_trading/day_trading_update.html", {datas: rows});       //直接跳转
+                res.render("../views/day_trading/day_trading_update.html", {datas: rows,id:id});       //直接跳转
             }
         });
     }else{
@@ -142,12 +144,15 @@ router.post('/add', function (req, res) {
         var r = myDate.getDate();
         var x = myDate.getHours();
         var f = myDate.getMinutes();
-        var date_time = n + "-" + y + "-" + r//+" "+x+":"+f;
+        //var date_time = n + "-" + y  + "-" + r//+" "+x+":"+f;
+        var date_time = n + "-" + (y < 10 ? '0' + y : y ) + "-" + (r < 10 ? '0' + r : r) ;
 
+        //var date_time = myDate.getFullYear() + "-" + (myDate.getMonth() < 10 ? '0' + (myDate.getMonth()+1) : (myDate.getMonth()+1)) + "-" + (myDate.getDate() < 10 ? '0' + myDate.getDate() : myDate.getDate()) ;
+        //console.log("date_time=>"+date_time)
         var repayment = req.body.repayment;
-        console.log(repayment)
+        //console.log(repayment)
         var commercial = req.body.commercial;
-        console.log(commercial)
+        //console.log(commercial)
         var swipe = req.body.swipe;
         var rate = req.body.rate;
         var arrival_amount = req.body.arrival_amount;
@@ -161,7 +166,7 @@ router.post('/add', function (req, res) {
             if (err) {
                 res.end('新增失败：' + err);
             } else {
-                res.redirect('select_day/'+ id);
+                res.redirect('select_day/'+id);
                 /*res.redirect('/customer/ass');*/
             }
         })
@@ -193,6 +198,7 @@ router.get('/ass/:id', function (req, res, next) {
 //     })
 // });
 router.all('/select_day/:id', function (req, res, next) {
+    //console.log("开始")
     let token = localStorage.getItem("token");
     let key = '123456789abcdefg';
     let iv = 'abcdefg123456789';
@@ -206,7 +212,7 @@ router.all('/select_day/:id', function (req, res, next) {
     let isSelect = req.query.pagenum == undefined;
 
     let sql1 = "select Count(*) as count from day_trading right join customer on customer.id = day_trading.id where customer.id=" + id;
-    console.log(sql1);
+    //console.log(sql1);
     db.query(sql1,function (err,rows) {
         if(err){
             console.log(err);
@@ -220,7 +226,7 @@ router.all('/select_day/:id', function (req, res, next) {
                 pagenum: 0,
                 pageSize: 6
             }
-            console.log("isSelect=>",isSelect)
+            //console.log("isSelect=>",isSelect)
             if(isSelect){
                 result.rowcounts = value[0].count
                 result.pagecounts = Math.ceil(result.rowcounts/result.pageSize)
@@ -237,7 +243,7 @@ router.all('/select_day/:id', function (req, res, next) {
                     res.render('../views/day_trading/day_trading.html', {title: 'Express', ...result});
                 } else {
                     result.datas = rows
-                    console.log("result=>",result)
+                    //console.log("result=>",result)
                     res.render('../views/day_trading/day_trading.html', {
                         title: 'Express',
                         ...result
@@ -256,19 +262,19 @@ router.all('/Excel', function(req, res, next) {
     var id = req.query.id;
     //console.log("selectParams.date1-->"+selectParams.date1)
     //console.log(typeof selectParams.date1)
-    console.log("id-->"+id);
+    //console.log("id-->"+id);
     let sql = "select * from day_trading right join customer on customer.id = day_trading.id where customer.id=" + id;
-    console.log("sql-->"+sql);
+    //console.log("sql-->"+sql);
     db.query(sql, function (err, rows) {
         if (err) {
             console.log(err);
         } else {
             let values = rows
-            console.log("value=>",values)
+            //console.log("value=>",values)
         }
         let sql2 = JSON.stringify(sql);
         let sql3 = JSON.parse(sql2);
-        console.log(sql3);
+        //console.log(sql3);
         var conf ={};
         conf.stylesXmlFile = "styles.xml";
         conf.name = "mysheet";
@@ -318,8 +324,104 @@ router.all('/Excel', function(req, res, next) {
         }
         var result = nodeExcel.execute(conf);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-        res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+        res.setHeader("Content-Disposition", "attachment; filename=" + "日交易记录.xlsx");
         res.end(result, 'binary');
+    });
+});
+router.get('/select_ass', function(req, res, next) {
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    if(data.table["2"].sel == 1){
+        res.render('../views/day_trading/day_trading_select.html');
+    }else{
+        res.render('me.html', { title: 'ExpressTitle',msg: '无权限查看' });
+    }
+});
+
+router.all('/select', function (req, res, next) {
+    let token = localStorage.getItem("token")
+    let key = '123456789abcdefg';
+    //console.log('加密的key:', key);
+    let iv = 'abcdefg123456789';
+    //console.log('加密的iv:', iv);
+    let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    let company = value[0];
+    //let company = req.cookies.company
+    let isSelect = req.query.pagenum == undefined;
+    let selectParams = {
+        recipient : '',
+        cardholder: '',
+        drawee: '',
+        date1:''
+    }
+    if(isSelect){
+        selectParams.recipient = req.body.recipient;
+        selectParams.cardholder= req.body.cardholder;
+        selectParams.drawee= req.body.drawee;
+        selectParams.date1 = req.body.date1;
+
+        localStorage.setItem("selectParams",JSON.stringify(selectParams))
+    }else{
+        selectParams = JSON.parse(localStorage.getItem("selectParams"));
+    }
+
+    //console.log("selectParams=>",selectParams);
+
+    let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%"+selectParams.cardholder+"%' and drawee like '%"+selectParams.drawee + "%' and a.date_time like '%"+selectParams.date1+"%'";
+
+
+    let sql1 = " select a.id " +
+        "from day_trading as a,customer as b " + whereSql;
+    sql1 += "group by a.did";
+    let sql2 = "select Count(c.id) as count from ( " + sql1 + ") as c"
+
+    //console.log("sql1=>",sql2)
+    db.query(sql2,function (err,rows) {
+        if(err){
+            console.log(err);
+        }else{
+            let value = rows;
+            let result = {
+                datas: [],
+                rowcounts: 0,
+                pagecounts: 0,
+                pagenum: 0,
+                pageSize: 6
+            }
+            console.log("isSelect=>",isSelect)
+            if(isSelect){
+                result.rowcounts = value[0].count
+                result.pagecounts = Math.ceil(result.rowcounts/result.pageSize)
+                result.pagenum = 1
+            }else{
+                result.rowcounts = value[0].count
+                result.pagecounts = Math.ceil(result.rowcounts/result.pageSize)
+                result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
+            }
+            let sql = "select b.*,a.* from day_trading as a,customer as b"+ whereSql;
+
+            sql += " group by a.did ";
+            sql += "limit " + (result.pagenum-1)*result.pageSize + "," + result.pageSize;
+
+            db.query(sql, function (err, rows) {
+                if (err) {
+                    res.render('../views/day_trading/day_trading_select.html', {title: 'Express', ...result});
+                } else {
+                    result.datas = rows
+                    console.log("result=>",result)
+                    res.render('../views/day_trading/day_trading_select.html', {
+                        title: 'Express',
+                        ...result
+                    });
+                }
+            })
+            let sql3 = JSON.stringify(sql);
+            let sql4 = JSON.parse(sql3);
+            console.log("sql4-->"+sql4);
+        }
     });
 });
 module.exports = router;

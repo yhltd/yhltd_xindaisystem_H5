@@ -3,11 +3,6 @@
 <html lang="en">
 <!--<link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>-->
 <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
-
-    <style>
-
-    </style>
-
 <title>客户信息</title>
 <head>
     <meta charset="UTF-8">
@@ -83,15 +78,16 @@
 
         {% endfor %}
     </table>
+    一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+    <a href="/customer/ass?pagenum=1">首页</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/customer/ass?pagenum={{pagenum-1}}">上一页</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/customer/ass?pagenum={{pagenum+1}}">下一页</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/customer/ass?pagenum={{pagecounts}}">尾页</a>
 </div>
-一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
-<a href="/customer/ass?pagenum=1">首页</a>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="/customer/ass?pagenum={{pagenum-1}}">上一页</a>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="/customer/ass?pagenum={{pagenum+1}}">下一页</a>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="/customer/ass?pagenum={{pagecounts}}">尾页</a>
+
 
 <!--<a id="dlink" style="display: none;"></a>-->
 <!--<input type="submit" value="导出EXCEL" onclick="method1('tableId')" />-->

@@ -65,7 +65,7 @@ router.all('/ass', function (req, res, next) {
     let whereSql = " where gongsi = '" + company+"' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%"+selectParams.cardholder+"%' and drawee like '%"+selectParams.drawee+"%'"
 
     let sql1 = "select Count(*) as count from customer" + whereSql;
-    console.log(sql1)
+    //console.log(sql1)
 
     db.query(sql1,function (err,rows) {
         if(err){
@@ -80,7 +80,7 @@ router.all('/ass', function (req, res, next) {
                 pagenum: 0,
                 pageSize: 6
             }
-            console.log("isSelect=>",isSelect)
+            //console.log("isSelect=>",isSelect)
             if(isSelect){
                 result.rowcounts = value[0].count
                 result.pagecounts = Math.ceil(result.rowcounts/result.pageSize)
@@ -92,7 +92,7 @@ router.all('/ass', function (req, res, next) {
             }
 
             let sql2 = "select * from customer " + whereSql + "limit " + (result.pagenum-1)*result.pageSize + "," + result.pageSize;
-            console.log(sql2)
+            //console.log(sql2)
             db.query(sql2, function (err, rows) {
                 if (err) {
                     res.render('customer_select.html', {title: 'Express', ...result});  // this renders "views/users.html"
@@ -105,9 +105,9 @@ router.all('/ass', function (req, res, next) {
                     });
                 }
             })
-            let sql3 = JSON.stringify(sql2);
-            let sql4 = JSON.parse(sql3);
-            console.log(sql4);
+            // let sql3 = JSON.stringify(sql2);
+            // let sql4 = JSON.parse(sql3);
+            // console.log(sql4);
         }
     });
 });
@@ -139,7 +139,7 @@ router.post('/add', function (req, res) {
         var drawee = req.body.drawee;
         var issuing_bank = req.body.issuing_bank;
         var bill_day = req.body.bill_day;
-        console.log("bill_day-->"+typeof bill_day)
+        //console.log("bill_day-->"+typeof bill_day)
 
         var repayment_date = req.body.repayment_date;
         var total = req.body.total;
@@ -221,7 +221,7 @@ router.get('/toUpdate/:id', function (req, res) {
 router.post('/update', function (req, res) {
     var ck = req.body.checkForm
 
-    console.log(ck)
+    /console.log(ck)
     if(req.body.checkForm) {
         let token = localStorage.getItem("token")
         let key = '123456789abcdefg';
@@ -289,9 +289,9 @@ router.all('/Excel', function(req, res, next) {
             let values = rows
             console.log("value=>",values)
         }
-        let sql2 = JSON.stringify(sql);
-        let sql3 = JSON.parse(sql2);
-        console.log(sql3);
+        // let sql2 = JSON.stringify(sql);
+        // let sql3 = JSON.parse(sql2);
+        //console.log(sql3);
         var conf ={};
         conf.stylesXmlFile = "styles.xml";
         conf.name = "mysheet";
@@ -313,10 +313,10 @@ router.all('/Excel', function(req, res, next) {
                 type:'string'
             },{
                 caption:'账单日',
-                type:'date'
+                type:'string'
             },{
                 caption:'还款日',
-                type:'date'
+                type:'string'
             },{
                 caption:'总金额',
                 type:'number'
@@ -365,7 +365,7 @@ router.all('/Excel', function(req, res, next) {
         }
         var result = nodeExcel.execute(conf);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-        res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+        res.setHeader("Content-Disposition", "attachment; filename=" + "客户信息.xlsx");
         res.end(result, 'binary');
     });
 });

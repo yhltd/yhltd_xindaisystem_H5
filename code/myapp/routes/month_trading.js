@@ -51,20 +51,35 @@ router.all('/ass', function (req, res, next) {
     let selectParams = {
         recipient : '',
         cardholder: '',
-        drawee: ''
+        drawee: '',
+        date1:''
     }
     if(isSelect){
         selectParams.recipient = req.body.recipient;
         selectParams.cardholder= req.body.cardholder;
         selectParams.drawee= req.body.drawee;
+        let date1 = req.body.date1;
+        let arr = date1.toString().split("-");
+        let months = arr[1]
+        let years = arr[0]
+
+        // console.log("yue--"+months)
+        // console.log("nian--"+years)
+        // console.log("date1--->"+date1)
+        selectParams.date1 = years + "-" + months
+
+        if(selectParams.date1 === "-undefined"){
+            selectParams.date1 = ""
+        }
+        console.log("selectParams.date1--->"+selectParams.date1)
         localStorage.setItem("selectParams",JSON.stringify(selectParams))
     }else{
         selectParams = JSON.parse(localStorage.getItem("selectParams"));
     }
 
-    console.log("selectParams=>",selectParams);
+    //console.log("selectParams=>",selectParams);
 
-    let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%"+selectParams.cardholder+"%' and drawee like '%"+selectParams.drawee+"%'"
+    let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%"+selectParams.cardholder+"%' and drawee like '%"+selectParams.drawee + "%' and a.date_time like '%"+selectParams.date1+"%'";
 
 
     let sql1 = " select a.id " +
@@ -72,7 +87,7 @@ router.all('/ass', function (req, res, next) {
     sql1 += "group by b.id";
     let sql2 = "select Count(c.id) as count from ( " + sql1 + ") as c"
 
-    console.log("sql1=>",sql2)
+    //console.log("sql1=>",sql2)
     db.query(sql2,function (err,rows) {
         if(err){
             console.log(err);
@@ -85,7 +100,7 @@ router.all('/ass', function (req, res, next) {
                 pagenum: 0,
                 pageSize: 6
             }
-            console.log("isSelect=>",isSelect)
+            //console.log("isSelect=>",isSelect)
             if(isSelect){
                 result.rowcounts = value[0].count
                 result.pagecounts = Math.ceil(result.rowcounts/result.pageSize)
@@ -110,16 +125,16 @@ router.all('/ass', function (req, res, next) {
                     res.render('../views/month_trading/month_trading_select.html', {title: 'Express', ...result});
                 } else {
                     result.datas = rows
-                    console.log("result=>",result)
+                    //console.log("result=>",result)
                     res.render('../views/month_trading/month_trading_select.html', {
                         title: 'Express',
                         ...result
                     });
                 }
             })
-            let sql3 = JSON.stringify(sql);
-            let sql4 = JSON.parse(sql3);
-            console.log("sql4-->"+sql4);
+            // let sql3 = JSON.stringify(sql);
+            // let sql4 = JSON.parse(sql3);
+            // console.log("sql4-->"+sql4);
         }
     });
 });
@@ -144,7 +159,7 @@ router.all('/Excel', function(req, res, next) {
     selectParams = JSON.parse(localStorage.getItem("selectParams"));
     // console.log("selectParams.date1-->"+selectParams.date1)
     // console.log(typeof selectParams.date1)
-    let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%"+selectParams.cardholder+"%' and drawee like '%"+selectParams.drawee+"%'"
+    let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%"+selectParams.cardholder+"%' and drawee like '%"+selectParams.drawee + "%' and a.date_time like '%"+selectParams.date1+"%'";
     let sql = "select b.*,sum(a.repayment) as repayment,sum(a.swipe) as swipe," +
         "sum(a.repayment)-sum(a.swipe) as balance_of_credit_card," +
         "sum(a.basics_service_charge)+sum(a.other_service_charge) as the_total_fee," +
@@ -161,7 +176,7 @@ router.all('/Excel', function(req, res, next) {
         }
         let sql2 = JSON.stringify(sql);
         let sql3 = JSON.parse(sql2);
-        console.log(sql3);
+        //console.log(sql3);
         var conf ={};
         conf.stylesXmlFile = "styles.xml";
         conf.name = "mysheet";
@@ -183,10 +198,10 @@ router.all('/Excel', function(req, res, next) {
                 type:'string'
             },{
                 caption:'账单日',
-                type:'date'
+                type:'string'
             },{
                 caption:'还款日',
-                type:'date'
+                type:'string'
             },{
                 caption:'总金额',
                 type:'number'
@@ -243,7 +258,7 @@ router.all('/Excel', function(req, res, next) {
         }
         var result = nodeExcel.execute(conf);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-        res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+        res.setHeader("Content-Disposition", "attachment; filename=" + "月交易记录.xlsx");
         res.end(result, 'binary');
     });
 });
