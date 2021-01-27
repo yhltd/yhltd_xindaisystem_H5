@@ -15,7 +15,10 @@ function encrypt (key, iv, data) {
 }
 
 function decrypt (key, iv, crypted) {
-    crypted = new Buffer(crypted, 'base64').toString('binary');
+    if(crypted == undefined || crypted == ''){
+        throw new Error("身份验证过期，请重新登录")
+    }
+    crypted = new Buffer.from(crypted, 'base64').toString('binary');
     let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
     return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
 }
@@ -187,7 +190,7 @@ router.all('/Excel', function(req, res, next) {
         }
         var result = nodeExcel.execute(conf);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-        res.setHeader("Content-Disposition", "attachment; filename=" + "统计交易总额.xlsx");
+        res.setHeader("Content-Disposition", "attachment; filename=" + "statistics.xlsx");
         res.end(result, 'binary');
     });
 });

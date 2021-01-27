@@ -14,7 +14,10 @@ function encrypt (key, iv, data) {
 }
 
 function decrypt (key, iv, crypted) {
-    crypted = new Buffer(crypted, 'base64').toString('binary');
+    if(crypted == undefined || crypted == ''){
+        throw new Error("身份验证过期，请重新登录")
+    }
+    crypted = new Buffer.from(crypted, 'base64').toString('binary');
     let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
     return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
 }
@@ -70,9 +73,6 @@ router.post('/search', function (req, res) {
         if(rows.length>0){
             if(company === value[0].company && account === value[0].account && password === value[0].password){	//判断输入的内容是否与数据库的内容相等。
                 console.log('登陆成功')
-                //登陆成功后将用户和密码写入Cookie，maxAge为cookie过期时间
-                //res.cookie('account', value[0].account, { maxAge: 1000*60*60*24 }) //生成一个cookie，并交给浏览器保存
-                //res.cookie('company',value[0].company,{ maxAge: 1000*60*60*24 })
                 let key = '123456789abcdefg';
                 let iv = 'abcdefg123456789';
                 let findTable = function(id,value){
@@ -114,7 +114,7 @@ router.post('/search', function (req, res) {
                 res.render("index.html", { datas: rows });
             }
         }else{
-            res.redirect('/users')
+            res.render('users.html', { title: 'ExpressTitle',msg: '账户密码错误' });
         }
     });
 
@@ -196,37 +196,49 @@ router.get('/uadd', function (req, res) {
 
 });
 router.post('/uadd', function (req, res) {
-    var company = req.body.company;
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
+    //var company = req.body.company;
     var position = req.body.position;
     var uname = req.body.uname;
     var account = req.body.account;
     var password = req.body.password;
-    db.query("insert into users(company,position,uname,account,password) " +
-        "values('" + company + "','" + position + "','" + uname + "','" + account + "','" + password + "')", function (err, rows) {
-        if (err) {
-            res.end('新增失败：' + err);
-        } else {
-            db.query("select max(id) as uid from users",function (err,rows){
-                let value = rows;
-                //console.log("value-->"+value)
-                let uid = value[0].uid
-                for(var i=1;i<=5;i++){
-                    let sql = "insert into management(Uid,`Add`,Del,Upd,Sel,`Table`) " +
-                        "values("+ uid + ",'0','0','0','0','" + i + "')";
-                    //"values("+ uid + ",'"+ 0 +"','"+0+"','"+0+"','"+0+"','" + i + "')";
-                    //console.log(sql)
-                    db.query(sql,function (err, rows) {
-                        if(err){
-                            res.end('新增失败：' + err);
-                        }else{
+    let sql1 = "select account from users where account = " + account
+    db.query(sql1,function (err,rows){
+        if(rows.length>0){
+            res.render('users1/uadd.html', { title: 'ExpressTitle',msg: '账户已存在' });
+        }else{
+            db.query("insert into users(company,position,uname,account,password) " +
+                "values('" + data.company + "','" + position + "','" + uname + "','" + account + "','" + password + "')", function (err, rows) {
+                if (err) {
+                    res.end('新增失败：' + err);
+                } else {
+                    db.query("select max(id) as uid from users",function (err,rows){
+                        let value = rows;
+                        //console.log("value-->"+value)
+                        let uid = value[0].uid
+                        for(var i=1;i<=5;i++){
+                            let sql = "insert into management(Uid,`Add`,Del,Upd,Sel,`Table`) " +
+                                "values("+ uid + ",'0','0','0','0','" + i + "')";
+                            //"values("+ uid + ",'"+ 0 +"','"+0+"','"+0+"','"+0+"','" + i + "')";
                             //console.log(sql)
+                            db.query(sql,function (err, rows) {
+                                if(err){
+                                    res.end('新增失败：' + err);
+                                }else{
+                                    //console.log(sql)
+                                }
+                            });
                         }
                     });
+                    res.redirect('/users/ass');
                 }
-            });
-            res.redirect('/users/ass');
+            })
         }
     })
+
 });
 
 /**
@@ -367,12 +379,18 @@ router.post('/update', function (req, res) {
     });
 });
 
+router.all('/backLogin',function (req,res,next) {
+
+})
 
 router.all('/Excel', function(req, res, next) {
-
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key,iv,token));
     selectParams = JSON.parse(localStorage.getItem("selectParams"));
 
-    let sql = "select * from users" ;
+    let sql = "select * from users where company = '" + data.company +"'";
     db.query(sql, function (err, rows) {
         if (err) {
             console.log(err);
@@ -420,7 +438,7 @@ router.all('/Excel', function(req, res, next) {
         }
         var result = nodeExcel.execute(conf);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-        res.setHeader("Content-Disposition", "attachment; filename=" + "员工信息.xlsx");
+        res.setHeader("Content-Disposition", "attachment; filename=" + "users.xlsx");
         res.end(result, 'binary');
     });
 });

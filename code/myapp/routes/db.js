@@ -1,5 +1,6 @@
 // MySQL数据库联接配置
 var mysql = require('mysql');
+
 var pool = mysql.createPool({
     host: 'yhocn.cn',
     user: 'root',

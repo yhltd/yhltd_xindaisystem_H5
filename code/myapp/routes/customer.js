@@ -17,7 +17,10 @@ function encrypt (key, iv, data) {
 }
 
 function decrypt (key, iv, crypted) {
-    crypted = new Buffer(crypted, 'base64').toString('binary');
+    if(crypted == undefined || crypted == ''){
+        throw new Error("身份验证过期，请重新登录")
+    }
+    crypted = new Buffer.from(crypted, 'base64').toString('binary');
     let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
     return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
 }
@@ -30,6 +33,9 @@ router.get('/select', function(req, res, next) {
     let key = '123456789abcdefg';
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key,iv,token));
+
+
+    console.log("quanxian"+data.table["1"].sel)
     if(data.table["1"].sel == 1){
         res.render('customer_select.html', { title: 'ExpressTitle' });
     }else{
@@ -105,9 +111,9 @@ router.all('/ass', function (req, res, next) {
                     });
                 }
             })
-            // let sql3 = JSON.stringify(sql2);
-            // let sql4 = JSON.parse(sql3);
-            // console.log(sql4);
+            let sql3 = JSON.stringify(sql2);
+            let sql4 = JSON.parse(sql3);
+            console.log(sql4);
         }
     });
 });
@@ -365,7 +371,7 @@ router.all('/Excel', function(req, res, next) {
         }
         var result = nodeExcel.execute(conf);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-        res.setHeader("Content-Disposition", "attachment; filename=" + "客户信息.xlsx");
+        res.setHeader("Content-Disposition", "attachment; filename=" + "customer.xlsx");
         res.end(result, 'binary');
     });
 });
