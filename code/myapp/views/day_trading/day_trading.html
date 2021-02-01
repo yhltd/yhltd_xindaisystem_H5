@@ -73,7 +73,6 @@
                 <th>到账金额</th>
                 <th>基础手续费</th>
                 <th>其他手续费</th>
-
                 <th>修改功能</th>
                 <th>删除功能</th>
             </tr>
@@ -88,25 +87,73 @@
                 <td>{{item.arrival_amount}}</td>
                 <td>{{item.basics_service_charge}}</td>
                 <td>{{item.other_service_charge}}</td>
-
-                <td><a href="/day_trading/toUpdate/{{item.did}}?id={{datas[0].id}}">修改</a></td>
-                <td><a href="/day_trading/del/{{item.did}}?id={{datas[0].id}}" onclick="return confirm('您确认要删除本记录么？')">删除</a></td>
+                <td><a href="/day_trading/toUpdate/{{item.did}}?id={{datas[0].id}}" onclick="return check3()">修改</a></td>
+                <td><a href="/day_trading/del/{{item.did}}?id={{datas[0].id}}" onclick="return check2();  ">删除</a></td>
+                <input type="hidden" value="{{item.did}}" id="id2">
             </tr>
             {% endfor %}
         </table>
         一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
-        <a href="/day_trading/select_day/{{datas[0].id}}?pagenum=1">首页</a>
+        <input type="hidden" value="{{pagenum }}" id="id">
+        <input type="hidden" value="{{pagecounts }}" id="id1">
+        <a href="/day_trading/select_day/{{datas[0].id}}?pagenum=1" onclick="return check();">首页</a>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum-1}}">上一页</a>
+        <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum-1}} " onclick="return check();">上一页</a>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum+1}}">下一页</a>
+        <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagecounts}}">尾页</a>
+        <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
     </div>
 
 </form>
 <!--<a id="dlink" style="display: none;"></a>-->
 <!--<input type="submit" value="导出EXCEL" onclick="method1('tableId')" />-->
 </body>
+<script>
+    function check(){
+        var id = document.getElementById("id")
+        //var id1 = document.getElementById("id1")
+        var pagenum = id.value;
+        //var pagecounts = id1.value;
+        if(pagenum <= 1){
+            alert("当前是第一页")
+            return false;
+        }else{
+            return true;
+        }
+    }
+    function check1(){
+        var id = document.getElementById("id")
+        var id1 = document.getElementById("id1")
+        var pagenum = id.value;
+        var pagecounts = id1.value;
+        if(pagenum >= pagecounts){
+            alert("当前是最后一页")
+            return false;
+        }else{
+            return true;
+        }
+    }
+    function check2(){
+        var id2 = document.getElementById("id2")
+        var did = id2.value;
+
+        if(did == "" || did == undefined){
+            alert("当前用户还没有日交易记录")
+            return false;
+        }
+        return confirm('您确认要删除本记录么？');
+    }
+    function check3(){
+        var id2 = document.getElementById("id2")
+        var did = id2.value;
+        if(did == "" || did == undefined){
+            alert("当前用户还没有日交易记录")
+            return false;
+        }else{
+            return true;
+        }
+    }
+</script>
 </html>
 <SCRIPT Language=VBScript><!-- --></SCRIPT>

@@ -6,12 +6,14 @@ var pool = mysql.createPool({
     user: 'root',
     password: 'Lyh07910',
     database: 'testdb',
-    dateString:true
+    dateString: true
 });
 
 function query(sql, callback) {
     pool.getConnection(function (err, connection) {
-        // Use the connection
+        if(connection == undefined){
+            callback();
+        }
         connection.query(sql, function (err, rows) {
             callback(err, rows);
             connection.release();//释放链接

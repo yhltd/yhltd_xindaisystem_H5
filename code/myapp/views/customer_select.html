@@ -24,6 +24,7 @@
         </div>
     </form>
 </div>
+<h3 style="color: red">{{msg}}</h3>
 <div class="tablebox">
     <table id="tableId" >
         <tr align="center">
@@ -79,17 +80,45 @@
         {% endfor %}
     </table>
     一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
-    <a href="/customer/ass?pagenum=1">首页</a>
+    <input type="hidden" value="{{pagenum }}" id="id">
+    <input type="hidden" value="{{pagecounts }}" id="id1">
+    <a href="/customer/ass?pagenum=1" onclick="return check();">首页</a>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/customer/ass?pagenum={{pagenum-1}}">上一页</a>
+    <a href="/customer/ass?pagenum={{pagenum-1}}" onclick="return check();">上一页</a>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/customer/ass?pagenum={{pagenum+1}}">下一页</a>
+    <a href="/customer/ass?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/customer/ass?pagenum={{pagecounts}}">尾页</a>
+    <a href="/customer/ass?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
 </div>
 
 
 <!--<a id="dlink" style="display: none;"></a>-->
 <!--<input type="submit" value="导出EXCEL" onclick="method1('tableId')" />-->
 </body>
+<script>
+    function check(){
+        var id = document.getElementById("id")
+        var id1 = document.getElementById("id1")
+        var pagenum = id.value;
+        var pagecounts = id1.value;
+        if(pagenum <= 1){
+            alert("当前是第一页")
+            return false;
+        }else{
+            return true;
+        }
+    }
+    function check1(){
+        var id = document.getElementById("id")
+        var id1 = document.getElementById("id1")
+        var pagenum = id.value;
+        var pagecounts = id1.value;
+        if(pagenum >= pagecounts){
+            alert("当前是最后一页")
+            return false;
+        }else{
+            return true;
+        }
+    }
+</script>
 </html><SCRIPT Language=VBScript><!-- --></SCRIPT>
