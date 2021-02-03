@@ -65,13 +65,15 @@
 <div class="top"></div>
 <div id="header">
     <div>
-        <img src="../images/LOG.png" class="logo" style="width: 100px; height: 80px;">
+        <a href="/users"><img src="../images/LOG.png" class="logo" style="width: 100px; height: 80px;" title="回到登录页面"></a>
     </div>
 	<div class="logo">信用卡管理系统</div>
 	<div class="navigation">
 		<ul>
-		 	<li>欢迎您！</li>
-			<li>{{datas[0].uname}}</li>
+		 	<li style="color: #000c17;font-family: Helvetica Neue">欢迎您！[{{datas[0].uname}}]</li>
+			<li><a href="/users/toUpdate/{{datas[0].id}}" target="main">密码修改</a></li>
+            <li><a href="/copyright" target="main">关于</a></li>
+            <li><a href="/help" target="main">帮助</a></li>
 			<li><a href="/users">退出</a></li>
 		</ul>
 	</div>

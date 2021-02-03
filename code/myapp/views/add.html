@@ -14,6 +14,7 @@
         }
 
         function checkForm(params){
+            var temp = /^\d+(\.\d+)?$/
             if(params.recipient==""){
                 alert("收卡人不能为空")
                 return false
@@ -46,6 +47,21 @@
                 return false
             }else if(params.service_charge == ""){
                 alert("手续费不能为空")
+                return false
+            }else if(temp.test(params.total) == false){
+                alert("总金额输入有误")
+                return false
+            }else if(temp.test(params.repayable) == false){
+                alert("应还款输入有误")
+                return false
+            }else if(temp.test(params.balance) == false){
+                alert("余款额输入有误")
+                return false
+            }else if(temp.test(params.loan) == false){
+                alert("借款额输入有误")
+                return false
+            }else if(temp.test(params.service_charge) == false){
+                alert("手续费输入有误")
                 return false
             }
             return true

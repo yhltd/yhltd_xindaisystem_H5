@@ -14,6 +14,7 @@
         }
 
         function checkForm(params){
+            var temp = /^\d+(\.\d+)?$/
             if(params.repayment==""){
                 alert("已还金额不能为空")
                 return false
@@ -34,6 +35,24 @@
                 return false
             }else if(params.other_service_charge == ""){
                 alert("其他手续费不能为空")
+                return false
+            }else if(temp.test(params.repayment) == false){
+                alert("已还金额输入有误")
+                return false
+            }else if(temp.test(params.swipe) == false){
+                alert("刷卡金额输入有误")
+                return false
+            }else if(temp.test(params.rate) == false){
+                alert("费率输入有误")
+                return false
+            }else if(temp.test(params.arrival_amount) == false){
+                alert("到账金额输入有误")
+                return false
+            }else if(temp.test(params.basics_service_charge) == false){
+                alert("基础手续费输入有误")
+                return false
+            }else if(temp.test(params.other_service_charge) == false){
+                alert("其他手续费输入有误")
                 return false
             }
             return true

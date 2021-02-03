@@ -79,16 +79,19 @@
 
         {% endfor %}
     </table>
-    一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
-    <input type="hidden" value="{{pagenum }}" id="id">
-    <input type="hidden" value="{{pagecounts }}" id="id1">
-    <a href="/customer/ass?pagenum=1" onclick="return check();">首页</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/customer/ass?pagenum={{pagenum-1}}" onclick="return check();">上一页</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/customer/ass?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/customer/ass?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
+
+    <div style="padding-top: 15px">
+        一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+        <input type="hidden" value="{{pagenum }}" id="id">
+        <input type="hidden" value="{{pagecounts }}" id="id1">
+        <a href="/customer/ass?pagenum=1" onclick="return check();">首页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/customer/ass?pagenum={{pagenum-1}}" onclick="return check();">上一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/customer/ass?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/customer/ass?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
+    </div>
 </div>
 
 

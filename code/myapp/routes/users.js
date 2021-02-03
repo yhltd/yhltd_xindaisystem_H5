@@ -21,7 +21,12 @@ function decrypt(key, iv, crypted) {
     let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
     return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
 }
-
+function toLiteral(str) {
+    var dict = { '\b': 'b', '\t': 't', '\n': 'n', '\v': 'v', '\f': 'f', '\r': 'r' };
+    return str.replace(/([\\'"\b\t\n\v\f\r])/g, function($0, $1) {
+        return '\\' + (dict[$1] || $1);
+    });
+}
 if (typeof localStorage === "undefined" || localStorage === null) {
     var LocalStorage = require('node-localstorage').LocalStorage;
     localStorage = new LocalStorage('./scratch');
@@ -129,23 +134,56 @@ router.post('/search', function (req, res) {
 /**
  * 查询列表页
  */
-
-router.get('/ass', function (req, res, next) {
+router.get('/select', function (req, res, next) {
     let token = localStorage.getItem("token");
     let key = '123456789abcdefg';
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
 
+
+    console.log("quanxian" + data.table["5"].sel)
     if (data.table["5"].sel == 1) {
+        //res.render('customer_select.html', {title: 'ExpressTitle'});
+        res.redirect('/users/ass');
     } else {
         res.render('me.html', {title: 'ExpressTitle', msg: '无权限查看'});
     }
+});
+router.all('/ass', function (req, res, next) {
+    console.log("yuangong")
+    let isSelect = req.query.pagenum == undefined;
+    let token = localStorage.getItem("token")
+    let key = '123456789abcdefg';
+    //console.log('加密的key:', key);
+    let iv = 'abcdefg123456789';
+    //console.log('加密的iv:', iv);
+    let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    let company = value[0];
+    // if (data.table["5"].sel == 1) {
+    //
+    // } else {
+    //     res.render('me.html', {title: 'ExpressTitle', msg: '无权限查看'});
+    // }
 
     // var account = req.cookies.account
     // console.log(account);
-    let isSelect = req.query.pagenum == undefined;
-    let sql1 = "select count(*) as count from users where company = '" + data.company + "'";
 
+    let selectParams = {
+        uname: ''
+    }
+    if (isSelect) {
+        selectParams.uname = req.body.uname;
+        localStorage.setItem("selectParams", JSON.stringify(selectParams))
+    } else {
+        selectParams = JSON.parse(localStorage.getItem("selectParams"));
+    }
+    if (selectParams.uname == undefined){
+        selectParams.uname ="";
+    }
+    console.log("selectParams.uname=>", selectParams.uname)
+    let whereSql = "where company = '" + company + "' and uname like '%" + selectParams.uname + "%'"
+    let sql1 = "select count(*) as count from users " + whereSql;
     db.query(sql1, function (err, rows) {
         try {
             if (err) {
@@ -157,9 +195,10 @@ router.get('/ass', function (req, res, next) {
                     rowcounts: 0,
                     pagecounts: 0,
                     pagenum: 0,
-                    pageSize: 6
+                    pageSize: 10,
+                    uname:selectParams.uname
                 }
-                //console.log("isSelect=>", isSelect)
+                console.log("isSelect=>", isSelect)
                 if (isSelect) {
                     result.rowcounts = value[0].count
                     result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
@@ -169,14 +208,15 @@ router.get('/ass', function (req, res, next) {
                     result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
                     result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
                 }
-                let sql = "select * from users where company = '" + data.company + "'";
+                let sql = "select * from users " + whereSql;
                 sql += " limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
+                console.log("sql=>",sql)
                 db.query(sql, function (err, rows) {
                     if (err) {
                         res.render('staff.html', {title: 'Express', datas: []});
                     } else {
                         result.datas = rows
-                        //console.log("result=>",result)
+                        console.log("result=>",result)
                         res.render('staff.html', {
                             title: 'Express',
                             ...result
@@ -210,21 +250,25 @@ router.post('/uadd', function (req, res) {
     let key = '123456789abcdefg';
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
+
     //var company = req.body.company;
     var position = req.body.position;
     var uname = req.body.uname;
     var account = req.body.account;
     var password = req.body.password;
+    //data = toLiteral(account)
     //console.log(position+uname+account+password)
     //let sql1 = "select account from users where account = " + account
     //console.log("xinzeng")
-    db.query("select account from users where account = '" + account + "'", function (err, rows) {
+    db.query("select account from users where account = '" + toLiteral(account) + "' and company = '" +toLiteral(data.company) + "'", function (err, rows) {
         try {
             if (rows.length > 0) {
                 res.render('users1/uadd.html', {title: 'ExpressTitle', msg: '账户已存在'});
             } else {
-                db.query("insert into users(company,position,uname,account,password) " +
-                    "values('" + data.company + "','" + position + "','" + uname + "','" + account + "','" + password + "')", function (err, rows) {
+                let sql1 = "insert into users(company,position,uname,account,password) " +
+                    "values('" + toLiteral(data.company) + "','" + toLiteral(position) + "','" + toLiteral(uname) + "','" + toLiteral(account) + "','" + toLiteral(password) + "')"
+                console.log("sql1:"+sql1)
+                db.query(sql1, function (err, rows) {
                     if (err) {
                         res.end('新增失败：');
                     } else {
@@ -235,19 +279,18 @@ router.post('/uadd', function (req, res) {
                             for (var i = 1; i <= 5; i++) {
                                 let sql = "insert into management(Uid,`Add`,Del,Upd,Sel,`Table`) " +
                                     "values(" + uid + ",'0','0','0','0','" + i + "')";
-                                //console.log(sql)
+                                console.log(sql)
                                 db.query(sql, function (err, rows) {
                                     if (err) {
-                                        res.end('新增失败：');
+                                        res.end('新增失败：权限');
                                     } else {
-
                                         console.log(sql)
                                     }
                                 });
                             }
                         });
                         //res.redirect('toUpdate/' + uid);
-                        res.redirect('/users/ass ');
+                        res.redirect('/users/select');
                     }
                 })
             }
@@ -410,7 +453,7 @@ router.post('/update', function (req, res) {
     var account = req.body.account;
     var password = req.body.password;
 
-    db.query("update users set company='" + company + "',position='" + position + "', uname='" + uname + "', account='" + account + "', password='" + password + "' where id=" + id, function (err, rows) {
+    db.query("update users set company='" + toLiteral(company) + "',position='" + toLiteral(position) + "', uname='" + toLiteral(uname) + "', account='" + toLiteral(account) + "', password='" + toLiteral(password) + "' where id=" + id, function (err, rows) {
         try {
             if (err) {
                 res.end('修改失败：');

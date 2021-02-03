@@ -35,7 +35,8 @@ router.get('/select', function (req, res, next) {
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     if (data.table["3"].sel == 1) {
-        res.render('../views/month_trading/month_trading_select.html');
+        //res.render('../views/month_trading/month_trading_select.html');
+        res.redirect('/month_trading/ass');
     } else {
         res.render('me.html', {title: 'ExpressTitle', msg: '无权限查看'});
     }
@@ -44,7 +45,7 @@ router.get('/select', function (req, res, next) {
 router.all('/ass', function (req, res, next) {
     let token = localStorage.getItem("token")
     let key = '123456789abcdefg';
-    //console.log('加密的key:', key);
+    console.log('加密的key:', key);
     let iv = 'abcdefg123456789';
     //console.log('加密的iv:', iv);
     let data = JSON.parse(decrypt(key, iv, token));
@@ -58,19 +59,24 @@ router.all('/ass', function (req, res, next) {
         drawee: '',
         date1: ''
     }
+    console.log('isSelect:', isSelect);
     if (isSelect) {
         selectParams.recipient = req.body.recipient;
         selectParams.cardholder = req.body.cardholder;
         selectParams.drawee = req.body.drawee;
-        let date1 = req.body.date1;
-        let arr = date1.toString().split("-");
-        let months = arr[1]
-        let years = arr[0]
 
-        // console.log("yue--"+months)
-        // console.log("nian--"+years)
-        // console.log("date1--->"+date1)
-        selectParams.date1 = years + "-" + months
+        let date1 = req.body.date1;
+        if (date1 != undefined) {
+            let arr = date1.toString().split("-");
+            let months = arr[1]
+            let years = arr[0]
+
+            // console.log("yue--"+months)
+            // console.log("nian--"+years)
+            // console.log("date1--->"+date1)
+            selectParams.date1 = years + "-" + months
+        }
+
 
         if (selectParams.date1 === "-undefined") {
             selectParams.date1 = ""
@@ -82,7 +88,15 @@ router.all('/ass', function (req, res, next) {
     }
 
     //console.log("selectParams=>",selectParams);
-
+    if (selectParams.recipient == undefined) {
+        selectParams.recipient = "";
+    }
+    if (selectParams.cardholder == undefined) {
+        selectParams.cardholder = "";
+    }
+    if (selectParams.drawee == undefined) {
+        selectParams.drawee = "";
+    }
     let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%" + selectParams.cardholder + "%' and drawee like '%" + selectParams.drawee + "%' and a.date_time like '%" + selectParams.date1 + "%'";
 
 
@@ -103,8 +117,12 @@ router.all('/ass', function (req, res, next) {
                     rowcounts: 0,
                     pagecounts: 0,
                     pagenum: 0,
-                    pageSize: 6,
-                    msg:''
+                    pageSize: 10,
+                    msg: '',
+                    recipient:selectParams.recipient,
+                    cardholder:selectParams.cardholder,
+                    drawee:selectParams.drawee,
+                    date1:selectParams.date1
                 }
                 //console.log("isSelect=>",isSelect)
                 if (isSelect) {
@@ -116,7 +134,7 @@ router.all('/ass', function (req, res, next) {
                     result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
                     result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
                 }
-                if(result.rowcounts == 0){
+                if (result.rowcounts == 0) {
                     result.msg = '没有查到相关信息'
                 }
                 let sql = "select b.*,sum(a.repayment) as repayment,sum(a.swipe) as swipe," +

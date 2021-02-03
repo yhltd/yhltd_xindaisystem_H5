@@ -24,7 +24,12 @@ function decrypt(key, iv, crypted) {
     let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
     return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
 }
-
+function toLiteral(str) {
+    var dict = { '\b': 'b', '\t': 't', '\n': 'n', '\v': 'v', '\f': 'f', '\r': 'r' };
+    return str.replace(/([\\'"\b\t\n\v\f\r])/g, function($0, $1) {
+        return '\\' + (dict[$1] || $1);
+    });
+}
 /**
  * 查询列表页
  */
@@ -37,7 +42,8 @@ router.get('/select', function (req, res, next) {
 
     console.log("quanxian" + data.table["1"].sel)
     if (data.table["1"].sel == 1) {
-        res.render('customer_select.html', {title: 'ExpressTitle'});
+        //res.render('customer_select.html', {title: 'ExpressTitle'});
+        res.redirect('/customer/ass');
     } else {
         res.render('me.html', {title: 'ExpressTitle', msg: '无权限查看'});
     }
@@ -59,6 +65,7 @@ router.all('/ass', function (req, res, next) {
         cardholder: '',
         drawee: ''
     }
+    console.log('isSelect:', isSelect);
     if (isSelect) {
         selectParams.recipient = req.body.recipient;
         selectParams.cardholder = req.body.cardholder;
@@ -67,8 +74,16 @@ router.all('/ass', function (req, res, next) {
     } else {
         selectParams = JSON.parse(localStorage.getItem("selectParams"));
     }
-
-    let whereSql = " where gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%" + selectParams.cardholder + "%' and drawee like '%" + selectParams.drawee + "%'"
+    if (selectParams.recipient == undefined){
+        selectParams.recipient ="";
+    }
+    if (selectParams.cardholder == undefined){
+        selectParams.cardholder ="";
+    }
+    if (selectParams.drawee == undefined){
+        selectParams.drawee ="";
+    }
+    let whereSql = " where gongsi = '" + toLiteral(company) + "' and recipient like '%" + toLiteral(selectParams.recipient) + "%' and cardholder like '%" + toLiteral(selectParams.cardholder) + "%' and drawee like '%" + toLiteral(selectParams.drawee) + "%'"
 
     let sql1 = "select Count(*) as count from customer" + whereSql;
     //console.log(sql1)
@@ -84,8 +99,11 @@ router.all('/ass', function (req, res, next) {
                     rowcounts: 0,
                     pagecounts: 0,
                     pagenum: 0,
-                    pageSize: 6,
-                    msg:''
+                    pageSize: 10,
+                    msg:'',
+                    recipient:selectParams.recipient,
+                    cardholder:selectParams.cardholder,
+                    drawee:selectParams.drawee
                 }
                 //console.log("isSelect=>",isSelect)
                 if (isSelect) {
@@ -165,11 +183,11 @@ router.post('/add', function (req, res) {
         var staff = req.body.staff;
 
 
-        db.query("insert into customer(recipient,cardholder,drawee,issuing_bank,bill_day,repayment_date,total,repayable,balance,loan,service_charge,telephone,password,staff,gongsi) values('" + recipient + "','"
-            + cardholder + "','" + drawee + "','" + issuing_bank + "','"
+        db.query("insert into customer(recipient,cardholder,drawee,issuing_bank,bill_day,repayment_date,total,repayable,balance,loan,service_charge,telephone,password,staff,gongsi) values('" + toLiteral(recipient) + "','"
+            + toLiteral(cardholder) + "','" + toLiteral(drawee)+ "','" + issuing_bank + "','"
             + bill_day + "','" + repayment_date + "',"
             + total + "," + repayable + "," + balance + ","
-            + loan + "," + service_charge + ",'" + telephone + "','" + password + "','" + staff + "','" + company + "')", function (err, rows) {
+            + loan + "," + service_charge + ",'" + toLiteral(telephone) + "','" + toLiteral(password) + "','" + toLiteral(staff) + "','" + company + "')", function (err, rows) {
             try {
                 if (err) {
                     res.end('新增失败：');
@@ -204,7 +222,14 @@ router.get('/del/:id', function (req, res) {
                 if (err) {
                     res.end('删除失败：')
                 } else {
-                    res.redirect('/customer/ass')
+                    db.query("delete from day_trading where id =" +id,function (err,rows) {
+                       if (err){
+                           res.end('删除失败：')
+                       } else{
+                           res.redirect('/customer/ass')
+                       }
+                    })
+
                 }
             } catch (e) {
                 res.render("error.html", {error: '网络错误，请稍后再试'})
@@ -281,7 +306,7 @@ router.post('/update', function (req, res) {
         var password = req.body.password;
         var staff = req.body.staff;
 
-        db.query("update customer set recipient='" + recipient + "',cardholder='" + cardholder + "',drawee='" + drawee + "',issuing_bank='" + issuing_bank + "',bill_day='" + bill_day + "',repayment_date='" + repayment_date + "',total='" + total + "',repayable='" + repayable + "',balance='" + balance + "',loan='" + loan + "',service_charge='" + service_charge + "',telephone='" + telephone + "',password='" + password + "',staff='" + staff + "',gongsi = '" + company + "' where id=" + id, function (err, rows) {
+        db.query("update customer set recipient='" + toLiteral(recipient) + "',cardholder='" + toLiteral(cardholder) + "',drawee='" + toLiteral(drawee) + "',issuing_bank='" + issuing_bank + "',bill_day='" + bill_day + "',repayment_date='" + repayment_date + "',total='" + total + "',repayable='" + repayable + "',balance='" + balance + "',loan='" + loan + "',service_charge='" + service_charge + "',telephone='" + toLiteral(telephone) + "',password='" + toLiteral(password) + "',staff='" + toLiteral(staff) + "',gongsi = '" + company + "' where id=" + id, function (err, rows) {
             try {
                 if (err) {
                     res.end('修改失败：' + err);

@@ -14,7 +14,9 @@
 
 <div class="select">
     <form class="select_form" action="/statistics/ass " method="post">
-        <input class="select_input" type="date" name="date1" >
+        <input class="select_input right" type="date" name="date1" value="date1">
+            至
+        <input class="select_input right" type="date" name="date2" value="date2">
         <input class="select_btn" type="submit" value="查询">
         <div class="header-item">
             <a href="/statistics/Excel"><img class="header-icon" src="../../images/excel.png" title="导出到excel"/></a>
@@ -52,16 +54,19 @@
         </tr>
         {% endfor %}
     </table>
-    一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
-    <input type="hidden" value="{{pagenum }}" id="id">
-    <input type="hidden" value="{{pagecounts }}" id="id1">
-    <a href="/statistics/ass?pagenum=1" onclick="return check();">首页</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/statistics/ass?pagenum={{pagenum-1}}" onclick="return check();">上一页</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/statistics/ass?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/statistics/ass?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
+    <div style="padding-top: 15px">
+        一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+        <input type="hidden" value="{{pagenum }}" id="id">
+        <input type="hidden" value="{{pagecounts }}" id="id1">
+        <a href="/statistics/ass?pagenum=1" onclick="return check();">首页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/statistics/ass?pagenum={{pagenum-1}}" onclick="return check();">上一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/statistics/ass?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/statistics/ass?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
+    </div>
+
 
 </div>
 <!--<a id="dlink" style="display: none;"></a>-->

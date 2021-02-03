@@ -19,7 +19,7 @@
         <input class="select_input right" type="text" name="recipient" placeholder="请输入收卡人" value="{{recipient}}" />
         <input class="select_input right" type="text" name="cardholder" placeholder="请输入付款人" value="{{cardholder}}"/>
         <input class="select_input right" type="text" name="drawee" placeholder="请输入持卡人" value="{{drawee}}"/>
-        <input class="select_input right" type="date" name="date1" >
+        <input class="select_input right" type="date" name="date1" value="{{date1}}" />
         <input class="select_btn right" type="submit" value="查询"/>
 
         <div class="header-item">
@@ -73,16 +73,19 @@
         </tr>
         {% endfor %}
     </table>
-    一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
-    <input type="hidden" value="{{pagenum }}" id="id">
-    <input type="hidden" value="{{pagecounts }}" id="id1">
-    <a href="/month_trading/ass?pagenum=1" onclick="return check();">首页</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/month_trading/ass?pagenum={{pagenum-1}}" onclick="return check();">上一页</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/month_trading/ass?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/month_trading/ass?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
+    <div style="padding-top: 15px">
+        一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+        <input type="hidden" value="{{pagenum }}" id="id">
+        <input type="hidden" value="{{pagecounts }}" id="id1">
+        <a href="/month_trading/ass?pagenum=1" onclick="return check();">首页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/month_trading/ass?pagenum={{pagenum-1}}" onclick="return check();">上一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/month_trading/ass?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/month_trading/ass?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
+    </div>
+
 </div>
 </body>
 <script>

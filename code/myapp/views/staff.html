@@ -7,19 +7,33 @@
     <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
 </head>
 <body background="../../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
-<form  action="/ass" method="post">
-    <div id="header">
-        <div class="header-text">员工信息</div>
-        <div class="header-item">
-            <form class="select_form">
-                <div class="header-item">
-                    <a href="/users/uadd"><img class="header-icon" src="../../images/luru.png" title="新增员工" /></a>
-                    <a href="/users/Excel"><img class="header-icon" src="../../images/excel.png" title="导出到excel"/></a>
-                </div>
-            </form>
-        </div>
-    </div>
+<!--<form  action="/ass" method="post">-->
+<!--    <div id="header">-->
+<!--        <div class="header-text">员工信息</div>-->
+<!--        <div class="header-item">-->
+<!--            <form class="select_form">-->
+<!--                <div class="header-item">-->
+<!--                    <a href="/users/uadd"><img class="header-icon" src="../../images/luru.png" title="新增员工" /></a>-->
+<!--                    <a href="/users/Excel"><img class="header-icon" src="../../images/excel.png" title="导出到excel"/></a>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<div id="header">
+    <div class="header-text">员工信息</div>
+</div>
+    <div class="select">
+        <form class="select_form" action="/users/ass" method="post">
+            <input class="select_input" type="text" name="uname" placeholder="请输入员工姓名" value="{{uname}}" />
+            <input class="select_btn right" type="submit" value="查询"/>
 
+            <div class="header-item">
+                <a href="/users/uadd"><img class="header-icon" src="../../images/luru.png" title="新增员工" /></a>
+                <a href="/users/Excel"><img class="header-icon" src="../../images/excel.png" title="导出到excel"/></a>
+            </div>
+        </form>
+    </div>
+    <h3 style="color: red">{{msg}}</h3>
     <div class="tablebox">
         <table  id="tableId">
             <tr align="center">
@@ -45,19 +59,22 @@
             </tr>
             {% endfor %}
         </table>
-        一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
-        <input type="hidden" value="{{pagenum }}" id="id">
-        <input type="hidden" value="{{pagecounts }}" id="id1">
-        <a href="/users/ass?pagenum=1" onclick="return check();">首页</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/users/ass?pagenum={{pagenum-1}}" onclick="return check();">上一页</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/users/ass?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/users/ass?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
+        <div style="padding-top: 15px">
+            一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+            <input type="hidden" value="{{pagenum }}" id="id">
+            <input type="hidden" value="{{pagecounts }}" id="id1">
+            <a href="/users/ass?pagenum=1" onclick="return check();">首页</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/users/ass?pagenum={{pagenum-1}}" onclick="return check();">上一页</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/users/ass?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/users/ass?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
+        </div>
+
     </div>
 
-</form>
+
 </body>
 <script>
     function check(){

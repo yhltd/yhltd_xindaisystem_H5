@@ -36,7 +36,8 @@ router.get('/select', function (req, res, next) {
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     if (data.table["4"].sel == 1) {
-        res.render('../views/statistics/statistics_select.html');
+        //res.render('../views/statistics/statistics_select.html');
+        res.redirect('/statistics/ass');
     } else {
         res.render('me.html', {title: 'ExpressTitle', msg: '无权限查看'});
     }
@@ -56,24 +57,43 @@ router.all('/ass', function (req, res, next) {
     let isSelect = req.query.pagenum == undefined;
     //console.log("isSelect-->"+isSelect)
     let selectParams = {
-        date1: ''
+        date1: '',
+        date2:''
     }
     if (isSelect) {
         selectParams.date1 = req.body.date1
+        selectParams.date2 = req.body.date2
         localStorage.setItem("selectParams", JSON.stringify(selectParams))
     } else {
         selectParams = JSON.parse(localStorage.getItem("selectParams"));
+    }
+    if(selectParams.date1 == undefined || selectParams.date1 == ""){
+        selectParams.date1 ="1900-01-01";
+    }
+    if(selectParams.date2 == undefined || selectParams.date2 == ""){
+        var myDate = new Date();
+        console.log("mydate" + myDate)
+        var n = myDate.getFullYear();
+        var y = myDate.getMonth() + 1
+        console.log("y=>" + y)
+        var r = myDate.getDate();
+        var x = myDate.getHours();
+        var f = myDate.getMinutes();
+        //var date_time = n + "-" + y  + "-" + r//+" "+x+":"+f;
+        var date2 = n + "-" + (y < 10 ? '0' + y : y) + "-" + (r < 10 ? '0' + r : r);
+        selectParams.date2 = date2;
+        console.log("selectParams.date2=>",selectParams.date2);
     }
 
     // console.log("selectParams=>",selectParams);
     // console.log(typeof selectParams.date1)
 
-    let whereSql = "where a.id=b.id and a.gongsi = '" + company + "' and a.date_time like '%" + selectParams.date1 + "%'"
+    let whereSql = "where a.id=b.id and a.gongsi = '" + company + "' and a.date_time between '" + selectParams.date1 + "' and '" + selectParams.date2 + "'"
 
 
     let sql1 = "select Count(c.date_time) as count from(select a.date_time from day_trading as a,customer as b  " + whereSql + " group by a.date_time ) as c";
 
-    //console.log(sql1);
+    console.log(sql1);
 
     db.query(sql1, function (err, rows) {
         try {
@@ -86,8 +106,10 @@ router.all('/ass', function (req, res, next) {
                     rowcounts: 0,
                     pagecounts: 0,
                     pagenum: 0,
-                    pageSize: 6,
-                    msg:''
+                    pageSize: 10,
+                    msg:'',
+                    date1:selectParams.date1,
+                    date2:selectParams.date2
                 }
                 //console.log("isSelect=>",isSelect)
                 if (isSelect) {

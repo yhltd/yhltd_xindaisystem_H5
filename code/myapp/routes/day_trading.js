@@ -3,6 +3,7 @@ var router = express.Router();
 //引入数据库包
 var db = require("./db.js");
 var nodeExcel = require('excel-export');
+let moment = require('moment')
 
 const crypto = require("crypto");
 //const path = require("path")
@@ -190,7 +191,7 @@ router.post('/add', function (req, res) {
 
         db.query("insert into day_trading(id,date_time,repayment,commercial_tenant,swipe,rate,arrival_amount,basics_service_charge,other_service_charge,gongsi) values('" + id + "','"
             + date_time + "',"
-            + repayment + "," + commercial + "," + swipe + ","
+            + repayment + ",'" + commercial + "'," + swipe + ","
             + rate + "," + arrival_amount + ",'" + basics_service_charge + "','" + other_service_charge + "','" + company + "')", function (err, rows) {
             try {
                 if (err) {
@@ -389,7 +390,8 @@ router.get('/select_ass', function (req, res, next) {
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     if (data.table["2"].sel == 1) {
-        res.render('../views/day_trading/day_trading_select.html');
+        //res.render('../views/day_trading/day_trading_select.html');
+        res.redirect('/day_trading/select');
     } else {
         res.render('me.html', {title: 'ExpressTitle', msg: '无权限查看'});
     }
@@ -424,6 +426,18 @@ router.all('/select', function (req, res, next) {
     } else {
         selectParams = JSON.parse(localStorage.getItem("selectParams"));
     }
+    if (selectParams.recipient == undefined){
+        selectParams.recipient ="";
+    }
+    if (selectParams.cardholder == undefined){
+        selectParams.cardholder ="";
+    }
+    if (selectParams.drawee == undefined){
+        selectParams.drawee ="";
+    }
+    if (selectParams.date1 == undefined){
+        selectParams.date1 ="";
+    }
 
     //console.log("selectParams=>",selectParams);
 
@@ -436,7 +450,7 @@ router.all('/select', function (req, res, next) {
     let sql2 = "select Count(c.id) as count from ( " + sql1 + ") as c"
 
     //console.log("sql1=>",sql2)
-
+    let date1 = moment(selectParams.date1).format('YYYY-MM-DD')
     db.query(sql2, function (err, rows) {
         try {
             if (err) {
@@ -448,8 +462,12 @@ router.all('/select', function (req, res, next) {
                     rowcounts: 0,
                     pagecounts: 0,
                     pagenum: 0,
-                    pageSize: 6,
-                    msg:''
+                    pageSize: 10,
+                    msg:'',
+                    recipient:selectParams.recipient,
+                    cardholder:selectParams.cardholder,
+                    drawee:selectParams.drawee,
+                    date1:date1
                 }
                 console.log("isSelect=>", isSelect)
                 if (isSelect) {
