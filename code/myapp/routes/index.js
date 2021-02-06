@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 const crypto = require("crypto");
 //const path = require("path")
 //LocalStorage = require('node-localstorage')
@@ -19,7 +19,7 @@ function decrypt(key, iv, crypted) {
 }
 
 if (typeof localStorage === "undefined" || localStorage === null) {
-  var LocalStorage = require('node-localstorage').LocalStorage;
+  let LocalStorage = require('node-localstorage').LocalStorage;
   localStorage = new LocalStorage('./scratch');
 }
 /* GET home page. */
@@ -28,7 +28,7 @@ if (typeof localStorage === "undefined" || localStorage === null) {
 // });
 router.get('/', function (req, res, next) {
   //localStorage.removeItem("token")
-  var datas = localStorage.getItem("token");
+  let datas = localStorage.getItem("token");
   //console.log(datas)
   if (datas != null) {
     console.log("datas-->" + datas)
@@ -40,12 +40,12 @@ router.get('/', function (req, res, next) {
     console.log(data + "11");
     //console.log("数据解密后:", data);
     //console.log(typeof data)
-    var value = Object.values(data);
+    let value = Object.values(data);
     console.log(value + "11");
-    var company = value[0];
-    var account = value[1];
-    var password = value[2];
-    var isRem = value[4];
+    let company = value[0];
+    let account = value[1];
+    let password = value[2];
+    let isRem = value[4];
     if (isRem) {
       res.render("users.html", {company: company, account: account, password: password})
     } else {

@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 //引入数据库包
-var db = require("./db.js");
-var nodeExcel = require('excel-export');
+let db = require("./db.js");
+let nodeExcel = require('excel-export');
 
 const crypto = require("crypto");
 //const path = require("path")
@@ -21,9 +21,14 @@ function decrypt(key, iv, crypted) {
     let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
     return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
 }
-
+function toLiteral(str) {
+    let dict = { '\b': 'b', '\t': 't', '\n': 'n', '\v': 'v', '\f': 'f', '\r': 'r' };
+    return str.replace(/([\\'"\b\t\n\v\f\r])/g, function($0, $1) {
+        return '\\' + (dict[$1] || $1);
+    });
+}
 if (typeof localStorage === "undefined" || localStorage === null) {
-    var LocalStorage = require('node-localstorage').LocalStorage;
+    let LocalStorage = require('node-localstorage').LocalStorage;
     localStorage = new LocalStorage('./scratch');
 }
 /**
@@ -51,43 +56,35 @@ router.all('/ass', function (req, res, next) {
     let data = JSON.parse(decrypt(key, iv, token));
     let value = Object.values(data);
     let company = value[0];
+    company = toLiteral(company);
     //let company = req.cookies.company
     let isSelect = req.query.pagenum == undefined;
     let selectParams = {
         recipient: '',
         cardholder: '',
         drawee: '',
-        date1: ''
+        date1: '',
+        d1:false,
+        date2:'',
+        d2:false
     }
     console.log('isSelect:', isSelect);
+
     if (isSelect) {
         selectParams.recipient = req.body.recipient;
         selectParams.cardholder = req.body.cardholder;
         selectParams.drawee = req.body.drawee;
+        selectParams.date1 = req.body.date1;
+        selectParams.date2 = req.body.date2;
 
-        let date1 = req.body.date1;
-        if (date1 != undefined) {
-            let arr = date1.toString().split("-");
-            let months = arr[1]
-            let years = arr[0]
-
-            // console.log("yue--"+months)
-            // console.log("nian--"+years)
-            // console.log("date1--->"+date1)
-            selectParams.date1 = years + "-" + months
-        }
-
-
-        if (selectParams.date1 === "-undefined") {
-            selectParams.date1 = ""
-        }
-        console.log("selectParams.date1--->" + selectParams.date1)
+        //console.log("selectParams.date1--->" + selectParams.date1)
         localStorage.setItem("selectParams", JSON.stringify(selectParams))
     } else {
         selectParams = JSON.parse(localStorage.getItem("selectParams"));
     }
 
-    //console.log("selectParams=>",selectParams);
+    console.log("selectParams.date1=>",selectParams.date1);
+    console.log("selectParams.date2=>",selectParams.date2);
     if (selectParams.recipient == undefined) {
         selectParams.recipient = "";
     }
@@ -97,8 +94,40 @@ router.all('/ass', function (req, res, next) {
     if (selectParams.drawee == undefined) {
         selectParams.drawee = "";
     }
-    let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%" + selectParams.cardholder + "%' and drawee like '%" + selectParams.drawee + "%' and a.date_time like '%" + selectParams.date1 + "%'";
+    if(selectParams.date1== undefined && selectParams.date2== undefined){
+        let myDate = new Date();
+        console.log("mydate" + myDate)
+        let n = myDate.getFullYear();
+        let y = myDate.getMonth() + 1
+        console.log("y=>" + y)
+        let r = myDate.getDate();
+        let date = n + "-" + (y < 10 ? '0' + y : y) + "-" + (r < 10 ? '0' + r : r);
+        selectParams.date1 = date;
+        selectParams.date2 = date;
+        selectParams.d1 = true;
+        selectParams.d2 = true;
+    }
 
+    if(selectParams.date1== undefined || selectParams.date1 == ""){
+        selectParams.d1 = true;
+        selectParams.date1 ="1900-01-01";
+    }
+    if(selectParams.date2== undefined || selectParams.date2 == ""){
+        let myDate = new Date();
+        console.log("mydate" + myDate)
+        let n = myDate.getFullYear();
+        let y = myDate.getMonth() + 1
+        console.log("y=>" + y)
+        let r = myDate.getDate();
+        selectParams.d2 = true;
+        let date2 = n + "-" + (y < 10 ? '0' + y : y) + "-" + (r < 10 ? '0' + r : r);
+        selectParams.date2 = date2;
+        //console.log("selectParams.date2=>",selectParams.date2);
+    }
+    selectParams.recipient = toLiteral(selectParams.recipient);
+    selectParams.cardholder = toLiteral(selectParams.cardholder);
+    selectParams.drawee = toLiteral(selectParams.drawee);
+    let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%" + selectParams.cardholder + "%' and drawee like '%" + selectParams.drawee + "%' and a.date_time  between year('"+ selectParams.date1 + "') and year('"+ selectParams.date2 +"') and month(a.date_time) between month('"+ selectParams.date1 + "') and month('"+ selectParams.date2 +"') ";
 
     let sql1 = " select a.id " +
         "from day_trading as a,customer as b " + whereSql;
@@ -121,8 +150,9 @@ router.all('/ass', function (req, res, next) {
                     msg: '',
                     recipient:selectParams.recipient,
                     cardholder:selectParams.cardholder,
-                    drawee:selectParams.drawee,
-                    date1:selectParams.date1
+                    drawee:selectParams.drawee
+                    // date1:selectParams.date1,
+                    // date2:selectParams.date2
                 }
                 //console.log("isSelect=>",isSelect)
                 if (isSelect) {
@@ -147,6 +177,7 @@ router.all('/ass', function (req, res, next) {
                 sql += " group by b.id ";
                 sql += "limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
 
+                console.log("sql-->"+sql)
                 db.query(sql, function (err, rows) {
                     if (err) {
                         res.render('../views/month_trading/month_trading_select.html', {title: 'Express', ...result});
@@ -155,13 +186,15 @@ router.all('/ass', function (req, res, next) {
                         //console.log("result=>",result)
                         res.render('../views/month_trading/month_trading_select.html', {
                             title: 'Express',
+                            date1: selectParams.d1 ? '' : selectParams.date1,
+                            date2: selectParams.d2 ? '' : selectParams.date2,
                             ...result
                         });
                     }
                 })
-                // let sql3 = JSON.stringify(sql);
-                // let sql4 = JSON.parse(sql3);
-                // console.log("sql4-->"+sql4);
+                let sql3 = JSON.stringify(sql);
+                let sql4 = JSON.parse(sql3);
+                console.log("sql4-->"+sql4);
             }
         } catch (e) {
             res.render("error.html", {error: '网络错误，请稍后再试'})
@@ -211,7 +244,7 @@ router.all('/Excel', function (req, res, next) {
             let sql2 = JSON.stringify(sql);
             let sql3 = JSON.parse(sql2);
             //console.log(sql3);
-            var conf = {};
+            let conf = {};
             conf.stylesXmlFile = "styles.xml";
             conf.name = "mysheet";
             conf.cols = [
@@ -290,7 +323,7 @@ router.all('/Excel', function (req, res, next) {
                 row.push(rows[i].profit)
                 conf.rows.push(row)
             }
-            var result = nodeExcel.execute(conf);
+            let result = nodeExcel.execute(conf);
             res.setHeader('Content-Type', 'application/vnd.openxmlformats');
             res.setHeader("Content-Disposition", "attachment; filename=" + "month_trading.xlsx");
             res.end(result, 'binary');

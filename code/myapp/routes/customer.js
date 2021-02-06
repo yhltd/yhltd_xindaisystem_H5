@@ -1,21 +1,18 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 //引入数据库包
-var db = require("./db.js");
-var nodeExcel = require('excel-export');
+let db = require("./db.js");
+let nodeExcel = require('excel-export');
 
 if (typeof localStorage === "undefined" || localStorage === null) {
-    var LocalStorage = require('node-localstorage').LocalStorage;
+    let LocalStorage = require('node-localstorage').LocalStorage;
     localStorage = new LocalStorage('./scratch');
 }
-
-const crypto = require("crypto");
-
+let crypto = require("crypto");
 function encrypt(key, iv, data) {
     let decipher = crypto.createCipheriv('aes-128-cbc', key, iv);
     return decipher.update(data, 'binary', 'base64') + decipher.final('base64');
 }
-
 function decrypt(key, iv, crypted) {
     if (crypted == undefined || crypted == '') {
         throw new Error("身份验证过期，请重新登录")
@@ -25,7 +22,7 @@ function decrypt(key, iv, crypted) {
     return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
 }
 function toLiteral(str) {
-    var dict = { '\b': 'b', '\t': 't', '\n': 'n', '\v': 'v', '\f': 'f', '\r': 'r' };
+    let dict = { '\b': 'b', '\t': 't', '\n': 'n', '\v': 'v', '\f': 'f', '\r': 'r' };
     return str.replace(/([\\'"\b\t\n\v\f\r])/g, function($0, $1) {
         return '\\' + (dict[$1] || $1);
     });
@@ -38,8 +35,6 @@ router.get('/select', function (req, res, next) {
     let key = '123456789abcdefg';
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
-
-
     console.log("quanxian" + data.table["1"].sel)
     if (data.table["1"].sel == 1) {
         //res.render('customer_select.html', {title: 'ExpressTitle'});
@@ -59,7 +54,6 @@ router.all('/ass', function (req, res, next) {
     let data = JSON.parse(decrypt(key, iv, token));
     let value = Object.values(data);
     let company = value[0];
-
     let selectParams = {
         recipient: '',
         cardholder: '',
@@ -140,7 +134,6 @@ router.all('/ass', function (req, res, next) {
             res.render("error.html", {error: '网络错误，请稍后再试'})
         }
     });
-
 });
 router.get('/add', function (req, res) {
     let token = localStorage.getItem("token");
@@ -165,29 +158,32 @@ router.post('/add', function (req, res) {
         let value = Object.values(data);
         let company = value[0];
         //let company = req.cookies.company
-        var recipient = req.body.recipient;
-        var cardholder = req.body.cardholder;
-        var drawee = req.body.drawee;
-        var issuing_bank = req.body.issuing_bank;
-        var bill_day = req.body.bill_day;
-        //console.log("bill_day-->"+typeof bill_day)
-
-        var repayment_date = req.body.repayment_date;
-        var total = req.body.total;
-        var repayable = req.body.repayable;
-        var balance = req.body.balance;
-        var loan = req.body.loan;
-        var service_charge = req.body.service_charge;
-        var telephone = req.body.telephone;
-        var password = req.body.password;
-        var staff = req.body.staff;
-
-
+        let recipient = req.body.recipient;
+        recipient = toLiteral(recipient);
+        let cardholder = req.body.cardholder;
+        cardholder = toLiteral(cardholder);
+        let drawee = req.body.drawee;
+        drawee = toLiteral(drawee);
+        let issuing_bank = req.body.issuing_bank;
+        issuing_bank = toLiteral(issuing_bank);
+        let bill_day = req.body.bill_day;
+        let repayment_date = req.body.repayment_date;
+        let total = req.body.total;
+        let repayable = req.body.repayable;
+        let balance = req.body.balance;
+        let loan = req.body.loan;
+        let service_charge = req.body.service_charge;
+        let telephone = req.body.telephone;
+        let password = req.body.password;
+        password = toLiteral(password)
+        let staff = req.body.staff;
+        staff = toLiteral(staff)
+        console.log("staff",staff)
         db.query("insert into customer(recipient,cardholder,drawee,issuing_bank,bill_day,repayment_date,total,repayable,balance,loan,service_charge,telephone,password,staff,gongsi) values('" + toLiteral(recipient) + "','"
-            + toLiteral(cardholder) + "','" + toLiteral(drawee)+ "','" + issuing_bank + "','"
+            + cardholder + "','" + drawee+ "','" + issuing_bank + "','"
             + bill_day + "','" + repayment_date + "',"
             + total + "," + repayable + "," + balance + ","
-            + loan + "," + service_charge + ",'" + toLiteral(telephone) + "','" + toLiteral(password) + "','" + toLiteral(staff) + "','" + company + "')", function (err, rows) {
+            + loan + "," + service_charge + ",'" + telephone + "','" + password + "','" + staff + "','" + company + "')", function (err, rows) {
             try {
                 if (err) {
                     res.end('新增失败：');
@@ -215,7 +211,7 @@ router.get('/del/:id', function (req, res) {
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     if (data.table["1"].del == 1) {
-        var id = req.params.id;
+        let id = req.params.id;
 
         db.query("delete from customer where id=" + id, function (err, rows) {
             try {
@@ -252,7 +248,7 @@ router.get('/toUpdate/:id', function (req, res) {
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     if (data.table["1"].upd == 1) {
-        var id = req.params.id;
+        let id = req.params.id;
 
         db.query("select * from customer where id=" + id, function (err, rows) {
             try {
@@ -276,9 +272,9 @@ router.get('/toUpdate/:id', function (req, res) {
  * 修改用户信息
  */
 router.post('/update', function (req, res) {
-    var ck = req.body.checkForm
+    let ck = req.body.checkForm
 
-        / console.log(ck)
+         console.log(ck)
     if (req.body.checkForm) {
         let token = localStorage.getItem("token")
         let key = '123456789abcdefg';
@@ -289,24 +285,30 @@ router.post('/update', function (req, res) {
         let value = Object.values(data);
         let company = value[0];
         //let company = req.cookies.company
-        var id = req.body.id;
-        var recipient = req.body.recipient;
-        var cardholder = req.body.cardholder;
-        var drawee = req.body.drawee;
-        var issuing_bank = req.body.issuing_bank;
-        var bill_day = req.body.bill_day;
-        console.log("bill_day" + bill_day)
-        var repayment_date = req.body.repayment_date;
-        var total = req.body.total;
-        var repayable = req.body.repayable;
-        var balance = req.body.balance;
-        var loan = req.body.loan;
-        var service_charge = req.body.service_charge;
-        var telephone = req.body.telephone;
-        var password = req.body.password;
-        var staff = req.body.staff;
-
-        db.query("update customer set recipient='" + toLiteral(recipient) + "',cardholder='" + toLiteral(cardholder) + "',drawee='" + toLiteral(drawee) + "',issuing_bank='" + issuing_bank + "',bill_day='" + bill_day + "',repayment_date='" + repayment_date + "',total='" + total + "',repayable='" + repayable + "',balance='" + balance + "',loan='" + loan + "',service_charge='" + service_charge + "',telephone='" + toLiteral(telephone) + "',password='" + toLiteral(password) + "',staff='" + toLiteral(staff) + "',gongsi = '" + company + "' where id=" + id, function (err, rows) {
+        let id = req.body.id;
+        let recipient = req.body.recipient;
+        recipient = toLiteral(recipient);
+        let cardholder = req.body.cardholder;
+        cardholder = toLiteral(cardholder)
+        let drawee = req.body.drawee;
+        drawee = toLiteral(drawee)
+        let issuing_bank = req.body.issuing_bank;
+        issuing_bank = toLiteral(issuing_bank)
+        let bill_day = req.body.bill_day;
+        let repayment_date = req.body.repayment_date;
+        let total = req.body.total;
+        let repayable = req.body.repayable;
+        let balance = req.body.balance;
+        let loan = req.body.loan;
+        let service_charge = req.body.service_charge;
+        let telephone = req.body.telephone;
+        let password = req.body.password;
+        password = toLiteral(password)
+        let staff = req.body.staff;
+        staff = toLiteral(staff)
+        let sql = "update customer set recipient='" + recipient + "',cardholder='" + cardholder + "',drawee='" + drawee + "',issuing_bank='" + issuing_bank + "',bill_day='" + bill_day + "',repayment_date='" + repayment_date + "',total='" + total + "',repayable='" + repayable + "',balance='" + balance + "',loan='" + loan + "',service_charge='" + service_charge + "',telephone='" + telephone + "',password='" + password + "',staff='" + staff + "',gongsi = '" + company + "' where id=" + id;
+        console.log("sql:"+sql)
+        db.query(sql, function (err, rows) {
             try {
                 if (err) {
                     res.end('修改失败：' + err);
@@ -356,7 +358,7 @@ router.all('/Excel', function (req, res, next) {
             // let sql2 = JSON.stringify(sql);
             // let sql3 = JSON.parse(sql2);
             //console.log(sql3);
-            var conf = {};
+            let conf = {};
             conf.stylesXmlFile = "styles.xml";
             conf.name = "mysheet";
             conf.cols = [
@@ -427,7 +429,7 @@ router.all('/Excel', function (req, res, next) {
                 row.push(rows[i].staff)
                 conf.rows.push(row)
             }
-            var result = nodeExcel.execute(conf);
+            let result = nodeExcel.execute(conf);
             res.setHeader('Content-Type', 'application/vnd.openxmlformats');
             res.setHeader("Content-Disposition", "attachment; filename=" + "customer.xlsx");
             res.end(result, 'binary');

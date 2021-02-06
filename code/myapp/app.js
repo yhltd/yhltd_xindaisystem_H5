@@ -41,6 +41,7 @@ app.use('/day_trading', day_tradingRouter);
 app.use('/month_trading', month_tradingRouter);
 app.use('/statistics', statisticsRouter);
 
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 //引入数据库包
-var db = require("./db.js");
-var nodeExcel = require('excel-export');
+let db = require("./db.js");
+let nodeExcel = require('excel-export');
 let moment = require('moment')
 
 const crypto = require("crypto");
@@ -22,11 +22,18 @@ function decrypt(key, iv, crypted) {
     let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
     return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
 }
+function toLiteral(str) {
+    let dict = { '\b': 'b', '\t': 't', '\n': 'n', '\v': 'v', '\f': 'f', '\r': 'r' };
+    return str.replace(/([\\'"\b\t\n\v\f\r])/g, function($0, $1) {
+        return '\\' + (dict[$1] || $1);
+    });
+}
 
 if (typeof localStorage === "undefined" || localStorage === null) {
-    var LocalStorage = require('node-localstorage').LocalStorage;
+    let LocalStorage = require('node-localstorage').LocalStorage;
     localStorage = new LocalStorage('./scratch');
 }
+
 /**
  * 删
  */
@@ -63,16 +70,26 @@ router.get('/del/:did', function (req, res) {
  */
 router.post('/update', function (req, res) {
     if (req.body.checkForm) {
-        let company = req.cookies.company
-        var did = req.body.did;
-        var repayment = req.body.repayment;
-        var commercial = req.body.commercial;
-        var swipe = req.body.swipe;
-        var rate = req.body.rate;
-        var arrival_amount = req.body.arrival_amount;
-        var basics_service_charge = req.body.basics_service_charge;
-        var other_service_charge = req.body.other_service_charge;
-        var id = req.query.id;
+        // let company = req.cookies.company
+        let token = localStorage.getItem("token")
+        let key = '123456789abcdefg';
+        //console.log('加密的key:', key);
+        let iv = 'abcdefg123456789';
+        //console.log('加密的iv:', iv);
+        let data = JSON.parse(decrypt(key, iv, token));
+        let value = Object.values(data);
+        let company = value[0];
+        company = toLiteral(company);
+        let did = req.body.did;
+        let repayment = req.body.repayment;
+        let commercial = req.body.commercial;
+        commercial = toLiteral(commercial);
+        let swipe = req.body.swipe;
+        let rate = req.body.rate;
+        let arrival_amount = req.body.arrival_amount;
+        let basics_service_charge = req.body.basics_service_charge;
+        let other_service_charge = req.body.other_service_charge;
+        let id = req.query.id;
         //console.log("id-->"+id)
 
         db.query("update day_trading set repayment='" + repayment + "',commercial_tenant='" + commercial + "',swipe='" + swipe + "',rate='" + rate + "',arrival_amount='" + arrival_amount + "',basics_service_charge='" + basics_service_charge + "',other_service_charge='" + other_service_charge + "',gongsi = '" + company + "' where did='" + did + "'", function (err, rows) {
@@ -99,8 +116,8 @@ router.get('/toUpdate/:did', function (req, res) {
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     if (data.table["2"].upd == 1) {
-        var did = req.params.did;
-        var id = req.query.id;
+        let did = req.params.did;
+        let id = req.query.id;
         //console.log("id--》"+id)
 
         db.query("select * from day_trading where did=" + did, function (err, rows) {
@@ -127,7 +144,7 @@ router.get('/insert/:id', function (req, res) {
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     if (data.table["2"].add == 1) {
-        var id = req.params.id;
+        let id = req.params.id;
 
         db.query("select * from customer where id=" + id, function (err, rows) {
             try {
@@ -151,7 +168,7 @@ router.get('/add', function (req, res) {
     res.render('../views/day_trading/day_trading_add.html');
 });
 router.post('/add', function (req, res) {
-    var ck = req.body.checkForm
+    let ck = req.body.checkForm
     let token = localStorage.getItem("token")
     let key = '123456789abcdefg';
     //console.log('加密的key:', key);
@@ -160,33 +177,34 @@ router.post('/add', function (req, res) {
     let data = JSON.parse(decrypt(key, iv, token));
     let value = Object.values(data);
     let company = value[0];
+    company = toLiteral(company);
     //let company = req.cookies.company
     console.log("ck=>" + ck)
     if (req.body.checkForm) {
-        var id = req.body.id;
-
-        var myDate = new Date();
+        let id = req.body.id;
+        let myDate = new Date();
         console.log("mydate" + myDate)
-        var n = myDate.getFullYear();
-        var y = myDate.getMonth() + 1
+        let n = myDate.getFullYear();
+        let y = myDate.getMonth() + 1
         console.log("y=>" + y)
-        var r = myDate.getDate();
-        var x = myDate.getHours();
-        var f = myDate.getMinutes();
-        //var date_time = n + "-" + y  + "-" + r//+" "+x+":"+f;
-        var date_time = n + "-" + (y < 10 ? '0' + y : y) + "-" + (r < 10 ? '0' + r : r);
+        let r = myDate.getDate();
+        let x = myDate.getHours();
+        let f = myDate.getMinutes();
+        //let date_time = n + "-" + y  + "-" + r//+" "+x+":"+f;
+        let date_time = n + "-" + (y < 10 ? '0' + y : y) + "-" + (r < 10 ? '0' + r : r);
 
-        //var date_time = myDate.getFullYear() + "-" + (myDate.getMonth() < 10 ? '0' + (myDate.getMonth()+1) : (myDate.getMonth()+1)) + "-" + (myDate.getDate() < 10 ? '0' + myDate.getDate() : myDate.getDate()) ;
+        //let date_time = myDate.getFullYear() + "-" + (myDate.getMonth() < 10 ? '0' + (myDate.getMonth()+1) : (myDate.getMonth()+1)) + "-" + (myDate.getDate() < 10 ? '0' + myDate.getDate() : myDate.getDate()) ;
         //console.log("date_time=>"+date_time)
-        var repayment = req.body.repayment;
+        let repayment = req.body.repayment;
         //console.log(repayment)
-        var commercial = req.body.commercial;
+        let commercial = req.body.commercial;
+        commercial = toLiteral(commercial);
         //console.log(commercial)
-        var swipe = req.body.swipe;
-        var rate = req.body.rate;
-        var arrival_amount = req.body.arrival_amount;
-        var basics_service_charge = req.body.basics_service_charge;
-        var other_service_charge = req.body.other_service_charge;
+        let swipe = req.body.swipe;
+        let rate = req.body.rate;
+        let arrival_amount = req.body.arrival_amount;
+        let basics_service_charge = req.body.basics_service_charge;
+        let other_service_charge = req.body.other_service_charge;
 
 
         db.query("insert into day_trading(id,date_time,repayment,commercial_tenant,swipe,rate,arrival_amount,basics_service_charge,other_service_charge,gongsi) values('" + id + "','"
@@ -211,7 +229,7 @@ router.post('/add', function (req, res) {
 
 
 router.get('/ass/:id', function (req, res, next) {
-    var id = req.params.id;
+    let id = req.params.id;
 
     db.query("select * from day_trading where id=" + id + "", function (err, rows) {
         try {
@@ -229,7 +247,7 @@ router.get('/ass/:id', function (req, res, next) {
 });
 
 // router.get('/select_day/:id', function (req, res, next) {
-//     var id = req.params.id;
+//     let id = req.params.id;
 //     db.query("select * from day_trading right join customer on customer.id = day_trading.id where customer.id=" + id+ "" , function (err, rows) {
 //         console.log('==========');
 //         if (err) {
@@ -250,7 +268,7 @@ router.all('/select_day/:id', function (req, res, next) {
         return;
     }
 
-    var id = req.params.id;
+    let id = req.params.id;
     let isSelect = req.query.pagenum == undefined;
 
     let sql1 = "select Count(*) as count from day_trading right join customer on customer.id = day_trading.id where customer.id=" + id;
@@ -308,7 +326,7 @@ router.all('/Excel', function (req, res, next) {
     // }
     // let company = req.cookies.company
     // selectParams = JSON.parse(localStorage.getItem("selectParams"));
-    var id = req.query.id;
+    let id = req.query.id;
     //console.log("selectParams.date1-->"+selectParams.date1)
     //console.log(typeof selectParams.date1)
     //console.log("id-->"+id);
@@ -326,7 +344,7 @@ router.all('/Excel', function (req, res, next) {
             let sql2 = JSON.stringify(sql);
             let sql3 = JSON.parse(sql2);
             //console.log(sql3);
-            var conf = {};
+            let conf = {};
             conf.stylesXmlFile = "styles.xml";
             conf.name = "mysheet";
             conf.cols = [
@@ -373,7 +391,7 @@ router.all('/Excel', function (req, res, next) {
                 row.push(rows[i].other_service_charge)
                 conf.rows.push(row)
             }
-            var result = nodeExcel.execute(conf);
+            let result = nodeExcel.execute(conf);
             res.setHeader('Content-Type', 'application/vnd.openxmlformats');
             res.setHeader("Content-Disposition", "attachment; filename=" + "day_trading.xlsx");
             res.end(result, 'binary');
@@ -408,19 +426,24 @@ router.all('/select', function (req, res, next) {
     let data = JSON.parse(decrypt(key, iv, token));
     let value = Object.values(data);
     let company = value[0];
+    company = toLiteral(company);
     //let company = req.cookies.company
     let isSelect = req.query.pagenum == undefined;
     let selectParams = {
         recipient: '',
         cardholder: '',
         drawee: '',
-        date1: ''
+        date1: '',
+        d1:false,
+        date2: '',
+        d2:false
     }
     if (isSelect) {
         selectParams.recipient = req.body.recipient;
         selectParams.cardholder = req.body.cardholder;
         selectParams.drawee = req.body.drawee;
         selectParams.date1 = req.body.date1;
+        selectParams.date2 = req.body.date2;
 
         localStorage.setItem("selectParams", JSON.stringify(selectParams))
     } else {
@@ -435,20 +458,33 @@ router.all('/select', function (req, res, next) {
     if (selectParams.drawee == undefined){
         selectParams.drawee ="";
     }
-    if (selectParams.date1 == undefined){
-        selectParams.date1 ="";
+    if(selectParams.date1 == undefined || selectParams.date1 == ""){
+        selectParams.d1 = true;
+        selectParams.date1 ="1900-01-01";
     }
-
+    if(selectParams.date2 == undefined || selectParams.date2 == ""){
+        let myDate = new Date();
+        console.log("mydate" + myDate)
+        let n = myDate.getFullYear();
+        let y = myDate.getMonth() + 1
+        console.log("y=>" + y)
+        let r = myDate.getDate();
+        let x = myDate.getHours();
+        let f = myDate.getMinutes();
+        selectParams.d2 = true
+        let date2 = n + "-" + (y < 10 ? '0' + y : y) + "-" + (r < 10 ? '0' + r : r);
+        selectParams.date2 = date2;
+        console.log("selectParams.date2=>",selectParams.date2);
+    }
     //console.log("selectParams=>",selectParams);
-
-    let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%" + selectParams.cardholder + "%' and drawee like '%" + selectParams.drawee + "%' and a.date_time like '%" + selectParams.date1 + "%'";
-
-
+    selectParams.recipient = toLiteral(selectParams.recipient);
+    selectParams.cardholder = toLiteral(selectParams.cardholder);
+    selectParams.drawee = toLiteral(selectParams.drawee);
+    let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%" + selectParams.cardholder + "%' and drawee like '%" + selectParams.drawee + "%' and a.date_time between '" + selectParams.date1 + "' and '" + selectParams.date2 + "'"
     let sql1 = " select a.id " +
         "from day_trading as a,customer as b " + whereSql;
     sql1 += "group by a.did";
     let sql2 = "select Count(c.id) as count from ( " + sql1 + ") as c"
-
     //console.log("sql1=>",sql2)
     let date1 = moment(selectParams.date1).format('YYYY-MM-DD')
     db.query(sql2, function (err, rows) {
@@ -467,7 +503,8 @@ router.all('/select', function (req, res, next) {
                     recipient:selectParams.recipient,
                     cardholder:selectParams.cardholder,
                     drawee:selectParams.drawee,
-                    date1:date1
+                    // date1:date1,
+                    // date2:date2
                 }
                 console.log("isSelect=>", isSelect)
                 if (isSelect) {
@@ -495,13 +532,16 @@ router.all('/select', function (req, res, next) {
                         console.log("result=>", result)
                         res.render('../views/day_trading/day_trading_select.html', {
                             title: 'Express',
+                            date1: selectParams.d1 ? '' : selectParams.date1,
+                            date2: selectParams.d2 ? '' : selectParams.date2,
                             ...result
                         });
                     }
+                    let sql3 = JSON.stringify(sql);
+                    let sql4 = JSON.parse(sql3);
+                    console.log("sql4-->" + sql4);
                 })
-                let sql3 = JSON.stringify(sql);
-                let sql4 = JSON.parse(sql3);
-                console.log("sql4-->" + sql4);
+
             }
         } catch (e) {
             res.render("error.html", {error: '网络错误，请稍后再试'})

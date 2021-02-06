@@ -298,12 +298,39 @@
                 })
             })
         })
+        function submitForm(){
+            var formData = $('#formData').serialize();
+            var params = JSON.parse(formToJson(decodeURIComponent(formData, true)))
+            $("#checkFormCheckBox").attr('checked', checkForm(params));
+        }
+
+        function checkForm(params){
+            var temp = /^\d+(\.\d+)?$/
+            if(params.uname==""){
+                alert("员工不能为空")
+                return false
+            }else if(params.account == ""){
+                alert("账号不能为空")
+                return false
+            }else if(params.password == ""){
+                alert("密码不能为空")
+                return false
+            }
+            return true
+        }
+
+        function formToJson(data) {
+            data = data.replace(/&/g, "\",\"").replace(/=/g, "\":\"").replace(/\+/g, " ").replace(/[\r\n]/g, "<br>");
+            data = "{\"" + data + "\"}";
+            return data;
+        }
     </script>
+
 </head>
 <body background="../../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
 
 
-<form action="/users/update" method="post" align="center">
+<form action="/users/update/{{datas[0].id}}" id="formData" onsubmit="submitForm()" method="post" align="center">
     <div id="upd-menagement-window" style="display: none">
         <div class="me-header">
             <div class="me-header-item" data-index="1">客户信息</div>
@@ -339,7 +366,10 @@
 
     <div id="header">
         <div class="header-text">员工信息修改</div>
-        <div class="navigation">
+        <div class="header-item">
+            <a style="line-height: 0" class="right" href="/users/select" title="返回查询">
+                <img class="header-icon" src="../../images/back.png">
+            </a>
         </div>
     </div>
     <input id="user_id" type="hidden" value="{{datas[0].id}}" name="id">
@@ -351,34 +381,34 @@
                     <button id="upd-btn" class="upd-form-btn" type="button">点击修改</button>
                 </td>
             </tr>
-            <tr>
-                <td>公司名称</td>
-                <td>
-                    <input class="form_input" type="text" name="company" value="{{datas[0].company}}">
-                </td>
-            </tr>
+<!--            <tr>-->
+<!--                <td>公司名称</td>-->
+<!--                <td>-->
+<!--                    <input class="form_input" type="text" name="company" value="{{datas[0].company}}">-->
+<!--                </td>-->
+<!--            </tr>-->
             <tr>
                 <td>职位</td>
                 <td>
-                    <input class="form_input" type="text" name="position" value="{{datas[0].position}}">
+                    <input class="form_input" type="text" name="position" value="{{position}}">
                 </td>
             </tr>
             <tr>
                 <td>员工</td>
                 <td>
-                    <input class="form_input" type="text" name="uname" value="{{datas[0].uname}}">
+                    <input class="form_input" type="text" name="uname" value="{{uname}}">
                 </td>
             </tr>
             <tr>
                 <td>账号</td>
                 <td>
-                    <input class="form_input" type="text" name="account" value="{{datas[0].account}}">
+                    <input class="form_input" type="text" name="account" value="{{account}}">
                 </td>
             </tr>
             <tr>
                 <td>密码</td>
                 <td>
-                    <input class="form_input" type="text" name="password" value="{{datas[0].password}}">
+                    <input class="form_input" type="text" name="password" value="{{password}}">
                 </td>
             </tr>
             <tr>
@@ -387,7 +417,9 @@
                 </td>
             </tr>
         </table>
+        {{msg}}
     </div>
+    <input id="checkFormCheckBox" name="checkForm" type="checkbox" checked="" style="display: none"/>
 </form>
 
 </body>

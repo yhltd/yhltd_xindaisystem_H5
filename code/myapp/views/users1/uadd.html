@@ -2,39 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
     <title>新增页面</title>
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+    <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+    <script>
+        function submitForm(){
+            var formData = $('#formData').serialize();
+            var params = JSON.parse(formToJson(decodeURIComponent(formData, true)))
+            $("#checkFormCheckBox").attr('checked', checkForm(params));
+        }
+
+        function checkForm(params){
+            if(params.uname==""){
+                alert("员工不能为空")
+                return false
+            }else if(params.account == ""){
+                alert("账号不能为空")
+                return false
+            }else if(params.password == ""){
+                alert("密码不能为空")
+                return false
+            }
+            return true
+        }
+
+        function formToJson(data) {
+            data = data.replace(/&/g, "\",\"").replace(/=/g, "\":\"").replace(/\+/g, " ").replace(/[\r\n]/g, "<br>");
+            data = "{\"" + data + "\"}";
+            return data;
+        }
+    </script>
 </head>
 
 <body background="../../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
-<form action="/users/uadd" method="post" align="center">
+<form action="/users/uadd" id="formData" onsubmit="submitForm()" method="post" align="center">
     <div id="header">
         <div class="header-text">新增员工</div>
+        <div class="header-item">
+            <a style="line-height: 0" class="right" href="/users/select" title="返回查询">
+                <img class="header-icon" src="../../images/back.png">
+            </a>
+        </div>
     </div>
     <div class="tablebox" style="width: 400px;height: 600px; margin-top:60px;">
     <table id="tableId" style="width: 400px" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td>职位</td>
             <td>
-                <input class="form_input" name="position"  />
+                <input class="form_input" name="position" value="{{position}}"  />
             </td>
         </tr>
         <tr>
             <td>员工</td>
             <td>
-                <input class="form_input" name="uname"  />
+                <input class="form_input" name="uname" value="{{uname}}" />
             </td>
         </tr>
         <tr>
             <td>账号</td>
             <td>
-                <input class="form_input" name="account"  />
+                <input class="form_input" name="account" value="{{account}}" />
             </td>
         </tr>
         <tr>
             <td>密码</td>
             <td>
-                <input class="form_input" name="password"  />
+                <input class="form_input" name="password" value="{{password}}" />
             </td>
         </tr>
         <tr>
@@ -45,6 +78,7 @@
     </table>
         {{msg}}
     </div>
+    <input id="checkFormCheckBox" name="checkForm" type="checkbox" checked="" style="display: none"/>
 </form>
 </body>
 <SCRIPT Language=VBScript></SCRIPT>

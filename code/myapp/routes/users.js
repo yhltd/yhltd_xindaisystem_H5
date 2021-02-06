@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 //引入数据库包
-var db = require("./db.js");
-var nodeExcel = require('excel-export');
+let db = require("./db.js");
+let nodeExcel = require('excel-export');
 //const fs = require("fs");
 const crypto = require("crypto");
 //const path = require("path")
@@ -21,19 +21,20 @@ function decrypt(key, iv, crypted) {
     let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
     return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
 }
+
 function toLiteral(str) {
-    var dict = { '\b': 'b', '\t': 't', '\n': 'n', '\v': 'v', '\f': 'f', '\r': 'r' };
-    return str.replace(/([\\'"\b\t\n\v\f\r])/g, function($0, $1) {
+    let dict = {'\b': 'b', '\t': 't', '\n': 'n', '\v': 'v', '\f': 'f', '\r': 'r'};
+    return str.replace(/([\\'"\b\t\n\v\f\r])/g, function ($0, $1) {
         return '\\' + (dict[$1] || $1);
     });
 }
 if (typeof localStorage === "undefined" || localStorage === null) {
-    var LocalStorage = require('node-localstorage').LocalStorage;
+    let LocalStorage = require('node-localstorage').LocalStorage;
     localStorage = new LocalStorage('./scratch');
 }
 router.get('/', function (req, res, next) {
     //localStorage.removeItem("token")
-    var datas = localStorage.getItem("token");
+    let datas = localStorage.getItem("token");
     //console.log(datas)
     if (datas != null) {
         console.log("datas-->" + datas)
@@ -45,12 +46,12 @@ router.get('/', function (req, res, next) {
         console.log(data + "11");
         //console.log("数据解密后:", data);
         //console.log(typeof data)
-        var value = Object.values(data);
+        let value = Object.values(data);
         console.log(value + "11");
-        var company = value[0];
-        var account = value[1];
-        var password = value[2];
-        var isRem = value[4];
+        let company = value[0];
+        let account = value[1];
+        let password = value[2];
+        let isRem = value[4];
         if (isRem) {
             res.render("users.html", {company: company, account: account, password: password})
         } else {
@@ -67,8 +68,11 @@ router.post('/search', function (req, res) {
 
     localStorage.removeItem("token")
     let company = req.body.company;
+    company = toLiteral(company)
     let account = req.body.account;
+    account = toLiteral(account)
     let password = req.body.password;
+    password = toLiteral(password)
     let isRem = req.body.isRem;
     let sql = "select u.*,m.`Add`,m.`Del`,m.`Upd`,m.`Sel`,m.`Table` from users as u left join management as m on u.id = m.Uid where u.company = '" + company + "' and u.account='" + account + "' and u.`password` = '" + password + "'";
 
@@ -109,7 +113,8 @@ router.post('/search', function (req, res) {
                         account: value[0].account,
                         password: value[0].password,
                         table: table,
-                        isRem: isRem
+                        isRem: isRem,
+                        id: value[0].id
                     };
                     //console.log(datas)
                     datas = encrypt(key, iv, JSON.stringify(datas));
@@ -160,13 +165,14 @@ router.all('/ass', function (req, res, next) {
     let data = JSON.parse(decrypt(key, iv, token));
     let value = Object.values(data);
     let company = value[0];
+
     // if (data.table["5"].sel == 1) {
     //
     // } else {
     //     res.render('me.html', {title: 'ExpressTitle', msg: '无权限查看'});
     // }
 
-    // var account = req.cookies.account
+    // let account = req.cookies.account
     // console.log(account);
 
     let selectParams = {
@@ -174,12 +180,13 @@ router.all('/ass', function (req, res, next) {
     }
     if (isSelect) {
         selectParams.uname = req.body.uname;
+        //selectParams.uname = toLiteral(selectParams.uname)
         localStorage.setItem("selectParams", JSON.stringify(selectParams))
     } else {
         selectParams = JSON.parse(localStorage.getItem("selectParams"));
     }
-    if (selectParams.uname == undefined){
-        selectParams.uname ="";
+    if (selectParams.uname == undefined) {
+        selectParams.uname = "";
     }
     console.log("selectParams.uname=>", selectParams.uname)
     let whereSql = "where company = '" + company + "' and uname like '%" + selectParams.uname + "%'"
@@ -196,7 +203,7 @@ router.all('/ass', function (req, res, next) {
                     pagecounts: 0,
                     pagenum: 0,
                     pageSize: 10,
-                    uname:selectParams.uname
+                    uname: selectParams.uname
                 }
                 console.log("isSelect=>", isSelect)
                 if (isSelect) {
@@ -210,13 +217,13 @@ router.all('/ass', function (req, res, next) {
                 }
                 let sql = "select * from users " + whereSql;
                 sql += " limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
-                console.log("sql=>",sql)
+                console.log("sql=>", sql)
                 db.query(sql, function (err, rows) {
                     if (err) {
                         res.render('staff.html', {title: 'Express', datas: []});
                     } else {
                         result.datas = rows
-                        console.log("result=>",result)
+                        console.log("result=>", result)
                         res.render('staff.html', {
                             title: 'Express',
                             ...result
@@ -246,60 +253,78 @@ router.get('/uadd', function (req, res) {
 
 });
 router.post('/uadd', function (req, res) {
-    let token = localStorage.getItem("token");
-    let key = '123456789abcdefg';
-    let iv = 'abcdefg123456789';
-    let data = JSON.parse(decrypt(key, iv, token));
+    if (req.body.checkForm) {
+        let token = localStorage.getItem("token");
+        let key = '123456789abcdefg';
+        let iv = 'abcdefg123456789';
+        let data = JSON.parse(decrypt(key, iv, token));
+        let result = {
+            position: "",
+            uname: "",
+            account:"" ,
+            password: ""
+        };
+        //let company = req.body.company;
+        let position = req.body.position;
+        result.position = position;
+        position = toLiteral(position);
+        let uname = req.body.uname;
+        result.uname = uname;
+        uname = toLiteral(uname);
+        let account = req.body.account;
+        result.account = account;
+        account = toLiteral(account);
+        let password = req.body.password;
+        result.password = password;
+        password = toLiteral(password);
 
-    //var company = req.body.company;
-    var position = req.body.position;
-    var uname = req.body.uname;
-    var account = req.body.account;
-    var password = req.body.password;
-    //data = toLiteral(account)
-    //console.log(position+uname+account+password)
-    //let sql1 = "select account from users where account = " + account
-    //console.log("xinzeng")
-    db.query("select account from users where account = '" + toLiteral(account) + "' and company = '" +toLiteral(data.company) + "'", function (err, rows) {
-        try {
-            if (rows.length > 0) {
-                res.render('users1/uadd.html', {title: 'ExpressTitle', msg: '账户已存在'});
-            } else {
-                let sql1 = "insert into users(company,position,uname,account,password) " +
-                    "values('" + toLiteral(data.company) + "','" + toLiteral(position) + "','" + toLiteral(uname) + "','" + toLiteral(account) + "','" + toLiteral(password) + "')"
-                console.log("sql1:"+sql1)
-                db.query(sql1, function (err, rows) {
-                    if (err) {
-                        res.end('新增失败：');
-                    } else {
-                        db.query("select max(id) as uid from users", function (err, rows) {
-                            let value = rows;
-                            //console.log("value-->" + value)
-                            let uid = value[0].uid
-                            for (var i = 1; i <= 5; i++) {
-                                let sql = "insert into management(Uid,`Add`,Del,Upd,Sel,`Table`) " +
-                                    "values(" + uid + ",'0','0','0','0','" + i + "')";
-                                console.log(sql)
-                                db.query(sql, function (err, rows) {
-                                    if (err) {
-                                        res.end('新增失败：权限');
-                                    } else {
-                                        console.log(sql)
-                                    }
-                                });
-                            }
-                        });
-                        //res.redirect('toUpdate/' + uid);
-                        res.redirect('/users/select');
-                    }
-                })
+
+        //data = toLiteral(account)
+        //console.log(position+uname+account+password)
+        //let sql1 = "select account from users where account = " + account
+        //console.log("xinzeng")
+        db.query("select account from users where account = '" + account + "' and company = '" + data.company + "'", function (err, rows) {
+            try {
+                if (rows.length > 0) {
+                    res.render('users1/uadd.html', {title: 'ExpressTitle',
+                        msg: '账户已存在',
+                        ...result});
+                } else {
+                    let sql1 = "insert into users(company,position,uname,account,password) " +
+                        "values('" + data.company + "','" + position + "','" + uname + "','" + account + "','" + password + "')"
+                    console.log("sql1:" + sql1)
+                    db.query(sql1, function (err, rows) {
+                        if (err) {
+                            res.end('新增失败：');
+                        } else {
+                            db.query("select max(id) as uid from users", function (err, rows) {
+                                let value = rows;
+                                //console.log("value-->" + value)
+                                let uid = value[0].uid
+                                for (let i = 1; i <= 5; i++) {
+                                    let sql = "insert into management(Uid,`Add`,Del,Upd,Sel,`Table`) " +
+                                        "values(" + uid + ",'0','0','0','0','" + i + "')";
+                                    console.log(sql)
+                                    db.query(sql, function (err, rows) {
+                                        if (err) {
+                                            res.end('新增失败：权限');
+                                        } else {
+                                            console.log(sql)
+                                        }
+                                    });
+                                }
+                            });
+                            //res.redirect('toUpdate/' + uid);
+                            res.redirect('/users/select');
+                        }
+                    })
+                }
+            } catch (e) {
+                res.render("error.html", {error: '网络错误，请稍后再试'})
             }
-        } catch (e) {
-            res.render("error.html", {error: '网络错误，请稍后再试'})
-        }
-    })
+        })
 
-
+    }
 });
 
 /**
@@ -311,8 +336,7 @@ router.get('/del/:id', function (req, res) {
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     if (data.table["5"].del == 1) {
-        var id = req.params.id;
-
+        let id = req.params.id;
         db.query("delete from users where id=" + id, function (err, rows) {
             try {
                 if (err) {
@@ -332,7 +356,6 @@ router.get('/del/:id', function (req, res) {
     } else {
         res.render('me.html', {title: 'ExpressTitle', msg: '无权限删除'});
     }
-
 });
 /**
  * 修改
@@ -342,14 +365,38 @@ router.get('/toUpdate/:id', function (req, res) {
     let key = '123456789abcdefg';
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    console.log("value-->" + value)
+    let result = {
+        position: "",
+        uname: "",
+        account:"" ,
+        password: ""
+    }
     if (data.table["5"].upd == 1) {
-        var id = req.params.id;
+        let id = req.params.id
+        if (id == 0) {
+            id = value[5];
+        }
         db.query("select * from users where id= '" + id + "'", function (err, rows) {
+
             try {
                 if (err) {
                     res.end('修改页面跳转失败：');
                 } else {
-                    res.render("users1/uupdate.html", {datas: rows});       //直接跳转
+                    console.log("rows:"+rows)
+                    let values = JSON.stringify(rows);						//将rows转为字符串
+                    values = JSON.parse(values);
+                    result.position = values[0].position;
+                    result.uname = values[0].uname;
+                    result.account = values[0].account;
+                    result.password = values[0].password;
+                    console.log("result.uname-->"+result.uname)
+                    res.render("users1/uupdate.html", {
+                        datas:rows,
+                        ...result
+                    });       //直接跳转
+                    console.log("result-->"+result)
                 }
             } catch (e) {
                 res.render("error.html", {error: '网络错误，请稍后再试'})
@@ -380,7 +427,6 @@ router.post('/getTableMe', function (req, res) {
             res.render("error.html", {error: '网络错误，请稍后再试'})
         }
     });
-
 });
 
 /**
@@ -395,7 +441,6 @@ router.post('/setTableMe', function (req, res) {
     let me = JSON.parse(req.body.me);
     let tableId = req.body.tableId;
     let userId = req.body.userId;
-
     db.query("select count(*) as count from management where Sel = 1 and `Table` = 5", function (err, rows) {
         try {
             if (err) {
@@ -442,41 +487,120 @@ router.post('/setTableMe', function (req, res) {
             res.render("error.html", {error: '网络错误，请稍后再试'})
         }
     })
-
 });
-
-router.post('/update', function (req, res) {
-    var id = req.body.id;
-    var company = req.body.company;
-    var position = req.body.position;
-    var uname = req.body.uname;
-    var account = req.body.account;
-    var password = req.body.password;
-
-    db.query("update users set company='" + toLiteral(company) + "',position='" + toLiteral(position) + "', uname='" + toLiteral(uname) + "', account='" + toLiteral(account) + "', password='" + toLiteral(password) + "' where id=" + id, function (err, rows) {
+router.all('/update/:id', function (req, res) {
+    if (req.body.checkForm) {
+        let token = localStorage.getItem("token");
+        let key = '123456789abcdefg';
+        let iv = 'abcdefg123456789';
+        let data = JSON.parse(decrypt(key, iv, token));
+        //let id = req.body.id;
+        let value = Object.values(data);
+        console.log("value-->" + value)
+        let id = req.params.id;
+        console.log("id-->" + id);
+        let result = {
+            position: "",
+            uname: "",
+            account:"" ,
+            password: ""
+        }
+        // let company = req.body.company;
+        // company = toLiteral(company)
+        let position = req.body.position;
+        result.position = position;
+        position = toLiteral(position);
+        let uname = req.body.uname;
+        result.uname = uname;
+        uname = toLiteral(uname);
+        let account = req.body.account;
+        result.account = account;
+        account = toLiteral(account);
+        let password = req.body.password;
+        result.password = password;
+        password = toLiteral(password);
+        let company = data.company;
+        company = toLiteral(company);
+        let sql = "select id,account from users where account = '" + account + "' and company = '" + company + "' and id != " + id;
+        console.log("sql-->" + sql)
+        db.query(sql, function (err, rows) {
+            try {
+                if (rows.length > 0) {
+                    res.render('users1/uupdate.html',
+                        {title: 'ExpressTitle',
+                            msg: '账户已存在',
+                            ...result
+                    });
+                } else {
+                    let sql1 = "update users set position='" + position + "', uname='" + uname + "', account='" + account + "', password='" + password + "' where id=" + id;
+                    console.log("sql1->" + sql1)
+                    db.query(sql1, function (err, rows) {
+                        if (err) {
+                            res.end('修改失败：');
+                        } else {
+                            res.redirect('/users/ass');
+                        }
+                    });
+                }
+            } catch (e) {
+                res.render("error.html", {error: '网络错误，请稍后再试'})
+            }
+        })
+    }
+});
+router.get('/password_toUpdate', function (req, res) {
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    console.log("value-->" + value)
+    let id = value[5];
+    db.query("select * from users where id= '" + id + "'", function (err, rows) {
         try {
             if (err) {
-                res.end('修改失败：');
+                res.end('修改页面跳转失败：');
             } else {
-                res.redirect('/users/ass');
+                console.log("成功")
+                res.render("users1/password_update.html", {datas: rows});       //直接跳转
             }
         } catch (e) {
             res.render("error.html", {error: '网络错误，请稍后再试'})
         }
     });
-
 });
+router.all('/password_update/:id', function (req, res) {
+    if (req.body.checkForm) {
+        let id = req.params.id;
+        console.log("id-->" + id);
 
-
+        let uname = req.body.uname;
+        uname = toLiteral(uname);
+        let password = req.body.password;
+        password = toLiteral(password);
+        let sql1 = "update users set uname='" + uname + "',  password='" + password + "' where id=" + id;
+        console.log("sql1->" + sql1)
+        db.query(sql1, function (err, rows) {
+            try {
+                if (err) {
+                    res.end('修改失败：');
+                } else {
+                    res.redirect('/welcome');
+                    //res.render("index.html" , {datas: rows});
+                }
+            } catch (e) {
+                res.render("error.html", {error: '网络错误，请稍后再试'})
+            }
+        });
+    }
+});
 router.all('/Excel', function (req, res, next) {
     let token = localStorage.getItem("token");
     let key = '123456789abcdefg';
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     selectParams = JSON.parse(localStorage.getItem("selectParams"));
-
     let sql = "select * from users where company = '" + data.company + "'";
-
     db.query(sql, function (err, rows) {
         try {
             if (err) {
@@ -488,7 +612,7 @@ router.all('/Excel', function (req, res, next) {
             let sql2 = JSON.stringify(sql);
             let sql3 = JSON.parse(sql2);
             //console.log(sql3);
-            var conf = {};
+            let conf = {};
             conf.stylesXmlFile = "styles.xml";
             conf.name = "mysheet";
             conf.cols = [
@@ -523,7 +647,7 @@ router.all('/Excel', function (req, res, next) {
                 row.push(rows[i].password)
                 conf.rows.push(row)
             }
-            var result = nodeExcel.execute(conf);
+            let result = nodeExcel.execute(conf);
             res.setHeader('Content-Type', 'application/vnd.openxmlformats');
             res.setHeader("Content-Disposition", "attachment; filename=" + "users.xlsx");
             res.end(result, 'binary');
