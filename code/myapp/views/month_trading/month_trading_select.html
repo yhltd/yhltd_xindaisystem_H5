@@ -33,18 +33,17 @@
         <input class="select_input right" type="text" name="recipient" id="recipient" placeholder="请输入收卡人" value="{{recipient}}" />
         <input class="select_input right" type="text" name="cardholder" id="cardholder" placeholder="请输入付款人" value="{{cardholder}}"/>
         <input class="select_input right" type="text" name="drawee" id="drawee" placeholder="请输入持卡人" value="{{drawee}}"/>
-        <input class="select_input right" type="date" name="date1" id="date1" value="{{date1}}" />
+        <input class="select_input right" type="date" name="date1" id="date1" value="{{date1}}" style="margin-right: 8px;"/>
         至
-        <input class="select_input right" type="date" name="date2" id="date2" value="{{date2}}" />
-        <input class="select_btn right" type="submit" value="查询"/>
-        <input class="select_btn right" type="button" value="清空" onclick="run()"/>
+        <input class="select_input right" type="date" name="date2" id="date2" value="{{date2}}" style="margin-left: 8px;"/>
+        <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px;"/>
+        <input class="select_btn right" type="button" value="清空" onclick="run()" style="margin-left: 10px;"/>
 
         <div class="header-item">
-            <a href="/month_trading/Excel"><img class="header-icon" src="../../images/excel.png" title="导出到excel"/></a>
+            <a href="/month_trading/Excel"><img class="header-icon" src="../../images/excel2.png" title="导出到excel"/></a>
         </div>
     </form>
 </div>
-<h3 style="color: red">{{msg}}</h3>
 <input type="hidden" value="{{datas[0].id}}" name="id">
 <div class="tablebox">
     <table id="tableId" border="0" cellspacing="0" cellpadding="0">

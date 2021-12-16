@@ -19,7 +19,7 @@
         #header{height:80px;line-height:80px;background:#3872f6;width:100%;position:absolute;z-index:5;top:0;text-align:center;}
         .logo{line-height:80px;font-size:30px;color:#fff;font-family: "STHupo"; letter-spacing:3px;margin-left:50px;float:left;}
         .navigation{float:right;margin:5px 50px 0 0;color:#fff;font-size:14px;}
-        .navigation ul li{height:30px;line-height:30px;text-align:center;font-size: 20px;font-family: "STXingkai";float:left;margin-left:15px;}
+        .navigation ul li{height:30px;line-height:30px;text-align:center;font-size: 20px;font-family: "STXingkai";float:left;margin-left:15px;margin-top: 20px}
         .navigation ul li a{color:#fff;font-size: 20px;font-family: "STXingkai"}
         .navigation ul li a:hover{color:#32323a;}
         #footer{height:50px;line-height:50px;background:#5e5e5e;width:100%;position:absolute;z-index:200;bottom:0;text-align:center;}
@@ -38,7 +38,7 @@
         .left_menu ul li.selected h4 { background-position:200px -45px;background-color:#00a5a5;}
         .left_menu li .list-item { padding:5px 0; position:relative; zoom:1 ;background:#11b6b6;overflow:hidden;}
         .left_menu h4 span{display: block;float: left;width: 20px;height: 26px;margin-right: 10px;padding-right: 10px;background-repeat: no-repeat;margin-top: 12px;}
-        .left_menu img {width:200px;height: 270px; }
+        .left_menu img {width:200px;height: 113.4px;margin-top:80px; }
         /***右侧内容****/
         .m-right{margin-left:210px;margin-bottom:0px;height:100%;}
         .right-nav{height:50px;border-bottom:1px solid #d1d1d1;background:#f6f6f6;}
@@ -56,12 +56,13 @@
 <div class="top"></div>
 <div id="header">
     <div>
-        <a href="http://www.yhocn.cn"><img src="../images/LOG.png" class="logo" style="width: 100px; height: 80px;" title="云合未来"></a>
+        <a href="http://www.yhocn.cn"><img src="../images/LOG.png" class="logo" style="width: 80px; height: 66px; margin-top: 5px;" title="云合未来"></a>
     </div>
 	<div class="logo">信用卡管理系统</div>
 	<div class="navigation">
 		<ul>
-		 	<li style="color: #000c17;font-family: Helvetica Neue">欢迎您！[{{datas[0].uname}}]</li>
+            <li tatget="main"><img src="../images/index_touxiang.png" style="width:30px;height: 30px"></li>
+		 	<li tatget="main">欢迎您！用户：{{datas[0].uname}}</li>
 			<li><a href="/users/password_toUpdate" target="main">密码修改</a></li>
             <li><a href="/copyright" target="main">关于</a></li>
             <li><a href="/help" target="main">帮助</a></li>
@@ -91,7 +92,7 @@
                 <h4 class="M4"><span></span><a href="/users/ass" target="main">员工信息</a></h4>
             </li>
         </ul>
-        <img src="../images/logo.png"  />
+        <img src="../images/logo2.png"  />
     </div>
     <div class="m-right">
         <div>

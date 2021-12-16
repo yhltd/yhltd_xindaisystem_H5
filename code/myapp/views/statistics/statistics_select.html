@@ -22,17 +22,16 @@
 
 <div class="select">
     <form class="select_form" action="/statistics/ass " method="post">
-        <input class="select_input right" type="date" id="date1" name="date1" value="{{date1}}" />
+        <input class="select_input right" type="date" id="date1" name="date1" value="{{date1}}" style="margin-right: 8px;"/>
             至
-        <input class="select_input right" type="date" id="date2" name="date2" value="{{date2}}" />
-        <input class="select_btn" type="submit" value="查询" />
-        <input class="select_btn" type="button" value="清空" onclick="run()" />
+        <input class="select_input right" type="date" id="date2" name="date2" value="{{date2}}" style="margin-left: 8px;"/>
+        <input class="select_btn" type="submit" value="查询" style="margin-left: 10px;"/>
+        <input class="select_btn" type="button" value="清空" onclick="run()" style="margin-left: 10px;"/>
         <div class="header-item">
-            <a href="/statistics/Excel"><img class="header-icon" src="../../images/excel.png" title="导出到excel"/></a>
+            <a href="/statistics/Excel"><img class="header-icon" src="../../images/excel2.png" title="导出到excel"/></a>
         </div>
     </form>
 </div>
-<h3 style="color: red">{{msg}}</h3>
 <div class="tablebox" >
     <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
         <tr align="center">

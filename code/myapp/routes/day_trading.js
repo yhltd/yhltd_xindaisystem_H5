@@ -402,6 +402,89 @@ router.all('/Excel', function (req, res, next) {
 
 
 });
+
+router.all('/Excel2', function (req, res, next) {
+    // let selectParams = {
+    //     date1 : ''
+    // }
+    // let company = req.cookies.company
+    // selectParams = JSON.parse(localStorage.getItem("selectParams"));
+    let id = req.query.id;
+    //console.log("selectParams.date1-->"+selectParams.date1)
+    //console.log(typeof selectParams.date1)
+    //console.log("id-->"+id);
+    let sql = "select * from day_trading right join customer on customer.id = day_trading.id where customer.gongsi='" + id + "'";
+    //console.log("sql-->"+sql);
+
+    db.query(sql, function (err, rows) {
+        try {
+            if (err) {
+                console.log(err);
+            } else {
+                let values = rows
+                //console.log("value=>",values)
+            }
+            let sql2 = JSON.stringify(sql);
+            let sql3 = JSON.parse(sql2);
+            //console.log(sql3);
+            let conf = {};
+            conf.stylesXmlFile = "styles.xml";
+            conf.name = "mysheet";
+            conf.cols = [
+                {
+                    caption: '编号',
+                    type: 'number'
+                }, {
+                    caption: '日期',
+                    type: 'string'
+                }, {
+                    caption: '已还款',
+                    type: 'number'
+                }, {
+                    caption: '商户',
+                    type: 'string'
+                }, {
+                    caption: '刷卡额',
+                    type: 'number'
+                }, {
+                    caption: '费率',
+                    type: 'number'
+                }, {
+                    caption: '到账金额',
+                    type: 'number'
+                }, {
+                    caption: '基础手续费',
+                    type: 'number'
+                }, {
+                    caption: '其他手续费',
+                    type: 'number'
+                }
+            ];
+            conf.rows = []
+            for (let i = 0; i < rows.length; i++) {
+                let row = [];
+                row.push(rows[i].did)
+                row.push(rows[i].date_time)
+                row.push(rows[i].repayment)
+                row.push(rows[i].commercial_tenant)
+                row.push(rows[i].swipe)
+                row.push(rows[i].rate)
+                row.push(rows[i].arrival_amount)
+                row.push(rows[i].basics_service_charge)
+                row.push(rows[i].other_service_charge)
+                conf.rows.push(row)
+            }
+            let result = nodeExcel.execute(conf);
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+            res.setHeader("Content-Disposition", "attachment; filename=" + "day_trading.xlsx");
+            res.end(result, 'binary');
+        } catch (e) {
+            res.render("error.html", {error: '网络错误，请稍后再试'})
+        }
+    });
+
+
+});
 router.get('/select_ass', function (req, res, next) {
     let token = localStorage.getItem("token");
     let key = '123456789abcdefg';

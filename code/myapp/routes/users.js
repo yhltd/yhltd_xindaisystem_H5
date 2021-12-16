@@ -10,16 +10,16 @@ const crypto = require("crypto");
 function encrypt(key, iv, data) {
     let decipher = crypto.createCipheriv('aes-128-cbc', key, iv);
     // decipher.setAutoPadding(true);
-    return decipher.update(data, 'binary', 'base64') + decipher.final('base64');
+    return decipher.update(data, 'utf8', 'base64') + decipher.final('base64');
 }
 
 function decrypt(key, iv, crypted) {
     if (crypted == undefined || crypted == '') {
         throw new Error("身份验证过期，请重新登录")
     }
-    crypted = new Buffer.from(crypted, 'base64').toString('binary');
+    // crypted = new Buffer.from(crypted, 'base64').toString('binary');
     let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
-    return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
+    return decipher.update(crypted, 'base64', 'utf8') + decipher.final('utf8');
 }
 
 function toLiteral(str) {
@@ -69,6 +69,7 @@ router.post('/search', function (req, res) {
     localStorage.removeItem("token")
     let company = req.body.company;
     company = toLiteral(company)
+    console.log(company)
     let account = req.body.account;
     account = toLiteral(account)
     let password = req.body.password;
@@ -116,7 +117,7 @@ router.post('/search', function (req, res) {
                         isRem: isRem,
                         id: value[0].id
                     };
-                    //console.log(datas)
+                    console.log(datas)
                     datas = encrypt(key, iv, JSON.stringify(datas));
                     localStorage.setItem("token", datas);
                     // if (isRem){
@@ -278,9 +279,10 @@ router.post('/uadd', function (req, res) {
         result.password = password;
         password = toLiteral(password);
 
-
+        company = data.company
         //data = toLiteral(account)
-        //console.log(position+uname+account+password)
+        console.log(account)
+        console.log(position+uname+account+password)
         //let sql1 = "select account from users where account = " + account
         //console.log("xinzeng")
         db.query("select account from users where account = '" + account + "' and company = '" + data.company + "'", function (err, rows) {

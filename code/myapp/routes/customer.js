@@ -344,9 +344,11 @@ router.all('/Excel', function (req, res, next) {
     selectParams = JSON.parse(localStorage.getItem("selectParams"));
     // console.log("selectParams.date1-->"+selectParams.date1)
     // console.log(typeof selectParams.date1)
-    let whereSql = " where gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%" + selectParams.cardholder + "%' and drawee like '%" + selectParams.drawee + "%'"
+    console.log(selectParams)
+    let panduan = {}
+    let whereSql = " where gongsi = '" + company + "'"
     let sql = "select * from customer " + whereSql;
-
+    console.log(sql)
     db.query(sql, function (err, rows) {
         try {
             if (err) {
@@ -429,6 +431,7 @@ router.all('/Excel', function (req, res, next) {
                 row.push(rows[i].staff)
                 conf.rows.push(row)
             }
+            console.log(conf)
             let result = nodeExcel.execute(conf);
             res.setHeader('Content-Type', 'application/vnd.openxmlformats');
             res.setHeader("Content-Disposition", "attachment; filename=" + "customer.xlsx");
