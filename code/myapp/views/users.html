@@ -33,7 +33,10 @@
 <body style="background:url(../images/bg.jpg) no-repeat;">
     <img src="../images/001.png" style="background-repeat:no-repeat;width: 1200px;height: 700px ;">
     <div class="container wrap1" style="height:450px;">
-        <div class="col-sm-8 col-md-5 center-auto pd-sm-50 pd-xs-20 main_content">
+        <div style="float:left">
+            <img src="../images/login_yuansu1.png" style="width:350px;margin-top: 80%">
+        </div>
+        <div class="col-sm-8 col-md-5 center-auto pd-sm-50 pd-xs-20 main_content" style="float:right">
             <p class="text-center font16">用户登录</p>
             <form action="/users/search" method="post" align="center">
                 <div class="form-group mg-t20">
@@ -58,9 +61,7 @@
 
             <h3 style="color: red">{{msg}}</h3>
         </div><!--row end-->
-        <div style="float:right">
-            <img src="../images/login_yuansu1.png" style="width:600px">
-        </div>
+
     </div><!--container end-->
 
 </body>

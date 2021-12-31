@@ -5,7 +5,7 @@ let db = require("./db.js");
 let nodeExcel = require('excel-export');
 //const fs = require("fs");
 const crypto = require("crypto");
-//const path = require("path")
+//const path = require("path")password_update
 //LocalStorage = require('node-localstorage')
 function encrypt(key, iv, data) {
     let decipher = crypto.createCipheriv('aes-128-cbc', key, iv);
@@ -557,13 +557,14 @@ router.get('/password_toUpdate', function (req, res) {
     let data = JSON.parse(decrypt(key, iv, token));
     let value = Object.values(data);
     console.log("value-->" + value)
-    let id = value[5];
+    let id = value[4];
     db.query("select * from users where id= '" + id + "'", function (err, rows) {
         try {
             if (err) {
                 res.end('修改页面跳转失败：');
             } else {
                 console.log("成功")
+                console.log("测试")
                 res.render("users1/password_update.html", {datas: rows});       //直接跳转
             }
         } catch (e) {
@@ -571,11 +572,10 @@ router.get('/password_toUpdate', function (req, res) {
         }
     });
 });
-router.all('/password_update/:id', function (req, res) {
+router.all('/password_update', function (req, res) {
     if (req.body.checkForm) {
-        let id = req.params.id;
+        let id = req.body.id;
         console.log("id-->" + id);
-
         let uname = req.body.uname;
         uname = toLiteral(uname);
         let password = req.body.password;
