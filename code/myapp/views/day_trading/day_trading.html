@@ -12,11 +12,14 @@
     <div id="header">
         <div class="header-text">日交易记录</div>
         <div class="header-item">
-            <a style="line-height: 0" class="right" href="/day_trading/insert/{{datas[0].id}}" title="录入信息">
-                <img class="header-icon" src="../../images/luru.png">
+<!--            <a style="line-height: 0" class="right" href="/day_trading/insert/{{datas[0].id}}" title="录入信息">-->
+<!--                <img class="header-icon" src="../../images/luru.png">-->
+<!--            </a>-->
+            <a href="/day_trading/insert/{{datas[0].id}}" style="float:left">
+                <div class="select_btn right" style="margin-left: 10px;text-align: center;vertical-align:middle;vertical-align: middle;display: table-cell;">录入</div>
             </a>
             <a href="/day_trading/Excel?id={{datas[0].id}}" title="导出EXCEL">
-                <img class="header-icon" src="../../images/excel2.png">
+                <img class="header-icon" src="../../images/excel2.png" style="margin-left: 10px;">
             </a>
             <a style="line-height: 0" class="right" href="/customer/select" title="返回查询">
                 <img class="header-icon" src="../../images/back.png">
