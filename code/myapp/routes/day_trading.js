@@ -321,6 +321,7 @@ router.all('/select_day/:id', function (req, res, next) {
 
 });
 router.all('/Excel', function (req, res, next) {
+
     // let selectParams = {
     //     date1 : ''
     // }
@@ -404,16 +405,32 @@ router.all('/Excel', function (req, res, next) {
 });
 
 router.all('/Excel2', function (req, res, next) {
+
+
     // let selectParams = {
     //     date1 : ''
     // }
     // let company = req.cookies.company
     // selectParams = JSON.parse(localStorage.getItem("selectParams"));
     let id = req.query.id;
-    //console.log("selectParams.date1-->"+selectParams.date1)
+    // console.log("selectParams.date1-->"+selectParams.date1)
+    // console.log(selectParams)
     //console.log(typeof selectParams.date1)
     //console.log("id-->"+id);
-    let sql = "select * from day_trading right join customer on customer.id = day_trading.id where customer.gongsi='" + id + "'";
+    let recipient = req.query.recipient
+    let cardholder = req.query.cardholder
+    let drawee = req.query.drawee
+    let date1 = req.query.date1
+    let date2 = req.query.date2
+    console.log("date1:" + date1)
+    let sql = "select * from day_trading right join customer on customer.id = day_trading.id where customer.gongsi='" + id + "' and customer.recipient like '%"+ recipient +"%' and customer.cardholder like '%"+ cardholder +"%' and customer.drawee like '%" + drawee + "%' ";
+    if(date1 != ''){
+        sql = sql + "and day_trading.date_time >='" + date1 + "' "
+    }
+    if(date2 != ''){
+        sql = sql + "and day_trading.date_time <='" + date2 + "'"
+    }
+
     //console.log("sql-->"+sql);
 
     db.query(sql, function (err, rows) {

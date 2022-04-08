@@ -127,7 +127,7 @@ router.all('/ass', function (req, res, next) {
     selectParams.recipient = toLiteral(selectParams.recipient);
     selectParams.cardholder = toLiteral(selectParams.cardholder);
     selectParams.drawee = toLiteral(selectParams.drawee);
-    let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%" + selectParams.cardholder + "%' and drawee like '%" + selectParams.drawee + "%' and a.date_time  between year('"+ selectParams.date1 + "') and year('"+ selectParams.date2 +"') and month(a.date_time) between month('"+ selectParams.date1 + "') and month('"+ selectParams.date2 +"') ";
+    let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%" + selectParams.cardholder + "%' and drawee like '%" + selectParams.drawee + "%' and a.date_time  >= '"+ selectParams.date1 + "' and a.date_time <= '"+ selectParams.date2 +"' ";
 
     let sql1 = " select a.id " +
         "from day_trading as a,customer as b " + whereSql;
@@ -224,7 +224,8 @@ router.all('/Excel', function (req, res, next) {
     selectParams = JSON.parse(localStorage.getItem("selectParams"));
     // console.log("selectParams.date1-->"+selectParams.date1)
     // console.log(typeof selectParams.date1)
-    let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%" + selectParams.cardholder + "%' and drawee like '%" + selectParams.drawee + "%' and a.date_time like '%" + selectParams.date1 + "%'";
+    console.log(selectParams.date1)
+    let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%" + selectParams.cardholder + "%' and drawee like '%" + selectParams.drawee + "%' and a.date_time >= '" + selectParams.date1 + "' and a.date_time <= '" + selectParams.date2 + "'";
     let sql = "select b.*,sum(a.repayment) as repayment,sum(a.swipe) as swipe," +
         "sum(a.repayment)-sum(a.swipe) as balance_of_credit_card," +
         "sum(a.basics_service_charge)+sum(a.other_service_charge) as the_total_fee," +
