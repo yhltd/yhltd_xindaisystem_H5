@@ -184,6 +184,14 @@ tablebox
     border-radius: 3px;
     padding-left: 10px;
 }
+.form_select{
+    width: 180px;
+    height: 24px;
+    outline: none;
+    /*border: 1px solid #f2f2f2;*/
+    border-radius: 3px;
+    padding-left: 10px;
+}
 .form_btn{
     width: 110px;
     height: 35px;

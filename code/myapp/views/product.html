@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品配置</title>
+    <!--    <link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>-->
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+</head>
+<body >
+<div id="header">
+    <div class="header-text">商品配置</div>
+</div>
+<div class="select">
+    <form class="select_form" action="/product/ass" method="post">
+        <input class="select_input" type="text" name="product_name" placeholder="请输入商品名称" value="{{product_name}}" />
+        <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px"/>
+
+        <div class="header-item">
+            <a href="/product/add" style="float:left">
+                <input class="select_btn right" type="button" value="录入"/>
+            </a>
+            <a href="/product/Excel" style="float:left;margin-left: 10px;margin-top: 3px"><img class="header-icon" src="../../images/excel2.png" title="导出到excel"/></a>
+        </div>
+    </form>
+</div>
+<div class="tablebox">
+    <table  id="tableId">
+        <tr align="center">
+            <th>序号</th>
+            <th>图片</th>
+            <th>商品类别</th>
+            <th>商品名称</th>
+            <th>单位</th>
+            <th>单价</th>
+            <th>成本</th>
+            <th>是否停用</th>
+            <div>
+                <th colspan="2">操作</th>
+            </div>
+        </tr>
+        {% for item in datas %}
+        <tr align="center">
+            <td >{{item.id}}</td>
+            <td >{{item.photo}}</td>
+            <td >{{item.type}}</td>
+            <td >{{item.product_name}}</td>
+            <td >{{item.unit}}</td>
+            <td >{{item.price}}</td>
+            <td >{{item.chengben}}</td>
+            <td >{{item.tingyong}}</td>
+            <td style="width: 60px"><a href="/product/del/{{item.id}}" onclick="return confirm('您确认要删除本记录么？')">删除</a></td>
+            <td style="width: 60px"><a href="/product/toUpdate/{{item.id}}">修改</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div style="padding-top: 15px">
+        一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+        <input type="hidden" value="{{pagenum }}" id="id">
+        <input type="hidden" value="{{pagecounts }}" id="id1">
+        <a href="/product/ass?pagenum=1" onclick="return check();">首页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/product/ass?pagenum={{pagenum-1}}" onclick="return check();">上一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/product/ass?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/product/ass?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
+    </div>
+
+</div>
+
+
+</body>
+<script>
+    function check(){
+        var id = document.getElementById("id")
+        var id1 = document.getElementById("id1")
+        var pagenum = id.value;
+        var pagecounts = id1.value;
+        if(pagenum <= 1){
+            alert("当前是第一页")
+            return false;
+        }else{
+            return true;
+        }
+    }
+    function check1(){
+        var id = document.getElementById("id")
+        var id1 = document.getElementById("id1")
+        var pagenum = id.value;
+        var pagecounts = id1.value;
+        if(pagenum >= pagecounts){
+            alert("当前是最后一页")
+            return false;
+        }else{
+            return true;
+        }
+    }
+</script>
+</html>
+<SCRIPT Language=VBScript></SCRIPT>

@@ -145,7 +145,7 @@ router.get('/select', function (req, res, next) {
     let key = '123456789abcdefg';
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
-
+    console.log("读取权限: " + data)
 
     console.log("quanxian" + data.table["5"].sel)
     if (data.table["5"].sel == 1) {

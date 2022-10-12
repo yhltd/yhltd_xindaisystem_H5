@@ -11,6 +11,7 @@ var customerRouter = require('./routes/customer');
 var day_tradingRouter = require('./routes/day_trading');
 var month_tradingRouter = require('./routes/month_trading');
 var statisticsRouter = require('./routes/statistics');
+var productRouter = require('./routes/product');
 var app = express();
 
 
@@ -40,6 +41,7 @@ app.use('/customer', customerRouter);
 app.use('/day_trading', day_tradingRouter);
 app.use('/month_trading', month_tradingRouter);
 app.use('/statistics', statisticsRouter);
+app.use('/product', productRouter);
 
 
 // catch 404 and forward to error handler
