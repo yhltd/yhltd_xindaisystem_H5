@@ -26,6 +26,24 @@
 	  background: -moz-linear-gradient(#4990c1, #52a3d2, #6186a3); /* Firefox 3.6 - 15 */
 	  background: linear-gradient(#4990c1, #52a3d2, #6186a3); /* 标准的语法 */
 	}
+
+    .left_menu{
+        position: fixed;
+        right: 30px;
+        bottom: 10px;
+    }
+    ul,li{
+        list-style:none;
+        float: left;
+        margin-right: 30px;
+
+    }
+    li{
+        border: 1px solid black;
+        background-color: rgba(0, 0, 0, 0.5);
+        width: 100px;
+        text-align: center;
+    }
 </style>
 
 </head>
@@ -38,7 +56,7 @@
             <img src="../images/login_yuansu1.png" style="width:350px;margin-top: 80%">
         </div>
         <div class="col-sm-8 col-md-5 center-auto pd-sm-50 pd-xs-20 main_content" style="float:right">
-            <p class="text-center font16">用户登录</p>
+            <p class="text-center font16">商家端用户登录</p>
             <form action="/users/search" method="post" align="center">
                 <div class="form-group mg-t20">
                     <i class="icon-company icon_font"></i>
@@ -62,7 +80,16 @@
 
             <h3 style="color: red">{{msg}}</h3>
         </div><!--row end-->
-
+        <div class="left_menu">
+            <ul id="nav_dot">
+                <li>
+                    <h4 class="M4"><span></span><a href="/users">商家端</a></h4>
+                </li>
+                <li>
+                    <h4 class="M4"><span></span><a href="/userss">客户端</a></h4>
+                </li>
+            </ul>
+        </div>
     </div><!--container end-->
 
 </body>

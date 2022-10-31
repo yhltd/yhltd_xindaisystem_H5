@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改页面</title>
+    <link rel="stylesheet" type="text/css" href="../../../stylesheets/table.css"/>
+    <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+    <script>
+
+        function submitForm(){
+            var formData = $('#formData').serialize();
+            var params = JSON.parse(formToJson(decodeURIComponent(formData, true)))
+            $("#checkFormCheckBox").attr('checked', checkForm(params));
+        }
+
+        function checkForm(params){
+            var temp = /^\d+(\.\d+)?$/
+            if(params.cpmc == ""){
+                alert("产品名称不能为空")
+                return false
+            }
+            return true
+        }
+        function formToJson(data) {
+            data = data.replace(/&/g, "\",\"").replace(/=/g, "\":\"").replace(/\+/g, " ").replace(/[\r\n]/g, "<br>");
+            data = "{\"" + data + "\"}";
+            return data;
+        }
+    </script>
+
+</head>
+<body background="/images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
+<form action="/orders_details/update?id={{did}}" id="formData"  onsubmit="submitForm()" method="post" align="center">
+    <input type="hidden" value="{{datas[0].id}}" name="id">
+    <div id="header">
+        <div class="header-text">修改</div>
+        <div class="header-item">
+            <a style="line-height: 0" class="right" href="/orders_details/orders_details/{{did}}" title="返回查询">
+                <img class="header-icon" src="../../images/back.png"/>
+            </a>
+        </div>
+    </div>
+    <div class="tablebox" style="width: 400px;height: 480px; margin-top:60px;">
+        <table  id="tableId" style="width: 400px;" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td>产品类型</td>
+                <td>
+                    <input class="form_input" type="text" name="cplx" value="{{datas[0].cplx}}">
+                </td>
+            </tr>
+            <tr>
+                <td>产品名称</td>
+                <td>
+                    <input class="form_input" type="text" name="cpmc" value="{{datas[0].cpmc}}">
+                </td>
+            </tr>
+            <tr>
+                <td>单位</td>
+                <td>
+                    <input class="form_input" type="text" name="dw" value="{{datas[0].dw}}">
+                </td>
+            </tr>
+            <tr>
+                <td>单价</td>
+                <td>
+                    <input class="form_input" type="text" name="dj" value="{{datas[0].dj}}">
+                </td>
+            </tr>
+            <tr>
+                <td>打折比例</td>
+                <td>
+                    <input class="form_input" type="text" name="dzbl" value="{{datas[0].dzbl}}">
+                </td>
+            </tr>
+            <tr>
+                <td>折后单价</td>
+                <td>
+                    <input class="form_input" type="text" name="zhdj" value="{{datas[0].zhdj}}">
+                </td>
+            </tr>
+            <tr>
+                <td>折后金额</td>
+                <td>
+                    <input class="form_input" type="text" name="zhje" value="{{datas[0].zhje}}">
+                </td>
+            </tr>
+            <tr>
+                <td>个数</td>
+                <td>
+                    <input class="form_input" type="text" name="gs" value="{{datas[0].gs}}">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right">
+                    <input class="form_btn" type="submit" value="保存" class="anniu" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <input id="checkFormCheckBox" name="checkForm" type="checkbox" checked="" style="display: none"/>
+</form>
+</body>
+
+<SCRIPT Language=VBScript></SCRIPT>

@@ -115,7 +115,9 @@ router.post('/search', function (req, res) {
                         password: value[0].password,
                         table: table,
                         isRem: isRem,
-                        id: value[0].id
+                        id: value[0].id,
+                        type: '商家',
+                        uname: value[0].uname,
                     };
                     console.log(datas)
                     datas = encrypt(key, iv, JSON.stringify(datas));

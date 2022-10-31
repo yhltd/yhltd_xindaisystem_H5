@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>产品明细</title>
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+</head>
+
+<body background="/images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
+<form action="/orders_details_member/ass" method="post">
+    <div id="header">
+        <div class="header-text">产品明细</div>
+        <div class="header-item">
+            <!--            <a style="line-height: 0" class="right" href="/day_trading/insert/{{datas[0].id}}" title="录入信息">-->
+            <!--                <img class="header-icon" src="../../images/luru.png">-->
+            <!--            </a>-->
+<!--            <a href="/orders_details/insert/{{datas[0].id}}" style="float:left">-->
+<!--                <div class="select_btn right" style="margin-left: 10px;text-align: center;vertical-align:middle;vertical-align: middle;display: table-cell;">录入</div>-->
+<!--            </a>-->
+<!--            <a href="/orders_details/Excel?id={{datas[0].id}}" title="导出EXCEL">-->
+<!--                <img class="header-icon" src="../../images/excel2.png" style="margin-left: 10px;">-->
+<!--            </a>-->
+            <a style="line-height: 0" class="right" href="/orders1/select" title="返回查询">
+                <img class="header-icon" src="../../images/back.png">
+            </a>
+        </div>
+    </div>
+    <div class="tablebox">
+        <table  id="tableId1" border="0" cellspacing="0" cellpadding="0">
+            <tr align="center">
+                <th>序号</th>
+                <th>日期</th>
+                <th>订单号</th>
+                <th>会员账号</th>
+                <th>会员姓名</th>
+                <th>优惠方案</th>
+                <th>消费金额</th>
+                <th>实收金额</th>
+                <th>优惠金额</th>
+                <th>收银员</th>
+            </tr>
+            <tr align="center">
+                <td>{{datas[0].id}}</td>
+                <td>{{datas[0].riqi}}</td>
+                <td>{{datas[0].ddh}}</td>
+                <td>{{datas[0].hyzh}}</td>
+                <td>{{datas[0].hyxm}}</td>
+                <td>{{datas[0].yhfa}}</td>
+                <td>{{datas[0].xfje}}</td>
+                <td>{{datas[0].ssje}}</td>
+                <td>{{datas[0].yhje}}</td>
+                <td>{{datas[0].syy}}</td>
+            </tr>
+        </table>
+        <br>
+
+        <table id="tableId" width="100%" border="1">
+            <tr align="center">
+                <th>产品类型</th>
+                <th>产品名称</th>
+                <th>单位</th>
+                <th>单价</th>
+                <th>数量</th>
+                <th>打折比例</th>
+                <th>折后单价</th>
+                <th>折后金额</th>
+            </tr>
+            {% for item in datass %}
+            <tr align="center">
+                <td>{{item.cplx}}</td>
+                <td>{{item.cpmc}}</td>
+                <td>{{item.dw}}</td>
+                <td>{{item.dj}}</td>
+                <td>{{item.gs}}</td>
+                <td>{{item.dzbl}}</td>
+                <td>{{item.zhdj}}</td>
+                <td>{{item.zhje}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div style="padding-top: 15px">
+            一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+            <input type="hidden" value="{{pagenum }}" id="id">
+            <input type="hidden" value="{{pagecounts }}" id="id1">
+            <a href="/orders_details_member/orders_details/{{datas[0].ddh}}?pagenum=1" onclick="return check();">首页</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/orders_details_member/orders_details/{{datas[0].ddh}}?pagenum={{pagenum-1}} " onclick="return check();">上一页</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/orders_details_member/orders_details/{{datas[0].ddh}}?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/orders_details_member/orders_details/{{datas[0].ddh}}?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
+        </div>
+
+    </div>
+
+</form>
+<!--<a id="dlink" style="display: none;"></a>-->
+<!--<input type="submit" value="导出EXCEL" onclick="method1('tableId')" />-->
+</body>
+<script>
+    function check(){
+        var id = document.getElementById("id")
+        //var id1 = document.getElementById("id1")
+        var pagenum = id.value;
+        //var pagecounts = id1.value;
+        if(pagenum <= 1){
+            alert("当前是第一页")
+            return false;
+        }else{
+            return true;
+        }
+    }
+    function check1(){
+        var id = document.getElementById("id")
+        var id1 = document.getElementById("id1")
+        var pagenum = id.value;
+        var pagecounts = id1.value;
+        if(pagenum >= pagecounts){
+            alert("当前是最后一页")
+            return false;
+        }else{
+            return true;
+        }
+    }
+    // function check2(){
+    //     var id2 = document.getElementById("id2")
+    //     var did = id2.value;
+    //
+    //     if(did == "" || did == undefined){
+    //         alert("当前用户还没有日交易记录")
+    //         return false;
+    //     }
+    //     return confirm('您确认要删除本记录么？');
+    // }
+    // function check3(){
+    //     var id2 = document.getElementById("id2")
+    //     var did = id2.value;
+    //     if(did == "" || did == undefined){
+    //         alert("当前用户还没有日交易记录")
+    //         return false;
+    //     }else{
+    //         return true;
+    //     }
+    // }
+</script>
+</html>
+<SCRIPT Language=VBScript><!-- --></SCRIPT>

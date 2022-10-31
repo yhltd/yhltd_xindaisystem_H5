@@ -195,7 +195,7 @@
         // });
 
         window.onload = function() {
-            $("#tingyong").val($("#product_tingyong").val())
+            $("#tingyong").val($("#membership_level_tingyong").val())
         }
 
         function submitForm(){
@@ -206,23 +206,14 @@
 
         function checkForm(params){
             var temp = /^\d+(\.\d+)?$/
-            if(params.type==""){
-                alert("商品类别不能为空")
+            if(params.uname==""){
+                alert("员工不能为空")
                 return false
-            }else if(params.product_name == ""){
-                alert("商品名称不能为空")
+            }else if(params.account == ""){
+                alert("账号不能为空")
                 return false
-            }else if(params.unit == ""){
-                alert("单位不能为空")
-                return false
-            }else if(params.price == ""){
-                alert("单价不能为空")
-                return false
-            }else if(params.chengben == ""){
-                alert("成本不能为空")
-                return false
-            }else if(params.tingyong == ""){
-                alert("是否停用不能为空")
+            }else if(params.password == ""){
+                alert("密码不能为空")
                 return false
             }
             return true
@@ -239,62 +230,41 @@
 <body background="../../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
 
 
-<form action="/product/update/{{datas[0].id}}" id="formData" onsubmit="submitForm()" method="post" align="center">
+<form action="/membership_level/update/{{datas[0].id}}" id="formData" onsubmit="submitForm()" method="post" align="center">
 
     <div class="iframe_d" style="display: none"></div>
 
     <div id="header">
-        <div class="header-text">商品设置修改</div>
+        <div class="header-text">修改</div>
         <div class="header-item">
-            <a style="line-height: 0" class="right" href="/product/select" title="返回查询">
+            <a style="line-height: 0" class="right" href="/membership_level/select" title="返回查询">
                 <img class="header-icon" src="../../images/back.png">
             </a>
         </div>
     </div>
     <input id="user_id" type="hidden" value="{{datas[0].id}}" name="id">
-    <input id="product_tingyong" type="hidden" value="{{tingyong}}" name="product_tingyong">
+    <input id="membership_level_tingyong" type="hidden" value="{{tingyong}}" name="membership_level_tingyong">
     <div class="tablebox" style="width: 400px;height: 600px; margin-top:55px;">
         <table  id="tableId" style="width: 400px;" border="0" cellspacing="0" cellpadding="0">
             <tr>
-                <td>商品类别</td>
+                <td>级别名称</td>
                 <td>
-                    <input class="form_input" name="type" value="{{type}}"  />
+                    <input class="form_input" name="jibie" value="{{jibie}}"  />
                 </td>
             </tr>
             <tr>
-                <td>商品名称</td>
+                <td>消费额度门槛</td>
                 <td>
-                    <input class="form_input" name="product_name" value="{{product_name}}" />
+                    <input class="form_input" name="menkan" value="{{menkan}}" />
                 </td>
             </tr>
             <tr>
-                <td>单位</td>
+                <td>折扣比例</td>
                 <td>
-                    <input class="form_input" name="unit" value="{{unit}}" />
+                    <input class="form_input" name="bili" value="{{bili}}" />
                 </td>
             </tr>
-            <tr>
-                <td>单价</td>
-                <td>
-                    <input class="form_input" name="price" value="{{price}}" />
-                </td>
-            </tr>
-            <tr>
-                <td>成本</td>
-                <td>
-                    <input class="form_input" name="chengben" value="{{chengben}}" />
-                </td>
-            </tr>
-            <tr>
-                <td>是否停用</td>
-                <td>
 
-                    <select id ='tingyong' class="form_select" name="tingyong" value="{{tingyong}}" >
-                        <option value="是">是</option>
-                        <option value="否">否</option>
-                    </select>
-                </td>
-            </tr>
             <tr>
                 <td colspan="2" align="right">
                     <input class="form_btn" type="submit" value="保存" class="anniu" />

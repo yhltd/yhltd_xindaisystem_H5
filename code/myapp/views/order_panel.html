@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>会员管理</title>
+    <!--    <link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>-->
+<!--    <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+    <script type="text/javascript" src="../../iframe_d/iframe_d.js"></script>
+    <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        #app {
+            height: 100%;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .leftnav {
+            width: 5%;
+            background-color: #1DBce0;
+            height: 100%;
+            float: left;
+        }
+
+        .leftnav li {
+            width: 100%;
+            height: 65px;
+            text-align: center;
+            line-height: 65px;
+            border-bottom: 1px solid white;
+            color: white;
+        }
+
+        .order {
+            width: 30%;
+            float: left;
+            position: relative;
+        }
+
+        .order .order-nav {
+            border-bottom: 1px solid black;
+            overflow: hidden;
+            /*  浮动的隐藏 */
+        }
+
+        .order-nav li {
+            width: 60px;
+            height: 42px;
+            float: left;
+            text-align: center;
+            line-height: 42px;
+        }
+
+        .order-nav .active {
+            color: #1DBce0;
+        }
+
+        .order .border {
+            width: 60px;
+            height: 3px;
+            background-color: #1DBce0;
+            position: absolute;
+            top: 39px;
+            transition: left 0.5s;
+            /*过渡动画*/
+        }
+
+        .oftergoods,
+        .typegoods {
+            width: 65%;
+            float: right;
+        }
+
+        .oftergoods {
+            overflow: hidden;
+        }
+
+        .oftergoods h3 {
+            height: 42px;
+            border-bottom: 1px solid black;
+            line-height: 42px;
+        }
+
+        .oftergoods ul {
+            padding-top: 30px;
+            padding-left: 50px;
+        }
+
+        .oftergoods ul li {
+            width: 120px;
+            height: 38px;
+            float: left;
+            background-color: antiquewhite;
+            border: 1px solid blue;
+            margin-right: 30px;
+            margin-bottom: 30px;
+            line-height: 38px;
+            text-align: center;
+            padding: 4px;
+        }
+
+        .typegoods {
+            position: relative;
+        }
+
+        .typegoods .typegoods-nav {
+            border-bottom: 1px solid black;
+            overflow: hidden;
+            /*  浮动的隐藏 */
+            margin-bottom: 30px;
+        }
+
+        .typegoods-nav li {
+            width: 60px;
+            height: 42px;
+            float: left;
+            text-align: center;
+            line-height: 42px;
+        }
+
+        .typegoods-nav .active {
+            color: #1DBce0;
+        }
+
+        .typegoods .border {
+            width: 60px;
+            height: 3px;
+            background-color: #1DBce0;
+            position: absolute;
+            top: 39px;
+            transition: left 0.5s;
+            /*过渡动画*/
+        }
+
+        .typegoods .goods {
+            width: 200px;
+            height: 68px;
+            border: 1px solid blue;
+            float: left;
+            margin-right: 30px;
+            background-color: palegoldenrod;
+        }
+
+        .typegoods .goods img {
+            width: 80px;
+            height: 60px;
+            float: left;
+        }
+
+        .typegoods .goods p {
+            line-height: 60px;
+        }
+    </style>
+</head>
+<style>
+    /* 公共 */
+
+    body {
+        padding: 0;
+        margin: 0;
+        background: #fff;
+        overflow-y: scroll;
+    }
+
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .index {
+        display: flex;
+    }
+
+    .Lmenu {
+        width: 20px;
+        /*background: rgb(62, 35, 236);*/
+    }
+
+    .Lmenu .left {
+        display: flex;
+        flex-flow: column;
+        min-height: 100vh;
+        background: rgb(62, 35, 236);
+    }
+
+    .Lmenu ul li {
+        text-align: center;
+        margin-top: 14px;
+        height: 68px;
+        border-bottom: 1px solid #fff;
+    }
+
+    .Lmenu ul li a {
+        color: #fff;
+    }
+
+    .Lmenu ul li .img {
+        width: 50%;
+        margin: 0 auto;
+    }
+
+    .Lmenu ul li img {
+        width: 100%;
+    }
+
+    .Lblock {
+        width: 350px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .Lblock .menu ul {
+        display: flex;
+        border-bottom: 2px solid darkgrey;
+    }
+
+    .Lblock .menu ul li {
+        font-size: 14px;
+        margin-right: 50px;
+        margin-top: 5px;
+        line-height: 45px;
+        text-align: center;
+        border-bottom: 2px solid darkgrey;
+        margin-bottom: -2px;
+    }
+
+    .Lblock .menu ul li.hover {
+        border-bottom: 2px solid rgb(49, 0, 247);
+    }
+
+    .Lblock .menu ul li.hover a {
+        color: rgb(32, 32, 246);
+    }
+
+    .Lblock .menu ul li:hover {
+        border-bottom: 2px solid rgb(49, 0, 247);
+    }
+
+    .Lblock .menu ul li:hover a {
+        color: rgb(32, 32, 246);
+    }
+
+    .Lblock .table {
+        margin-top: 20px;
+    }
+
+    .Lblock .table .title {
+        display: flex;
+        margin-top: 10px;
+    }
+
+    .Lblock .table .title li {
+        width: 100px;
+        border: 1px solid darkgrey;
+        border-right: 0;
+        height: 50px;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 50px;
+        padding-left: 8px;
+        color: #606060;
+    }
+
+    .Lblock .table .title li:last-child {
+        border-right: 1px solid darkgrey;
+    }
+
+    .Lblock .table .cont {}
+
+    .Lblock .table .cont li {
+        display: flex;
+    }
+
+    .Lblock .table .cont li div {
+        width: 100px;
+        border: 1px solid darkgrey;
+        border-right: 0;
+        border-top: 0;
+        height: 30px;
+        line-height: 30px;
+        padding-left: 8px;
+        color: #606060;
+        display: flex;
+    }
+
+    .Lblock .table .cont li div:last-child {
+        border-right: 1px solid darkgrey;
+    }
+
+    .Lblock .table .cont li span {
+        width: 22px;
+        text-align: center;
+        cursor: pointer;
+        margin: 0 5px;
+    }
+
+    .Lblock .table .end {
+        text-align: center;
+        border: 1px solid darkgrey;
+        border-top: 0;
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .Lblock .button {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .Lblock .button button {
+        height: 42px;
+        line-height: 42px;
+        width: 72px;
+        text-align: center;
+        border: 0px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 0 10px;
+        font-size: 16px;
+    }
+
+    .Lblock .button .but1 {
+        color: #fff;
+        background: rgb(231 192 63);
+    }
+
+    .Lblock .button .but2 {
+        color: #fff;
+        background: rgb(246 103 103);
+    }
+
+    .Lblock .button .but3 {
+        color: #fff;
+        background: rgb(3 199 43);
+    }
+
+    .Rblock {
+        width: 70%;
+        border-left: 1px solid darkgray;
+    }
+
+    .Rblock .head {
+        height: 50px;
+        line-height: 50px;
+        padding-left: 10px;
+        border-bottom: 1px solid darkgray;
+    }
+
+    .Rblock .option {
+        display: flex;
+        margin: 10px;
+        font-size: 14px;
+        flex-wrap: wrap;
+    }
+
+    .Rblock .option li {
+        cursor: pointer;
+        padding: 0 10px;
+        height: 36px;
+        line-height: 36px;
+        text-align: center;
+        border: 1px solid darkgrey;
+        margin: 5px;
+    }
+
+    .Rblock .Bmenu {
+        display: flex;
+        margin-top: 32px;
+        margin-left: 10px;
+        height: 36px;
+        border-bottom: 2px solid darkgrey;
+    }
+
+    .Rblock .Bmenu li {
+        margin-right: 38px;
+        margin-bottom: -2px;
+    }
+
+    .Rblock .Bmenu li.hover {
+        border-bottom: 2px solid rgb(49, 0, 247);
+    }
+
+    .Rblock .Bmenu li.hover a {
+        color: rgb(32, 32, 246);
+    }
+
+    .Rblock .Bmenu li:hover {
+        border-bottom: 2px solid rgb(49, 0, 247);
+    }
+
+    .Rblock .Bmenu li:hover a {
+        color: rgb(32, 32, 246);
+    }
+
+    .Rblock .Bmenu li:first-child {
+        margin-left: 0;
+    }
+
+    .Rblock .block {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 16px;
+        margin-left: 10px;
+    }
+
+    .Rblock .block li {
+        border: 1px solid darkgrey;
+        width: 237px;
+        min-height: 72px;
+        margin-right: 4px;
+        margin-bottom: 4px;
+        cursor: pointer;
+    }
+
+    .Rblock .block li:nth-child(4n) {
+        margin-right: 0;
+    }
+
+    .Rblock .block li .img {
+        width: 237px;
+    }
+
+    .Rblock .block li img {
+        width: 100%;
+    }
+
+    .Rblock .block li .title {
+        color: rgb(255, 0, 0);
+        margin-left: 10px;
+    }
+
+    .Rblock .block li .money {
+        margin-left: 15px;
+    }
+
+    #empty_mask {
+        border-left: 1px solid darkgrey;
+        border-right: 1px solid darkgrey;
+        text-align: center;
+        line-height: 72px;
+        height: 72px;
+    }
+
+    .Lblock .table .cont li div.none {
+        display: none;
+    }
+
+    .none {
+        display: none;
+    }
+
+    .form_input{
+        width: 180px;
+        height: 24px;
+        outline: none;
+        border: 1px solid #b7aec7;
+        border-radius: 3px;
+        padding-left: 10px;
+    }
+</style>
+
+<body>
+<div class="index">
+    <input type="hidden" value="{{datas2 }}" id="datas2">
+    <div class="Lmenu">
+    </div>
+
+    <div class="Lblock">
+        <div class="menu">
+            <ul>
+            </ul>
+        </div>
+        <div class="table">
+            <ul style="display: flex;">
+                <li style="width: 100px;">单号：</li>
+                <li style="width: 300px;"><input class="form_input" id="danhao" name="danhao" /></li>
+            </ul>
+            <ul class="title">
+                <li>商品名称</li>
+                <li>数量</li>
+                <li>金额</li>
+                <li>操作</li>
+            </ul>
+            <div id="empty_mask" style="display: block;">暂无数据</div>
+            <ul class="cont">
+
+            </ul>
+            <div class="end">
+                <span>数量:</span>
+                <span style="margin-right:10px ;font-size: 18px;">0</span>
+                <span>金额:</span>
+                <span style="font-size: 18px;">0元</span>
+            </div>
+        </div>
+        <div class="button">
+            <button class="but2">删除</button>
+            <button class="but3">结账</button>
+        </div>
+    </div>
+    <div class="Rblock">
+        <ul class="Bmenu">
+            {% for item in types %}
+            <li class="hover">
+                <a href="#">{{item.type}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <ul class="block">
+
+            {% for item in datas %}
+            <li>
+                <div class="img">
+                    <img src="" alt="">
+                </div>
+                <div class="title">
+                    {{item.product_name}}
+                </div>
+                <div class="money">￥<span>{{item.price}}</span>元</div>
+                <div class="none id">{{item.id}}</div>
+            </li>
+            {% endfor %}
+        </ul>
+        <script>
+
+            let datas = []
+            let p_zhekou = 1
+
+            window.onload = function() {
+                tableShow();
+            }
+
+            $(document).ready(function(){
+                Table_sum();
+            })
+
+            $(document).delegate('.jia', "click", function () {
+                var _this = $(this).parent().parent().children().eq(2); //数量
+                var money = $(this).parent().parent().children().eq(4); //价格
+                var Smoney = $(this).parent().parent().children().eq(3); //总价格
+                _this.text(parseInt(_this.text()) + 1)
+                Smoney.text((money.text() * 1)*parseInt(_this.text() * 1));
+                Table_sum();
+            });
+
+            $(document).delegate('.jian', "click", function () {
+                var _this = $(this).parent().parent().children().eq(2); //数量
+                var money = $(this).parent().parent().children().eq(4); //价格
+                var Smoney = $(this).parent().parent().children().eq(3); //总价格
+
+                if (parseInt(_this.text()) - 1 <= 0) {
+                    var _length = $(this).parent().parent().parent().children().length - 1;
+                    $(this).parent().parent().remove();
+                    if (_length <= 0) {
+                        $(".table .cont").attr("style", "display:none");
+                        $("#empty_mask").attr("style", "display:block");
+                    }
+                    Table_sum();
+                }
+                else {
+                    _this.text(parseInt(_this.text()) - 1)
+                    Smoney.text((money.text() * 1)*(_this.text() * 1));
+                    Table_sum();
+                }
+            });
+
+            $("body").on('click','.Rblock .block li',function(){
+                var _this = $(this).children();
+                var _id = _this.eq(3).text();
+                console.log(_id)
+                var existence = false;
+                $(".Lblock .table .cont li").each(function () {
+                    var id = $(this).children().eq(0).text();
+                    if (_id == id) {
+                        existence = true;
+                        $(this).children().eq(2).text(parseInt($(this).children().eq(2).text()) + 1);
+                        $(this).children().eq(3).text(($(this).children().eq(4).text() * 1)*($(this).children().eq(2).text() * 1));
+                        Table_sum();
+                    }
+                })
+
+                if (!existence) {
+                    var _str = "<li><div class='none'>%1%</div><div>%2%</div><div>1</div><div>%3%</div><div class='none'>%4%</div><div style='justify-content: center;padding:0 4px;'><span class='jia'>+</span><span class='jian'>-</span></div></li>";
+                    _str = _str.replace("%1%", _this.eq(3).text());
+                    _str = _str.replace("%2%", _this.eq(1).text());
+                    _str = _str.replace("%3%", _this.eq(2).children().text());
+                    _str = _str.replace("%4%", _this.eq(2).children().text());
+                    $(".Lblock .table .cont").append(_str);
+                    $(".table .cont").attr("style", "display:block");
+                    $("#empty_mask").attr("style", "display:none");
+                    Table_sum();
+                }
+            });
+
+            $(".Rblock .Bmenu li").click(function () {
+                var _this = $(this).children();
+                var type = _this.eq(0).text();
+                console.log(type)
+                var this_str = ""
+                for(var i=0; i<datas.length; i++){
+                    if(datas[i].type == type){
+                        var num = datas[i].price * p_zhekou
+                        console.log(p_zhekou)
+                        num = Math.floor(num * 100) / 100;
+                        this_str = this_str + "<li><div class=\"img\"><img src=\"\" alt=\"\"></div><div class=\"title\">\n" +
+                            "                    " + datas[i].product_name  +
+                            "                </div>" +
+                            "                <div class=\"money\">￥<span>" + num + "</span>元</div>" +
+                            "                <div class=\"none id\">" + datas[i].id + "</div>" +
+                            "            </li>"
+
+                    }
+                }
+                $(".Rblock .block li").remove();
+                $(".Rblock .block").append(this_str);
+
+            })
+
+
+            $(".but2").click(function () {
+                console.log("delete")
+                $(".Lblock .table .cont li").remove();
+                $(".table .cont").attr("style", "display:none");
+                $("#empty_mask").attr("style", "display:block");
+                Table_sum();
+            })
+
+            $(".but3").click(function () {
+                console.log("add")
+                var pro_list = []
+                var pro_num = $("#danhao").val();
+                $(".Lblock .table .cont li").each(function () {
+                    var id = $(this).children().eq(0).text();
+                    var num = $(this).children().eq(2).text();
+                    var zhehou = $(this).children().eq(3).text();
+                    console.log(id)
+                    console.log(num)
+                    console.log(zhehou)
+                    for(var i=0; i<datas.length;i++){
+                        if(datas[i].id == id){
+                            pro_list.push({
+                                cplx:datas[i].type,
+                                cpmc:datas[i].product_name,
+                                dw:datas[i].unit,
+                                dj:datas[i].price,
+                                dzbl:p_zhekou,
+                                zhdj:zhehou / num,
+                                zhje:zhehou,
+                                gs:num
+                            })
+                        }
+                    }
+                })
+                console.log(pro_list)
+                console.log(pro_num)
+                if(pro_num == ''){
+                    alert("未填写订单号")
+                    return;
+                }
+                if(pro_list.length == 0){
+                    alert("未选择商品")
+                    return;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    url: '/order_panel/add',
+                    timeout: 5000,
+                    data: {
+                        pro_list: JSON.stringify(pro_list),
+                        pro_num: pro_num,
+                        youhui: p_zhekou
+                    },
+                    success: function(res){
+                        let result = JSON.parse(res)
+                        alert(result.msg)
+                        tableShow();
+                    },
+                    error: function(res){
+                        if(res.status == "timeout"){
+                            alert("网络超时，请稍后再试")
+                        }else{
+                            alert("网络错误，请稍后再试")
+                        }
+                    }
+                });
+            })
+
+
+            function Table_sum(){
+                var _number = 0;
+                var _money = 0;
+                $(".Lblock .table .cont li").each(function () {
+                    var number = $(this).children().eq(2).text();
+                    var money = $(this).children().eq(3).text();
+                    _number += (number * 1);
+                    _money += (money * 1);
+                })
+                $(".Lblock .table .end").children().eq(1).text(_number);
+                $(".Lblock .table .end").children().eq(3).text(_money);
+
+            }
+
+            function tableShow(){
+                $.ajax({
+                    type: 'post',
+                    url: '/order_panel/select',
+                    async:false,
+                    timeout: 5000,
+                    success: function(res){
+                        let result = JSON.parse(res)
+                        console.log(result)
+                        datas = result.datas
+                        console.log(datas)
+                        let users = result.users
+                        console.log(users)
+                        if(users.usertype == '客户'){
+                            $.ajax({
+                                type: 'post',
+                                url: '/order_panel/select_discount',
+                                async:false,
+                                timeout: 5000,
+                                success: function(res){
+                                    let result = JSON.parse(res)
+                                    console.log('客户金额和等级列表')
+                                    console.log(result)
+                                    var zhekou = 1
+                                    var zhekou_list = result.dengji
+                                    var xiaofei = result.xiaoji_sum
+                                    if(xiaofei == null){
+                                        xiaofei = 0
+                                    }
+                                    for(var i=0; i<zhekou_list.length; i++){
+                                        console.log("门槛：" + zhekou_list[i].menkan * 1)
+                                        console.log("消费金额：" + xiaofei * 1)
+                                        if(zhekou_list[i].menkan * 1 <= xiaofei * 1){
+                                            zhekou = zhekou_list[i].bili
+                                        }
+                                    }
+                                    console.log(zhekou)
+                                    p_zhekou = zhekou
+                                    var this_str = ""
+                                    console.log(datas)
+                                    for(var i=0; i<datas.length; i++){
+                                            var num = datas[i].price * zhekou
+                                            num = Math.floor(num * 100) / 100;
+                                            this_str = this_str + "<li><div class=\"img\"><img src=\"\" alt=\"\"></div><div class=\"title\">\n" +
+                                                "                    " + datas[i].product_name  +
+                                                "                </div>" +
+                                                "                <div class=\"money\">￥<span>" + num + "</span>元</div>" +
+                                                "                <div class=\"none id\">" + datas[i].id + "</div>" +
+                                                "            </li>"
+
+
+                                    }
+
+                                    $(".Rblock .block li").remove();
+                                    $(".Rblock .block").append(this_str);
+
+                                    $(".Lblock .table .cont li").remove();
+                                    $(".table .cont").attr("style", "display:none");
+                                    $("#empty_mask").attr("style", "display:block");
+                                    Table_sum();
+
+                                },
+                                error: function(res){
+                                    if(res.status == "timeout"){
+                                        alert("网络超时，请稍后再试")
+                                    }else{
+                                        alert("网络错误，请稍后再试")
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    error: function(res){
+                        if(res.status == "timeout"){
+                            alert("网络超时，请稍后再试")
+                        }else{
+                            alert("网络错误，请稍后再试")
+                        }
+                    }
+                });
+            }
+        </script>
+    </div>
+</div>
+
+</body>
+</html>
+<SCRIPT Language=VBScript></SCRIPT>

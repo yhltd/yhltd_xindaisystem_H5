@@ -6,12 +6,22 @@ var logger = require('morgan');
 
 
 var indexRouter = require('./routes/index');
+var index1Router = require('./routes/index1');
 var usersRouter = require('./routes/users');
 var customerRouter = require('./routes/customer');
 var day_tradingRouter = require('./routes/day_trading');
 var month_tradingRouter = require('./routes/month_trading');
 var statisticsRouter = require('./routes/statistics');
 var productRouter = require('./routes/product');
+var member_infoRouter = require('./routes/member_info');
+var order_panelRouter = require('./routes/order_panel');
+var membership_levelRouter = require('./routes/membership_level');
+var ordersRouter = require('./routes/orders');
+var orders1Router = require('./routes/orders1');
+var userssRouter = require('./routes/userss');
+var orders_detailsRouter = require('./routes/orders_details');
+var orders_details_memberRouter = require('./routes/orders_details_member');
+var report_formRouter = require('./routes/report_form');
 var app = express();
 
 
@@ -36,12 +46,23 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/', index1Router);
 app.use('/users', usersRouter);
 app.use('/customer', customerRouter);
 app.use('/day_trading', day_tradingRouter);
 app.use('/month_trading', month_tradingRouter);
 app.use('/statistics', statisticsRouter);
 app.use('/product', productRouter);
+app.use('/member_info', member_infoRouter);
+app.use('/order_panel', order_panelRouter);
+app.use('/membership_level', membership_levelRouter);
+app.use('/orders', ordersRouter);
+app.use('/orders1', orders1Router);
+app.use('/userss', userssRouter);
+app.use('/orders_details', orders_detailsRouter);
+app.use('/orders_details_member', orders_details_memberRouter);
+app.use('/report_form', report_formRouter);
+
 
 
 // catch 404 and forward to error handler

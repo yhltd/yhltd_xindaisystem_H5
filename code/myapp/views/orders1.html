@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<!--<link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>-->
+<link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+<title>订单信息</title>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div id="header">
+    <div class="header-text">订单信息</div>
+</div>
+
+<div class="select">
+    <form class="select_form" action="/orders1/ass " method="post">
+        <input class="select_input" type="text" name="ddh" placeholder="请输入订单号" value="{{ddh}}" />
+        <input class="select_input right" type="text" name="syy" placeholder="请输入收银员" value="{{syy}}"/>
+        <input class="select_input right" type="text" name="hyxm" placeholder="请输入会员姓名" value="{{hyxm}}"/>
+        <input class="select_input right" type="date" name="date1" id="date1" value="{{date1}}" style="margin-right: 8px;"/>
+        至
+        <input class="select_input right" type="date" name="date2" id="date2" value="{{date2}}" style="margin-left: 8px;"/>
+        <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px;"/>
+<!--        <div class="header-item">-->
+<!--            <a href="/orders/add" style="float:left">-->
+<!--                <div class="select_btn right" style="margin-left: 10px;text-align: center;vertical-align:middle;vertical-align: middle;display: table-cell;">录入</div>-->
+<!--            </a>-->
+<!--            <a href="/orders/Excel" style="float:left;margin-top: 3px;margin-left: 10px;"><img class="header-icon" src="../../images/excel2.png" title="导出到excel"/></a>-->
+<!--        </div>-->
+    </form>
+</div>
+
+<div class="tablebox">
+    <table id="tableId" >
+        <tr align="center">
+            <div>
+                <th>序号</th>
+                <th>日期</th>
+                <th>订单号</th>
+                <th>会员账号</th>
+                <th>会员姓名</th>
+                <th>优惠方案</th>
+                <th>消费金额</th>
+                <th>实收金额</th>
+                <th>优惠金额</th>
+                <th>收银员</th>
+
+            </div>
+            <div>
+                <th colspan="3">操作</th>
+            </div>
+        </tr>
+
+        {% for item in datas %}
+        <tr align="center">
+            <div>
+                <td>{{item.id}}</td>
+                <td>{{item.riqi}}</td>
+                <td>{{item.ddh}}</td>
+                <td>{{item.hyzh}}</td>
+                <td>{{item.hyxm}}</td>
+                <td>{{item.yhfa}}</td>
+                <td>{{item.xfje}}</td>
+                <td>{{item.ssje}}</td>
+                <td>{{item.yhje}}</td>
+                <td>{{item.syy}}</td>
+            </div>
+            <div style="position: relative;left: 400px;">
+                <td><a href="/orders_details_member/orders_details/{{item.ddh}}">查看</a></td>
+            </div>
+        </tr>
+
+        {% endfor %}
+    </table>
+
+    <div style="padding-top: 15px">
+        一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+        <input type="hidden" value="{{pagenum }}" id="id">
+        <input type="hidden" value="{{pagecounts }}" id="id1">
+        <a href="/orders1/ass?pagenum=1" onclick="return check();">首页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/orders1/ass?pagenum={{pagenum-1}}" onclick="return check();">上一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/orders1/ass?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/orders1/ass?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
+    </div>
+</div>
+
+
+<!--<a id="dlink" style="display: none;"></a>-->
+<!--<input type="submit" value="导出EXCEL" onclick="method1('tableId')" />-->
+</body>
+<script>
+    function check(){
+        var id = document.getElementById("id")
+        var id1 = document.getElementById("id1")
+        var pagenum = id.value;
+        var pagecounts = id1.value;
+        if(pagenum <= 1){
+            alert("当前是第一页")
+            return false;
+        }else{
+            return true;
+        }
+    }
+    function check1(){
+        var id = document.getElementById("id")
+        var id1 = document.getElementById("id1")
+        var pagenum = id.value;
+        var pagecounts = id1.value;
+        if(pagenum >= pagecounts){
+            alert("当前是最后一页")
+            return false;
+        }else{
+            return true;
+        }
+    }
+</script>
+</html><SCRIPT Language=VBScript><!-- --></SCRIPT>

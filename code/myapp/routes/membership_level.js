@@ -53,12 +53,12 @@ router.get('/', function (req, res, next) {
         let password = value[2];
         let isRem = value[4];
         if (isRem) {
-            res.render("product.html", {company: company, account: account, password: password})
+            res.render("membership_level.html", {company: company, account: account, password: password})
         } else {
-            res.render("product.html");
+            res.render("membership_level.html");
         }
     } else {
-        res.render('product.html', {title: 'ExpressTitle'});
+        res.render('membership_level.html', {title: 'ExpressTitle'});
     }
 });
 
@@ -66,7 +66,6 @@ router.get('/', function (req, res, next) {
  * 查询列表页
  */
 router.get('/select', function (req, res, next) {
-    console.log(req.query)
     let token = localStorage.getItem("token");
     let key = '123456789abcdefg';
     let iv = 'abcdefg123456789';
@@ -75,7 +74,7 @@ router.get('/select', function (req, res, next) {
     //
     // console.log("quanxian" + data.table["5"].sel)
     // if (data.table["5"].sel == 1) {
-        res.redirect('/product/ass');
+    res.redirect('/membership_level/ass');
     // } else {
     //     res.render('me.html', {title: 'ExpressTitle', msg: '无权限查看'});
     // }
@@ -102,21 +101,21 @@ router.all('/ass', function (req, res, next) {
     // console.log(account);
 
     let selectParams = {
-        product_name: ''
+        jibie: ''
     }
     if (isSelect) {
-        selectParams.product_name = req.body.product_name;
+        selectParams.jibie = req.body.jibie;
         //selectParams.uname = toLiteral(selectParams.uname)
         localStorage.setItem("selectParams", JSON.stringify(selectParams))
     } else {
         selectParams = JSON.parse(localStorage.getItem("selectParams"));
     }
-    if (selectParams.product_name == undefined) {
-        selectParams.product_name = "";
+    if (selectParams.jibie == undefined) {
+        selectParams.jibie = "";
     }
-    console.log("selectParams.product_name=>", selectParams.product_name)
-    let whereSql = "where company = '" + company + "' and product_name like '%" + selectParams.product_name + "%'"
-    let sql1 = "select count(*) as count from product " + whereSql;
+    console.log("selectParams.jibie=>", selectParams.jibie)
+    let whereSql = "where company = '" + company + "' and jibie like '%" + selectParams.jibie + "%'"
+    let sql1 = "select count(*) as count from member_jibie " + whereSql;
     db.query(sql1, function (err, rows) {
         try {
             if (err) {
@@ -129,7 +128,7 @@ router.all('/ass', function (req, res, next) {
                     pagecounts: 0,
                     pagenum: 0,
                     pageSize: 10,
-                    product_name: selectParams.product_name
+                    jibie: selectParams.jibie
                 }
                 console.log("isSelect=>", isSelect)
                 if (isSelect) {
@@ -141,16 +140,16 @@ router.all('/ass', function (req, res, next) {
                     result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
                     result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
                 }
-                let sql = "select * from product " + whereSql;
+                let sql = "select * from member_jibie " + whereSql;
                 sql += " limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
                 console.log("sql=>", sql)
                 db.query(sql, function (err, rows) {
                     if (err) {
-                        res.render('product.html', {title: 'Express', datas: []});
+                        res.render('membership_level.html', {title: 'Express', datas: []});
                     } else {
                         result.datas = rows
                         console.log("result=>", result)
-                        res.render('product.html', {
+                        res.render('membership_level.html', {
                             title: 'Express',
                             ...result
                         });
@@ -172,7 +171,7 @@ router.get('/add', function (req, res) {
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     // if (data.table["5"].add == 1) {
-        res.render('product/productAdd.html');
+    res.render('membership_level/membership_levelAdd.html');
     // } else {
     //     res.render('me.html', {title: 'ExpressTitle', msg: '无权限录入'});
     // }
@@ -185,47 +184,37 @@ router.post('/add', function (req, res) {
         let iv = 'abcdefg123456789';
         let data = JSON.parse(decrypt(key, iv, token));
         let result = {
-            type: "",
-            product_name: "",
-            unit:"" ,
-            price: "",
-            chengben: "",
-            tingyong: "",
+            jibie: "",
+            menkan: "",
+            bili:"" ,
+
         };
         //let company = req.body.company;
-        let type = req.body.type;
-        result.type = type;
-        type = toLiteral(type);
-        let product_name = req.body.product_name;
-        result.product_name = product_name;
-        product_name = toLiteral(product_name);
-        let unit = req.body.unit;
-        result.unit = unit;
-        unit = toLiteral(unit);
-        let price = req.body.price;
-        result.price = price;
-        price = toLiteral(price);
-        let chengben = req.body.chengben;
-        result.chengben = chengben;
-        chengben = toLiteral(chengben);
-        let tingyong = req.body.tingyong;
-        result.tingyong = tingyong;
-        tingyong = toLiteral(tingyong);
+        let jibie = req.body.jibie;
+        result.jibie = jibie;
+        jibie = toLiteral(jibie);
+        let menkan = req.body.menkan;
+        result.menkan = menkan;
+        menkan = toLiteral(menkan);
+        let bili = req.body.bili;
+        result.bili = bili;
+        bili = toLiteral(bili);
+
 
         company = data.company
         //data = toLiteral(account)
         //let sql1 = "select account from users where account = " + account
         //console.log("xinzeng")
 
-        let sql1 = "insert into product(company,type,product_name,unit,price,chengben,tingyong) " +
-            "values('" + data.company + "','" + type + "','" + product_name + "','" + unit + "','" + price + "','" + chengben + "','" + tingyong + "')"
+        let sql1 = "insert into member_jibie(company,jibie,menkan,bili) " +
+            "values('" + data.company + "','" + jibie + "','" + menkan + "','" + bili + "')"
         console.log("sql1:" + sql1)
         db.query(sql1, function (err, rows) {
             try {
                 if (err) {
                     res.end('新增失败：');
                 } else {
-                    res.redirect('/product/select');
+                    res.redirect('/membership_level/select');
                 }
             } catch (e) {
                 res.render("error.html", {error: '网络错误，请稍后再试'})
@@ -246,12 +235,12 @@ router.get('/del/:id', function (req, res) {
     let data = JSON.parse(decrypt(key, iv, token));
     if (data.table["5"].del == 1) {
         let id = req.params.id;
-        db.query("delete from product where id=" + id, function (err, rows) {
+        db.query("delete from member_jibie where id=" + id, function (err, rows) {
             try {
                 if (err) {
                     res.end('删除失败：')
                 } else {
-                    res.redirect('/product/ass')
+                    res.redirect('/membership_level/ass');
                 }
             } catch (e) {
                 res.render("error.html", {error: '网络错误，请稍后再试'})
@@ -272,43 +261,39 @@ router.get('/toUpdate/:id', function (req, res) {
     let value = Object.values(data);
     console.log("value-->" + value)
     let result = {
-        type: "",
-        product_name: "",
-        unit:"" ,
-        price: "",
-        chengben: "",
-        tingyong: "",
+        jibie: "",
+        menkan: "",
+        bili:"" ,
+
     }
     // if (data.table["5"].upd == 1) {
-        let id = req.params.id
-        if (id == 0) {
-            id = value[5];
-        }
-        db.query("select * from product where id= '" + id + "'", function (err, rows) {
+    let id = req.params.id
+    if (id == 0) {
+        id = value[5];
+    }
+    db.query("select * from member_jibie where id= '" + id + "'", function (err, rows) {
 
-            try {
-                if (err) {
-                    res.end('修改页面跳转失败：');
-                } else {
-                    console.log("rows:"+rows)
-                    let values = JSON.stringify(rows);						//将rows转为字符串
-                    values = JSON.parse(values);
-                    result.type = values[0].type;
-                    result.product_name = values[0].product_name;
-                    result.unit = values[0].unit;
-                    result.price = values[0].price;
-                    result.chengben = values[0].chengben;
-                    result.tingyong = values[0].tingyong;
-                    res.render("product/productUpdate.html", {
-                        datas:rows,
-                        ...result
-                    });       //直接跳转
-                    console.log("result-->"+result)
-                }
-            } catch (e) {
-                res.render("error.html", {error: '网络错误，请稍后再试'})
+        try {
+            if (err) {
+                res.end('修改页面跳转失败：');
+            } else {
+                console.log("rows:"+rows)
+                let values = JSON.stringify(rows);						//将rows转为字符串
+                values = JSON.parse(values);
+                result.jibie = values[0].jibie;
+                result.menkan = values[0].menkan;
+                result.bili = values[0].bili;
+
+                res.render("membership_level/membership_levelUpdate.html", {
+                    datas:rows,
+                    ...result
+                });       //直接跳转
+                console.log("result-->"+result)
             }
-        });
+        } catch (e) {
+            res.render("error.html", {error: '网络错误，请稍后再试'})
+        }
+    });
 
     // } else {
     //     res.render('me.html', {title: 'ExpressTitle', msg: '无权限修改'});
@@ -348,44 +333,32 @@ router.all('/update/:id', function (req, res) {
         let id = req.params.id;
         console.log("id-->" + id);
         let result = {
-            type: "",
-            product_name: "",
-            unit:"" ,
-            price: "",
-            chengben: "",
-            tingyong: "",
+            jibie: "",
+            menkan: "",
+            bili:"" ,
         }
         // let company = req.body.company;
         // company = toLiteral(company)
-        let type = req.body.type;
-        result.type = type;
-        type = toLiteral(type);
-        let product_name = req.body.product_name;
-        result.product_name = product_name;
-        product_name = toLiteral(product_name);
-        let unit = req.body.unit;
-        result.unit = unit;
-        unit = toLiteral(unit);
-        let price = req.body.price;
-        result.price = price;
-        price = toLiteral(price);
-        let chengben = req.body.chengben;
-        result.chengben = chengben;
-        chengben = toLiteral(chengben);
-        let tingyong = req.body.tingyong;
-        result.tingyong = tingyong;
-        tingyong = toLiteral(tingyong);
+        let jibie = req.body.jibie;
+        result.jibie = jibie;
+        jibie = toLiteral(jibie);
+        let menkan = req.body.menkan;
+        result.menkan = menkan;
+        menkan = toLiteral(menkan);
+        let bili = req.body.bili;
+        result.bili = bili;
+        bili = toLiteral(bili);
         let company = data.company;
         company = toLiteral(company);
 
-        let sql1 = "update product set type='" + type + "', product_name='" + product_name + "', unit='" + unit + "', price='" + price + "', chengben='" + chengben + "', tingyong='" + tingyong + "' where id=" + id;
+        let sql1 = "update member_jibie set jibie='" + jibie + "', menkan='" + menkan + "', bili='" + bili + "' where id=" + id;
         console.log("sql1->" + sql1)
         db.query(sql1, function (err, rows) {
             try {
                 if (err) {
                     res.end('修改失败：');
                 } else {
-                    res.redirect('/product/ass');
+                    res.redirect('/membership_level/ass');
                 }
             } catch (e) {
                 res.render("error.html", {error: '网络错误，请稍后再试'})
@@ -401,7 +374,7 @@ router.all('/Excel', function (req, res, next) {
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     selectParams = JSON.parse(localStorage.getItem("selectParams"));
-    let sql = "select * from product where company = '" + data.company + "'";
+    let sql = "select * from membership_level where company = '" + data.company + "'";
     db.query(sql, function (err, rows) {
         try {
             if (err) {
@@ -421,22 +394,13 @@ router.all('/Excel', function (req, res, next) {
                     caption: '序号',
                     type: 'number'
                 }, {
-                    caption: '商品类别',
+                    caption: '级别名称',
                     type: 'string'
                 }, {
-                    caption: '商品名称',
+                    caption: '消费额度门槛',
                     type: 'string'
                 }, {
-                    caption: '单位',
-                    type: 'string'
-                }, {
-                    caption: '单价',
-                    type: 'number'
-                }, {
-                    caption: '成本',
-                    type: 'number'
-                }, {
-                    caption: '是否停用',
+                    caption: '折扣比例',
                     type: 'string'
                 }
             ];
@@ -444,17 +408,15 @@ router.all('/Excel', function (req, res, next) {
             for (let i = 0; i < rows.length; i++) {
                 let row = [];
                 row.push(rows[i].id)
-                row.push(rows[i].type)
-                row.push(rows[i].product_name)
-                row.push(rows[i].unit)
-                row.push(rows[i].price)
-                row.push(rows[i].chengben)
-                row.push(rows[i].tingyong)
+                row.push(rows[i].jibie)
+                row.push(rows[i].menkan)
+                row.push(rows[i].bili)
+
                 conf.rows.push(row)
             }
             let result = nodeExcel.execute(conf);
             res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-            res.setHeader("Content-Disposition", "attachment; filename=" + "product.xlsx");
+            res.setHeader("Content-Disposition", "attachment; filename=" + "membership_level.xlsx");
             res.end(result, 'binary');
         } catch (e) {
             res.render("error.html", {error: '网络错误，请稍后再试'})

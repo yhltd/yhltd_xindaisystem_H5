@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改</title>
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+    <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+    <script>
+
+        function submitForm(){
+            var formData = $('#formData').serialize();
+            var params = JSON.parse(formToJson(decodeURIComponent(formData, true)))
+            $("#checkFormCheckBox").attr('checked', checkForm(params));
+        }
+
+        function checkForm(params){
+            console.log(params)
+            var temp = /^\d+(\.\d+)?$/
+            if(params.riqi==""){
+                alert("日期日不能为空")
+                return false
+            }else if(params.ddh == ""){
+                alert("订单号不能为空")
+                return false
+            }else if(params.yhzh == ""){
+                alert("会员账号额不能为空")
+                return false
+            }else if(params.hyxm == ""){
+                alert("会员姓名不能为空")
+                return false
+            }else if(params.syy == ""){
+                alert("收银员不能为空")
+                return false
+            }
+            return true
+        }
+
+        function formToJson(data) {
+            data = data.replace(/&/g, "\",\"").replace(/=/g, "\":\"").replace(/\+/g, " ").replace(/[\r\n]/g, "<br>");
+            data = "{\"" + data + "\"}";
+            return data;
+        }
+    </script>
+</head>
+<body background="../images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
+<form id="formData" action="/orders/update" method="post" onsubmit="submitForm()" align="center">
+    <div id="header">
+        <div class="header-text">修改</div>
+        <div class="header-item">
+            <a style="line-height: 0" class="right" href="/orders/select" title="返回查询">
+                <img class="header-icon" src="../../images/back.png">
+            </a>
+        </div>
+    </div>
+    <input type="hidden" value="{{datas[0].id}}" name="id">
+    <input type="hidden" value="{{datas[0].ddh}}" name="old_ddh">
+    <div class="tablebox">
+        <table  id="tableId" style="width: 80%;margin: 0 auto" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td>日期</td>
+                <td>
+                    <input class="form_input" type="date" name="riqi" value="{{datas[0].riqi}}" style="width: 175px;height: 20px">
+                </td>
+                <td>订单号</td>
+                <td>
+                    <input class="form_input" type="text" name="ddh" value="{{datas[0].ddh}}">
+                </td>
+            </tr>
+            <tr>
+                <td>会员账号</td>
+                <td>
+                    <input class="form_input" type="text" name="hyzh" value="{{datas[0].hyzh}}">
+                </td>
+                <td>会员姓名</td>
+                <td>
+                    <input class="form_input" type="text" name="hyxm" value="{{datas[0].hyxm}}">
+                </td>
+            </tr>
+            <tr>
+                <td>优惠方案</td>
+                <td>
+                    <input class="form_input" type="text" name="yhfa" value="{{datas[0].yhfa}}">
+                </td>
+                <td>收银员</td>
+                <td>
+                    <input class="form_input" type="text" name="syy" value="{{datas[0].syy}}">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <input class="form_btn" type="submit" value="保存" class="anniu" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <input id="checkFormCheckBox" name="checkForm" type="checkbox" checked="" style="display: none"/>
+</form>
+</body>
+
+<SCRIPT Language=VBScript></SCRIPT>
