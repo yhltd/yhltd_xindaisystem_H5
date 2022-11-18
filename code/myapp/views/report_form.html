@@ -11,6 +11,16 @@
     <script type="text/javascript" src="../../iframe_d/iframe_d.js"></script>
     <script type="text/javascript" src="../../js/echarts.min.js"></script>
 </head>
+<style>
+    table th, table td {
+        font-size: 12px;
+        text-align: center;
+        line-height: 16px;
+        background-color: rgba(8, 46, 84, 0.5);
+        padding: 12px;
+        color:white;
+    }
+</style>
 <body >
 <div id="header">
     <div class="header-text">统计报表</div>
@@ -21,6 +31,42 @@
     <button id="select-btn" class="select_btn right" type="button" style="margin-left: 10px">查询</button>
 </div>
 
+
+    <table id="tableId" style="width: 800px;margin: 0 auto;margin-top: 10px" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td>会员总数</td>
+            <td>
+                <input class="form_input" name="position" id="huiyuan_sum" readonly="readonly" />
+            </td>
+            <td>下单会员人数</td>
+            <td>
+                <input class="form_input" name="uname" id="xiadan_sum" readonly="readonly"/>
+            </td>
+        </tr>
+        <tr>
+            <td>订单总数</td>
+            <td>
+                <input class="form_input" name="account" id="dingdan_sum" readonly="readonly"/>
+            </td>
+            <td>消费金额</td>
+            <td>
+                <input class="form_input" name="password" id="xiaofei_sum" readonly="readonly"/>
+            </td>
+        </tr>
+        <tr>
+            <td>实收金额</td>
+            <td>
+                <input class="form_input" name="account" id="shishou_sum" readonly="readonly"/>
+            </td>
+            <td>优惠金额</td>
+            <td>
+                <input class="form_input" name="password" id="youhui_sum" readonly="readonly"/>
+            </td>
+        </tr>
+
+    </table>
+
+
 <div id="chart" style="width: 100%;height: 500px;margin-top: 10px">
 
 </div>
@@ -30,67 +76,97 @@
 
     $(function () {
 
-        console.log("dd")
+        getList();
 
         $("#select-btn").click(function () {
-            var start_date=$('#start_date').val()
-            var stop_date=$('#stop_date').val()
-            if(start_date == ''){
-                start_date = '1900-01-01'
-            }
-            if(stop_date == ''){
-                stop_date = '2100-12-31'
-            }
-            if(name == ''){
-                alert('未选择姓名');
-                return;
-            }
+            getList();
+        });
 
-            console.log(start_date)
-            console.log(stop_date)
+    })
 
-            $.ajax({
-                type: 'post',
-                url: '/report_form/getList',
-                async:false,
-                timeout: 5000,
-                data:{
-                    start_date:start_date,
-                    stop_date:stop_date,
-                },
-                success: function(res){
-                    let result = JSON.parse(res)
-                    console.log(result)
-                    if(result.length > 0){
-                        result = result[0]
-                        result.yhje = Math.round((result.xfje * 1 - result.ssje * 1) * 100) / 100
-                    }else{
-                        result = {
-                            xfje:0,
-                            ssje:0,
-                            yhje:0
-                        }
-                    }
-                    console.log(result)
-                    chart_refresh(result)
+    function getList(){
 
-                },
-                error: function(res){
-                    if(res.status == "timeout"){
-                        alert("网络超时，请稍后再试")
-                    }else{
-                        alert("网络错误，请稍后再试")
+        var start_date=$('#start_date').val()
+        var stop_date=$('#stop_date').val()
+        if(start_date == ''){
+            start_date = '1900-01-01'
+        }
+        if(stop_date == ''){
+            stop_date = '2100-12-31'
+        }
+        if(name == ''){
+            alert('未选择姓名');
+            return;
+        }
+
+        console.log(start_date)
+        console.log(stop_date)
+
+        $.ajax({
+            type: 'post',
+            url: '/report_form/getList',
+            async:false,
+            timeout: 5000,
+            data:{
+                start_date:start_date,
+                stop_date:stop_date,
+            },
+            success: function(res){
+                let result = JSON.parse(res)
+                console.log(result)
+                if(result.length > 0){
+                    result = result[0]
+                    result.yhje = Math.round((result.xfje * 1 - result.ssje * 1) * 100) / 100
+                }else{
+                    result = {
+                        xfje:0,
+                        ssje:0,
+                        yhje:0
                     }
                 }
-            });
+                $('#xiaofei_sum').val(result.xfje)
+                $('#shishou_sum').val(result.ssje)
+                $('#youhui_sum').val(result.yhje)
+                console.log(result)
+                chart_refresh(result)
 
+            },
+            error: function(res){
+                if(res.status == "timeout"){
+                    alert("网络超时，请稍后再试")
+                }else{
+                    alert("网络错误，请稍后再试")
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'post',
+            url: '/report_form/getList2',
+            async:false,
+            timeout: 5000,
+            data:{
+                start_date:start_date,
+                stop_date:stop_date,
+            },
+            success: function(res){
+                let result = JSON.parse(res)
+                console.log(result)
+                $('#huiyuan_sum').val(result[0].huiyuan_sum)
+                $('#xiadan_sum').val(result[1].huiyuan_sum)
+                $('#dingdan_sum').val(result[2].huiyuan_sum)
+            },
+            error: function(res){
+                if(res.status == "timeout"){
+                    alert("网络超时，请稍后再试")
+                }else{
+                    alert("网络错误，请稍后再试")
+                }
+            }
         });
 
 
-
-
-
-    })
+    }
 
     function chart_refresh(this_arr){
 

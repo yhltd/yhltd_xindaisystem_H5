@@ -434,72 +434,76 @@ router.all('/update/:id', function (req, res) {
 
     }
 });
-// router.all('/Excel', function (req, res, next) {
-//     let token = localStorage.getItem("token");
-//     let key = '123456789abcdefg';
-//     let iv = 'abcdefg123456789';
-//     let data = JSON.parse(decrypt(key, iv, token));
-//     selectParams = JSON.parse(localStorage.getItem("selectParams"));
-//     let sql = "select * from product where company = '" + data.company + "'";
-//     db.query(sql, function (err, rows) {
-//         try {
-//             if (err) {
-//                 console.log(err);
-//             } else {
-//                 let values = rows
-//                 //console.log("value=>",values)
-//             }
-//             let sql2 = JSON.stringify(sql);
-//             let sql3 = JSON.parse(sql2);
-//             //console.log(sql3);
-//             let conf = {};
-//             conf.stylesXmlFile = "styles.xml";
-//             conf.name = "mysheet";
-//             conf.cols = [
-//                 {
-//                     caption: '序号',
-//                     type: 'number'
-//                 }, {
-//                     caption: '商品类别',
-//                     type: 'string'
-//                 }, {
-//                     caption: '商品名称',
-//                     type: 'string'
-//                 }, {
-//                     caption: '单位',
-//                     type: 'string'
-//                 }, {
-//                     caption: '单价',
-//                     type: 'number'
-//                 }, {
-//                     caption: '成本',
-//                     type: 'number'
-//                 }, {
-//                     caption: '是否停用',
-//                     type: 'string'
-//                 }
-//             ];
-//             conf.rows = []
-//             for (let i = 0; i < rows.length; i++) {
-//                 let row = [];
-//                 row.push(rows[i].id)
-//                 row.push(rows[i].type)
-//                 row.push(rows[i].product_name)
-//                 row.push(rows[i].unit)
-//                 row.push(rows[i].price)
-//                 row.push(rows[i].chengben)
-//                 row.push(rows[i].tingyong)
-//                 conf.rows.push(row)
-//             }
-//             let result = nodeExcel.execute(conf);
-//             res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-//             res.setHeader("Content-Disposition", "attachment; filename=" + "product.xlsx");
-//             res.end(result, 'binary');
-//         } catch (e) {
-//             res.render("error.html", {error: '网络错误，请稍后再试'})
-//         }
-//     });
-//
-//
-// });
+router.all('/Excel', function (req, res, next) {
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key, iv, token));
+    selectParams = JSON.parse(localStorage.getItem("selectParams"));
+    let sql = "select * from member_info where company = '" + data.company + "'";
+    db.query(sql, function (err, rows) {
+        try {
+            if (err) {
+                console.log(err);
+            } else {
+                let values = rows
+                //console.log("value=>",values)
+            }
+            let sql2 = JSON.stringify(sql);
+            let sql3 = JSON.parse(sql2);
+            //console.log(sql3);
+            let conf = {};
+            conf.stylesXmlFile = "styles.xml";
+            conf.name = "mysheet";
+            conf.cols = [
+                {
+                    caption: '序号',
+                    type: 'number'
+                }, {
+                    caption: '账号',
+                    type: 'string'
+                }, {
+                    caption: '密码',
+                    type: 'string'
+                }, {
+                    caption: '姓名',
+                    type: 'string'
+                }, {
+                    caption: '性别',
+                    type: 'string'
+                }, {
+                    caption: '账号状态',
+                    type: 'string'
+                }, {
+                    caption: '电话号',
+                    type: 'string'
+                }, {
+                    caption: '生日',
+                    type: 'string'
+                }
+            ];
+            conf.rows = []
+            for (let i = 0; i < rows.length; i++) {
+                let row = [];
+                row.push(rows[i].id)
+                row.push(rows[i].username)
+                row.push(rows[i].password)
+                row.push(rows[i].name)
+                row.push(rows[i].gender)
+                row.push(rows[i].state)
+                row.push(rows[i].phone)
+                row.push(rows[i].birthday)
+                conf.rows.push(row)
+            }
+            let result = nodeExcel.execute(conf);
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+            res.setHeader("Content-Disposition", "attachment; filename=" + "member_info.xlsx");
+            res.end(result, 'binary');
+        } catch (e) {
+            res.render("error.html", {error: '网络错误，请稍后再试'})
+        }
+    });
+
+
+});
 module.exports = router;

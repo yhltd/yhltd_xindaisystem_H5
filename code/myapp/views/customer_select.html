@@ -7,6 +7,11 @@
 <head>
     <meta charset="UTF-8">
 </head>
+<style>
+    .select_input{
+        border: 1px solid #CCCCCC;
+    }
+</style>
 <body>
 <div id="header">
     <div class="header-text">客户信息查询</div>
@@ -14,7 +19,7 @@
 
 <div class="select">
     <form class="select_form" action="/customer/ass " method="post">
-        <input class="select_input" type="text" name="recipient" placeholder="请输入收卡人" value="{{recipient}}" />
+        <input class="select_input" style="margin-left: 10px;" type="text" name="recipient" placeholder="请输入收卡人" value="{{recipient}}" />
         <input class="select_input right" type="text" name="cardholder" placeholder="请输入付款人" value="{{cardholder}}"/>
         <input class="select_input right" type="text" name="drawee" placeholder="请输入持卡人" value="{{drawee}}"/>
         <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px;"/>

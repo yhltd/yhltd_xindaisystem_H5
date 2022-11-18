@@ -213,4 +213,31 @@ router.post('/getList', function (req, res) {
 });
 
 
+router.post('/getList2', function (req, res) {
+    let token = localStorage.getItem("token")
+    let key = '123456789abcdefg';
+    //console.log('加密的key:', key);
+    let iv = 'abcdefg123456789';
+
+    let start_date = req.body.start_date;
+    let stop_date = req.body.stop_date;
+    let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    let company = value[0];
+    var sql = "select count(*) as huiyuan_sum from member_info where company = '"+ toLiteral(company) +"' union all select count(*) as xiadan_sum from(select hyzh from orders where company = '"+ toLiteral(company) +"' and hyzh != '' and riqi >='" + start_date + "' and riqi <= '" + stop_date + "' group by hyzh) as xdhy union all select count(*) as dingdan_sum from orders where company = '"+ toLiteral(company) +"' and riqi >='" + start_date + "' and riqi <= '" + stop_date + "'"
+    db.query(sql, function (err, rows) {
+        try {
+            if (err) {
+                res.end('获取失败：');
+            } else {
+                let result = JSON.stringify(rows)
+                res.json(result);
+            }
+        } catch (e) {
+            res.render("error.html", {error: '网络错误，请稍后再试'})
+        }
+    });
+});
+
+
 module.exports = router;

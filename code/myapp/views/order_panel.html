@@ -227,6 +227,7 @@
         width: 350px;
         margin-left: 10px;
         margin-right: 10px;
+        min-height: 600px;
     }
 
     .Lblock .menu ul {
@@ -277,7 +278,8 @@
         font-size: 16px;
         font-weight: bold;
         line-height: 50px;
-        padding-left: 8px;
+        text-align: center;
+        /*padding-left: 8px;*/
         color: #606060;
     }
 
@@ -357,7 +359,11 @@
 
     .Rblock {
         width: 70%;
-        border-left: 1px solid darkgray;
+        border-left: 3px solid darkgray;
+    }
+
+    body{
+        background: url("../images/shangpin_background.jpeg");
     }
 
     .Rblock .head {
@@ -431,11 +437,10 @@
         margin-right: 4px;
         margin-bottom: 4px;
         cursor: pointer;
+        border-radius: 15px;
     }
 
-    .Rblock .block li:nth-child(4n) {
-        margin-right: 0;
-    }
+
 
     .Rblock .block li .img {
         width: 237px;
@@ -478,6 +483,8 @@
         border-radius: 3px;
         padding-left: 10px;
     }
+
+
 </style>
 
 <body>
@@ -497,16 +504,16 @@
                 <li style="width: 300px;"><input class="form_input" id="danhao" name="danhao" /></li>
             </ul>
             <ul class="title">
-                <li>商品名称</li>
+                <li style="border-radius:15px 0px 0px 0px">商品名称</li>
                 <li>数量</li>
                 <li>金额</li>
-                <li>操作</li>
+                <li style="border-radius:0px 15px 0px 0px">操作</li>
             </ul>
             <div id="empty_mask" style="display: block;">暂无数据</div>
             <ul class="cont">
 
             </ul>
-            <div class="end">
+            <div class="end"  style="border-radius:0px 0px 15px 15px">
                 <span>数量:</span>
                 <span style="margin-right:10px ;font-size: 18px;">0</span>
                 <span>金额:</span>

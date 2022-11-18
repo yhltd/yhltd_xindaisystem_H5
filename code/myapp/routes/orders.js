@@ -337,7 +337,7 @@ router.all('/Excel', function (req, res, next) {
     // console.log(typeof selectParams.date1)
     console.log(selectParams)
     let panduan = {}
-    let whereSql = " where gongsi = '" + company + "'"
+    let whereSql = " where company = '" + company + "'"
     let sql = "select * from orders " + whereSql;
     console.log(sql)
     db.query(sql, function (err, rows) {
@@ -355,6 +355,10 @@ router.all('/Excel', function (req, res, next) {
             conf.stylesXmlFile = "styles.xml";
             conf.name = "mysheet";
             conf.cols = [
+                {
+                    caption: '序号',
+                    type: 'string'
+                },
                 {
                     caption: '日期',
                     type: 'string'
@@ -378,10 +382,10 @@ router.all('/Excel', function (req, res, next) {
                     type: 'string'
                 }, {
                     caption: '优惠金额',
-                    type: 'number'
+                    type: 'string'
                 }, {
                     caption: '收银员',
-                    type: 'number'
+                    type: 'string'
                 }
             ];
             conf.rows = []

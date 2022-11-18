@@ -1,6 +1,6 @@
 
 #header{
-    height:40px;
+    height:50px;
     line-height:80px;
     width:100%;
     display: flex;
@@ -49,7 +49,7 @@ table, tbody, tfoot, thead, tr, th, td {
 
 .tablebox {
     width: 100%;
-    height: 470px;
+    height: 530px;
 
     overflow-x: scroll;
 }
@@ -59,7 +59,16 @@ table, tbody, tfoot, thead, tr, th, td {
 
 }
 
-.tablebox table th, .tablebox table td {
+.tablebox table th {
+    font-size: 12px;
+    text-align: center;
+    line-height: 16px;
+    background: #ffffff;
+    padding: 3px;
+
+}
+
+.tablebox table td {
     font-size: 12px;
     text-align: center;
     line-height: 16px;
@@ -71,7 +80,7 @@ table, tbody, tfoot, thead, tr, th, td {
 .tablebox table th {
     height: 30px;
     line-height: 30px;
-    background: #f6f6f6;
+    background: url("../images/title.png");
     font-size: 14px;
     font-weight: bold;
     color:#3872f6;
@@ -87,6 +96,8 @@ table, tbody, tfoot, thead, tr, th, td {
     line-height: 18px;
 
 }
+
+
 .tts{
     color: #080808;
     margin-top: 100px;
@@ -118,7 +129,7 @@ table, tbody, tfoot, thead, tr, th, td {
 
 .header-text{
     font-weight: bold;
-    font-size: 16px;
+    font-size: 24px;
     /*text-align: center;*/
 }
 
@@ -129,6 +140,13 @@ table, tbody, tfoot, thead, tr, th, td {
 .header-item{
     line-height: 0;
     margin-left: 10px;
+}
+.select{
+    padding-top: 10px;
+    border-top: 3px solid #d2d6de;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
+    padding-bottom: 10px;
+    background-color: #FFFFFF;
 }
 
 .select_form{
