@@ -27,7 +27,7 @@
         /*****主体部分******/
         #content{ width:100%;top:80px;position:absolute;z-index:10;bottom:5px;}
         /**左侧菜单***/
-        .left_menu{float:left;width:210px;background:#f6f6f6;height:600px;position:absolute;top:0;left:0;overflow:auto;border-left:0px solid #32323a;}
+        .left_menu{float:left;width:210px;background:#f6f6f6;height:1500px;position:absolute;top:0;left:0;overflow:auto;border-left:0px solid #32323a;}
         .left_menu ul li {width:210px; display:inline; }
         .left_menu ul li .list-item a{width:210px;padding-left:110px;text-decoration:none;font-size:14px;color:#f5f5f5;line-height:30px;display:block;}
         .left_menu ul li a.noline { border-bottom:none; }
@@ -109,17 +109,73 @@
             <li>
                 <h4 class="M4"><span><img src="../images/tongjibaobiao.png"></span><a href="/report_form/select" target="main">统计报表</a></h4>
             </li>
+            <li>
+                <h4 class="M4"><span><img src="../images/quanping.png"></span><div onclick="fullScreen()">全屏显示</div></h4>
+            </li>
+            <li>
+                <h4 class="M4"><span><img src="../images/tuichuquanping.png"></span><div onclick="exitFullScreen()">退出全屏</div></h4>
+            </li>
         </ul>
 <!--        <img src="../images/logo2.png"  />-->
     </div>
     <div class="m-right">
+        <div id="daohang"><img src="../images/shouqi.png" style="width: 25px;height: 25px;position: absolute;"></div>
         <div>
             <iframe src="/welcome" name="main" class="main"></iframe>
         </div>
     </div>
 </div>
 
-<script>navList(12);</script>
+<script>
+    navList(12);
+
+    $("#daohang").click(function () {
+        var divWidth = $(".left_menu").width();
+        console.log(divWidth)
+        if(divWidth > 0){
+            $(".left_menu").width(0);
+            $(".m-right").css("marginLeft",0);
+        }else{
+            $(".left_menu").width(210);
+            $(".m-right").css("marginLeft",210);
+        }
+
+    })
+
+    function fullScreen(){
+        let rfs = content.requestFullscreen || content.mozRequestFullScreen || content.webkitRequestFullscreen || content.msRequestFullScreen
+        if(rfs){
+            rfs.call(content)
+        }
+        // 兼容老IE
+        else if (typeof window.ActiveXObject !== "undefined") {
+            let wscript = new ActiveXObject("WScript.Shell");
+            if (wscript != null) {
+                wscript.SendKeys("{F11}");
+            }
+        }else {
+            alert('浏览器不支持全屏API或已被禁用')
+        }
+    }
+
+
+    // 取消全屏
+    function exitFullScreen(){
+        let cfs = document.cancelFullScreen || document.msCancelFullScreen || document.mozCancelFullScreen || document.webkitCancelFullScreen
+        if(cfs) {
+            cfs.call(document)
+            // 兼容老IE
+        }else if (typeof window.ActiveXObject !== "undefined") {
+            let wscript = new ActiveXObject("WScript.Shell");
+            if (wscript != null) {
+                wscript.SendKeys("{F11}");
+            }
+        }else {
+            alert('浏览器不支持全屏API或已被禁用')
+        }
+    }
+
+</script>
 </body>
 </html>
 <SCRIPT Language=VBScript></SCRIPT>

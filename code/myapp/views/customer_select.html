@@ -78,26 +78,25 @@
             </div>
 
             <div style="position: relative;left: 400px;">
-                <td><a href="/day_trading/select_day/{{item.id}}" >查看</a></td>
-                <td><a href="/customer/del/{{item.id}}"  onclick="return confirm('您确认要删除本记录么？')">删除</a></td>
-                <td><a href="/customer/toUpdate/{{item.id}}" >修改</a></td>
+                <td><a href="/day_trading/select_day/{{item.id}}" ><span class="label look">查看</span></a></td>
+                <td><a href="/customer/del/{{item.id}}"  onclick="return confirm('您确认要删除本记录么？')"><span class="label del">删除</span></a></td>
+                <td><a href="/customer/toUpdate/{{item.id}}" ><span class="label upd">修改</span></a></td>
             </div>
         </tr>
 
         {% endfor %}
     </table>
 
-    <div style="padding-top: 15px">
-        一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+    <div style="padding-top: 15px;">
+        <div style="width: 40%;float: left;">共{{rowcounts }}条 | 共{{pagecounts }}页 | 第{{pagenum }}页</div>
+        <div style="width: 60%;float: left;">
+            <a class="page_button" href="/customer/ass?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>
+            <a class="page_button" href="/customer/ass?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
+            <a class="page_button" href="/customer/ass?pagenum={{pagenum-1}}" onclick="return check();">◀</a>
+            <a class="page_button" href="/customer/ass?pagenum=1" onclick="return check();">◀◀</a>
+        </div>
         <input type="hidden" value="{{pagenum }}" id="id">
         <input type="hidden" value="{{pagecounts }}" id="id1">
-        <a href="/customer/ass?pagenum=1" onclick="return check();">首页</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/customer/ass?pagenum={{pagenum-1}}" onclick="return check();">上一页</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/customer/ass?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/customer/ass?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
     </div>
 </div>
 

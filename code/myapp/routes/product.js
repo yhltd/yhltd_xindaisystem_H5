@@ -278,6 +278,7 @@ router.get('/toUpdate/:id', function (req, res) {
         price: "",
         chengben: "",
         tingyong: "",
+        photo: "",
     }
     // if (data.table["5"].upd == 1) {
         let id = req.params.id
@@ -299,6 +300,7 @@ router.get('/toUpdate/:id', function (req, res) {
                     result.price = values[0].price;
                     result.chengben = values[0].chengben;
                     result.tingyong = values[0].tingyong;
+                    result.photo = values[0].photo;
                     res.render("product/productUpdate.html", {
                         datas:rows,
                         ...result

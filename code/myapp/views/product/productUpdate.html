@@ -261,6 +261,7 @@
         </div>
     </div>
     <input id="user_id" type="hidden" value="{{datas[0].id}}" name="id">
+    <input id="file" type="file" style="display: none" value="" name="file">
     <input id="product_tingyong" type="hidden" value="{{tingyong}}" name="product_tingyong">
     <div class="tablebox" style="width: 400px;height: 600px; margin-top:55px;">
         <table  id="tableId" style="width: 400px;" border="0" cellspacing="0" cellpadding="0">
@@ -297,11 +298,16 @@
             <tr>
                 <td>是否停用</td>
                 <td>
-
                     <select id ='tingyong' class="form_select" name="tingyong" value="{{tingyong}}" >
                         <option value="是">是</option>
                         <option value="否">否</option>
                     </select>
+                </td>
+            </tr>
+            <tr>
+                <td>图片</td>
+                <td>
+                    <img id="image" style="width: 100px;height: 100px;" src="data:image/png;base64,{{photo}}">
                 </td>
             </tr>
             <tr>
@@ -314,6 +320,13 @@
     </div>
     <input id="checkFormCheckBox" name="checkForm" type="checkbox" checked="" style="display: none"/>
 </form>
+<script>
 
+    $("#image").click(function () {
+        console.log("image")
+
+    })
+
+</script>
 </body>
 <SCRIPT Language=VBScript></SCRIPT>
