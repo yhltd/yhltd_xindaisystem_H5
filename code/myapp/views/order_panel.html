@@ -176,6 +176,16 @@
         overflow-y: scroll;
     }
 
+    thead, tr, th, td {
+        border: 0;
+        margin: 0;
+        padding: 0;
+        vertical-align: baseline;
+        height: 37px;
+        line-height: 37px;
+        color: #9c9c9c;
+    }
+
     a {
         text-decoration: none;
         color: #000;
@@ -189,6 +199,9 @@
 
     .index {
         display: flex;
+        height: 100%;
+        width: 100%;
+        background-color: #f7f7f7;
     }
 
     .Lmenu {
@@ -224,10 +237,78 @@
     }
 
     .Lblock {
-        width: 350px;
-        margin-left: 10px;
+        /*flex:1;*/
+        /*width: 350px;*/
+        /*margin-left: 10px;*/
+        /*margin-right: 10px;*/
+        /*min-height: 600px;*/
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-width: 320px;
         margin-right: 10px;
-        min-height: 600px;
+        color: #9c9c9c;
+    }
+
+    .Lblock table{
+        table-layout: fixed;
+    }
+
+    .table{
+        width: 100%;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    table{
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    .Lblock .room_info{
+        height: 50px;
+        display: flex;
+    }
+
+    .Lblock .title{
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .Lblock .title .itemOrderNO，
+    .Lblock .cont .table tbody .itemOrderNO{
+        text-align: center;
+        width: 50px;
+    }
+
+    .Lblock .title .itemName，
+    .Lblock .cont .table tbody .itemName{
+        text-align:left;
+    }
+
+    .Lblock .title .itemNum，
+    .Lblock .cont .table tbody .itemNum{
+        text-align: center;
+        width: 60px;
+    }
+
+    .Lblock .title .itemAmount,
+    .Lblock .cont .table tbody .itemAmount{
+        text-align: right;
+        width: 50px;
+    }
+
+    .Lblock .room_info h4{
+        font-weight: 400;
+        margin: 0 5px 0 12px;
+        width: 155px;
+        line-height: 50px;
+        color: #9c9c9c;
+    }
+    .Lblock #empty_mask{
+        flex: 1;
+        overflow: hidden;
     }
 
     .Lblock .menu ul {
@@ -262,7 +343,8 @@
     }
 
     .Lblock .table {
-        margin-top: 20px;
+        margin-top: 1px;
+        height: 87%;
     }
 
     .Lblock .table .title {
@@ -271,29 +353,55 @@
     }
 
     .Lblock .table .title li {
-        width: 100px;
+        width: 100%;
         border: 1px solid darkgrey;
-        border-right: 0;
+        border-left: none;
+        border-right: none;
         height: 50px;
         font-size: 16px;
         font-weight: bold;
         line-height: 50px;
         text-align: center;
-        /*padding-left: 8px;*/
+        /* padding-left: 8px; */
         color: #606060;
     }
 
-    .Lblock .table .title li:last-child {
-        border-right: 1px solid darkgrey;
+    .Lblock #empty_mask .cont .table tbody tr{
+        height: 62px;
+        color: #000;
     }
 
-    .Lblock .table .cont {}
+    .Lblock #empty_mask .cont > table tbody tr{
+        cursor: pointer;
+    }
+
+    .table-hover>tbody>tr:nth-of-type(odd){
+        background-color: #f9f9f9;
+    }
+
+
+    /*.Lblock .table .title li:last-child {*/
+    /*    border-right: 1px solid darkgrey;*/
+    /*}*/
+
+    .Lblock #empty_mask .cont {
+        /* width: 107%; */
+        overflow-y: auto;
+        height: 100%;
+        /* width: calc(100% + 17px);*/
+    }
+
+    .Lblock #empty_mask .cont table{
+        table-layout: fixed;
+    }
 
     .Lblock .table .cont li {
         display: flex;
+        background-color: lime;
+        color: white;
     }
 
-    .Lblock .table .cont li div {
+    .Lblock .cont li div {
         width: 100px;
         border: 1px solid darkgrey;
         border-right: 0;
@@ -313,21 +421,47 @@
         width: 22px;
         text-align: center;
         cursor: pointer;
-        margin: 0 5px;
+        margin: 6px 5px;
+        color: white;
+        background-color: #ea2929;
+        border-radius: 50%;
+        font-size: 6px;
+        font-weight: 600;
+        border: 1px solid white;
+        line-height: 13px;
+        transition: .3s;
+    }
+    .Lblock .table .cont li span:hover{
+        color: #ea2929;
+        background-color: white;
+        border: 1px solid #ea2929;
     }
 
-    .Lblock .table .end {
-        text-align: center;
-        border: 1px solid darkgrey;
-        border-top: 0;
-        height: 40px;
-        line-height: 40px;
+    .Lblock .end {
+        margin-top: 8px;
+        padding: 9px 10px;
+        height: 38px;
+        font-size: 15px;
+        display: flex;
+        color: #222;
+        border-top: 1px solid #f5f5f5;
+        justify-content: space-between;
+    }
+    .Lblock .end span{
+        color: red;
+    }
+
+    .Lblock .end .count,
+    .Lblock .end .price_total{
+        color: red;
     }
 
     .Lblock .button {
         display: flex;
         justify-content: center;
         margin-top: 10px;
+        flex-direction: row;
+        height: 50px;
     }
 
     .Lblock .button button {
@@ -349,21 +483,123 @@
 
     .Lblock .button .but2 {
         color: #fff;
-        background: rgb(246 103 103);
+        transition: .3s;
+        flex: 0 50%;
+        background-color: #ff0000b8;
+        border-radius: 10px;
+        box-shadow: 0px 5px 8px rgb(0 0 0 / 20%);
+        font-weight: normal;
     }
+
+    .Lblock .button > button{
+        margin-bottom: 10px;
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        padding: 0;
+        background-color: #FFCF3D;
+        font-weight: bold;
+    }
+
+    /*.Lblock .button .but2:hover{*/
+    /*    color: rgb(246 103 103);*/
+    /*    background-color: #5e5e5e;*/
+    /*    border: 1px solid rgb(246 103 103);*/
+    /*}*/
 
     .Lblock .button .but3 {
         color: #fff;
-        background: rgb(3 199 43);
+        transition: .3s;
+        background-color: #0aa0f6;
+        border-radius: 10px;
+        box-shadow: 0px 5px 8px rgb(0 0 0 / 20%);
+        font-weight: normal;
+    }
+
+    /*.Lblock .button .but3:hover{*/
+    /*    color: rgb(3 199 43);*/
+    /*    background-color: #fff;*/
+    /*    border: 1px solid rgb(3 199 43);*/
+    /*}*/
+    .index >div{
+        padding: 10px;
+        background-color: #ffffff;
+        border: 1px solid #ececec;
+        border-radius: 5px;
+    }
+
+    .btn{
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: normal;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background: #04b9e1;
+        border: 1px solid transparent;
+        margin-right: 10px;
+        border-radius: 5px;
+        width: 120px;
+        height: 34px;
+    }
+
+    .btns{
+        flex: 1;
+        max-width: 130px;
+        margin-right: 10px;
+    }
+
+    .btns>div{
+        margin-top: 10px;
+        height: 40px;
+    }
+
+    .btns button{
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        padding: 0;
+        background-color: #E8E9EE;
+        font-weight: normal;
+        font-size: 16px
+    }
+
+    hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: 0;
+        border-top: 1px solid #eee;
+    }
+
+    .btns .jia{
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        padding: 0;
+        background-color: #E8E9EE;
+        font-weight: normal;
+        font-size: 16px;
     }
 
     .Rblock {
-        width: 70%;
-        border-left: 3px solid darkgray;
+        flex: 7;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
     }
 
     body{
-        background: url("../images/shangpin_background.jpeg");
+        /*background: url(" ");*/
     }
 
     .Rblock .head {
@@ -391,11 +627,37 @@
     }
 
     .Rblock .Bmenu {
+        position: relative;
         display: flex;
-        margin-top: 32px;
-        margin-left: 10px;
-        height: 36px;
-        border-bottom: 2px solid darkgrey;
+        margin-top: 19px;
+        margin-left: 19px;
+        height: 53px;
+        width: 97%;
+        /* border-bottom: 2px solid #0AA0F6; */
+        background-color: #0AA0F6;
+        box-shadow: 0px 5px 8px rgb(10 160 246 / 30%);
+        border-radius: 12px;
+    }
+
+    .Rblock .Bmenu .preMenu{
+        /*flex: 1;*/
+        position:absolute;
+        left: 5px;
+        width: 35px;
+        height: 35px;
+        margin: 0 5px;
+        line-height: 55px;
+    }
+    .Rblock .Bmenu .nextMenu{
+        /*flex: 1;*/
+        width: 35px;
+        height: 35px;
+        position: absolute;
+        right: 5px;
+        line-height: 55px;
+    }
+    .Rblock .Bmenu .menu{
+        /*flex: 7;*/
     }
 
     .Rblock .Bmenu li {
@@ -403,68 +665,127 @@
         margin-bottom: -2px;
     }
 
-    .Rblock .Bmenu li.hover {
-        border-bottom: 2px solid rgb(49, 0, 247);
+    .Rblock .Bmenu .hover {
+        line-height: 36px;
+        padding: 8px 2px;
+        transition: .3s;
     }
 
-    .Rblock .Bmenu li.hover a {
-        color: rgb(32, 32, 246);
+    /*.Rblock .Bmenu li.hover:hover{*/
+    /*    !*background-color: #077027;*!*/
+    /*    !*border-bottom: 2px solid lime;*!*/
+    /*}*/
+
+    .Rblock .Bmenu .hover .menuType {
+        /*color: rgb(32, 32, 246);*/
+        color: white;
+        font-size: 17px;
+        font-weight: 400;
+        padding: 7px 20px;
+        background-color: #0AA0F6;
+        border-radius: 17px;
+        transition: .3s;
     }
 
-    .Rblock .Bmenu li:hover {
-        border-bottom: 2px solid rgb(49, 0, 247);
+    .menuType-active{
+        background-color: #ffffff;!important;
+        color: #0AA0F6;!important;
     }
+    /*.Rblock .Bmenu li.hover a:hover{*/
+    /*    color: white;*/
+    /*    background-color: #077027;*/
+    /*}*/
+    /*active{*/
+    /*    color: white;*/
+    /*    background-color: #077027;*/
+    /*}*/
 
-    .Rblock .Bmenu li:hover a {
-        color: rgb(32, 32, 246);
-    }
+    /*.Rblock .Bmenu li:hover {*/
+    /*    border-bottom: 2px solid rgb(49, 0, 247);*/
+    /*}*/
+
+    /*.Rblock .Bmenu li:hover a {*/
+    /*    color: rgb(32, 32, 246);*/
+    /*}*/
 
     .Rblock .Bmenu li:first-child {
-        margin-left: 0;
+        margin-left: 33px;
+
     }
 
     .Rblock .block {
         display: flex;
         flex-wrap: wrap;
-        margin-top: 16px;
+        margin-top: 11px;
         margin-left: 10px;
+        width: 98%;
     }
 
     .Rblock .block li {
+        display: flex;
         border: 1px solid darkgrey;
-        width: 237px;
+        width: 217px;
         min-height: 72px;
-        margin-right: 4px;
-        margin-bottom: 4px;
+        margin: 5px 5px 10px;
         cursor: pointer;
         border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 5px 6px 13px rgb(0 0 0 / 50%);
+        transition: .3s;
+        font-weight: 400;
+    }
+    .Rblock .block li:hover{
+        transform: translateY(-5px);
     }
 
-
-
     .Rblock .block li .img {
-        width: 237px;
+        width: 55%;
     }
 
     .Rblock .block li img {
         width: 100%;
     }
 
+    .product_details{
+        width: 48%;
+        font-size: 20px;
+        justify-content: space-between;
+        padding: 8px;
+    }
+
     .Rblock .block li .title {
-        color: rgb(255, 0, 0);
+        color: rgb(0, 0, 0);
         margin-left: 10px;
+        margin-top: 14px;
     }
 
     .Rblock .block li .money {
-        margin-left: 15px;
+        margin-top: 36px;
+        margin-right: 0;
+        color: rgb(255, 0, 0);
     }
 
     #empty_mask {
-        border-left: 1px solid darkgrey;
-        border-right: 1px solid darkgrey;
+        /*border-left: 1px solid darkgrey;*/
+        /*border-right: 1px solid darkgrey;*/
         text-align: center;
         line-height: 72px;
-        height: 72px;
+        height: 75%;
+        text-align: center;
+        line-height: 23em;
+        color: darkgrey;
+    }
+
+    .room_info #danhao{
+        height: 36px;
+        transition: .3s;
+        margin-top: 8px;
+        font-size: 20px;
+        border: none;
+    }
+
+    .room_info #danhao:focus{
+        outline: #006eb0;
     }
 
     .Lblock .table .cont li div.none {
@@ -477,11 +798,14 @@
 
     .form_input{
         width: 180px;
-        height: 24px;
+        height: 30px;
         outline: none;
-        border: 1px solid #b7aec7;
+        /*border: 1px solid #b7aec7;*/
         border-radius: 3px;
-        padding-left: 10px;
+        padding-left: 8px;
+        font-size: 19px;
+        margin-top: 11px;
+        border: none;
     }
 
 
@@ -489,331 +813,512 @@
 
 <body>
 <div class="index">
-    <input type="hidden" value="{{datas2 }}" id="datas2">
-    <div class="Lmenu">
-    </div>
+<!--    <input type="hidden" value="{{datas2 }}" id="datas2">-->
+<!--    <div class="Lmenu">-->
+<!--    </div>-->
 
     <div class="Lblock">
-        <div class="menu">
-            <ul>
-            </ul>
-        </div>
-        <div class="table">
-            <ul style="display: flex;">
-                <li style="width: 100px;">单号：</li>
-                <li style="width: 300px;"><input class="form_input" id="danhao" name="danhao" /></li>
-            </ul>
-            <ul class="title">
-                <li style="border-radius:15px 0px 0px 0px">商品名称</li>
-                <li>数量</li>
-                <li>金额</li>
-                <li style="border-radius:0px 15px 0px 0px">操作</li>
-            </ul>
-            <div id="empty_mask" style="display: block;">暂无数据</div>
-            <ul class="cont">
-
-            </ul>
-            <div class="end"  style="border-radius:0px 0px 15px 15px">
-                <span>数量:</span>
-                <span style="margin-right:10px ;font-size: 18px;">0</span>
-                <span>金额:</span>
-                <span style="font-size: 18px;">0元</span>
+<!--        <div class="menu">-->
+<!--            <ul>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--        <div class="table">-->
+        <div class="room_info">
+            <h4>消费单号：</h4>
+            <div class="input_order" style="width: 300px;">
+                <input class="form_input" id="danhao" name="danhao" value="888888888888888"/>
             </div>
         </div>
+<!--           <div class="title">-->
+<!--               <li style="border-radius:15px 0px 0px 0px">商品名称</li>-->
+<!--               <li>数量</li>-->
+<!--               <li>金额</li>-->
+<!--               <li style="border-radius:0px 15px 0px 0px">操作</li>-->
+<!--           </div>-->
+        <div class="title">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td class="itemOrderNO">序号</td>
+                        <td class="itemName">商品名称</td>
+                        <td class="itemNum">数量</td>
+                        <td class="itemAmount">金额</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div id="empty_mask">
+            <div class="cont">
+                <table class="table table-hover">
+                    <tbody>
+<!--                        //自动添加商品-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="end">
+                <div>
+                    合计数量:
+                    <span class="count">0</span>
+                </div>
+                <div>
+                    合计金额:
+                    <span>
+                        ￥
+                        <span class="price_total">
+                            0.00
+                        </span>
+                    </span>
+
+                </div>
+            </div>
+<!--        </div>-->
         <div class="button">
-            <button class="but2">删除</button>
+            <button class="but2" btnflag="cancel">作废</button>
             <button class="but3">结账</button>
         </div>
     </div>
+    <div class="btns">
+        <div>
+            <button class="btn jia">+</button>
+        </div>
+        <div>
+            <button class="btn jian">-</button>
+        </div>
+        <div>
+            <button class="btn">数量</button>
+        </div>
+        <div>
+            <button class="btn price">修改价格</button>
+        </div>
+        <div>
+            <button class="btn">做法</button>
+        </div>
+        <div>
+            <button class="btn del_this_td">删除</button>
+        </div>
+        <div>
+            <button class="btn is_zengsong">赠送</button>
+        </div>
+        <div>
+            <button class="btn orderStaff">下单员工</button>
+        </div>
+        <hr>
+        <div>
+            <button class="btn">修改账单</button>
+        </div>
+    </div>
     <div class="Rblock">
-        <ul class="Bmenu">
+        <div class="Bmenu">
+            <div class="preMenu">
+<!--                <img src="../public/images/new_pics/上一页.png">-->
+            </div>
             {% for item in types %}
-            <li class="hover">
-                <a href="#">{{item.type}}</a>
-            </li>
+            <div class="menu">
+                <li class="hover">
+                    <a href="#" class="menuType">{{item.type}}</a>
+                </li>
+            </div>
             {% endfor %}
-        </ul>
+            <div class="nextMenu">
+<!--                <img src="../public/images/new_pics/下一页.png">-->
+            </div>
+        </div>
         <ul class="block">
 
             {% for item in datas %}
             <li>
                 <div class="img">
-                    <img src="" alt="">
+                    <img src="https://img1.baidu.com/it/u=2602169801,3300442698&fm=253&fmt=auto&app=138&f=GIF?w=500&h=500" alt="">
                 </div>
-                <div class="title">
-                    {{item.product_name}}
+                <div class="product_details">
+                    <div class="title">
+                        {{item.product_name}}
+                    </div>
+                    <div class="money">￥<span>{{item.price}}</span>元</div>
                 </div>
-                <div class="money">￥<span>{{item.price}}</span>元</div>
                 <div class="none id">{{item.id}}</div>
             </li>
             {% endfor %}
         </ul>
-        <script>
-
-            let datas = []
-            let p_zhekou = 1
-
-            window.onload = function() {
-                tableShow();
-            }
-
-            $(document).ready(function(){
-                Table_sum();
-            })
-
-            $(document).delegate('.jia', "click", function () {
-                var _this = $(this).parent().parent().children().eq(2); //数量
-                var money = $(this).parent().parent().children().eq(4); //价格
-                var Smoney = $(this).parent().parent().children().eq(3); //总价格
-                _this.text(parseInt(_this.text()) + 1)
-                Smoney.text((money.text() * 1)*parseInt(_this.text() * 1));
-                Table_sum();
-            });
-
-            $(document).delegate('.jian', "click", function () {
-                var _this = $(this).parent().parent().children().eq(2); //数量
-                var money = $(this).parent().parent().children().eq(4); //价格
-                var Smoney = $(this).parent().parent().children().eq(3); //总价格
-
-                if (parseInt(_this.text()) - 1 <= 0) {
-                    var _length = $(this).parent().parent().parent().children().length - 1;
-                    $(this).parent().parent().remove();
-                    if (_length <= 0) {
-                        $(".table .cont").attr("style", "display:none");
-                        $("#empty_mask").attr("style", "display:block");
-                    }
-                    Table_sum();
-                }
-                else {
-                    _this.text(parseInt(_this.text()) - 1)
-                    Smoney.text((money.text() * 1)*(_this.text() * 1));
-                    Table_sum();
-                }
-            });
-
-            $("body").on('click','.Rblock .block li',function(){
-                var _this = $(this).children();
-                var _id = _this.eq(3).text();
-                console.log(_id)
-                var existence = false;
-                $(".Lblock .table .cont li").each(function () {
-                    var id = $(this).children().eq(0).text();
-                    if (_id == id) {
-                        existence = true;
-                        $(this).children().eq(2).text(parseInt($(this).children().eq(2).text()) + 1);
-                        $(this).children().eq(3).text(($(this).children().eq(4).text() * 1)*($(this).children().eq(2).text() * 1));
-                        Table_sum();
-                    }
-                })
-
-                if (!existence) {
-                    var _str = "<li><div class='none'>%1%</div><div>%2%</div><div>1</div><div>%3%</div><div class='none'>%4%</div><div style='justify-content: center;padding:0 4px;'><span class='jia'>+</span><span class='jian'>-</span></div></li>";
-                    _str = _str.replace("%1%", _this.eq(3).text());
-                    _str = _str.replace("%2%", _this.eq(1).text());
-                    _str = _str.replace("%3%", _this.eq(2).children().text());
-                    _str = _str.replace("%4%", _this.eq(2).children().text());
-                    $(".Lblock .table .cont").append(_str);
-                    $(".table .cont").attr("style", "display:block");
-                    $("#empty_mask").attr("style", "display:none");
-                    Table_sum();
-                }
-            });
-
-            $(".Rblock .Bmenu li").click(function () {
-                var _this = $(this).children();
-                var type = _this.eq(0).text();
-                console.log(type)
-                var this_str = ""
-                for(var i=0; i<datas.length; i++){
-                    if(datas[i].type == type){
-                        var num = datas[i].price * p_zhekou
-                        console.log(p_zhekou)
-                        num = Math.floor(num * 100) / 100;
-                        this_str = this_str + "<li><div class=\"img\"><img src=\"\" alt=\"\"></div><div class=\"title\">\n" +
-                            "                    " + datas[i].product_name  +
-                            "                </div>" +
-                            "                <div class=\"money\">￥<span>" + num + "</span>元</div>" +
-                            "                <div class=\"none id\">" + datas[i].id + "</div>" +
-                            "            </li>"
-
-                    }
-                }
-                $(".Rblock .block li").remove();
-                $(".Rblock .block").append(this_str);
-
-            })
-
-
-            $(".but2").click(function () {
-                console.log("delete")
-                $(".Lblock .table .cont li").remove();
-                $(".table .cont").attr("style", "display:none");
-                $("#empty_mask").attr("style", "display:block");
-                Table_sum();
-            })
-
-            $(".but3").click(function () {
-                console.log("add")
-                var pro_list = []
-                var pro_num = $("#danhao").val();
-                $(".Lblock .table .cont li").each(function () {
-                    var id = $(this).children().eq(0).text();
-                    var num = $(this).children().eq(2).text();
-                    var zhehou = $(this).children().eq(3).text();
-                    console.log(id)
-                    console.log(num)
-                    console.log(zhehou)
-                    for(var i=0; i<datas.length;i++){
-                        if(datas[i].id == id){
-                            pro_list.push({
-                                cplx:datas[i].type,
-                                cpmc:datas[i].product_name,
-                                dw:datas[i].unit,
-                                dj:datas[i].price,
-                                dzbl:p_zhekou,
-                                zhdj:zhehou / num,
-                                zhje:zhehou,
-                                gs:num
-                            })
-                        }
-                    }
-                })
-                console.log(pro_list)
-                console.log(pro_num)
-                if(pro_num == ''){
-                    alert("未填写订单号")
-                    return;
-                }
-                if(pro_list.length == 0){
-                    alert("未选择商品")
-                    return;
-                }
-
-                $.ajax({
-                    type: 'post',
-                    url: '/order_panel/add',
-                    timeout: 5000,
-                    data: {
-                        pro_list: JSON.stringify(pro_list),
-                        pro_num: pro_num,
-                        youhui: p_zhekou
-                    },
-                    success: function(res){
-                        let result = JSON.parse(res)
-                        alert(result.msg)
-                        tableShow();
-                    },
-                    error: function(res){
-                        if(res.status == "timeout"){
-                            alert("网络超时，请稍后再试")
-                        }else{
-                            alert("网络错误，请稍后再试")
-                        }
-                    }
-                });
-            })
-
-
-            function Table_sum(){
-                var _number = 0;
-                var _money = 0;
-                $(".Lblock .table .cont li").each(function () {
-                    var number = $(this).children().eq(2).text();
-                    var money = $(this).children().eq(3).text();
-                    _number += (number * 1);
-                    _money += (money * 1);
-                })
-                $(".Lblock .table .end").children().eq(1).text(_number);
-                $(".Lblock .table .end").children().eq(3).text(_money);
-
-            }
-
-            function tableShow(){
-                $.ajax({
-                    type: 'post',
-                    url: '/order_panel/select',
-                    async:false,
-                    timeout: 5000,
-                    success: function(res){
-                        let result = JSON.parse(res)
-                        console.log(result)
-                        datas = result.datas
-                        console.log(datas)
-                        let users = result.users
-                        console.log(users)
-                        if(users.usertype == '客户'){
-                            $.ajax({
-                                type: 'post',
-                                url: '/order_panel/select_discount',
-                                async:false,
-                                timeout: 5000,
-                                success: function(res){
-                                    let result = JSON.parse(res)
-                                    console.log('客户金额和等级列表')
-                                    console.log(result)
-                                    var zhekou = 1
-                                    var zhekou_list = result.dengji
-                                    var xiaofei = result.xiaoji_sum
-                                    if(xiaofei == null){
-                                        xiaofei = 0
-                                    }
-                                    for(var i=0; i<zhekou_list.length; i++){
-                                        console.log("门槛：" + zhekou_list[i].menkan * 1)
-                                        console.log("消费金额：" + xiaofei * 1)
-                                        if(zhekou_list[i].menkan * 1 <= xiaofei * 1){
-                                            zhekou = zhekou_list[i].bili
-                                        }
-                                    }
-                                    console.log(zhekou)
-                                    p_zhekou = zhekou
-                                    var this_str = ""
-                                    console.log(datas)
-                                    for(var i=0; i<datas.length; i++){
-                                            var num = datas[i].price * zhekou
-                                            num = Math.floor(num * 100) / 100;
-                                            this_str = this_str + "<li><div class=\"img\"><img src=\"\" alt=\"\"></div><div class=\"title\">\n" +
-                                                "                    " + datas[i].product_name  +
-                                                "                </div>" +
-                                                "                <div class=\"money\">￥<span>" + num + "</span>元</div>" +
-                                                "                <div class=\"none id\">" + datas[i].id + "</div>" +
-                                                "            </li>"
-
-
-                                    }
-
-                                    $(".Rblock .block li").remove();
-                                    $(".Rblock .block").append(this_str);
-
-                                    $(".Lblock .table .cont li").remove();
-                                    $(".table .cont").attr("style", "display:none");
-                                    $("#empty_mask").attr("style", "display:block");
-                                    Table_sum();
-
-                                },
-                                error: function(res){
-                                    if(res.status == "timeout"){
-                                        alert("网络超时，请稍后再试")
-                                    }else{
-                                        alert("网络错误，请稍后再试")
-                                    }
-                                }
-                            });
-                        }
-                    },
-                    error: function(res){
-                        if(res.status == "timeout"){
-                            alert("网络超时，请稍后再试")
-                        }else{
-                            alert("网络错误，请稍后再试")
-                        }
-                    }
-                });
-            }
-
-        </script>
     </div>
 </div>
+<script>
+    let datas = []
+    let p_zhekou = 1
 
+    window.onload = function() {
+        tableShow();
+    }
+
+    $(document).ready(function(){
+        Table_sum();
+    })
+
+    // 给加号添加点击事件
+    // $(document).delegate('.jia', "click", function () {
+    //     // var money = $(this).parent().parent().children().eq(4); //价格
+    //     // var Smoney = $(this).parent().parent().children().eq(3); //总价格
+    //     var count = $("#empty_mask .cont .table tr .itemNum"); //数量
+    //     var money = $("#empty_mask .cont .table tr .itemAmount");//单价
+    //     // var Smoney = $(".price_total"); //一个tr的总价格
+    //
+    //     count.text(parseInt(count.text()) + 1)
+    //     // Smoney.text((money.text() * 1)*parseInt(count.text() * 1));
+    //     var Smoney = parseInt((money.text() * 1))*parseInt(count.text() * 1);
+    //     console.log(Smoney);
+    //     Table_sum();
+    // });
+
+    // 给减号添加点击事件
+    // $(document).delegate('.jian', "click", function () {
+    //     // var _this = $(this).parent().parent().children().eq(2); //数量
+    //     var count = $(this).parent().parent().siblings(".Lblock").children(".title").children(".itemNum");
+    //     // var money = $(this).parent().parent().children().eq(4); //价格
+    //     var Smoney = $(this).parent().parent().children().eq(3); //总价格
+    //
+    //     if (parseInt(_this.text()) - 1 <= 0) {
+    //         var _length = $(this).parent().parent().parent().children().length - 1;
+    //         $(this).parent().parent().remove();
+    //         if (_length <= 0) {
+    //             $(".table .cont").attr("style", "display:none");
+    //             $("#empty_mask").attr("style", "display:block");
+    //         }
+    //         Table_sum();
+    //     }
+    //     else {
+    //         _this.text(parseInt(_this.text()) - 1)
+    //         Smoney.text((money.text() * 1)*(_this.text() * 1));
+    //         Table_sum();
+    //     }
+    // });
+
+    $("body").on('click','.Rblock .block li',function(){
+        var _this = $(this).children();
+        var _id = _this.eq(3).text();
+        console.log(_id)
+        var existence = false;
+        $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
+            var id = $(this).children().eq(0).text();
+            if (_id == id) {
+                existence = true;
+                $(this).children().eq(2).text(parseInt($(this).children().eq(2).text()) + 1);
+                $(this).children().eq(3).text(($(this).children().eq(4).text() * 1)*($(this).children().eq(2).text() * 1));
+                Table_sum();
+            }
+        })
+
+        if (!existence) {
+            var _str = "<li><div class='none'>%1%</div><div>%2%</div><div>1</div><div>%3%</div><div class='none'>%4%</div><div style='justify-content: center;padding:0 4px;'><span class='jia'>+</span><span class='jian'>-</span></div></li>";
+            _str = _str.replace("%1%", _this.eq(3).text());
+            _str = _str.replace("%2%", _this.eq(1).text());
+            _str = _str.replace("%3%", _this.eq(2).children().text());
+            _str = _str.replace("%4%", _this.eq(2).children().text());
+            $(".Lblock .table .cont").append(_str);
+            $("#empty_mask .cont").attr("style", "display:block");
+            // $("#empty_mask").attr("style", "display:none");
+            Table_sum();
+        }
+    });
+
+    //右边菜单栏点击事件,显示出对应类型的商品
+    $(".Rblock .Bmenu li").click(function () {
+        //获取li下面的a链接
+        var _this = $(this).children();
+        //获取a链接里面的文字
+        var type = _this.eq(0).text();
+        console.log(type)
+        var this_str = ""
+        for(var i=0; i<datas.length; i++){
+            if(datas[i].type == type){
+                var num = datas[i].price * p_zhekou//商品价格*折扣
+                console.log('折扣='+p_zhekou)//当前商品折扣为1
+                num = Math.floor(num * 100) / 100;//该类型下的商品价格
+                console.log('num='+num)
+                //所要显示的商品价格
+                this_str += "" +
+                    "<li>" +
+                        "<div class=\"img\">" +
+                            "<img src=\"https://img1.baidu.com/it/u=2602169801,3300442698&fm=253&fmt=auto&app=138&f=GIF?w=500&h=500\" alt=\"\">" +
+                        "</div>" +
+                        "<div class=\"product_details\">"+
+                            "<div class=\"title\">\n" +
+                                "" + datas[i].product_name  +
+                            "</div>" +
+                            "<div class=\"money\">￥<span>" + num + "</span>元</div>" +
+                        "</div>"+
+                        "<div class=\"none id\">" + datas[i].id + "</div>" +
+                    "</li>"
+            }
+        }
+
+        $(".Rblock .block li").attr("style","display:none;");
+        $(".Rblock .block").append(this_str);
+
+    })
+    //给菜单类型按钮添加点击变换样式
+    $('.Rblock .Bmenu li .menuType').on('click',function(){
+        $(this).addClass("menuType-active").siblings().removeClass("menuType-active");
+    })
+    //给选中商品添加点击样式并进行增加减少和删除的操作
+    $('.Lblock #empty_mask .cont .table tbody tr').click(function (){
+        //产品id
+        var product_id = $(this).children().eq(0).text();
+        //产品个数
+        var product_count = $(this).children().eq(2).children().eq(1).text();
+        //产品单价 个数乘单价(datas[i].price)
+        // var product_money = $(this).children().eq(3).children().eq(0).text();
+        var product_money = datas[product_id].price*product_count;
+        //声明一个数组用来接收
+        //  var product_arr[] = null;
+
+        // $(this).children.addClass("menuType-active").siblings().removeClass("menuType-active");
+        // console.log(product_id.text(),product_count.text(),product_money.text(),product_td_Smoney.text())
+        for(var i =0; i<=$(this).length;i++){
+            if (parseInt(($(this).index()+1)) == parseInt(product_id)){
+                $(".index .btns.jia").click(function (){
+                    parseInt(parseInt(product_count)+parseInt("1"));
+                    product_money += product_money;
+                })
+                $(".index .btns.jian").click(function (){
+                    parseInt(parseInt(product_count.text())-parseInt("1"));
+                    product_money += product_money;
+                })
+                $(".index .btns.del_this_td").click(function (){
+                    $(this).index(parseInt(parseInt(product_id)-parseInt("1"))).remove();
+                })
+            }
+        }
+    })
+    //--------------------------------
+    //点击商品后，.Lblock #empty_mask .cont tbody下加tr
+    $(".Rblock .block li").click(function (){
+        //单点一份的1
+        var num = 1;
+        //新增商品的序号
+        var product_now_id = parseInt($(".index .Lblock #empty_mask .cont .table tbody tr").length+parseInt("1"));
+        //获取添加商品链接的id
+        var product_id = $(this).children(".id").text();
+        console.log(product_id);
+        var this_str = ""
+        for(var i = 0; i < datas.length; i++){
+            if(datas[i].id == product_id){
+                //所要显示的商品价格
+                this_str += "" +
+                    "<tr class=\"success\">" +
+                        "<td class=\"itemOrderNo\">" + product_now_id+ "</td>" +
+                        "<td class=\"itemName\">" + datas[i].product_name + "</td>"+
+                        "<td class=\"itemNum\">" +
+                            "<span class=\"count\">" + num + "</span>"+
+                            "/"+
+                            "<span class=\"unit\">" + datas[i].unit + "</span>"+
+                        "</td>"+
+                        "<td class=\"itemAmount\">" +
+                            "￥"+
+                            "<span class=\"price\">" + datas[i].price + "</span>"+
+                        "</td>"+
+                    "</tr>"
+            }
+        }
+        $(".Lblock #empty_mask .table tbody").append(this_str);
+    })
+
+    //--------------------------------
+
+
+    // 作废按钮点击后
+    $(".but2").click(function () {
+        console.log("delete")
+        $(".Lblock #empty_mask .cont .table tbody tr").remove();
+        // $(".Lblock #empty_mask .cont .table tbody").attr("style", "display:none");
+        // $("#empty_mask").attr("style", "display:block");
+        // $(".Lblock #empty_mask .cont .table tbody").attr("style", "display:block");
+        Table_sum();
+    })
+    // 结账按钮点击后
+    $(".but3").click(function () {
+        console.log("add")
+        var pro_list = []
+        var pro_num = $("#danhao").val();
+        $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
+            var id = $(this).children().eq(0).text();
+            var num = $(this).children(".itemNum").children().eq(0).text();
+            var zhehou = $(this).children(".itemAmount").children().eq(1).text();
+            console.log(id)
+            console.log(num)
+            console.log(zhehou)
+            for(var i=0; i<datas.length;i++){
+                if(datas[i].id == id){
+                    pro_list.push({
+                        cplx:datas[i].type,
+                        cpmc:datas[i].product_name,
+                        dw:datas[i].unit,
+                        dj:datas[i].price,
+                        dzbl:p_zhekou,
+                        // zhdj:zhehou / num,
+                        zhdj:datas[i].price*p_zhekou,
+                        // zhje:zhehou,
+                        zhje:datas[i].price*p_zhekou*num,
+                        gs:num
+                    })
+                }
+            }
+        })
+        console.log(pro_list)
+        console.log(pro_num)
+        if(pro_num == ''){
+            alert("未填写订单号")
+            return;
+        }
+        if(pro_list.length == 0){
+            alert("未选择商品")
+            return;
+        }
+        $(".hover").click(function (){
+            $(".hover").removeClass("active")
+            $(".hover").addClass("active")
+        })
+
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/add',
+            timeout: 5000,
+            data: {
+                pro_list: JSON.stringify(pro_list),
+                pro_num: pro_num,
+                youhui: p_zhekou
+            },
+            success: function(res){
+                let result = JSON.parse(res)
+                alert(result.msg)
+                tableShow();
+            },
+            error: function(res){
+                if(res.status == "timeout"){
+                    alert("网络超时，请稍后再试")
+                }else{
+                    alert("网络错误，请稍后再试")
+                }
+            }
+        });
+    })
+
+    //改过了--------------
+    //合计商品数量和价格
+    //完成了
+    function Table_sum(){
+        var _number = 0;
+        var _money = 0;
+        $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
+            var number = $(this).children().eq(2).children().eq(0).text();
+            var money = $(this).children().eq(3).children(".price").text();
+            _number += (number * 1);
+            _money += (money * 1);
+        })
+        // console.log('当前money='+_money);
+        $(".Lblock .end").children().eq(0).children(".count").text(_number);
+        $(".Lblock .end").children().eq(1).children().children(".price_total").text(_money);
+
+    }
+
+    function tableShow(){
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/select',
+            async:false,
+            timeout: 5000,
+            success: function(res){
+                //转成json
+                let result = JSON.parse(res)
+                console.log(result)
+                datas = result.datas
+                console.log(datas)
+                let users = result.users
+                console.log(users)
+                if(users.usertype == '客户'){
+                    $.ajax({
+                        type: 'post',
+                        url: '/order_panel/select_discount',
+                        async:false,
+                        timeout: 5000,
+                        success: function(res){
+                            let result = JSON.parse(res)
+                            console.log('客户金额和等级列表')
+                            console.log(result)
+                            var zhekou = 1
+                            var zhekou_list = result.dengji
+                            var xiaofei = result.xiaoji_sum
+                            if(xiaofei == null){
+                                xiaofei = 0
+                            }
+                            for(var i=0; i<zhekou_list.length; i++){
+                                console.log("门槛：" + zhekou_list[i].menkan * 1)
+                                console.log("消费金额：" + xiaofei * 1)
+                                if(zhekou_list[i].menkan * 1 <= xiaofei * 1){
+                                    zhekou = zhekou_list[i].bili
+                                }
+                            }
+                            console.log(zhekou)
+                            p_zhekou = zhekou
+                            var this_str = ""
+                            console.log(datas)
+                            for(var i=0; i<datas.length; i++){
+                                var num = datas[i].price * zhekou
+                                num = Math.floor(num * 100) / 100;
+                                this_str = this_str + "<li><div class=\"img\"><img src=\"\" alt=\"\"></div><div class=\"title\">\n" +
+                                    "                    " + datas[i].product_name  +
+                                    "                </div>" +
+                                    "                <div class=\"money\">￥<span>" + num + "</span>元</div>" +
+                                    "                <div class=\"none id\">" + datas[i].id + "</div>" +
+                                    "            </li>"
+
+                            }
+
+                            $(".Rblock .block li").remove();
+                            $(".Rblock .block").append(this_str);
+
+                            $(".Lblock .table .cont li").remove();
+                            $(".table .cont").attr("style", "display:none");
+                            $("#empty_mask").attr("style", "display:block");
+                            Table_sum();
+
+                        },
+                        error: function(res){
+                            if(res.status == "timeout"){
+                                alert("网络超时，请稍后再试")
+                            }else{
+                                alert("网络错误，请稍后再试")
+                            }
+                        }
+                    });
+                }
+            },
+            error: function(res){
+                if(res.status == "timeout"){
+                    alert("网络超时，请稍后再试")
+                }else{
+                    alert("网络错误，请稍后再试")
+                }
+            }
+        });
+    }
+
+</script>
+<!--<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>-->
+
+<!--<div id="app">{{ message }}</div>-->
+
+<!--<script>-->
+<!--    const { createApp } = Vue-->
+
+<!--    createApp({-->
+<!--        data() {-->
+<!--            return {-->
+<!--                message: 'Hello Vue!'-->
+<!--            }-->
+<!--        }-->
+<!--    }).mount('#app')-->
+<!--</script>-->
 </body>
 </html>
 <SCRIPT Language=VBScript></SCRIPT>

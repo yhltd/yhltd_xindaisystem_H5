@@ -11,19 +11,22 @@
 <form action="/day_trading/ass" method="post">
     <div id="header">
         <div class="header-text">日交易记录</div>
+        <div class="toback">
+            <a href="/customer/select" title="返回查询">
+                <img class="toback_btn img-err" src="../../images/back.png">
+            </a>
+        </div>
         <div class="header-item">
 <!--            <a style="line-height: 0" class="right" href="/day_trading/insert/{{datas[0].id}}" title="录入信息">-->
 <!--                <img class="header-icon" src="../../images/luru.png">-->
 <!--            </a>-->
             <a href="/day_trading/insert/{{datas[0].id}}" style="float:left">
-                <div class="select_btn right" style="margin-left: 10px;text-align: center;vertical-align:middle;vertical-align: middle;display: table-cell;">录入</div>
+                <div class="select_btn right" style="margin:10px 10px;text-align: center;vertical-align:middle;display: table-cell;">录入</div>
             </a>
             <a href="/day_trading/Excel?id={{datas[0].id}}" title="导出EXCEL">
                 <img class="header-icon" src="../../images/excel2.png" style="margin-left: 10px;">
             </a>
-            <a style="line-height: 0" class="right" href="/customer/select" title="返回查询">
-                <img class="header-icon" src="../../images/back.png">
-            </a>
+
         </div>
     </div>
     <div class="tablebox">
@@ -96,17 +99,19 @@
             </tr>
             {% endfor %}
         </table>
-        <div style="padding-top: 15px">
-            一共有{{rowcounts }}条记录，一共{{pagecounts }}页，当前第{{pagenum }}页
+        <div class="page_info" style="padding-top: 15px">
+            <div style="width: 40%;float: left;">
+                第<span class="cont-page">&nbsp;{{pagenum }}&nbsp;</span>页 / 共{{pagecounts }}页 / 共{{rowcounts }}条
+            </div>
             <input type="hidden" value="{{pagenum }}" id="id">
             <input type="hidden" value="{{pagecounts }}" id="id1">
-            <a href="/day_trading/select_day/{{datas[0].id}}?pagenum=1" onclick="return check();">首页</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum-1}} " onclick="return check();">上一页</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum+1}}" onclick="return check1();">下一页</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagecounts}}" onclick="return check1();">尾页</a>
+            <div style="width: 60%;float: left;">
+                <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum=1" onclick="return check();">◀◀</a>
+                <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum-1}} " onclick="return check();">◀</a>
+                <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
+                <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>
+            </div>
+
         </div>
 
     </div>

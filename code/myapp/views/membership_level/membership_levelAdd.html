@@ -49,29 +49,29 @@
 <form action="/membership_level/add" id="formData" onsubmit="submitForm()" method="post" align="center">
     <div id="header">
         <div class="header-text">新增等级</div>
-        <div class="header-item">
-            <a style="line-height: 0" class="right" href="/membership_level/select" title="返回查询">
-                <img class="header-icon" src="../../images/back.png">
-            </a>
-        </div>
     </div>
-    <div class="tablebox" style="width: 400px;height: 600px; margin-top:60px;">
-        <table id="tableId" style="width: 400px" border="0" cellspacing="0" cellpadding="0">
+    <div class="toback">
+        <a href="/membership_level/select" title="返回查询">
+            <img class="toback_btn" src="../../images/back.png">
+        </a>
+    </div>
+    <div class="tablebox" style="width: 55%;height: 99%; margin:20px auto 0;">
+        <table id="tableId" style="width: 99%" border="0" cellspacing="0" cellpadding="0">
 
             <tr>
-                <td>级别名称</td>
+                <td><p>级&nbsp&nbsp别&nbsp&nbsp名&nbsp&nbsp称</p></td>
                 <td>
                     <input class="form_input" name="jibie" value="{{jibie}}" />
                 </td>
             </tr>
             <tr>
-                <td>消费额度门槛</td>
+                <td><p>消&nbsp费&nbsp额&nbsp度&nbsp门&nbsp槛</p></td>
                 <td>
                     <input class="form_input" name="menkan" value="{{menkan}}" />
                 </td>
             </tr>
             <tr>
-                <td>折扣比例</td>
+                <td><p>折&nbsp&nbsp扣&nbsp&nbsp比&nbsp&nbsp例</p></td>
                 <td>
                     <input class="form_input" name="bili" value="{{bili}}" />
                 </td>

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>信用卡管理系统-云合未来</title>
+<title>会员订单管理系统-云合未来</title>
 
 <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="../stylesheets/bootstrap.css">
@@ -38,12 +38,36 @@
         margin-right: 30px;
 
     }
-    li{
+    .left_menu #nav_dot li{
         border: 1px solid black;
+        border-radius: 5px;
         background-color: rgba(0, 0, 0, 0.5);
         width: 100px;
         text-align: center;
+        transition: background-color .3s;
     }
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    a{
+        text-decoration: none;
+    }
+    /*.main_content{*/
+    /*    top: 50%;*/
+    /*    left: 50%;*/
+    /*    transform: translateX(-100%);*/
+    /*    transform: translateY(-100%);*/
+    /*}*/
+    .left_menu #nav_dot li:hover{
+        background-color: #cccccc;
+    }
+    .left_menu #nav_dot li a：hover{
+        color: white;
+        text-decoration: none;
+    }
+
 </style>
 
 </head>

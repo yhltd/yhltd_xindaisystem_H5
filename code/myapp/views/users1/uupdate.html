@@ -377,17 +377,22 @@
 
     <div id="header">
         <div class="header-text">员工信息修改</div>
-        <div class="header-item">
-            <a style="line-height: 0" class="right" href="/users/select" title="返回查询">
-                <img class="header-icon" src="../../images/back.png">
-            </a>
-        </div>
+<!--        <div class="header-item">-->
+<!--            <a style="line-height: 0" class="right" href="/users/select" title="返回查询">-->
+<!--                <img class="header-icon" src="../../images/back.png">-->
+<!--            </a>-->
+<!--        </div>-->
+    </div>
+    <div class="toback">
+        <a href="/users/select" title="返回查询">
+            <img class="toback_btn" src="../../images/back.png">
+        </a>
     </div>
     <input id="user_id" type="hidden" value="{{datas[0].id}}" name="id">
-    <div class="tablebox" style="width: 400px;height: 600px; margin-top:55px;">
-        <table  id="tableId" style="width: 400px;" border="0" cellspacing="0" cellpadding="0">
+    <div class="tablebox" style="width: 28%;height: 99%; margin:20px auto 0;">
+        <table  id="tableId" style="width: 99%;" border="0" cellspacing="0" cellpadding="0">
             <tr>
-                <td>权限</td>
+                <td><p>权&nbsp&nbsp限</p></td>
                 <td>
                     <button id="upd-btn" class="upd-form-btn" type="button">点击修改</button>
                 </td>
@@ -399,25 +404,25 @@
 <!--                </td>-->
 <!--            </tr>-->
             <tr>
-                <td>职位</td>
+                <td><p>职&nbsp&nbsp位</p></td>
                 <td>
                     <input class="form_input" type="text" name="position" value="{{position}}">
                 </td>
             </tr>
             <tr>
-                <td>员工</td>
+                <td><p>员&nbsp&nbsp工</p></td>
                 <td>
                     <input class="form_input" type="text" name="uname" value="{{uname}}">
                 </td>
             </tr>
             <tr>
-                <td>账号</td>
+                <td><p>账&nbsp&nbsp号</p></td>
                 <td>
                     <input class="form_input" type="text" name="account" value="{{account}}">
                 </td>
             </tr>
             <tr>
-                <td>密码</td>
+                <td><p>密&nbsp&nbsp码</p></td>
                 <td>
                     <input class="form_input" type="text" name="password" value="{{password}}">
                 </td>

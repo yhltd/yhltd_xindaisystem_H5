@@ -66,81 +66,81 @@
 <form id="formData" action="/customer/update" method="post" onsubmit="submitForm()" align="center">
     <div id="header">
         <div class="header-text">客户信息修改</div>
-        <div class="header-item">
-            <a style="line-height: 0" class="right" href="/customer/select" title="返回查询">
-                <img class="header-icon" src="../../images/back.png">
-            </a>
-        </div>
+    </div>
+    <div class="toback">
+        <a href="/customer/select" title="返回查询">
+            <img class="toback_btn" src="../../images/back.png">
+        </a>
     </div>
     <input type="hidden" value="{{datas[0].id}}" name="id">
     <div class="tablebox">
         <table  id="tableId" style="width: 80%;margin: 0 auto" border="0" cellspacing="0" cellpadding="0">
             <tr>
-                <td>收卡人</td>
+                <td><p>收卡人</p></td>
                 <td>
                     <input class="form_input" type="text" name="recipient" value="{{datas[0].recipient}}">
                 </td>
-                <td>付款人</td>
+                <td><p>付款人</p></td>
                 <td>
                     <input class="form_input" type="text" name="cardholder" value="{{datas[0].cardholder}}">
                 </td>
             </tr>
             <tr>
-                <td>持卡人</td>
+                <td><p>持卡人</p></td>
                 <td>
                     <input class="form_input" type="text" name="drawee" value="{{datas[0].drawee}}">
                 </td>
-                <td>发卡行</td>
+                <td><p>发卡行</p></td>
                 <td>
                     <input class="form_input" type="text" name="issuing_bank" value="{{datas[0].issuing_bank}}">
                 </td>
             </tr>
             <tr>
-                <td>账单日</td>
+                <td><p>账单日</p></td>
                 <td>
                     <input class="form_input" type="date" name="bill_day" value="{{datas[0].bill_day}}">
                 </td>
-                <td>还款日</td>
+                <td><p>还款日</p></td>
                 <td>
                     <input class="form_input" type="date" name="repayment_date" value="{{datas[0].repayment_date}}">
                 </td>
             </tr>
             <tr>
-                <td>总金额</td>
+                <td><p>总金额</p></td>
                 <td>
                     <input class="form_input" type="number" step="0.01" name="total" value="{{datas[0].total}}">
                 </td>
-                <td>应还款</td>
+                <td><p>应还款</p></td>
                 <td>
                     <input class="form_input" type="number" step="0.01" name="repayable" value="{{datas[0].repayable}}">
                 </td>
             </tr>
             <tr>
-                <td>余款额</td>
+                <td><p>余款额</p></td>
                 <td>
                     <input class="form_input" type="number" step="0.01" name="balance" value="{{datas[0].balance}}">
                 </td>
-                <td>借款额</td>
+                <td><p>借款额</p></td>
                 <td>
                     <input class="form_input" type="number" step="0.01" name="loan" value="{{datas[0].loan}}">
                 </td>
             </tr>
             <tr>
-                <td>手续费</td>
+                <td><p>手续费</p></td>
                 <td>
                     <input class="form_input" type="number" step="0.01" name="service_charge" value="{{datas[0].service_charge}}">
                 </td>
-                <td>电话号</td>
+                <td><p>电话号</p></td>
                 <td>
                     <input class="form_input" type="text" name="telephone" value="{{datas[0].telephone}}">
                 </td>
             </tr>
             <tr>
-                <td>密&nbsp;&nbsp;&nbsp;码</td>
+                <td><p>密&nbsp;&nbsp;&nbsp;码</p></td>
                 <td>
                     <input class="form_input" type="text" name="password" value="{{datas[0].password}}">
                 </td>
-                <td>员&nbsp;&nbsp;&nbsp;工</td>
+                <td><p>员&nbsp;&nbsp;&nbsp;工</p></td>
                 <td>
                     <input class="form_input" type="text" name="staff" value="{{datas[0].staff}}">
                 </td>

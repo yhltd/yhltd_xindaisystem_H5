@@ -259,37 +259,37 @@
 
     <div id="header">
         <div class="header-text">修改会员</div>
-        <div class="header-item">
-            <a style="line-height: 0" class="right" href="/member_info/select" title="返回查询">
-                <img class="header-icon" src="../../images/back.png">
-            </a>
-        </div>
+    </div>
+    <div class="toback">
+        <a href="/member_info/select" title="返回查询">
+            <img class="toback_btn" src="../../images/back.png">
+        </a>
     </div>
     <input id="user_id" type="hidden" value="{{datas[0].id}}" name="id">
     <input id="member_info_gender" type="hidden" value="{{gender}}" name="member_info_gender">
     <input id="member_info_state" type="hidden" value="{{gender}}" name="member_info_state">
-    <div class="tablebox" style="width: 400px;height: 600px; margin-top:55px;">
-        <table  id="tableId" style="width: 400px;" border="0" cellspacing="0" cellpadding="0">
+    <div class="tablebox" style="width: 55%;height: 99%; margin:20px auto 0;">
+        <table  id="tableId" style="width: 99%;" border="0" cellspacing="0" cellpadding="0">
             <tr>
-                <td>账号</td>
+                <td><p>账&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号</p></td>
                 <td>
                     <input class="form_input" name="username" value="{{username}}"  />
                 </td>
             </tr>
             <tr>
-                <td>密码</td>
+                <td><p>密&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp码</p></td>
                 <td>
                     <input class="form_input" name="password" value="{{password}}" />
                 </td>
             </tr>
             <tr>
-                <td>姓名</td>
+                <td><p>姓&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp名</p></td>
                 <td>
                     <input class="form_input" name="name" type="text" value="{{name}}" />
                 </td>
             </tr>
             <tr>
-                <td>性别</td>
+                <td><p>性&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp别</p></td>
                 <td>
                     <select class="form_select" name="gender" value="{{gender}}" >
                         <option value="男" selected="selected">男</option>
@@ -298,7 +298,7 @@
                 </td>
             </tr>
             <tr>
-                <td>账号状态</td>
+                <td><p>账&nbsp号&nbsp状&nbsp态</p></td>
                 <td>
                     <select class="form_select" name="state" value="{{state}}" >
                         <option value="正常" selected="selected">正常</option>
@@ -307,13 +307,13 @@
                 </td>
             </tr>
             <tr>
-                <td>电话号</td>
+                <td><p>电&nbsp&nbsp话&nbsp&nbsp号</p></td>
                 <td>
                     <input class="form_input" name="phone" type="number" value="{{phone}}" />
                 </td>
             </tr>
             <tr>
-                <td>生日</td>
+                <td><p>生&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp日</p></td>
                 <td>
                     <input class="form_input" name="birthday" type="date" value="{{birthday}}" style="width: 175px;height: 20px"/>
                 </td>

@@ -48,34 +48,39 @@
 <form action="/users/uadd" id="formData" onsubmit="submitForm()" method="post" align="center">
     <div id="header">
         <div class="header-text">新增员工</div>
-        <div class="header-item">
-            <a style="line-height: 0" class="right" href="/users/select" title="返回查询">
-                <img class="header-icon" src="../../images/back.png">
-            </a>
-        </div>
+<!--        <div class="header-item">-->
+<!--            <a style="line-height: 0" class="right" href="/users/select" title="返回查询">-->
+<!--                <img class="header-icon" src="../../images/back.png">-->
+<!--            </a>-->
+<!--        </div>-->
     </div>
-    <div class="tablebox" style="width: 400px;height: 600px; margin-top:60px;">
-        <table id="tableId" style="width: 400px;" border="0" cellspacing="0" cellpadding="0">
+    <div class="toback">
+        <a href="/users/select" title="返回查询">
+            <img class="toback_btn" src="../../images/back.png">
+        </a>
+    </div>
+    <div class="tablebox" style="width: 28%;height: 99%; margin:20px auto 0;">
+        <table id="tableId" style="width: 99%;" border="0" cellspacing="0" cellpadding="0">
             <tr>
-                <td>职位</td>
+                <td><p>职&nbsp&nbsp位</p></td>
                 <td>
                     <input class="form_input" name="position" value="{{position}}"  />
                 </td>
             </tr>
             <tr>
-                <td>员工</td>
+                <td><p>员&nbsp&nbsp工</p></td>
                 <td>
                     <input class="form_input" name="uname" value="{{uname}}" />
                 </td>
             </tr>
             <tr>
-                <td>账号</td>
+                <td><p>账&nbsp&nbsp号</p></td>
                 <td>
                     <input class="form_input" name="account" value="{{account}}" />
                 </td>
             </tr>
             <tr>
-                <td>密码</td>
+                <td><p>密&nbsp&nbsp码</p></td>
                 <td>
                     <input class="form_input" name="password" value="{{password}}" />
                 </td>

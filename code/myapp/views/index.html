@@ -2,9 +2,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>信用卡管理系统-云合未来</title>
+<title>会员订单管理系统-云合未来</title>
 <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="../js/menu.js"></script>
+    <link rel="stylesheet" href="./iconfont.css">
     <style>
         /* CSS Document */
         html,body,div,p,form,label,ul,li,dl,dt,dd,ol,img,button,h1,h2,h3,h4,h5,h6,b,em,strong,small{margin:0;padding:0;border:0;list-style:none;font-style:normal;font-weight:normal;}
@@ -14,20 +15,72 @@
         .block, #block{display:block;}
         .none, #none{display:none;}
         /*****头部和尾部******/
-        .top{height:5px;line-height:5px;background:#f6f6f6;width:100%;position:fixed;z-index:255;top:79px;text-align:center;}
+        .top{height:0;line-height:5px;background:#f6f6f6;width:100%;position:fixed;z-index:255;top:79px;text-align:center;}
         .bottom{height:5px;line-height:5px;background:#f6f6f6;width:100%;position:fixed;z-index:255;bottom:50px;text-align:center;}
-        #header{height:80px;line-height:80px;background:#00CCFF;width:100%;position:absolute;z-index:5;top:0;text-align:center;}
-        .logo{line-height:80px;font-size:30px;color:#fff;font-family: "STHupo"; letter-spacing:3px;margin-left:50px;float:left;}
-        .navigation{float:right;margin:5px 50px 0 0;color:#fff;font-size:14px;}
-        .navigation ul li{height:30px;line-height:30px;text-align:center;font-size: 20px;font-family: "STXingkai";float:left;margin-left:15px;margin-top: 20px}
-        .navigation ul li a{color:#fff;font-size: 20px;font-family: "STXingkai"}
-        .navigation ul li a:hover{color:#32323a;}
+        #header{
+            height:80px;
+            line-height:80px;
+            background-image:linear-gradient(to right,#00CCFF,#004bc3);
+
+            width:100%;
+            position:absolute;
+            z-index:5;
+            top:0;
+            text-align:center;
+        }
+        .logo{
+            display: flex;
+            justify-content: space-between;
+            line-height:80px;
+            font-size:30px;
+            color:#fff;
+            font-family: "STHupo";
+            letter-spacing:3px;
+            margin-left: 21px;
+            float:left;
+        }
+        .navigation{
+            float:right;
+            margin:5px 50px 0 0;
+            color:#fff;
+            font-size:17px;
+        }
+        .navigation ul li{
+            height:30px;
+            line-height:30px;
+            text-align:center;
+            font-size: 17px;
+            font-family: "STXingkai";
+            float:left;
+            margin-left:15px;
+            margin-top: 20px
+        }
+        .navigation ul li a{
+            color:#fff;
+            font-size: 17px;
+            font-family: "STXingkai"
+        }
+        .navigation ul li a:hover{
+            color:#fff;
+        }
         #footer{height:50px;line-height:50px;background:#5e5e5e;width:100%;position:absolute;z-index:200;bottom:0;text-align:center;}
         #footer p{text-align:center;line-height:50px;color:#fbfbfb;}
         /*****主体部分******/
         #content{ width:100%;top:80px;position:absolute;z-index:10;bottom:5px;}
         /**左侧菜单***/
-        .left_menu{float:left;width:210px;background:#f6f6f6;height:1500px;position:absolute;top:0;left:0;overflow:auto;border-left:0px solid #32323a;}
+        .left_menu {
+            float:left;
+            width:210px;
+            background:#f6f6f6;
+            height:1500px;
+            position:absolute;
+            top:0px;
+            left:0px;
+            overflow:auto;
+            border-left:0px solid #32323a;
+            background-color: #444c63;
+
+        }
         .left_menu ul li {width:210px; display:inline; }
         .left_menu ul li .list-item a{width:210px;padding-left:110px;text-decoration:none;font-size:14px;color:#f5f5f5;line-height:30px;display:block;}
         .left_menu ul li a.noline { border-bottom:none; }
@@ -48,6 +101,67 @@
         .right-nav li a:hover{color:#00a5a5; text-decoration:underline;}
         .main{width:100%;height:100%;background:#f6f6f6;overflow:auto;}
         a{color: #f6f6f6}
+
+        /***********************************/
+        #header .logo #daohang{
+            width: 35px;
+            height: 35px;
+            margin-left: 19px;
+            margin-top: 24px;
+            z-index: 999;
+            display: block;
+        }
+        /*.m-right #daohang active{*/
+        /*    display: none;*/
+        /*}*/
+        #content .left_menu{
+            box-shadow: 10px 10px 10px 0px rgba(204,204,204,0.5);
+            -webkit-transition:.3s;
+        }
+        #content .left_menu #nav_dot{
+            margin-top: 7px;
+            height: 90%;
+            /*height: 100%;*/
+        }
+        #content .left_menu #nav_dot li{
+            margin: 10px auto;
+        }
+        #header #daohang img{
+            width: 31px;
+            height: 35px;
+            /*box-shadow: 2px 2px 2px rgba(184, 177, 177,0.5);*/
+            transition: .3s;
+        }
+        /*#content .m-right #daohang img:hover{*/
+        /*    background-color: #00a5a5;*/
+
+        /*}*/
+        #content .left_menu #nav_dot li a{
+            -webkit-transition:all .3s;
+            color: #c2c2c2;
+            font-size: 16px;
+            width: 100%;
+            padding: 5px 48px 5px 0;
+            height: 45px;
+        }
+        #content .left_menu #nav_dot li a img{
+            transform: translateY(20%);
+            padding-left: 20px;
+            padding-top: 10px;
+            padding-right: 34px;
+            width: 25px;
+            height: 25px;
+        }
+        #content .left_menu #nav_dot li a:hover{
+            background-color: #e2e2e2;
+        }
+        #content .m-right{
+            left: 26px;
+        }
+        #header{
+            box-shadow: 2px 3px 7px #6f7180;
+        }
+
     </style>
 
 </head>
@@ -58,11 +172,15 @@
     <div>
         <a href="http://www.yhocn.cn"><img src="../images/LOG.png" class="logo" style="width: 80px; height: 66px; margin-top: 5px;" title="云合未来"></a>
     </div>
-	<div class="logo">信用卡管理系统</div>
+	<div class="logo">会员订单管理系统<img id="daohang" src="../images/new_pics/收起.png"></div>
+<!--    <div id="daohang">-->
+<!--        <img src="../images/new_pics/收起.png" style="position: absolute;">-->
+<!--        &lt;!&ndash;            <span class="iconfont icon-shouqi-copy"></span>&ndash;&gt;-->
+<!--    </div>-->
 	<div class="navigation">
 		<ul>
-            <li tatget="main"><img src="../images/index_touxiang.png" style="width:30px;height: 30px"></li>
-		 	<li tatget="main">欢迎您：{{datas[0].uname}}</li>
+            <li target="main"><img src="../images/new_pics/人员.png" style="width:35px;height: 35px"></li>
+		 	<li target="main">欢迎您：{{datas[0].uname}}</li>
 			<li><a href="/users/password_toUpdate" target="main">密码修改</a></li>
             <li><a href="/copyright" target="main">关于</a></li>
             <li><a href="/help" target="main">帮助</a></li>
@@ -74,52 +192,51 @@
 	<div class="left_menu">
 		<ul id="nav_dot">
             <li>
-                <h4 class="M4"><span><img src="../images/shouye.png"></span><a href="/welcome" target="main" >首页</a></h4>
+                <a href="/welcome" target="main" ><img src="../images/new_pics/首页.png">首&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp页</a>
             </li>
             <li>
-                <h4 class="M4"><span><img src="../images/kehuxinxi.png"></span><a href="/customer/select" target="main">客户信息</a></h4>
+                <a href="/customer/select" target="main"><img src="../images/new_pics/客户信息管理.png">客&nbsp户&nbsp信&nbsp息</a>
             </li>
             <li>
-                <h4 class="M4"><span><img src="../images/rijiaoyijilu.png"></span><a href="/day_trading/select_ass" target="main">日交易记录</a></h4>
+               <a href="/day_trading/select_ass" target="main"><img src="../images/new_pics/交易记录 (1).png">日&nbsp交&nbsp易&nbsp额</a>
             </li>
             <li>
-                <h4 class="M4"><span><img src="../images/yuejiaoyijilu.png"></span><a href="/month_trading/select" target="main">月交易记录</a></h4>
+                <a href="/month_trading/select" target="main"><img src="../images/new_pics/交易记录.png">月&nbsp交&nbsp易&nbsp额</a>
             </li>
             <li>
-                <h4 class="M4"><span><img src="../images/tongjijiaoyizonge.png"></span><a href="/statistics/select" target="main">统计交易总额</a></h4>
+                <a href="/statistics/select" target="main"><img src="../images/new_pics/交易总额.png">交&nbsp易&nbsp总&nbsp额</a>
             </li>
             <li>
-                <h4 class="M4"><span><img src="../images/yuangongxinxi.png"></span><a href="/users/select" target="main">员工信息</a></h4>
+                <a href="/users/select" target="main"><img src="../images/new_pics/员工信息.png">员&nbsp工&nbsp信&nbsp息</a>
             </li>
             <li>
-                <h4 class="M4"><span><img src="../images/shangpinshezhi.png"></span><a href="/product/select" target="main">商品设置</a></h4>
+                <a href="/product/select" target="main"><img src="../images/new_pics/商品.png">商&nbsp品&nbsp设&nbsp置</a>
             </li>
             <li>
-                <h4 class="M4"><span><img src="../images/huiyuanguanli.png"></span><a href="/member_info/select" target="main">会员管理</a></h4>
+                <a href="/member_info/select" target="main"><img src="../images/new_pics/会员管理.png">会&nbsp员&nbsp管&nbsp理</a>
             </li>
             <li>
-                <h4 class="M4"><span><img src="../images/huiyuandengji.png"></span><a href="/membership_level/select" target="main">会员等级</a></h4>
+                <a href="/membership_level/select" target="main"><img src="../images/new_pics/会员等级等级钻石.png">会&nbsp员&nbsp等&nbsp级</a>
             </li>
             <li>
-                <h4 class="M4"><span><img src="../images/diandanmianban.png"></span><a href="/order_panel/select" target="main">点单面板</a></h4>
+                <a href="/order_panel/select" target="main"><img src="../images/new_pics/点餐.png">点&nbsp单&nbsp面&nbsp板</a>
             </li>
             <li>
-                <h4 class="M4"><span><img src="../images/dingdanxinxi.png"></span><a href="/orders/select" target="main">订单信息</a></h4>
+                <a href="/orders/select" target="main"><img src="../images/new_pics/订单信息.png">订&nbsp单&nbsp信&nbsp息</a>
             </li>
             <li>
-                <h4 class="M4"><span><img src="../images/tongjibaobiao.png"></span><a href="/report_form/select" target="main">统计报表</a></h4>
+                <a href="/report_form/select" target="main"><img src="../images/new_pics/统计报表.png">统&nbsp计&nbsp报&nbsp表</a>
             </li>
             <li>
-                <h4 class="M4"><span><img src="../images/quanping.png"></span><div onclick="fullScreen()">全屏显示</div></h4>
+                <a href="#javascript" onclick="fullScreen()"><img src="../images/new_pics/quanpingxianshi.png">全&nbsp屏&nbsp显&nbsp示</a>
             </li>
             <li>
-                <h4 class="M4"><span><img src="../images/tuichuquanping.png"></span><div onclick="exitFullScreen()">退出全屏</div></h4>
+                <a href="#javascript" onclick="exitFullScreen()"><img src="../images/new_pics/tuichuquanping.png">退&nbsp出&nbsp全&nbsp屏</a>
             </li>
         </ul>
 <!--        <img src="../images/logo2.png"  />-->
     </div>
     <div class="m-right">
-        <div id="daohang"><img src="../images/shouqi.png" style="width: 25px;height: 25px;position: absolute;"></div>
         <div>
             <iframe src="/welcome" name="main" class="main"></iframe>
         </div>
@@ -141,6 +258,10 @@
         }
 
     })
+
+    // $("#daohang").click(()=>{
+    //
+    // })
 
     function fullScreen(){
         let rfs = content.requestFullscreen || content.mozRequestFullScreen || content.webkitRequestFullscreen || content.msRequestFullScreen

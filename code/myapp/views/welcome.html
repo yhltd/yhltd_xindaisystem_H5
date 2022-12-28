@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>信用卡管理系统</title>
+    <title>会员订单管理系统</title>
+    <link rel="stylesheet" href="../fonts/font_welcome/iconfont.css">
     <style>
         * {
             margin: 0;
-            padding: 0
+            padding: 0;
+            box-sizing: border-box;
         }
         .box {
             width: 1061px;
@@ -14,7 +16,6 @@
             border: 1px solid #ccc;
             margin: 0px auto;
             padding: 0px;
-
         }
         .inner{
             width: 1061px;
@@ -85,6 +86,74 @@
             right: 5px;
             left: auto;
         }
+        .content-box{
+            height: 40%;
+            width: 1200px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+            margin: 0 auto;
+        }
+        .content-box .content-p{
+            /*display: inline-flex;*/
+            position: absolute;
+            width: 60%;
+            margin: 0 auto;
+        }
+        .content-box .content-function{
+            transform: translateY(100%);
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            height: 100%;
+            padding:50px;
+        }
+        .content-box .content-function div{
+            margin-left: 60px;
+        }
+        .content-box .content-function div p{
+            padding-top: 10px;
+        }
+        .content-box .content-function div img{
+            width: 25px;
+            height: 25px;
+            transform: translateY(110%);
+        }
+        .content-box .content-function div img:nth-child(2){
+            width: 30px;
+            height: 30px;
+            transform: translateY(100%);
+        }
+        .content-box .content-function div h3{
+            text-indent: 2em;
+        }
+        /*.content-box .content-function div:first-child::before,*/
+        /*.content-box .content-function div:nth-child(2)::before,*/
+        /*.content-box .content-function div:nth-child(3)::before{*/
+        /*    content: '';*/
+        /*    width: 25px;*/
+        /*    height: 25px;*/
+        /*    display: block;*/
+        /*    background-size: 25px 25px;*/
+        /*}*/
+        /*.content-box .content-function div:first-child::before{*/
+        /*    background: url("../images/zd.png") no-repeat center;*/
+        /*}*/
+        /*.content-box .content-function div:nth-child(2)::before{*/
+        /*    background: url("../images/welcome_quanxian.png") no-repeat center;*/
+        /*}*/
+        /*.content-box .content-function div:nth-child(3)::before{*/
+        /*     background: url("../images/welcome_tongji.png") no-repeat center;*/
+        /* }*/
+
+        .content-box .content-p{
+            margin-top: 20px;
+            /*text-align: -webkit-left;*/
+            text-indent: 2em;
+        }
+
     </style>
 
 </head>
@@ -113,48 +182,80 @@
                     </span>
         </div>
     </div>
-    <div style="margin-top:30px">
-        <p style="margin-left:50px">
-            云合信用卡管理软件，是由多位资深信用卡产业链相关人士与我司顶尖技术团队共同研发的一款具有划时代意义的管理软件，它能合理安排卡帐期。
-        </p>
-        <p style="margin-left:50px">
-            从而促使卡从粗放式消费推进到精细管理阶段，并且缩短了从业人员操作时间，同时适合傻瓜式的操作，让您一步从菜鸟飞到高手。
-        </p>
+<!--    style="margin-top:30px"-->
+    <div class="content-box">
+        <div class="content-p">
+            <!--        style="margin-left:50px"-->
+            <p>
+                云合信用卡管理软件，是由多位资深信用卡产业链相关人士与我司顶尖技术团队共同研发的一款具有划时代意义的管理软件，它能合理安排卡帐期。
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从而促使卡从粗放式消费推进到精细管理阶段，并且缩短了从业人员操作时间，同时适合傻瓜式的操作，让您一步从菜鸟飞到高手。
+            </p>
+            <!--        style="margin-left:50px"-->
 
-        <span style="margin-top:20px">
-				<img src="../images/zd.png" style="margin-left:50px;margin-top:20px;margin-right: 10px;float: left"/>
-				<h3 style="margin-left:50px;margin-top:20px;"style="float: right">账单管理</h3>
-        </span>
+        </div>
+        <div class="content-function">
+            <div>
+                <span class="iconfont icon-zhangdan"></span>
+                <img src="../images/zhangdan.png"/>
+                <!--                    style="margin-left:50px;margin-top:20px;"style="float: right"-->
+                <h3>账单管理</h3>
+                <!--                    style="margin-left:50px"-->
+                <p>
+                    账目清晰、多卡管理、到期提醒。
+                </p>
+            </div>
+            <div>
+                <span class="iconfont icon-zhanghaoquanxianguanli"></span>
+                <img src="../images/welcome_quanxian.png" />
+                <!--                    style="margin-left:50px;margin-top:20px;"style="float: right"-->
+                <h3>分权管理</h3>
+                <!--                    style="margin-left:50px"-->
+                <p>
+                    分工明确、各司其职、有条不紊。
+                </p>
+            </div>
+            <div>
+                <span class="iconfont icon-navicon-jytj"></span>
+                <img src="../images/welcome_tongji.png"/>
+                <!--                    style="margin-left:50px;margin-top:20px;"style="float: right"-->
+                <h3>交易统计</h3>
+                <!--                    style="margin-left:50px"-->
+                <p>
+                    条件汇总，各项数据清晰一目了然。
+                </p>
+            </div>
+        </div>
 
-        <p style="margin-left:50px">
-            账目清晰、多卡管理、到期提醒。
-        </p>
+<!--                    <span style="margin-top:20px">-->
+<!--&lt;!&ndash;                         style="margin-left:50px;margin-top:20px;margin-right: 10px;float: left"&ndash;&gt;-->
+<!--				        <img src="../images/zd.png"/>-->
+<!--                    </span>-->
+
+
+<!--                    style="margin-top:20px"-->
+<!--                    <span>-->
+<!--&lt;!&ndash;                        style="width:48px;height:48px;margin-left:50px;margin-right: 10px;float: left"&ndash;&gt;-->
+<!--				        <img src="../images/welcome_quanxian.png" />-->
+<!--                    </span>-->
+
+
+<!--                    style="margin-top:20px"-->
+<!--                    <span>-->
+<!--&lt;!&ndash;                        style="width:48px;height:48px;margin-left:50px;margin-right: 10px;float: left"&ndash;&gt;-->
+<!--                        <img src="../images/welcome_tongji.png"/>-->
+<!--                    </span>-->
+
+
 
 <!--        <div id="pics">-->
 <!--            &lt;!&ndash; <img src="./img/17.jpg" /> &ndash;&gt;-->
 <!--        </div>-->
 
     </div>
-    <div style="margin-top:30px">
-        <span style="margin-top:20px">
-				<img src="../images/welcome_quanxian.png" style="width:48px;height:48px;margin-left:50px;margin-right: 10px;float: left"/>
-				<h3 style="margin-left:50px;margin-top:20px;"style="float: right">分权管理</h3>
-        </span>
+<!--    <div style="margin-top:30px">-->
 
-        <p style="margin-left:50px">
-            分工明确、各司其职、有条不紊。
-        </p>
-    </div>
-    <div style="margin-top:30px">
-        <span style="margin-top:20px">
-				<img src="../images/welcome_tongji.png" style="width:48px;height:48px;margin-left:50px;margin-right: 10px;float: left"/>
-				<h3 style="margin-left:50px;margin-top:20px;"style="float: right">交易统计</h3>
-        </span>
-
-        <p style="margin-left:50px">
-            条件汇总，各项数据清晰一目了然。
-        </p>
-    </div>
+<!--    </div>-->
 
 </div>
 </body>
