@@ -344,7 +344,7 @@
 
     .Lblock .table {
         margin-top: 1px;
-        height: 87%;
+        /*height: 87%;*/
     }
 
     .Lblock .table .title {
@@ -375,9 +375,9 @@
         cursor: pointer;
     }
 
-    .table-hover>tbody>tr:nth-of-type(odd){
-        background-color: #f9f9f9;
-    }
+    /*.table-hover>tbody>tr:nth-of-type(odd){*/
+    /*    background-color: #f9f9f9;*/
+    /*}*/
 
 
     /*.Lblock .table .title li:last-child {*/
@@ -849,29 +849,29 @@
         </div>
         <div id="empty_mask">
             <div class="cont">
-                <table class="table table-hover">
+                <table id="table" class="table table-hover">
                     <tbody>
 <!--                        //自动添加商品-->
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="end">
-                <div>
-                    合计数量:
-                    <span class="count">0</span>
-                </div>
-                <div>
-                    合计金额:
-                    <span>
-                        ￥
-                        <span class="price_total">
-                            0.00
-                        </span>
-                    </span>
+<!--        <div class="end">-->
+<!--            <div>-->
+<!--                合计数量:-->
+<!--                <span class="count">0</span>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                合计金额:-->
+<!--                <span>-->
+<!--                    ￥-->
+<!--                    <span class="price_total">-->
+<!--                        0.00-->
+<!--                    </span>-->
+<!--                </span>-->
 
-                </div>
-            </div>
+<!--            </div>-->
+<!--        </div>-->
 <!--        </div>-->
         <div class="button">
             <button class="but2" btnflag="cancel">作废</button>
@@ -880,33 +880,33 @@
     </div>
     <div class="btns">
         <div>
-            <button class="btn jia">+</button>
+            <button id="jia" class="btn jia">+</button>
         </div>
         <div>
-            <button class="btn jian">-</button>
+            <button id="jian" class="btn jian">-</button>
         </div>
-        <div>
-            <button class="btn">数量</button>
-        </div>
-        <div>
-            <button class="btn price">修改价格</button>
-        </div>
-        <div>
-            <button class="btn">做法</button>
-        </div>
-        <div>
-            <button class="btn del_this_td">删除</button>
-        </div>
-        <div>
-            <button class="btn is_zengsong">赠送</button>
-        </div>
-        <div>
-            <button class="btn orderStaff">下单员工</button>
-        </div>
-        <hr>
-        <div>
-            <button class="btn">修改账单</button>
-        </div>
+<!--        <div>-->
+<!--            <button class="btn">数量</button>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <button class="btn price">修改价格</button>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <button class="btn">做法</button>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <button class="btn del_this_td">删除</button>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <button class="btn is_zengsong">赠送</button>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <button class="btn orderStaff">下单员工</button>-->
+<!--        </div>-->
+<!--        <hr>-->
+<!--        <div>-->
+<!--            <button class="btn">修改账单</button>-->
+<!--        </div>-->
     </div>
     <div class="Rblock">
         <div class="Bmenu">
@@ -929,7 +929,7 @@
             {% for item in datas %}
             <li>
                 <div class="img">
-                    <img src="https://img1.baidu.com/it/u=2602169801,3300442698&fm=253&fmt=auto&app=138&f=GIF?w=500&h=500" alt="">
+                    <img src="{{item.photo}}" alt="">
                 </div>
                 <div class="product_details">
                     <div class="title">
@@ -993,33 +993,33 @@
     //     }
     // });
 
-    $("body").on('click','.Rblock .block li',function(){
-        var _this = $(this).children();
-        var _id = _this.eq(3).text();
-        console.log(_id)
-        var existence = false;
-        $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
-            var id = $(this).children().eq(0).text();
-            if (_id == id) {
-                existence = true;
-                $(this).children().eq(2).text(parseInt($(this).children().eq(2).text()) + 1);
-                $(this).children().eq(3).text(($(this).children().eq(4).text() * 1)*($(this).children().eq(2).text() * 1));
-                Table_sum();
-            }
-        })
-
-        if (!existence) {
-            var _str = "<li><div class='none'>%1%</div><div>%2%</div><div>1</div><div>%3%</div><div class='none'>%4%</div><div style='justify-content: center;padding:0 4px;'><span class='jia'>+</span><span class='jian'>-</span></div></li>";
-            _str = _str.replace("%1%", _this.eq(3).text());
-            _str = _str.replace("%2%", _this.eq(1).text());
-            _str = _str.replace("%3%", _this.eq(2).children().text());
-            _str = _str.replace("%4%", _this.eq(2).children().text());
-            $(".Lblock .table .cont").append(_str);
-            $("#empty_mask .cont").attr("style", "display:block");
-            // $("#empty_mask").attr("style", "display:none");
-            Table_sum();
-        }
-    });
+    // $("body").on('click','.Rblock .block li',function(){
+    //     var _this = $(this).children();
+    //     var _id = _this.eq(3).text();
+    //     console.log(_id)
+    //     var existence = false;
+    //     $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
+    //         var id = $(this).children().eq(0).text();
+    //         if (_id == id) {
+    //             existence = true;
+    //             $(this).children().eq(2).text(parseInt($(this).children().eq(2).text()) + 1);
+    //             $(this).children().eq(3).text(($(this).children().eq(4).text() * 1)*($(this).children().eq(2).text() * 1));
+    //             Table_sum();
+    //         }
+    //     })
+    //
+    //     if (!existence) {
+    //         var _str = "<li><div class='none'>%1%</div><div>%2%</div><div>1</div><div>%3%</div><div class='none'>%4%</div><div style='justify-content: center;padding:0 4px;'><span class='jia'>+</span><span class='jian'>-</span></div></li>";
+    //         _str = _str.replace("%1%", _this.eq(3).text());
+    //         _str = _str.replace("%2%", _this.eq(1).text());
+    //         _str = _str.replace("%3%", _this.eq(2).children().text());
+    //         _str = _str.replace("%4%", _this.eq(2).children().text());
+    //         $(".Lblock .table .cont").append(_str);
+    //         $("#empty_mask .cont").attr("style", "display:block");
+    //         // $("#empty_mask").attr("style", "display:none");
+    //         Table_sum();
+    //     }
+    // });
 
     //右边菜单栏点击事件,显示出对应类型的商品
     $(".Rblock .Bmenu li").click(function () {
@@ -1039,7 +1039,7 @@
                 this_str += "" +
                     "<li>" +
                         "<div class=\"img\">" +
-                            "<img src=\"https://img1.baidu.com/it/u=2602169801,3300442698&fm=253&fmt=auto&app=138&f=GIF?w=500&h=500\" alt=\"\">" +
+                            "<img src=\"{{datas[i].photo}}\" alt=\"\">" +
                         "</div>" +
                         "<div class=\"product_details\">"+
                             "<div class=\"title\">\n" +
@@ -1092,7 +1092,39 @@
     })
     //--------------------------------
     //点击商品后，.Lblock #empty_mask .cont tbody下加tr
-    $(".Rblock .block li").click(function (){
+    // $(".Rblock .block li").click(function (){
+    //     //单点一份的1
+    //     var num = 1;
+    //     //新增商品的序号
+    //     var product_now_id = parseInt($(".index .Lblock #empty_mask .cont .table tbody tr").length+parseInt("1"));
+    //     //获取添加商品链接的id
+    //     var product_id = $(this).children(".id").text();
+    //     console.log(product_id);
+    //     var this_str = ""
+    //     for(var i = 0; i < datas.length; i++){
+    //         if(datas[i].id == product_id){
+    //             //所要显示的商品价格
+    //             this_str += "" +
+    //                 "<tr class=\"success\">" +
+    //                     "<td class=\"itemOrderNo\">" + product_now_id+ "</td>" +
+    //                     "<td class=\"itemName\">" + datas[i].product_name + "</td>"+
+    //                     "<td class=\"itemNum\">" +
+    //                         "<span class=\"count\">" + num + "</span>"+
+    //                         "/"+
+    //                         "<span class=\"unit\">" + datas[i].unit + "</span>"+
+    //                     "</td>"+
+    //                     "<td class=\"itemAmount\">" +
+    //                         "￥"+
+    //                         "<span class=\"price\">" + datas[i].price + "</span>"+
+    //                     "</td>"+
+    //                 "</tr>"
+    //         }
+    //     }
+    //     $(".Lblock #empty_mask .table tbody").append(this_str);
+    // })
+
+
+    $("body").on('click','.Rblock .block li',function(){
         //单点一份的1
         var num = 1;
         //新增商品的序号
@@ -1106,22 +1138,103 @@
                 //所要显示的商品价格
                 this_str += "" +
                     "<tr class=\"success\">" +
-                        "<td class=\"itemOrderNo\">" + product_now_id+ "</td>" +
-                        "<td class=\"itemName\">" + datas[i].product_name + "</td>"+
-                        "<td class=\"itemNum\">" +
-                            "<span class=\"count\">" + num + "</span>"+
-                            "/"+
-                            "<span class=\"unit\">" + datas[i].unit + "</span>"+
-                        "</td>"+
-                        "<td class=\"itemAmount\">" +
-                            "￥"+
-                            "<span class=\"price\">" + datas[i].price + "</span>"+
-                        "</td>"+
+                    "<td class=\"itemOrderNo\">" + product_now_id+ "</td>" +
+                    "<td class=\"itemName\">" + datas[i].product_name + "</td>"+
+                    "<td class=\"itemNum\">" +
+                    "<span class=\"count\">" + num + "</span>"+
+                    "/"+
+                    "<span class=\"unit\">" + datas[i].unit + "</span>"+
+                    "</td>"+
+                    "<td class=\"itemAmount\">" +
+                    "￥"+
+                    "<span class=\"price\">" + datas[i].price + "</span>"+
+                    "</td>"+
                     "</tr>"
             }
         }
         $(".Lblock #empty_mask .table tbody").append(this_str);
-    })
+    });
+
+    $("body").on('click','.success',function(){
+        //单点一份的1
+        console.log('dd')
+        $('.success').css('background-color', 'white');
+        $(this).css('background-color', '#f9f9f9');
+    });
+
+    $("body").on('click','#jia',function(){
+        //单点一份的1
+        console.log('jia')
+
+        $("#table tbody tr").each(function(){
+            var a = $(this).css('background-color');
+            if(a == 'rgb(249, 249, 249)'){
+                console.log('选中')
+                var count = $(this).children().eq(2).children().eq(0);
+                var this_count = $(this).children().eq(2).children().eq(0).text();
+                var money = $(this).children().eq(3);
+                var this_money = $(this).children().eq(3).text();
+                this_money = this_money.replace("￥","")
+                console.log(count)
+                console.log(this_count)
+                console.log(money)
+                console.log(this_money)
+                var danjia = this_money / this_count
+                this_count = this_count * 1 + 1 * 1
+                this_money = this_money * 1 + danjia * 1
+                console.log(this_count)
+                console.log(this_money)
+                count.text(this_count)
+                money.text("￥" + this_money)
+            }
+        });
+
+    });
+
+    $("body").on('click','#jian',function(){
+        //单点一份的1
+        console.log('jian')
+        $("#table tbody tr").each(function(){
+            var a = $(this).css('background-color');
+            if(a == 'rgb(249, 249, 249)'){
+                console.log('选中')
+                var count = $(this).children().eq(2).children().eq(0);
+                var this_count = $(this).children().eq(2).children().eq(0).text();
+                var money = $(this).children().eq(3);
+                var this_money = $(this).children().eq(3).text();
+                this_money = this_money.replace("￥","")
+                console.log(count)
+                console.log(this_count)
+                console.log(money)
+                console.log(this_money)
+                var danjia = this_money / this_count
+                this_count = this_count * 1 - 1 * 1
+                this_money = this_money * 1 - danjia * 1
+                console.log(this_count)
+                console.log(this_money)
+                count.text(this_count)
+                money.text("￥" + this_money)
+                if(this_count < 1){
+                    $(this).remove();
+                }
+            }
+        });
+    });
+
+    // 给加号添加点击事件
+    // $(document).delegate('.jia', "click", function () {
+    //     // var money = $(this).parent().parent().children().eq(4); //价格
+    //     // var Smoney = $(this).parent().parent().children().eq(3); //总价格
+    //     var count = $("#empty_mask .cont .table tr .itemNum"); //数量
+    //     var money = $("#empty_mask .cont .table tr .itemAmount");//单价
+    //     // var Smoney = $(".price_total"); //一个tr的总价格
+    //
+    //     count.text(parseInt(count.text()) + 1)
+    //     // Smoney.text((money.text() * 1)*parseInt(count.text() * 1));
+    //     var Smoney = parseInt((money.text() * 1))*parseInt(count.text() * 1);
+    //     console.log(Smoney);
+    //     Table_sum();
+    // });
 
     //--------------------------------
 
@@ -1265,7 +1378,7 @@
                             for(var i=0; i<datas.length; i++){
                                 var num = datas[i].price * zhekou
                                 num = Math.floor(num * 100) / 100;
-                                this_str = this_str + "<li><div class=\"img\"><img src=\"\" alt=\"\"></div><div class=\"title\">\n" +
+                                this_str = this_str + "<li><div class=\"img\"><img src=\"{{datas[i].photo}}\" alt=\"\"></div><div class=\"title\">\n" +
                                     "                    " + datas[i].product_name  +
                                     "                </div>" +
                                     "                <div class=\"money\">￥<span>" + num + "</span>元</div>" +

@@ -286,7 +286,6 @@ router.get('/toUpdate/:id', function (req, res) {
             id = value[5];
         }
         db.query("select * from product where id= '" + id + "'", function (err, rows) {
-
             try {
                 if (err) {
                     res.end('修改页面跳转失败：');
@@ -316,6 +315,50 @@ router.get('/toUpdate/:id', function (req, res) {
     //     res.render('me.html', {title: 'ExpressTitle', msg: '无权限修改'});
     // }
 });
+
+
+/**
+ * 修改图片
+ */
+router.post('/updImg', function (req, res) {
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key, iv, token));
+    console.log(data)
+
+    let this_id = req.body.this_id;
+    let this_file = req.body.this_file;
+
+    let result = {
+        code: '',
+        msg: '',
+        data: []
+    }
+
+    var sql = "update product set photo='" + this_file + "' where id = " + this_id
+
+    db.query(sql, function (err, rows) {
+        try {
+            if (err) {
+                console.log(err)
+                result.code = 500;
+                result.msg = "上传图片失败";
+                res.json(JSON.stringify(result));
+                res.end('获取失败：');
+            }else{
+                result.code = 200;
+                result.msg = "上传成功"
+                console.log('跳转')
+                res.json(JSON.stringify(result));
+            }
+        } catch (e) {
+            res.render("error.html", {error: '网络错误，请稍后再试'})
+        }
+    })
+
+});
+
 
 /**
  * 获取权限

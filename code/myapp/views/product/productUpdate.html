@@ -266,7 +266,6 @@
         </a>
     </div>
     <input id="user_id" type="hidden" value="{{datas[0].id}}" name="id">
-    <input id="file" type="file" style="display: none" value="" name="file">
     <input id="product_tingyong" type="hidden" value="{{tingyong}}" name="product_tingyong">
     <div class="tablebox" style="width: 28%;height: 99%; margin:20px auto 0;">
         <table  id="tableId" style="width: 99%;" border="0" cellspacing="0" cellpadding="0">
@@ -312,7 +311,7 @@
             <tr>
                 <td><p>图&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp片</p></td>
                 <td>
-                    <img id="image" style="width: 100px;height: 100px;" src="data:image/png;base64,{{photo}}">
+                    <img id="image" style="width: 100px;height: 100px;" src="{{photo}}">
                 </td>
             </tr>
             <tr>
@@ -324,13 +323,69 @@
         {{msg}}
     </div>
     <input id="checkFormCheckBox" name="checkForm" type="checkbox" checked="" style="display: none"/>
+    <input type="file" id="file" hidden="hidden">
 </form>
 <script>
 
     $("#image").click(function () {
-        console.log("image")
-
+        $('#file').trigger('click');
     })
+
+    $('#file').change(function () {
+        var file = document.getElementById("file").files;
+        var oFReader = new FileReader();
+        var this_file = file[0];
+        var fileName = file[0].name;
+        var obj = [];
+        oFReader.readAsDataURL(this_file);
+        oFReader.onloadend = function (oFRevent) {
+            this_file = oFRevent.target.result;
+            console.log(this_file)
+            var this_id = $("#user_id").val();
+            console.log(this_id)
+            $.ajax({
+                type: 'post',
+                url: '/product/updImg',
+                timeout: 50000,
+                data: {
+                    this_id: this_id,
+                    this_file: this_file,
+                },
+                success: function(res){
+                    let result = JSON.parse(res)
+                    alert(result.msg)
+                    history.back(-1)
+                },
+                error: function(res){
+                    if(res.status == "timeout"){
+                        alert("网络超时，请稍后再试")
+                    }else{
+                        alert("网络错误，请稍后再试")
+                    }
+                }
+            });
+
+            // $ajax({
+            //     type: 'post',
+            //     url: '/file_table/add',
+            //     data: JSON.stringify({
+            //         addInfo: obj
+            //     }),
+            //     dataType: 'json',
+            //     contentType: 'application/json;charset=utf-8',
+            //     async: false,
+            // }, false, '', function (res) {
+            //     if (res.code == 200) {
+            //         fileShow(approvalId);
+            //         swal("", res.msg, "success");
+            //     } else {
+            //         swal("", res.msg, "error");
+            //     }
+            //     var fileInput = document.getElementById('file');
+            //     fileInput.outerHTML = fileInput.outerHTML;
+            // })
+        };
+    });
 
 </script>
 </body>
