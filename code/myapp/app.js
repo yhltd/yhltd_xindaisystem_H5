@@ -22,6 +22,7 @@ var userssRouter = require('./routes/userss');
 var orders_detailsRouter = require('./routes/orders_details');
 var orders_details_memberRouter = require('./routes/orders_details_member');
 var report_formRouter = require('./routes/report_form');
+// var event_discountRouter = require('./routes/event_discount');
 var app = express();
 
 
@@ -62,6 +63,7 @@ app.use('/userss', userssRouter);
 app.use('/orders_details', orders_detailsRouter);
 app.use('/orders_details_member', orders_details_memberRouter);
 app.use('/report_form', report_formRouter);
+// app.use('/event_discount', event_discountRouter);
 
 
 

@@ -164,6 +164,8 @@
         .typegoods .goods p {
             line-height: 60px;
         }
+
+        .modal{position:fixed;top:0;left:0;z-index:1050;display:none;width:100%;height:100%;overflow:hidden;outline:0}
     </style>
 </head>
 <style>
@@ -856,27 +858,28 @@
                 </table>
             </div>
         </div>
-<!--        <div class="end">-->
-<!--            <div>-->
-<!--                合计数量:-->
-<!--                <span class="count">0</span>-->
-<!--            </div>-->
-<!--            <div>-->
-<!--                合计金额:-->
-<!--                <span>-->
-<!--                    ￥-->
-<!--                    <span class="price_total">-->
-<!--                        0.00-->
-<!--                    </span>-->
-<!--                </span>-->
+        <div class="end">
+            <div>
+                合计数量:
+                <span class="count">0</span>
+            </div>
+            <div>
+                合计金额:
+                <span>
+                    ￥
+                    <span class="price_total">
+                        0.00
+                    </span>
+                </span>
 
-<!--            </div>-->
-<!--        </div>-->
-<!--        </div>-->
+            </div>
+        </div>
         <div class="button">
             <button class="but2" btnflag="cancel">作废</button>
             <button class="but3">结账</button>
         </div>
+
+
     </div>
     <div class="btns">
         <div>
@@ -897,9 +900,9 @@
 <!--        <div>-->
 <!--            <button class="btn del_this_td">删除</button>-->
 <!--        </div>-->
-<!--        <div>-->
-<!--            <button class="btn is_zengsong">赠送</button>-->
-<!--        </div>-->
+        <div>
+            <button id="is_zengsong" class="btn is_zengsong">赠送</button>
+        </div>
 <!--        <div>-->
 <!--            <button class="btn orderStaff">下单员工</button>-->
 <!--        </div>-->
@@ -941,6 +944,28 @@
             </li>
             {% endfor %}
         </ul>
+    </div>
+</div>
+<!--    结账窗体-->
+<div id="jiezhang" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">结账</div>
+            </div>
+            <div class="modal-body">
+                <table id="show-chuku-table"></table>
+            </div>
+            <div class="border-top" style="padding: 15px;">
+                <button id="chuku-submit-btn" type="button" class="btn btn-primary">
+                    <i class="bi bi-arrow-bar-up icon"></i>
+                    确定
+                </button>
+                <button id="chuku-close-btn" type="button" class="btn btn-primary left-margin">
+                    关闭
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 <script>
@@ -1059,6 +1084,7 @@
     //给菜单类型按钮添加点击变换样式
     $('.Rblock .Bmenu li .menuType').on('click',function(){
         $(this).addClass("menuType-active").siblings().removeClass("menuType-active");
+
     })
     //给选中商品添加点击样式并进行增加减少和删除的操作
     $('.Lblock #empty_mask .cont .table tbody tr').click(function (){
@@ -1137,7 +1163,7 @@
             if(datas[i].id == product_id){
                 //所要显示的商品价格
                 this_str += "" +
-                    "<tr class=\"success\">" +
+                    "<tr class=\"success\" ondblclick=\"ondblclick_f(this)\">" +
                     "<td class=\"itemOrderNo\">" + product_now_id+ "</td>" +
                     "<td class=\"itemName\">" + datas[i].product_name + "</td>"+
                     "<td class=\"itemNum\">" +
@@ -1153,7 +1179,14 @@
             }
         }
         $(".Lblock #empty_mask .table tbody").append(this_str);
+        Table_sum();
     });
+
+
+    function ondblclick_f(obj){
+        $(obj).remove();
+        Table_sum();
+    }
 
     $("body").on('click','.success',function(){
         //单点一份的1
@@ -1188,7 +1221,7 @@
                 money.text("￥" + this_money)
             }
         });
-
+        Table_sum();
     });
 
     $("body").on('click','#jian',function(){
@@ -1219,6 +1252,36 @@
                 }
             }
         });
+        Table_sum();
+    });
+
+    $("body").on('click','#is_zengsong',function(){
+        console.log()
+        $("#table tbody tr").each(function(){
+            var a = $(this).css('background-color');
+            if(a == 'rgb(249, 249, 249)'){
+                console.log('选中')
+                var count = $(this).children().eq(2).children().eq(0);
+                var this_count = $(this).children().eq(2).children().eq(0).text();
+                var money = $(this).children().eq(3);
+                var this_money = $(this).children().eq(3).text();
+                this_money = this_money.replace("￥","")
+                console.log(count)
+                console.log(this_count)
+                console.log(money)
+                console.log(this_money)
+                var danjia = this_money / this_count
+                this_money = 0
+                console.log(this_count)
+                console.log(this_money)
+                count.text(this_count)
+                money.text("￥" + this_money)
+                // if(this_count < 1){
+                //     $(this).remove();
+                // }
+            }
+        });
+        Table_sum();
     });
 
     // 给加号添加点击事件
@@ -1249,6 +1312,73 @@
         Table_sum();
     })
     // 结账按钮点击后
+    // $(".but3").click(function () {
+    //     console.log("add")
+    //     var pro_list = []
+    //     var pro_num = $("#danhao").val();
+    //     $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
+    //         var id = $(this).children().eq(0).text();
+    //         var num = $(this).children(".itemNum").children().eq(0).text();
+    //         var zhehou = $(this).children(".itemAmount").children().eq(1).text();
+    //         console.log(id)
+    //         console.log(num)
+    //         console.log(zhehou)
+    //         for(var i=0; i<datas.length;i++){
+    //             if(datas[i].id == id){
+    //                 pro_list.push({
+    //                     cplx:datas[i].type,
+    //                     cpmc:datas[i].product_name,
+    //                     dw:datas[i].unit,
+    //                     dj:datas[i].price,
+    //                     dzbl:p_zhekou,
+    //                     // zhdj:zhehou / num,
+    //                     zhdj:datas[i].price*p_zhekou,
+    //                     // zhje:zhehou,
+    //                     zhje:datas[i].price*p_zhekou*num,
+    //                     gs:num
+    //                 })
+    //             }
+    //         }
+    //     })
+    //     console.log(pro_list)
+    //     console.log(pro_num)
+    //     if(pro_num == ''){
+    //         alert("未填写订单号")
+    //         return;
+    //     }
+    //     if(pro_list.length == 0){
+    //         alert("未选择商品")
+    //         return;
+    //     }
+    //     $(".hover").click(function (){
+    //         $(".hover").removeClass("active")
+    //         $(".hover").addClass("active")
+    //
+    //     })
+    //
+    //     $.ajax({
+    //         type: 'post',
+    //         url: '/order_panel/add',
+    //         timeout: 5000,
+    //         data: {
+    //             pro_list: JSON.stringify(pro_list),
+    //             pro_num: pro_num,
+    //             youhui: p_zhekou
+    //         },
+    //         success: function(res){
+    //             let result = JSON.parse(res)
+    //             alert(result.msg)
+    //             tableShow();
+    //         },
+    //         error: function(res){
+    //             if(res.status == "timeout"){
+    //                 alert("网络超时，请稍后再试")
+    //             }else{
+    //                 alert("网络错误，请稍后再试")
+    //             }
+    //         }
+    //     });
+    // })
     $(".but3").click(function () {
         console.log("add")
         var pro_list = []
@@ -1290,44 +1420,30 @@
         $(".hover").click(function (){
             $(".hover").removeClass("active")
             $(".hover").addClass("active")
-        })
 
-        $.ajax({
-            type: 'post',
-            url: '/order_panel/add',
-            timeout: 5000,
-            data: {
-                pro_list: JSON.stringify(pro_list),
-                pro_num: pro_num,
-                youhui: p_zhekou
-            },
-            success: function(res){
-                let result = JSON.parse(res)
-                alert(result.msg)
-                tableShow();
-            },
-            error: function(res){
-                if(res.status == "timeout"){
-                    alert("网络超时，请稍后再试")
-                }else{
-                    alert("网络错误，请稍后再试")
-                }
-            }
-        });
+        })
+        jquery('.jiezhang').show()
     })
 
     //改过了--------------
     //合计商品数量和价格
     //完成了
     function Table_sum(){
+
         var _number = 0;
         var _money = 0;
         $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
             var number = $(this).children().eq(2).children().eq(0).text();
             var money = $(this).children().eq(3).children(".price").text();
+            console.log(number)
+            console.log(money)
+            console.log(this)
+            console.log($(this).children().eq(3).children(".itemAmount").text())
             _number += (number * 1);
             _money += (money * 1);
         })
+        console.log(_number)
+        console.log(_money)
         // console.log('当前money='+_money);
         $(".Lblock .end").children().eq(0).children(".count").text(_number);
         $(".Lblock .end").children().eq(1).children().children(".price_total").text(_money);
