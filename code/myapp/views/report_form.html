@@ -12,24 +12,59 @@
     <script type="text/javascript" src="../../js/echarts.min.js"></script>
 </head>
 <style>
+    #tableId {
+        width: 97%;
+    }
+    .select_form>p {
+        font-size: 12px;
+        margin-top: 7px;
+    }
+    .select_input{
+        margin-left: 15px;
+    }
     table th, table td {
         font-size: 12px;
         text-align: center;
         line-height: 16px;
-        background-color: rgba(8, 46, 84, 0.5);
+        /* background-color: rgba(8, 46, 84, 0.5); */
         padding: 12px;
-        color:white;
+        /* color: white; */
+        background-color: #fff;
     }
     #tableId tr td{
         padding-top: 23px;
     }
     #tableId tr td input{
-        width: 200px;
-        height: 35px;
+        width: 87%;
+        height: 40px;
+        outline: none;
+        border: 1px solid rgb(161, 158, 158);
+        /* border-top: none; */
+        /* border-left: none; */
+        /* border-right: none; */
+        border-radius: 3px;
+        /* padding-left: 10px; */
+        text-align: center;
+        transition: .3s;
     }
+
+    #tableId tr td input:focus{
+        border: 1px solid rgb(0, 165, 165);
+        box-shadow: 2px 2px 2px rgb(0, 165, 165);
+    }
+
     #tableId tr td p{
-        font-size: 16px;
-        font-weight: 700;
+        font-size: 17px;
+        font-weight: bold;
+    }
+    #chart{
+        width: 97%;
+        margin: 10px auto;
+        height: 500px;
+        margin-top: 10px;
+        user-select: none;
+        background-color: #fff;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
 </style>
 <body >
@@ -37,13 +72,16 @@
     <div class="header-text">统计报表</div>
 </div>
 <div class="select">
-    <input id="start_date" class="select_input" type="date" name="start_date"/>
-    <input id="stop_date" class="select_input" type="date" name="stop_date"/>
-    <button id="select-btn" class="select_btn right" type="button" style="margin-left: 10px">查询</button>
+    <div class="select_form">
+        <input id="start_date" class="select_input" type="date" name="start_date"/>
+        <p>至</p>
+        <input id="stop_date" class="select_input" type="date" name="stop_date"/>
+        <button id="select-btn" class="select_btn right" type="button">查询</button>
+    </div>
 </div>
 
 
-    <table id="tableId" style="width: 77%;height: 238px;margin: 0 auto;margin-top: 10px;" border="0" cellspacing="0" cellpadding="0">
+    <table id="tableId" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td><p>会&nbsp&nbsp&nbsp员&nbsp&nbsp&nbsp总&nbsp&nbsp&nbsp数</p></td>
             <td>
@@ -78,7 +116,7 @@
     </table>
 
 
-<div id="chart" style="width: 100%;height: 500px;margin-top: 10px">
+<div id="chart">
 
 </div>
 

@@ -109,8 +109,19 @@ router.all('/ass', function (req, res, next) {
     }
 
     if(selectParams.date1== undefined || selectParams.date1 == ""){
-        selectParams.d1 = true;
-        selectParams.date1 ="1900-01-01";
+        // selectParams.d1 = true;
+        // selectParams.date1 ="1900-01-01";
+        let myDate = new Date();
+        console.log("mydate" + myDate)
+        let n = myDate.getFullYear();
+        let y = myDate.getMonth() + 1
+        console.log("y=>" + y)
+        let r = myDate.getDate();
+        let x = myDate.getHours();
+        let f = myDate.getMinutes();
+        selectParams.d1 = true
+        let date1 = n + "-" + (y < 10 ? '0' + y : y) + "-" + "01";
+        selectParams.date1 = date1;
     }
     if(selectParams.date2== undefined || selectParams.date2 == ""){
         let myDate = new Date();
@@ -119,8 +130,24 @@ router.all('/ass', function (req, res, next) {
         let y = myDate.getMonth() + 1
         console.log("y=>" + y)
         let r = myDate.getDate();
+        switch (y)
+        {
+            case 1,3,5,7,8,10,12:
+                r = "31";
+                break;
+            case 4,6,9,11:
+                r = "30";
+                break;
+            default:
+                //2月
+                if (DateTime.IsLeapYear(DateTime.Now.Year))
+                    r = "29";
+                else
+                    r ="28";
+                break;
+        }
         selectParams.d2 = true;
-        let date2 = n + "-" + (y < 10 ? '0' + y : y) + "-" + (r < 10 ? '0' + r : r);
+        let date2 = n + "-" + (y < 10 ? '0' + y : y) + "-" + r;
         selectParams.date2 = date2;
         //console.log("selectParams.date2=>",selectParams.date2);
     }

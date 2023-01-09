@@ -56,7 +56,8 @@
         line-height: 16px;
         background-color: rgba(8, 46, 84, 0.5);
         padding: 12px;
-        color:white;
+        /* color: white; */
+        background-color: #fff;
     }
 </style>
 
@@ -72,11 +73,11 @@
     </div>
     <div class="toback">
         <a href="/member_info/select" title="返回查询">
-            <img class="toback_btn" src="../../images/back.png">
+            <p><&nbsp返回上一级</p>
         </a>
     </div>
-    <div class="tablebox" style="width: 55%;height: 99%; margin:20px auto 0;">
-        <table id="tableId" style="width: 99%" border="0" cellspacing="0" cellpadding="0">
+    <div class="tablebox">
+        <table id="tableId">
             <tr>
                 <td><p>账&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号</p></td>
                 <td>
@@ -128,7 +129,7 @@
             <tr>
                 <td><p>生&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp日</p></td>
                 <td>
-                    <input class="form_input" name="birthday" type="date" value="{{birthday}}" style="width: 175px;height: 20px"/>
+                    <input class="form_input" name="birthday" type="date" value="{{birthday}}"/>
                 </td>
             </tr>
 

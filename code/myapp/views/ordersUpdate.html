@@ -50,7 +50,8 @@
         line-height: 16px;
         background-color: rgba(8, 46, 84, 0.5);
         padding: 12px;
-        color:white;
+        /* color: white; */
+        background-color: #fff;
     }
 </style>
 
@@ -61,17 +62,17 @@
     </div>
     <div class="toback">
         <a href="/orders/select" title="返回查询">
-            <img class="toback_btn" src="../../images/back.png">
+            <p><&nbsp返回上一级</p>
         </a>
     </div>
     <input type="hidden" value="{{datas[0].id}}" name="id">
     <input type="hidden" value="{{datas[0].ddh}}" name="old_ddh">
     <div class="tablebox">
-        <table  id="tableId" style="width: 80%;margin: 0 auto" border="0" cellspacing="0" cellpadding="0">
+        <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td><p>日期</p></td>
                 <td>
-                    <input class="form_input" type="date" name="riqi" value="{{datas[0].riqi}}" style="width: 175px;height: 20px">
+                    <input class="form_input" type="date" name="riqi" value="{{datas[0].riqi}}">
                 </td>
                 <td><p>订单号</p></td>
                 <td>

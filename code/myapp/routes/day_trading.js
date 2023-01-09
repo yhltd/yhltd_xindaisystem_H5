@@ -530,10 +530,10 @@ router.all('/select', function (req, res, next) {
     //let company = req.cookies.company
     let isSelect = req.query.pagenum == undefined;
     let selectParams = {
-        recipient: '',
+        recipient: '11',
         cardholder: '',
         drawee: '',
-        date1: '',
+        date1: '2023/01/06',
         d1:false,
         date2: '',
         d2:false
@@ -559,8 +559,19 @@ router.all('/select', function (req, res, next) {
         selectParams.drawee ="";
     }
     if(selectParams.date1 == undefined || selectParams.date1 == ""){
-        selectParams.d1 = true;
-        selectParams.date1 ="1900-01-01";
+        // selectParams.d1 = true;
+        // selectParams.date1 ="1900-01-01";
+        let myDate = new Date();
+        console.log("mydate" + myDate)
+        let n = myDate.getFullYear();
+        let y = myDate.getMonth() + 1
+        console.log("y=>" + y)
+        let r = myDate.getDate();
+        let x = myDate.getHours();
+        let f = myDate.getMinutes();
+        selectParams.d1 = true
+        let date1 = n + "-" + (y < 10 ? '0' + y : y) + "-" + (r < 10 ? '0' + r : r);
+        selectParams.date1 = date1;
     }
     if(selectParams.date2 == undefined || selectParams.date2 == ""){
         let myDate = new Date();

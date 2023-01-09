@@ -70,52 +70,52 @@
     <input type="hidden" value="{{datas[0].did}}" name="did">
     <div id="header">
         <div class="header-text">日记录修改</div>
-        <div class="header-item">
-            <a style="line-height: 0" class="right" href="/customer/select" title="返回查询">
-                <img class="header-icon" src="../../images/back.png"/>
-            </a>
-        </div>
     </div>
-    <div class="tablebox" style="width: 400px;height: 480px; margin-top:60px;">
-        <table  id="tableId" style="width: 400px;" border="0" cellspacing="0" cellpadding="0">
+    <div class="toback">
+        <a class="right" href="/customer/select" title="返回查询">
+            <p><&nbsp返回上一级</p>
+        </a>
+    </div>
+    <div class="tablebox">
+        <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
             <tr>
-                <td>已还金额</td>
+                <td><p>已还金额</p></td>
                 <td>
                     <input class="form_input" type="number" step="0.01" name="repayment" value="{{datas[0].repayment}}">
                 </td>
             </tr>
             <tr>
-                <td>商户</td>
+                <td><p>商户</p></td>
                 <td>
                     <input class="form_input" type="text" name="commercial" value="{{datas[0].commercial_tenant}}">
                 </td>
             </tr>
             <tr>
-                <td>刷卡金额</td>
+                <td><p>刷卡金额</p></td>
                 <td>
                     <input class="form_input" type="number" step="0.01" name="swipe" value="{{datas[0].swipe}}">
                 </td>
             </tr>
             <tr>
-                <td>费率</td>
+                <td><p>费率</p></td>
                 <td>
                     <input class="form_input" type="number" step="0.01" name="rate" value="{{datas[0].rate}}">
                 </td>
             </tr>
             <tr>
-                <td>到账金额</td>
+                <td><p>到账金额</p></td>
                 <td>
                     <input class="form_input" type="number" step="0.01" name="arrival_amount" value="{{datas[0].arrival_amount}}">
                 </td>
             </tr>
             <tr>
-                <td>基础手续费</td>
+                <td><p>基础手续费</p></td>
                 <td>
                     <input class="form_input" type="number" step="0.01" name="basics_service_charge" value="{{datas[0].basics_service_charge}}">
                 </td>
             </tr>
             <tr>
-                <td>其他手续费</td>
+                <td><p>其他手续费</p></td>
                 <td>
                     <input class="form_input" type="number" step="0.01" name="other_service_charge" value="{{datas[0].other_service_charge}}">
                 </td>

@@ -236,7 +236,8 @@
         line-height: 16px;
         background-color: rgba(8, 46, 84, 0.5);
         padding: 12px;
-        color:white;
+        /* color: white; */
+        background-color: #fff;
     }
 </style>
 
@@ -249,13 +250,13 @@
     </div>
     <div class="toback">
         <a href="/membership_level/select" title="返回查询">
-            <img class="toback_btn" src="../../images/back.png">
+            <p><&nbsp返回上一级</p>
         </a>
     </div>
     <input id="user_id" type="hidden" value="{{datas[0].id}}" name="id">
     <input id="membership_level_tingyong" type="hidden" value="{{tingyong}}" name="membership_level_tingyong">
-    <div class="tablebox" style="width: 55%;height: 99%; margin:20px auto 0;">
-        <table  id="tableId" style="width: 99%;" border="0" cellspacing="0" cellpadding="0">
+    <div class="tablebox">
+        <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td><p>级&nbsp&nbsp别&nbsp&nbsp名&nbsp&nbsp称</p></td>
                 <td>

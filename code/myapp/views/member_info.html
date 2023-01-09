@@ -53,20 +53,26 @@
         </tr>
         {% endfor %}
     </table>
-    <div style="padding-top: 15px">
-        <div style="width: 40%;float: left;">
-            第<span class="cont-page">&nbsp;{{pagenum }}&nbsp;</span>页 / 共{{pagecounts }}页 / 共{{rowcounts }}条
-        </div>
-        <input type="hidden" value="{{pagenum }}" id="id">
-        <input type="hidden" value="{{pagecounts }}" id="id1">
-        <div style="width: 60%;float: left;">
-            <a href="/member_info/ass?pagenum=1" onclick="return check();">◀◀</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="/member_info/ass?pagenum={{pagenum-1}}" onclick="return check();">◀</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="/member_info/ass?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="/member_info/ass?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>
+    <div id="member-paging" class="ui-jqgrid-pager" dir="ltr">
+        <div id="pg_member-paging" class="ui-pager-control" role="group">
+            <div id="member-paging_left">
+                <div class="paging_left">
+
+                </div>
+            </div>
+            <div id="member-paging_center">
+                <a class="page_button" href="/member_info/ass?pagenum=1" onclick="return check();">◀◀</a>
+                <a class="page_button" href="/member_info/ass?pagenum={{pagenum-1}}" onclick="return check();">◀</a>
+                <input id="id" class="ui-pg-input form-control" type="text" size="2" maxlength="7" value={{pagenum }} role="textbox">
+                共 {{pagecounts }} 页
+                <a class="page_button" href="/member_info/ass?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
+                <a class="page_button" href="/member_info/ass?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>
+            </div>
+            <div id="member-paging_right">
+                <div dir="ltr" style="text-align:right" class="ui-paging-info">
+                    共{{rowcounts }}条数据
+                </div>
+            </div>
         </div>
     </div>
 

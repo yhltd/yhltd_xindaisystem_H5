@@ -5,29 +5,62 @@
     <title>日交易记录</title>
     <link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>
     <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+    <style>
+        .header-item {
+            zoom: 0.9;
+            margin-top: 0px;
+        }
+        .header-item a:hover{
+            background-color: #fff;
+        }
+        .header-item .right{
+            display: inline;
+            justify-content: flex-start;
+            font-size: 12px;
+            margin-left: 15px;
+            width: 64px;
+            height: 82px;
+            padding: 5px 15px;
+        }
+        .header-item .header-icon{
+            transform: translateY(7px);
+        }
+        input{
+            display: inline;
+        }
+    </style>
+    <script>
+        // window.onload=function(){
+        //     var d = new Date() //新建一个Date对象
+        //     var year = d.getFullYear() //获取年份
+        //     var month = d.getMonth()+1 //获取月份
+        //     var day = d.getDate() //获取日期
+        //     //document.write(year+"-"+month+"-"+day+" //"+checkTime(hour)+":"+checkTime(min)+":"+checkTime(sec))
+        //     document.getElementById("startdate").value=year+"/"+month+"/"+day;
+        //     //console.log(year+"/"+month+"/"+day)
+        // }
+    </script>
 </head>
-
-<body background="/images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
-<form action="/day_trading/ass" method="post">
+<!--background="/images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;"-->
+<body>
+<!--<form action="/day_trading/ass" method="post">-->
     <div id="header">
         <div class="header-text">日交易记录</div>
-        <div class="toback">
-            <a href="/customer/select" title="返回查询">
-                <img class="toback_btn img-err" src="../../images/back.png">
-            </a>
-        </div>
-        <div class="header-item">
-<!--            <a style="line-height: 0" class="right" href="/day_trading/insert/{{datas[0].id}}" title="录入信息">-->
-<!--                <img class="header-icon" src="../../images/luru.png">-->
-<!--            </a>-->
-            <a href="/day_trading/insert/{{datas[0].id}}" style="float:left">
-                <div class="select_btn right" style="margin:10px 10px;text-align: center;vertical-align:middle;display: table-cell;">录入</div>
-            </a>
-            <a href="/day_trading/Excel?id={{datas[0].id}}" title="导出EXCEL">
-                <img class="header-icon" src="../../images/excel2.png" style="margin-left: 10px;">
-            </a>
+    </div>
+    <div class="toback">
+        <a href="/customer/select" title="返回查询">
+            <!--                <img class="toback_btn img-err" src="../../images/back.png">-->
+            <p><&nbsp返回上一级</p>
+        </a>
+    </div>
+    <div class="header-item">
+        <a href="/day_trading/insert/{{datas[0].id}}">
+            <div class="select_btn right">录入</div>
+        </a>
+        <a href="/day_trading/Excel?id={{datas[0].id}}" title="导出EXCEL">
+            <img class="header-icon" src="../../images/excel2.png">
+        </a>
 
-        </div>
     </div>
     <div class="tablebox">
         <table  id="tableId1" border="0" cellspacing="0" cellpadding="0">
@@ -66,9 +99,8 @@
                 <td>{{datas[0].staff}}</td>
             </tr>
         </table>
-    <br>
-
-        <table id="tableId" width="100%" border="1">
+        <br>
+        <table id="tableId" width="100%" border="0">
             <tr align="center">
                 <th>编号</th>
                 <th>日期</th>
@@ -99,24 +131,32 @@
             </tr>
             {% endfor %}
         </table>
-        <div class="page_info" style="padding-top: 15px">
-            <div style="width: 40%;float: left;">
-                第<span class="cont-page">&nbsp;{{pagenum }}&nbsp;</span>页 / 共{{pagecounts }}页 / 共{{rowcounts }}条
-            </div>
-            <input type="hidden" value="{{pagenum }}" id="id">
-            <input type="hidden" value="{{pagecounts }}" id="id1">
-            <div style="width: 60%;float: left;">
-                <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum=1" onclick="return check();">◀◀</a>
-                <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum-1}} " onclick="return check();">◀</a>
-                <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
-                <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>
-            </div>
+        <div id="member-paging" class="ui-jqgrid-pager" dir="ltr">
+            <div id="pg_member-paging" class="ui-pager-control" role="group">
+                <div id="member-paging_left">
+                    <div class="paging_left">
 
+                    </div>
+                </div>
+                <div id="member-paging_center">
+                    <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum=1" onclick="return check();">◀◀</a>
+                    <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum-1}}" onclick="return check();">◀</a>
+                    <input id="id" class="ui-pg-input form-control" type="text" size="2" maxlength="7" value={{pagenum }} role="textbox">
+                    共 {{pagecounts }} 页
+                    <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
+                    <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>
+                </div>
+                <div id="member-paging_right">
+                    <div dir="ltr" style="text-align:right" class="ui-paging-info">
+                        共{{rowcounts }}条数据
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
 
-</form>
+<!--</form>-->
 <!--<a id="dlink" style="display: none;"></a>-->
 <!--<input type="submit" value="导出EXCEL" onclick="method1('tableId')" />-->
 </body>

@@ -6,7 +6,33 @@
 <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
 <title>日交易记录查询</title>
 <script type="text/javascript">
+    window.onload=function(){
+        // var d = new Date() //新建一个Date对象
+        // var year = d.getFullYear() //获取年份
+        // var month = d.getMonth()+1 //获取月份
+        // var day = d.getDate() //获取日期
+        //document.write(year+"-"+month+"-"+day+" //"+checkTime(hour)+":"+checkTime(min)+":"+checkTime(sec))
+        // document.getElementById("date1").value=year+"/"+month+"/"+day;
+        //console.log(year+"/"+month+"/"+day)
+//         var now = new Date();
+//         alert(now.getDate()+'-'+now.getMonth());
+// //格式化日，如果小于9，前面补0
+//         var day = ("0" + now.getDate()).slice(-2);
+// //格式化月，如果小于9，前面补0
+//         var month = ("0" + (now.getMonth() + 1)).slice(-2);
+// //拼装完整日期格式
+//         var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+// //完成赋值
+//         $('#date1').val(today);
+        // $('#date1').val("2023-01-06");
+    }
     function run(){
+        // var d = new Date() //新建一个Date对象
+        // var year = d.getFullYear() //获取年份
+        // var month = d.getMonth()+1 //获取月份
+        // var day = d.getDate() //获取日期
+        //document.write(year+"-"+month+"-"+day+" //"+checkTime(hour)+":"+checkTime(min)+":"+checkTime(sec))
+        // document.getElementById("startdate").value=year+"/"+month+"/"+day;
         var  recipient = document.getElementById("recipient");
         recipient.value ="";
         var cardholder = document.getElementById("cardholder");
@@ -17,11 +43,16 @@
         date1.value ="";
         var date2 = document.getElementById("date2");
         date2.value ="";
+        // console.log("date1="+date1+"date2="+date2)
     }
+    // window.onload = function() {
+    //     $('#createStartTime').val(today);
+    // }
+
+
 </script>
 <head>
     <meta charset="UTF-8">
-
 
 </head>
 <body>
@@ -33,8 +64,8 @@
         <input class="select_input right" type="text" name="recipient" id="recipient" placeholder="请输入收卡人" value="{{recipient}}" />
         <input class="select_input right" type="text" name="cardholder" id="cardholder" placeholder="请输入付款人" value="{{cardholder}}"/>
         <input class="select_input right" type="text" name="drawee" id="drawee" placeholder="请输入持卡人" value="{{drawee}}"/>
-        <input class="select_input right" type="date" name="date1" id="date1" value="{{date1}}" style="margin-right: 8px;"/>
-        至
+        <input class="select_input right" type="date" name="date1" id="date1" value="{{date1}}" placeholder="2023年1月9日" style="margin-right: 8px;"/>
+        <p>至</p>
         <input class="select_input right" type="date" name="date2" id="date2" value="{{date2}}" style="margin-left: 8px;"/>
         <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px;"/>
         <input class="select_btn right" type="button" value="清空" onclick="run()" style="margin-left: 10px;"/>
@@ -93,18 +124,26 @@
         {% endfor %}
     </table>
 
-    <div style="padding-top: 15px">
-        <div style="width: 40%;float: left;">
-            第<span class="cont-page">&nbsp;{{pagenum }}&nbsp;</span>页 / 共{{pagecounts }}页 / 共{{rowcounts }}条
-        </div>
-        <div style="width: 60%;float: left;">
-            <a href="/day_trading/select?pagenum=1" onclick="return check();">◀◀</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="/day_trading/select?pagenum={{pagenum-1}}" onclick="return check();">◀</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="/day_trading/select?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="/day_trading/select?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>
+    <div id="member-paging" class="ui-jqgrid-pager" dir="ltr">
+        <div id="pg_member-paging" class="ui-pager-control" role="group">
+            <div id="member-paging_left">
+                <div class="paging_left">
+
+                </div>
+            </div>
+            <div id="member-paging_center">
+                <a id="page_button_first" class="page_button" href="/day_trading/select?pagenum=1" onclick="return check();">◀◀</a>
+                <a id="page_button_pre" class="page_button" href="/day_trading/select?pagenum={{pagenum-1}}" onclick="return check();">◀</a>
+                <input id="id" class="ui-pg-input form-control" type="text" size="2" maxlength="7" value={{pagenum }} role="textbox">
+                共 {{pagecounts }} 页
+                <a id="page_button_next" class="page_button" href="/day_trading/select?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
+                <a id="page_button_last" class="page_button" href="/day_trading/select?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>
+            </div>
+            <div id="member-paging_right">
+                <div dir="ltr" style="text-align:right" class="ui-paging-info">
+                    共{{rowcounts }}条数据
+                </div>
+            </div>
         </div>
     </div>
 
@@ -116,6 +155,7 @@
         var pagenum = id.value;
         var pagecounts = id1.value;
         if(pagenum <= 1){
+            pagenum = 1
             alert("当前是第一页")
             return false;
         }else{
@@ -125,12 +165,16 @@
     function check1(){
         var id = document.getElementById("id")
         var id1 = document.getElementById("id1")
+        var button_nextPage = document.getElementById("page_button_next")
         var pagenum = id.value;
         var pagecounts = id1.value;
         if(pagenum >= pagecounts){
+            button_nextPage.disabled=true;
+            pagenum = pagecounts;
             alert("当前是最后一页")
             return false;
         }else{
+            button_nextPage.disabled=false;
             return true;
         }
     }
