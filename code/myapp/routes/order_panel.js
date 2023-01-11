@@ -384,6 +384,7 @@ router.post('/add', function (req, res) {
                                 }
                             }
                             var sql = sql1 + sql2
+                            console.log(sql)
                             db.query(sql, function (err, rows) {
                                 if (err) {
                                     console.log(err)

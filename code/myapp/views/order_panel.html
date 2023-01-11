@@ -785,6 +785,13 @@
         font-size: 20px;
         border: none;
     }
+    .room_info #danhao1{
+        height: 36px;
+        transition: .3s;
+        margin-top: 8px;
+        font-size: 20px;
+        border: none;
+    }
 
     .room_info #danhao:focus{
         outline: #006eb0;
@@ -876,7 +883,7 @@
         </div>
         <div class="button">
             <button class="but2" btnflag="cancel">作废</button>
-            <button class="but3">结账</button>
+            <button id="but3" class="but3">结账</button>
         </div>
 
 
@@ -945,29 +952,316 @@
             {% endfor %}
         </ul>
     </div>
-</div>
-<!--    结账窗体-->
-<div id="jiezhang" class="modal fade" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">结账</div>
-            </div>
-            <div class="modal-body">
-                <table id="show-chuku-table"></table>
-            </div>
-            <div class="border-top" style="padding: 15px;">
-                <button id="chuku-submit-btn" type="button" class="btn btn-primary">
-                    <i class="bi bi-arrow-bar-up icon"></i>
-                    确定
-                </button>
-                <button id="chuku-close-btn" type="button" class="btn btn-primary left-margin">
-                    关闭
-                </button>
+
+    <!--    结账窗体-->
+    <div id="jiezhang" class="modal fade" tabindex="-1" style="margin:0;padding:0;width: 800px; height: 585px; background-color: #D9D9D9; margin-left: 150px; border: 1px solid white; ">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" id="lll">
+                <div class="modal-header" style="whith:100%;height:30px;background-color:white;margin:0;padding:0;">
+                    <div class="modal-title" style="display:inline;margin-left: 5px">结账</div>
+                    <div class="modal-title" onclick="jQuery('#jiezhang').hide()" style="display:inline;float: right;width:26px;height: 26px;"><img src="../../images/guanbi.png" style="width: 26px;height: 26px"></div>
+                </div>
+                <div class="modal-body">
+                    <table id="show-chuku-table"></table>
+                </div>
+                <div style="display:inline-block;float:left;width: 330px;height: 530px;background-color: white;margin-left:15px;margin-top:8px;">
+<!--                    <div class="room_info">-->
+<!--                       消费单号：-->
+<!--                        <div class="input_order" style="width: 300px;">-->
+<!--                            <input style="" class="form_input" id="danhao1" name="danhao" value="888888888888888"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="title">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <td class="itemName1">商品名称</td>
+                                <td class="itemNum1">数量</td>
+                                <td class="itemAmount1">金额</td>
+                                <td class="itemzheko">折扣</td>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div id="empty_mask1">
+                        <div class="cont">
+                            <table id="table1" class="table table-hover">
+                                <tbody>
+                                <!--                        //自动添加商品-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:inline-block;float:left;width: 85px;height: 530px;background-color: white;margin-left:10px;margin-top:8px;">
+                    <div id="but4"><img src="../../images/zheko1.png" style="width: 80px;height: 80px;margin-left: 2px;margin-top: 5px"><span style="margin-left: 25px">折扣</span></div>
+<!--                    <div><img src="../../images/zheko1.png" style="width: 80px;height: 80px;margin-left: 2px;margin-top: 5px"><span>折扣</span></div>-->
+                    <div id="but5"><img src="../../images/miandan1.png" style="width: 80px;height: 80px;margin-left: 2px"><span style="margin-left: 25px">免单</span></div>
+                    <div id="but6"><img src="../../images/beizhu1.png" style="width: 80px;height: 80px;margin-left: 2px"><span style="margin-left: 25px">备注</span></div>
+                </div>
+                <div style="float:right;display:inline-block;width: 330px;height: 530px;background-color: white;margin-right:15px;margin-top:8px;">
+
+                        <div class="choose_member">
+                            <div>
+                                <div >
+                                    <input style="border-style: none;" type="text" maxlength="11" name="" value="" class="search form-control" placeholder="会员编号/手机号/卡号(扫码/回车)">
+                                    <a id="huiyuan_xz" href="javascript:;" class="choose_oneMem" data-prem="0205001">选择会员</a>
+                                </div>
+                                <div class="memeber_info" style="display: none;">
+                                    <p>
+                                        <span>会员:</span>
+                                        <span class="member_name">张结论</span>
+                                    </p>
+                                    <p>
+                                        <span>余额:</span>
+                                        ¥
+                                        <span class="member_money">0</span>
+                                    </p>
+                                    <p>
+                                        <span>方案:</span><span class="preferential">热菜八折</span>
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- 辅助搜索会员提示 -->
+                        <div class="tishi_list" style="display: none;">
+
+                        </div>
+                        <div class="detailed_info">
+                            <p style="padding: 5px 0;border-top: 1px solid #eee; margin: 0; display: none;">详细信息</p>
+                            <p>
+                                <span>消费总额: <span id="xiaofei_Sum"></span></span>
+<!--                                <span>打折优惠: <span class="bills_Discountamount">0.00</span></span>-->
+<!--                                <span>免单金额: <span class="bills_FreeBillsPrice">0.00</span></span>-->
+                            </p>
+<!--                            <p>-->
+<!--                                <span>抹零金额: <span class="bills_ReducedPrice">0.00</span></span>-->
+<!--                                <span>挂账金额: <span class="guazhang">0.00</span></span>-->
+<!--                                <span><span></span></span>-->
+<!--                            </p>-->
+                        </div>
+
+                        <div class="list">
+                            <div class="con1">
+                                <span>应收：</span><span id="yingshou_Sum"></span>
+                            </div>
+                            <div class="types">
+                                <!-- <div>
+                                  <span class="order_type_name">
+                                    <span data-no="8">现金</span>
+                                  </span>
+                                  <span>
+                                    <input type="text" maxlength="8" class="form-control cash" value="" name=""
+                                      oninput="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g,'$1')">
+                                    <a href="javascript:;" class="cash_close">X</a>
+                                  </span>
+                                </div> -->
+                            </div>
+                            <div class="con1">
+                                <span>找零</span>
+                                <span class="change">0.00</span>
+
+                            </div>
+                        </div>
+
+<!--                        <div class="couponHint">-->
+<!--                            <span>优惠券</span>-->
+<!--                            <span class="usableCouponHint">暂无可用</span>-->
+<!--                        </div>-->
+
+                        <!-- 20210202 修改-->
+                        <div class="payTypeBox">
+                            <div class="pay_type payType">
+                                <div style="display: inline-block;" data-no="1384" data-name="现金">
+                                    现金
+                                </div>
+
+<!--                                <div style="display: inline-block;" data-no="1385" data-name="储值卡">-->
+<!--                                    储值卡-->
+<!--                                </div>-->
+
+<!--                                <div style="display: inline-block;" data-no="1386" data-name="银行卡">-->
+<!--                                    银行卡-->
+<!--                                </div>-->
+
+<!--                                <div style="display: inline-block;" data-no="1387" data-name="代金券">-->
+<!--                                    代金券-->
+<!--                                </div>-->
+
+<!--                                <div style="display: inline-block;" data-no="1388" data-name="微信">-->
+<!--                                    微信/支付宝-->
+<!--                                </div>-->
+
+<!--&lt;!&ndash;                                <div data-no="1389" data-name="支付宝">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    支付宝&ndash;&gt;-->
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                            </div>-->
+                        </div>
+
+                        <div class="calculate">
+                            <table class="table table-bordered">
+                                <tbody><tr>
+                                    <td>7</td>
+                                    <td>8</td>
+                                    <td>9</td>
+                                    <td id="but7" data-prem="0205008" class="but7 settle_finish">
+                                        结账完成
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>5</td>
+                                    <td>6</td>
+
+                                    <td class="disabled">100</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                    <td>50</td>
+                                </tr>
+                                <tr>
+                                    <td>0</td>
+                                    <td>.</td>
+                                    <td>C</td>
+                                    <td>20</td>
+                                </tr>
+                                </tbody></table>
+                        </div>
+
+                </div>
             </div>
         </div>
     </div>
+
+    <!--    折扣窗体-->
+    <div id="zheko" class="modal fade" tabindex="-1" style="margin:0;padding:0;width: 600px; height: 400px; background-color: #D9D9D9; margin-left: 250px;margin-top: 50px; border: 1px solid white; ">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" >
+                <div class="modal-header" style="whith:100%;height:30px;background-color:white;margin:0;padding:0;">
+                    <div class="modal-title" style="display:inline;margin-left: 5px">打折优惠</div>
+                    <div class="modal-title" onclick="jQuery('#zheko').hide()" style="display:inline;float: right;width:26px;height: 26px;"><img src="../../images/guanbi.png" style="width: 26px;height: 26px"></div>
+                </div>
+                <div class="modal-body">
+                    <table id="show-zheko-table"></table>
+                </div>
+                <div style="display:inline-block;width: 570px;height: 280px;background-color: white;margin-left:15px;margin-top:8px;">
+                    <div class="title">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <td class="itemName1">选中</td>
+                                <td class="itemName2">商品名称</td>
+                                <td class="itemNum2">数量</td>
+                                <td class="itemAmount2">金额</td>
+                                <td class="itemzheko2">折扣</td>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div id="empty_mask2">
+                        <div class="cont">
+                            <table id="table2" class="table table-hover">
+                                <tbody>
+                                <!--                        //自动添加商品-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-top" style="width: 570px;height:60px;margin-left:14px; margin-top: 8px;background-color:white;">
+                    <label style="margin-left: 2px;margin-top: 15px">
+                        <input type="checkbox" id="is_all" class="is_all">是否全选
+                    </label>
+
+                    <div style="margin-top:20px;margin-left: 5px;display:inline-block;width: 203px">
+                        <label>
+                            <input style="width: 130px;" type="text" name="is" id="qb_xz" value maxlength="4" class="from-control dazhe_val" placeholder="请输入打折比例(0-1)">
+                        </label>
+                    </div>
+                    <button id="dazhe" type="button" class="btn btn-primary" style="margin-left:230px;width: 100px;margin-top:-37px">
+                        <i class="bi bi-arrow-bar-up icon"></i>
+                        打折
+                    </button>
+<!--                    <button id="chuku-submit-btn" type="button" class="btn btn-primary" style="width:100px;margin-left:345px;margin-top:-80px">-->
+<!--                        <i class="bi bi-arrow-bar-up icon"></i>-->
+<!--                        确定-->
+<!--                    </button>-->
+                    <button onclick="jQuery('#zheko').hide()"  type="button" class="btn btn-primary left-margin" style="margin-left:345px;margin-top:-80px;width: 100px">
+                        关闭
+                    </button>
+                </div>
+        </div>
+    </div>
+
+
+    <!--    备注窗体-->
+    <div id="beizhu" class="modal fade" tabindex="-1" style="margin:0;padding:0;width: 500px; height: 180px; background-color: #D9D9D9; margin-left: 300px;margin-top: 100px; border: 1px solid white; ">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" >
+                <div class="modal-header" style="whith:100%;height:30px;background-color:white;margin:0;padding:0;">
+                    <div class="modal-title" style="display:inline;margin-left: 5px">备注</div>
+                    <div class="modal-title" onclick="jQuery('#beizhu').hide()" style="display:inline;float: right;width:26px;height: 26px;"><img src="../../images/guanbi.png" style="width: 26px;height: 26px"></div>
+                </div>
+                <div class="modal-body">
+                    <label>
+                        <!-- <p>备注</p> -->
+                        <textarea style="width: 100%;height:100px;" name=""  cols="30" rows="3" class="form-control beizhu" resize="none" placeholder="请输入备注，最多30字" onchange="this.value=this.value.substring(0,30)" onkeydown="this.value=this.value.substring(0,30)" onkeyup="this.value=this.value.substring(0,30)"></textarea>
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button style="float: right" type="button" class="btn btn-primary beizhu_btn">确定</button>
+                    <!-- <button type="button" class="btn btn-default" data-dismiss="modal">取消</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--    会员窗体-->
+    <div id="huiyuan" class="modal fade" tabindex="-1" style="margin:0;padding:0;width: 600px; height: 400px; background-color: #D9D9D9; margin-left: 250px;margin-top: 50px; border: 1px solid white; ">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" >
+                <div class="modal-header" style="whith:100%;height:30px;background-color:white;margin:0;padding:0;">
+                    <div class="modal-title" style="display:inline;margin-left: 5px">打折优惠</div>
+                    <div class="modal-title" onclick="jQuery('#huiyuan').hide()" style="display:inline;float: right;width:26px;height: 26px;"><img src="../../images/guanbi.png" style="width: 26px;height: 26px"></div>
+                </div>
+                <div class="modal-body">
+                    <table id="show-huiyuan-table"></table>
+                </div>
+                <div style="display:inline-block;width: 570px;height: 280px;background-color: white;margin-left:15px;margin-top:8px;">
+                    <div class="title">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <td class="itemName1">姓名</td>
+                                <td class="itemName2">电话</td>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div id="empty_mask3">
+                        <div class="cont">
+                            <table id="table3" class="table table-hover">
+                                <tbody>
+                                <!--                        //自动添加商品-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 </div>
+
+
+
 <script>
     let datas = []
     let p_zhekou = 1
@@ -1175,6 +1469,9 @@
                     "￥"+
                     "<span class=\"price\">" + datas[i].price + "</span>"+
                     "</td>"+
+                    "<td class=\"itemid\" style='visibility: hidden;width: 0px;margin: 0;padding: 0'>" +
+                    "<span class=\"id\">" + datas[i].id + "</span>"+
+                    "</td>"+
                     "</tr>"
             }
         }
@@ -1311,7 +1608,7 @@
         // $(".Lblock #empty_mask .cont .table tbody").attr("style", "display:block");
         Table_sum();
     })
-    // 结账按钮点击后
+    //结账按钮点击后
     // $(".but3").click(function () {
     //     console.log("add")
     //     var pro_list = []
@@ -1379,19 +1676,22 @@
     //         }
     //     });
     // })
-    $(".but3").click(function () {
+
+    //结账按钮点击后
+    $(".but7").click(function () {
         console.log("add")
         var pro_list = []
         var pro_num = $("#danhao").val();
-        $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
+        $("#table1 tbody tr").each(function () {
             var id = $(this).children().eq(0).text();
-            var num = $(this).children(".itemNum").children().eq(0).text();
-            var zhehou = $(this).children(".itemAmount").children().eq(1).text();
-            console.log(id)
-            console.log(num)
-            console.log(zhehou)
+            var jine = $(this).children(".itemAmount1").children().eq(0).text();
+            var shul= $(this).children(".itemNum1").children().eq(0).text();
+            var zhek= $(this).children(".itemzheko").children().eq(0).text();
+            console.log(jine)
+            console.log(shul)
+            console.log(zhek)
             for(var i=0; i<datas.length;i++){
-                if(datas[i].id == id){
+                if(datas[i].product_name == id){
                     pro_list.push({
                         cplx:datas[i].type,
                         cpmc:datas[i].product_name,
@@ -1401,29 +1701,234 @@
                         // zhdj:zhehou / num,
                         zhdj:datas[i].price*p_zhekou,
                         // zhje:zhehou,
-                        zhje:datas[i].price*p_zhekou*num,
-                        gs:num
+                        zhje:datas[i].price*p_zhekou*shul*zhek,
+                        gs:shul
                     })
+                }
+
+            }
+        })
+        console.log(pro_list)
+        console.log(pro_num)
+
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/add',
+            timeout: 5000,
+            data: {
+                pro_list: JSON.stringify(pro_list),
+                pro_num: pro_num,
+                youhui: p_zhekou
+            },
+            success: function(res){
+                let result = JSON.parse(res)
+                alert(result.msg)
+                tableShow();
+            },
+            error: function(res){
+                if(res.status == "timeout"){
+                    alert("网络超时，请稍后再试")
+                }else{
+                    alert("网络错误，请稍后再试")
+                }
+            }
+        });
+    })
+
+    document.getElementById("but3").onclick = function() {
+        console.log("add")
+        $("#table1 tbody tr").remove();
+        var pro_list = []
+        var pro_num = $("#danhao").val();
+        var this_str1 = ""
+        $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
+            var id = $(this).children(".itemid").eq(0).text();
+            var num = $(this).children(".itemNum").children().eq(0).text();
+            var zhehou = $(this).children(".itemAmount").children().eq(1).text();
+            console.log(id)
+            console.log(num)
+            console.log(zhehou)
+            console.log(datas)
+            console.log(id)
+            for(var i=0; i<datas.length;i++){
+                if(datas[i].id == id){
+                    console.log(datas[i].id)
+                    this_str1 += "" +
+                        "<tr class=\"success\" ondblclick=\"ondblclick_f(this)\">" +
+                        "<td class=\"itemName1\">" + datas[i].product_name + "</td>"+
+                        "<td class=\"itemNum1\">" +
+                        "<span class=\"count\">" + num + "</span>"+
+                        "/"+
+                        "<span class=\"unit\">" + datas[i].unit + "</span>"+
+                        "</td>"+
+                        "<td class=\"itemAmount1\">" +
+                        "￥"+
+                        "<span class=\"price\">" + datas[i].price + "</span>"+
+                        "</td>"+
+                        "<td class=\"itemzheko\"><div class=\"aa\">1</div></td>"+
+                        "</tr>"
+                    console.log(this_str1)
                 }
             }
         })
+        $("#table1 tbody").append(this_str1);
         console.log(pro_list)
         console.log(pro_num)
         if(pro_num == ''){
             alert("未填写订单号")
             return;
         }
-        if(pro_list.length == 0){
+        console.log(pro_list.length)
+        if(datas.length == 0){
             alert("未选择商品")
             return;
         }
         $(".hover").click(function (){
             $(".hover").removeClass("active")
             $(".hover").addClass("active")
-
         })
-        jquery('.jiezhang').show()
-    })
+
+        jQuery('#jiezhang').show();
+        huiyuan_sum();
+    };
+
+    document.getElementById("but4").onclick = function() {
+        console.log("add")
+        $("#table2 tbody tr").remove();
+        var pro_list = []
+        var pro_num = $("#danhao").val();
+        var this_str1 = ""
+        $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
+            var id = $(this).children(".itemid").eq(0).text();
+            var num = $(this).children(".itemNum").children().eq(0).text();
+            var zhehou = $(this).children(".itemAmount").children().eq(1).text();
+            console.log(id)
+            console.log(num)
+            console.log(zhehou)
+            console.log(datas)
+            console.log(id)
+            for(var i=0; i<datas.length;i++){
+                if(datas[i].id == id){
+                    console.log(datas[i].id)
+                    this_str1 += "" +
+                        "<tr class=\"success\" ondblclick=\"ondblclick_f(this)\">" +
+                        "<td class=\"itemxuanzhe\"><input class=\"itemxuanzhe1\" type=\"checkbox\"></td>"+
+                        "<td class=\"itemName2\">" + datas[i].product_name + "</td>"+
+                        "<td class=\"itemNum2\">" +
+                        "<span class=\"count\">" + num + "</span>"+
+                        "/"+
+                        "<span class=\"unit\">" + datas[i].unit + "</span>"+
+                        "</td>"+
+                        "<td class=\"itemAmount2\">" +
+                        "￥"+
+                        "<span class=\"price\">" + datas[i].price + "</span>"+
+                        "</td>"+
+                        "<td class=\"itemzheko\">1</td>"+
+                        "<td class=\"itemid\" style='visibility: hidden;width: 0px;margin: 0;padding: 0'>" +
+                        "<span class=\"id\">" + datas[i].id + "</span>"+
+                        "</td>"+
+                        "</tr>"
+
+                    console.log(this_str1)
+                }
+            }
+        })
+        $("#table2 tbody").append(this_str1);
+        console.log(pro_list)
+        console.log(pro_num)
+        if(pro_num == ''){
+            alert("未填写订单号")
+            return;
+        }
+        console.log(pro_list.length)
+        if(datas.length == 0){
+            alert("未选择商品")
+            return;
+        }
+        $(".hover").click(function (){
+            $(".hover").removeClass("active")
+            $(".hover").addClass("active")
+        })
+        jQuery('#zheko').show();
+        huiyuan_sum();
+    };
+
+    document.getElementById("but5").onclick = function() {
+        var _money = 0;
+        $("#table2 tbody tr").each(function () {
+            var num = $(this).children(".itemNum2").children().eq(0).text();
+            var this_money = $(this).children(".itemAmount2").children().eq(0).text();
+            var zheko = $(this).children(".itemzheko").eq(0).text();
+            _money =0;
+        })
+        console.log(_money)
+        $("#yingshou_Sum").html(_money)
+
+    };
+
+    document.getElementById("but6").onclick = function() {
+        jQuery('#beizhu').show();
+        huiyuan_sum();
+    };
+
+    document.getElementById("dazhe").onclick = function() {
+        var xiabiao_arr = []
+        var bianliang = 1
+        var zheko_zhi = $("#qb_xz").val();
+        $("#table2 tbody tr").each(function () {
+            var this_check = $(this).children(".itemxuanzhe").children().is(':checked');
+            console.log(this_check)
+            if (this_check == true) {
+                console.log('判断成功')
+                console.log($(this).children(".itemzheko").eq(0).text())
+                $(this).children(".itemzheko").eq(0).text(zheko_zhi);
+                xiabiao_arr.push(bianliang)
+                // $("#table1 tbody tr").children(".itemzheko").children().eq(0).text(zheko_zhi);
+            }
+            bianliang = bianliang + 1
+        })
+        bianliang = 1
+        $("#table1 tbody tr").each(function () {
+            if (xiabiao_arr.indexOf(bianliang) != -1) {
+                console.log('判断成功')
+                $(this).children(".itemzheko").eq(0).text(zheko_zhi);
+            }
+            bianliang = bianliang + 1
+        })
+
+        // jQuery('#zheko').hide()
+        huiyuan_sum();
+    };
+
+    $("#is_all").change(function() {
+        var this_check = $("#is_all").is(':checked')
+        console.log(this_check)
+        $(".itemxuanzhe1").attr("checked",this_check)
+        // if (this_check = true){
+        //     $(".itemxuanzhe1").attr("checked",this_check)
+        // }else if (this_check = false){
+        //     $(".itemxuanzhe1").attr("checked",this_check)
+        // }
+    });
+
+    document.getElementById("huiyuan_xz").onclick = function() {
+        jQuery('#huiyuan').show();
+    };
+
+    // document.getElementById("is_all").onclick = function() {
+    //
+    //     $("#table2 tbody tr").each(function () {
+    //         var xuanzhe1 = $(this).children(".itemxuanzhe1").eq(0).text();
+    //         console.log(xuanzhe1)
+    //         for(var i=0; i<datas.length;i++){
+    //             if(datas[i].id == id){
+    //
+    //             }
+    //         }
+    //     })
+    //
+    //
+    // };
 
     //改过了--------------
     //合计商品数量和价格
@@ -1447,6 +1952,25 @@
         // console.log('当前money='+_money);
         $(".Lblock .end").children().eq(0).children(".count").text(_number);
         $(".Lblock .end").children().eq(1).children().children(".price_total").text(_money);
+
+    }
+
+    function huiyuan_sum(){
+
+        var _money = 0;
+        $("#table2 tbody tr").each(function () {
+            var num = $(this).children(".itemNum2").children().eq(0).text();
+            var this_money = $(this).children(".itemAmount2").children().eq(0).text();
+            var zheko = $(this).children(".itemzheko").eq(0).text();
+            _money += (num * this_money * zheko);
+        })
+        console.log(_money)
+        $("#yingshou_Sum").html(_money)
+        $("#xiaofei_Sum").html(_money)
+        // var yingshou = document.getElementById("yingshou_Sum");
+        // yingshou.innerHTML(_money)
+        // var xiaofei = document.getElementById("xiaofei_Sum")
+        // xiaofei.innerHTML(_money);
 
     }
 
