@@ -191,6 +191,8 @@ router.post('/add', function (req, res) {
             price: "",
             chengben: "",
             tingyong: "",
+            specifications:"",
+            practice:""
         };
         //let company = req.body.company;
         let type = req.body.type;
@@ -211,14 +213,16 @@ router.post('/add', function (req, res) {
         let tingyong = req.body.tingyong;
         result.tingyong = tingyong;
         tingyong = toLiteral(tingyong);
-
+        let specifications = req.body.specifications;
+        result.specifications = specifications;
+        specifications = toLiteral(specifications)
+        let practice = req.body.practice;
+        result.practice = practice;
+        practice = toLiteral(practice)
         company = data.company
-        //data = toLiteral(account)
-        //let sql1 = "select account from users where account = " + account
-        //console.log("xinzeng")
 
-        let sql1 = "insert into product(company,type,product_name,unit,price,chengben,tingyong) " +
-            "values('" + data.company + "','" + type + "','" + product_name + "','" + unit + "','" + price + "','" + chengben + "','" + tingyong + "')"
+        let sql1 = "insert into product(company,type,product_name,unit,price,chengben,specifications,practice,tingyong) " +
+            "values('" + data.company + "','" + type + "','" + product_name + "','" + unit + "','" + price + "','" + chengben + "','" + specifications + "','" + practice + "','" + tingyong + "')"
         console.log("sql1:" + sql1)
         db.query(sql1, function (err, rows) {
             try {

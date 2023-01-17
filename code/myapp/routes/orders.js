@@ -119,7 +119,7 @@ router.all('/ass', function (req, res, next) {
                     result.msg = '没有查到相关信息'
                 }
                 // let sql2 = "select * from orders where company = '" + toLiteral(company) + "'" + whereSql + "limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
-                let sql2 = "select id,riqi,ddh,hyzh,hyxm,yhfa,heji.xfje,heji.ssje,heji.yhje,syy,ord.company from orders as ord left join(select ddid,company,sum(convert(dj,float) * convert(gs,float)) as xfje,sum(convert(zhdj,float) * convert(gs,float)) as ssje,round(sum(convert(dj,float) * convert(gs,float)) - sum(convert(zhdj,float) * convert(gs,float)),2) as yhje from orders_details group by ddid) as heji on ord.ddh = heji.ddid and ord.company = heji.company where ord.company = '" + toLiteral(company) + "'" + whereSql + "limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
+                let sql2 = "select id,riqi,ddh,hyzh,hyxm,yhfa,heji.xfje,heji.ssje,heji.yhje,syy,ord.company from orders as ord left join(select ddid,company,sum(convert(dj,float) * convert(gs,float)) as xfje,sum(convert(zhdj,float) * convert(gs,float)) as ssje,round(sum(convert(dj,float) * convert(gs,float)) - sum(convert(zhdj,float) * convert(gs,float)),2) as yhje from orders_details group by ddid) as heji on ord.ddh = heji.ddid and ord.company = heji.company  where ord.company = '" + toLiteral(company) + "'" + whereSql + " order by id desc limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
                 //console.log(sql2)
                 db.query(sql2, function (err, rows) {
                     if (err) {

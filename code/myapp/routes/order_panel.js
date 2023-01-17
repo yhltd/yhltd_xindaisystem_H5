@@ -233,6 +233,138 @@ router.post('/select', function (req, res, next) {
     });
 });
 
+// 订单号
+router.post('/select_order_number', function (req, res, next) {
+    console.log("yuangong")
+    let isSelect = req.query.pagenum == undefined;
+    let token = localStorage.getItem("token")
+    let key = '123456789abcdefg';
+    //console.log('加密的key:', key);
+    let iv = 'abcdefg123456789';
+    //console.log('加密的iv:', iv);
+    let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    let company = value[0];
+    console.log(value)
+    let users = {
+        name:value[6],
+        username:value[1],
+        password:value[2],
+        company:value[0],
+        usertype:value[5],
+    }
+    console.log(users)
+    let this_head = req.body.this_head;
+    this_head = this_head.substring(0,8)
+    let selectParams = {
+        name: ''
+    }
+    if (isSelect) {
+        selectParams.name = req.body.name;
+        localStorage.setItem("selectParams", JSON.stringify(selectParams))
+    } else {
+        selectParams = JSON.parse(localStorage.getItem("selectParams"));
+    }
+    if (selectParams.name == undefined) {
+        selectParams.name = "";
+    }
+    console.log("selectParams.name=>", selectParams.name)
+    let whereSql = "where company = '" + company + "' and ddh like '" + this_head + "%'"
+    let type = req.params.type
+    console.log(req.params)
+    console.log(req.query)
+    let sql1 = "select ddh from orders " + whereSql;
+    console.log(sql1)
+    db.query(sql1, function (err, rows) {
+        try {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(rows)
+                let result = {
+                    datas: [],
+                }
+                result.datas = rows
+                console.log("result=>", result)
+                res.json(JSON.stringify(result));
+            }
+        } catch (e) {
+            res.render("error.html", {error: '网络错误，请稍后再试！'})
+        }
+    });
+});
+
+
+router.post('/select_huiyuan_list', function (req, res, next) {
+    console.log("yuangong")
+    let isSelect = req.query.pagenum == undefined;
+    let token = localStorage.getItem("token")
+    let key = '123456789abcdefg';
+    //console.log('加密的key:', key);
+    let iv = 'abcdefg123456789';
+    //console.log('加密的iv:', iv);
+    let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    let company = value[0];
+    console.log(value)
+    let users = {
+        name:value[6],
+        username:value[1],
+        password:value[2],
+        company:value[0],
+        usertype:value[5],
+    }
+    console.log(users)
+    let this_head = req.body.this_head;
+
+    let selectParams = {
+        name: ''
+    }
+    if (isSelect) {
+        selectParams.name = req.body.name;
+        localStorage.setItem("selectParams", JSON.stringify(selectParams))
+    } else {
+        selectParams = JSON.parse(localStorage.getItem("selectParams"));
+    }
+    if (selectParams.name == undefined) {
+        selectParams.name = "";
+    }
+    console.log("selectParams.name=>", selectParams.name)
+    let whereSql = "where company = '" + company + "' and ( username like '%" + this_head + "%' or phone like '%" + this_head + "%' or name like '%" + this_head + "%')"
+    let type = req.params.type
+    console.log(req.params)
+    console.log(req.query)
+    let sql1 = "select count(*) as count from member_info " + whereSql;
+    console.log(sql1)
+    db.query(sql1, function (err, rows) {
+        try {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(rows)
+                let result = {
+                    datas: [],
+                }
+                var this_count = rows[0].count
+                var this_page = Math.ceil(this_count / 5);
+                var sql = "select * from member_info " + whereSql + " limit 1,5"
+                db.query(sql, function (err, rows) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        result.datas = rows
+                        console.log("result=>", result)
+                        res.json(JSON.stringify(result));
+                    }
+                });
+            }
+        } catch (e) {
+            res.render("error.html", {error: '网络错误，请稍后再试！'})
+        }
+    });
+});
+
+
 router.post('/select_discount', function (req, res, next) {
     console.log("yuangong")
     let isSelect = req.query.pagenum == undefined;
@@ -365,7 +497,6 @@ router.post('/add', function (req, res) {
                     }else{
                         sql = "insert into orders(riqi,ddh,hyzh,hyxm,yhfa,company) values('" + today + "','" + pro_num  + "','" + account  + "','" + uname + "','" + youhui + "','" + company + "')"
                     }
-
                     db.query(sql, function (err, rows) {
                         if (err) {
                             console.log(err)

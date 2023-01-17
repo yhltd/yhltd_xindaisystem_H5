@@ -65,6 +65,7 @@
                 <th>打折比例</th>
                 <th>折后单价</th>
                 <th>折后金额</th>
+                <th>操作</th>
             </tr>
             {% for item in datass %}
             <tr align="center">
@@ -86,7 +87,7 @@
 
                     </div>
                 </div>
-                <div id="member-paging_center">
+                <div id="member-paging_center" style="display: flex;align-items: center;height: 39px;">
                     <a class="page_button" href="/orders_details_member/orders_details/{{datas[0].ddh}}?pagenum=1" onclick="return check();">◀◀</a>
                     <a class="page_button" href="/orders_details_member/orders_details/{{datas[0].ddh}}?pagenum={{pagenum-1}}" onclick="return check();">◀</a>
                     <input id="id" class="ui-pg-input form-control" type="text" size="2" maxlength="7" value={{pagenum }} role="textbox">

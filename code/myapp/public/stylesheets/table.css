@@ -73,8 +73,8 @@ table, tbody, tfoot, thead, tr, th, td {
 .tablebox {
     width: 97%;
     height: 100%;
-    margin-top: 10px;
-    overflow-x: scroll;
+    /*margin-top: 10px;*/
+    /*overflow-x: scroll;*/
     margin: 10px auto;
     zoom: 0.8;
 }
@@ -533,3 +533,5 @@ member-paging_left{
     height: 64%;
     text-align: center;
 }
+
+/*新增点单界面的窗口优化*/

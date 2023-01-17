@@ -236,18 +236,6 @@ router.get('/ass/:id', function (req, res, next) {
     })
 
 });
-
-// router.get('/select_day/:id', function (req, res, next) {
-//     let id = req.params.id;
-//     db.query("select * from day_trading right join customer on customer.id = day_trading.id where customer.id=" + id+ "" , function (err, rows) {
-//         console.log('==========');
-//         if (err) {
-//             res.render('../views/day_trading/day_trading.html', {title: 'Express', datas: []});  // this renders "views/users.html"
-//         } else {
-//             res.render('../views/day_trading/day_trading.html', {title: 'Express', datas: rows});
-//         }
-//     })
-// });
 router.all('/orders_details/:id', function (req, res, next) {
     //console.log("开始")
     let token = localStorage.getItem("token");
