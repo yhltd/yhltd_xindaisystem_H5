@@ -72,7 +72,7 @@ router.all('/orders_details/:id', function (req, res, next) {
                     result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
                 }
                 //let sql = "select * from orders_details right join orders on orders.id = orders_details.ddid where orders.id=" + id;
-                let sql = "select id,riqi,ddh,hyzh,hyxm,yhfa,heji.xfje,heji.ssje,heji.yhje,syy,ord.company from orders as ord left join(select ddid,company,sum(convert(dj,float) * convert(gs,float)) as xfje,sum(convert(zhdj,float) * convert(gs,float)) as ssje,round(sum(convert(dj,float) * convert(gs,float)) - sum(convert(zhdj,float) * convert(gs,float)),2) as yhje from orders_details group by ddid) as heji on ord.ddh = heji.ddid and ord.company = heji.company where ddh='" + id + "' and ord.company = '" + data.company + "' ";
+                let sql = "select id,riqi,ddh,hyzh,hyxm,hyjf,yhfa,heji.xfje,heji.ssje,heji.yhje,syy,ord.company from orders as ord left join(select ddid,company,sum(convert(dj,float) * convert(gs,float)) as xfje,sum(convert(zhdj,float) * convert(gs,float)) as ssje,round(sum(convert(dj,float) * convert(gs,float)) - sum(convert(zhdj,float) * convert(gs,float)),2) as yhje from orders_details group by ddid) as heji on ord.ddh = heji.ddid and ord.company = heji.company where ddh='" + id + "' and ord.company = '" + data.company + "' ";
                 db.query(sql, function (err, rows) {
                     if (err) {
                         res.render('orders/orders_details_member.html', {title: 'Express', ...result});

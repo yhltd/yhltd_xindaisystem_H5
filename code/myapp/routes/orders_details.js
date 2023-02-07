@@ -185,6 +185,8 @@ router.post('/add', function (req, res) {
         ddid = toLiteral(ddid);
         let cplx = req.body.cplx;
         cplx = toLiteral(cplx);
+        // let product_bianhao = req.body.product_bianhao;
+        // product_bianhao = toLiteral(product_bianhao);
         let cpmc = req.body.cpmc;
         cpmc = toLiteral(cpmc);
         let dw = req.body.dw;
@@ -206,7 +208,11 @@ router.post('/add', function (req, res) {
             try {
                 if (err) {
                     res.end('新增失败：');
-                } else {
+                } else if(zhdj=null){
+                    zhdj=0;
+                }else if(zhje=null){
+                    zhje=0;
+                }else{
                     res.redirect('orders_details/ass' + id);
                 }
             } catch (e) {

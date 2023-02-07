@@ -118,8 +118,7 @@ router.all('/ass', function (req, res, next) {
                 if(result.rowcounts == 0){
                     result.msg = '没有查到相关信息'
                 }
-                // let sql2 = "select * from orders where company = '" + toLiteral(company) + "'" + whereSql + "limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
-                let sql2 = "select id,riqi,ddh,hyzh,hyxm,yhfa,heji.xfje,heji.ssje,heji.yhje,syy,ord.company from orders as ord left join(select ddid,company,sum(convert(dj,float) * convert(gs,float)) as xfje,sum(convert(zhdj,float) * convert(gs,float)) as ssje,round(sum(convert(dj,float) * convert(gs,float)) - sum(convert(zhdj,float) * convert(gs,float)),2) as yhje from orders_details group by ddid) as heji on ord.ddh = heji.ddid and ord.company = heji.company  where ord.company = '" + toLiteral(company) + "'" + whereSql + " order by id desc limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
+                let sql2 = "select id,riqi,ddh,hyzh,hyxm,hyjf,yhfa,heji.xfje,heji.ssje,heji.yhje,syy,ord.company from orders as ord left join(select ddid,company,sum(convert(dj,float) * convert(gs,float)) as xfje,sum(convert(zhdj,float) * convert(gs,float)) as ssje,round(sum(convert(dj,float) * convert(gs,float)) - sum(convert(zhdj,float) * convert(gs,float)),2) as yhje from orders_details group by ddid) as heji on ord.ddh = heji.ddid and ord.company = heji.company  where ord.company = '" + toLiteral(company) + "'" + whereSql + " order by id desc limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
                 //console.log(sql2)
                 db.query(sql2, function (err, rows) {
                     if (err) {
@@ -164,7 +163,6 @@ router.post('/add', function (req, res) {
         let data = JSON.parse(decrypt(key, iv, token));
         let value = Object.values(data);
         let company = value[0];
-        //let company = req.cookies.company
         let riqi = req.body.riqi;
         riqi = toLiteral(riqi);
         let ddh = req.body.ddh;
@@ -174,6 +172,8 @@ router.post('/add', function (req, res) {
         let hyxm = req.body.hyxm;
         hyxm = toLiteral(hyxm);
         let yhfa = req.body.yhfa;
+        hyjf = toLiteral(hyjf);
+        let hyjf = req.body.hyjf;
         yhfa = toLiteral(yhfa);
         let xfje = req.body.xfje;
         xfje = toLiteral(xfje);
@@ -183,8 +183,8 @@ router.post('/add', function (req, res) {
         yhje = toLiteral(yhje);
         let syy = req.body.syy;
         syy = toLiteral(syy);
-        db.query("insert into orders(riqi,ddh,hyzh,hyxm,yhfa,xfje,ssje,yhje,syy,company) values('" + riqi + "','"
-            + ddh + "','" + hyzh+ "','" + hyxm + "','"+ yhfa + "','" + xfje + "','"+ ssje + "','" + yhje + "','" + syy + "','"
+        db.query("insert into orders(riqi,ddh,hyzh,hyxm,hyjf,yhfa,xfje,ssje,yhje,syy,company) values('" + riqi + "','"
+            + ddh + "','" + hyzh+ "','" + hyxm + "','" + hyjf + "','"+ yhfa + "','" + xfje + "','"+ ssje + "','" + yhje + "','" + syy + "','"
             + company +  "')", function (err, rows) {
             try {
                 if (err) {
@@ -286,10 +286,11 @@ router.post('/update', function (req, res) {
         let ddh = req.body.ddh;
         let hyzh = req.body.hyzh;
         let hyxm = req.body.hyxm;
+        let hyjf = req.body.hyjf;
         let yhfa = req.body.yhfa;
         let syy = req.body.syy;
         console.log(old_id)
-        let sql = "update orders set riqi='" + riqi + "',ddh='" + ddh + "',hyzh='" + hyzh + "',hyxm='" + hyxm + "',yhfa='" + yhfa + "',syy='" + syy + "' where id=" + id;
+        let sql = "update orders set riqi='" + riqi + "',ddh='" + ddh + "',hyzh='" + hyzh + "',hyxm='" + hyxm + "',hyjf='" + hyjf + "',yhfa='"  + yhfa + "',syy='" + syy + "' where id=" + id;
         console.log("sql:"+sql)
         db.query(sql, function (err, rows) {
             try {
@@ -316,7 +317,7 @@ router.post('/update', function (req, res) {
 
 const disableLayout = {layout: false};
 
-// disable interface layout.hbs  user config layout: false
+
 router.all('/Excel', function (req, res, next) {
     let selectParams = {
         recipient: '',
@@ -357,7 +358,7 @@ router.all('/Excel', function (req, res, next) {
             conf.cols = [
                 {
                     caption: '序号',
-                    type: 'string'
+                    type: 'number'
                 },
                 {
                     caption: '日期',
@@ -371,7 +372,10 @@ router.all('/Excel', function (req, res, next) {
                 }, {
                     caption: '会员姓名',
                     type: 'string'
-                }, {
+                },{
+                    caption: '会员积分',
+                    type: 'string'
+                },{
                     caption: '优惠方案',
                     type: 'string'
                 }, {
@@ -396,6 +400,7 @@ router.all('/Excel', function (req, res, next) {
                 row.push(rows[i].ddh)
                 row.push(rows[i].hyzh)
                 row.push(rows[i].hyxm)
+                row.push(rows[i].hyjf)
                 row.push(rows[i].yhfa)
                 row.push(rows[i].xfje)
                 row.push(rows[i].ssje)

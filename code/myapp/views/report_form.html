@@ -134,14 +134,32 @@
     })
 
     function getList(){
+        //获取当月第一天
+        var date = new Date();
+        date.setDate(1);
+        var month = parseInt(date.getMonth()+1);
+        var day = date.getDate();
+        if (month < 10) {
+            month = '0' + month
+        }
+        if (day < 10) {
+            day = '0' + day
+        }
+        //获取最后一天
+        var lastDate = new Date(date.getFullYear(),month,0).getDate();
+        var str1 =  date.getFullYear() + '-' + month + '-' + day;
+        var str2 =  date.getFullYear() + '-' + month + '-' + lastDate;
+
 
         var start_date=$('#start_date').val()
         var stop_date=$('#stop_date').val()
         if(start_date == ''){
-            start_date = '1900-01-01'
+            start_date = str1;
+            $('#start_date').val(str1)
         }
         if(stop_date == ''){
-            stop_date = '2100-12-31'
+            stop_date = str2;
+            $('#stop_date').val(str2)
         }
         if(name == ''){
             alert('未选择姓名');

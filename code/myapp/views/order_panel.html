@@ -176,11 +176,9 @@
             width: 1200px;
             height: 700px;
             background-color: #F7F7F7;
-            /* margin: 10vh; */
             left: 50%;
-            top: 10%;
+            top: 3%;
             transform: translateX(-50%);
-            /* transform: translateY(-50%); */
             border: 1px solid white;
             box-shadow: 0 5px 15px rgb(0 0 0 / 50%);
         }
@@ -726,8 +724,11 @@
     }
 
     .Lblock #empty_mask .cont .table tbody tr{
-        height: 62px;
+        height: 40px;
         color: #000;
+        /*background-color: #ebe9e9;*/
+        text-align: center;
+        background-color:rgb(188 209 253);
     }
 
     .Lblock #empty_mask .cont > table tbody tr{
@@ -752,6 +753,7 @@
 
     .Lblock #empty_mask .cont table{
         table-layout: fixed;
+        /*width: 94%;*/
     }
 
     .Lblock .table .cont li {
@@ -874,12 +876,6 @@
         box-shadow: 0px 5px 8px rgb(0 0 0 / 20%);
         font-weight: normal;
     }
-
-    /*.Lblock .button .but3:hover{*/
-    /*    color: rgb(3 199 43);*/
-    /*    background-color: #fff;*/
-    /*    border: 1px solid rgb(3 199 43);*/
-    /*}*/
     .index >div{
         padding: 10px;
         background-color: #ffffff;
@@ -1023,7 +1019,7 @@
     }
 
     .Rblock .Bmenu li {
-        margin-right: 38px;
+        /*margin-right: 38px;*/
         margin-bottom: -2px;
     }
 
@@ -1354,6 +1350,9 @@
         align-items: center;
         background: #EBEBEB;
     }
+    #huiyuan_table tbody td{
+        cursor: pointer;
+    }
 
 </style>
 
@@ -1492,7 +1491,7 @@
                 <div class="modal-content-r-content">
                     <div class="product_details_type">
                         商品类型
-                        <input type="text" value="">
+                        <input id="xiangqing_type" type="text" value="">
                     </div>
                     <div id="product_details_count" class="product_details_count">
                         商品数量
@@ -1512,7 +1511,7 @@
                     </div>
                     <div class="product_details_price">
                         商品价格
-                        <input type="text" value="">
+                        <input id="xiangqing_Price" type="text" value="">
                     </div>
                     <div class="product_details_id">
                         商品id
@@ -1588,7 +1587,6 @@
                     </div>
                 </div>
                 <div class="modal-content-right">
-
                         <div class="choose_member">
                             <div>
                                 <div class="choose_member_head">
@@ -1598,7 +1596,6 @@
                                 <div class="memeber_info" style="display: none;">
 
                                 </div>
-
                             </div>
                         </div>
                         <!-- 辅助搜索会员提示 -->
@@ -1812,7 +1809,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="search">
-                        <input type="text" class="form-control search_str" maxlength="11" placeholder="手机号/卡号/姓名">
+                        <input id="huiyuan_window" type="text" class="form-control search_str" maxlength="11" placeholder="手机号/卡号/姓名" onkeypress="getEnterKey();">
                     </div>
                     <div class="member-list">
                         <table id="huiyuan_table" class="table table-hover">
@@ -1884,6 +1881,8 @@
 <script>
     let datas = []
     let p_zhekou = 1
+    let p_name = ""
+    let p_username = ""
 
     window.onload = function() {
         tableShow();
@@ -1985,39 +1984,6 @@
             }
         }
     })
-    //--------------------------------
-    //点击商品后，.Lblock #empty_mask .cont tbody下加tr
-    // $(".Rblock .block li").click(function (){
-    //     //单点一份的1
-    //     var num = 1;
-    //     //新增商品的序号
-    //     var product_now_id = parseInt($(".index .Lblock #empty_mask .cont .table tbody tr").length+parseInt("1"));
-    //     //获取添加商品链接的id
-    //     var product_id = $(this).children(".id").text();
-    //     console.log(product_id);
-    //     var this_str = ""
-    //     for(var i = 0; i < datas.length; i++){
-    //         if(datas[i].id == product_id){
-    //             //所要显示的商品价格
-    //             this_str += "" +
-    //                 "<tr class=\"success\">" +
-    //                     "<td class=\"itemOrderNo\">" + product_now_id+ "</td>" +
-    //                     "<td class=\"itemName\">" + datas[i].product_name + "</td>"+
-    //                     "<td class=\"itemNum\">" +
-    //                         "<span class=\"count\">" + num + "</span>"+
-    //                         "/"+
-    //                         "<span class=\"unit\">" + datas[i].unit + "</span>"+
-    //                     "</td>"+
-    //                     "<td class=\"itemAmount\">" +
-    //                         "￥"+
-    //                         "<span class=\"price\">" + datas[i].price + "</span>"+
-    //                     "</td>"+
-    //                 "</tr>"
-    //         }
-    //     }
-    //     $(".Lblock #empty_mask .table tbody").append(this_str);
-    // })
-
 
     $("body").on('click','.Product_details_Ok',function(){
         //单点一份的1
@@ -2061,14 +2027,20 @@
     $("body").on('click','#huiyuan_table tbody tr',function(){
         //单点一份的1
         var name = $(this).children().eq(1).text();
+        var username = $(this).children().eq(0).text();
+        p_name = name
+        p_username = username
         console.log(name)
         jQuery('#huiyuan').hide();
         var this_str = "<p>" +
             "           <span>会员:</span>" +
             "           <span class=\"member_name\" title=\"" + name + "\">" + name + "</span>" +
+            "           <span class=\"member_username_title\">会员账号:</span>" +
+            "           <span class=\"member_username\" title=\"" + username + "\">" + username + "</span>" +
             "           </p>"
         $(".memeber_info p").remove()
         $(".memeber_info").append(this_str)
+        $(".member_username_title").css('margin-left','70px')
         $(".memeber_info").css('display','flex')
     });
 
@@ -2081,8 +2053,8 @@
     $("body").on('click','.success',function(){
         //单点一份的1
         console.log('dd')
-        $('.success').css('background-color', 'white');
-        $(this).css('background-color', '#f9f9f9');
+        $('.success').css('background-color', 'rgb(188 209 253)');
+        $(this).css('background-color', '#ebe9e9');
     });
 
     $("body").on('click','#jia',function(){
@@ -2174,21 +2146,6 @@
         Table_sum();
     });
 
-    // 给加号添加点击事件
-    // $(document).delegate('.jia', "click", function () {
-    //     // var money = $(this).parent().parent().children().eq(4); //价格
-    //     // var Smoney = $(this).parent().parent().children().eq(3); //总价格
-    //     var count = $("#empty_mask .cont .table tr .itemNum"); //数量
-    //     var money = $("#empty_mask .cont .table tr .itemAmount");//单价
-    //     // var Smoney = $(".price_total"); //一个tr的总价格
-    //
-    //     count.text(parseInt(count.text()) + 1)
-    //     // Smoney.text((money.text() * 1)*parseInt(count.text() * 1));
-    //     var Smoney = parseInt((money.text() * 1))*parseInt(count.text() * 1);
-    //     console.log(Smoney);
-    //     Table_sum();
-    // });
-
     //--------------------------------
 
 
@@ -2198,16 +2155,43 @@
         $(".Lblock #empty_mask .cont .table tbody tr").remove();
         Table_sum();
     })
+    //鼠标经过结账按钮
+    var ceshiText=""
+    $(".but7").mouseenter(function (e) {
+        ceshiText="本次消费"+ $("#yingshou_Sum").text()+"元"
+        console.log(ceshiText)
+        handleSpeak(ceshiText)
+    });
 
+    const synth = window.speechSynthesis;
+    const msg = new SpeechSynthesisUtterance();
+        //语音播报的函数
+    function handleSpeak(text){
+        msg.text = text;
+        msg.lang = "zh-CN";
+        msg.volume = 1;
+        msg.rate = 2;
+        msg.pitch = 0;
+        synth.speak(msg);
+    }
+        //语音停止
+    function handleStop(e){
+        msg.text =e;
+        msg.lang = "zh-CN";
+        synth.cancel(msg);
+    }
     //结账按钮点击后
     $(".but7").click(function () {
         console.log("add")
         var pro_list = []
         var pro_num = $("#danhao").val();
+        var member_name=p_name
+        var member_username=p_username
 
         $("#table1 tbody tr").each(function () {
             var id = $(this).children().eq(0).text();
             var jine = $(this).children(".itemAmount1").children().eq(0).text();
+            jine = jine.replace("￥","")
             var shul= $(this).children(".itemNum1").children().eq(0).text();
             var zhek= $(this).children(".itemzheko").children().eq(0).text();
 
@@ -2217,15 +2201,17 @@
             for(var i=0; i<datas.length;i++){
                 if(datas[i].product_name == id){
                     pro_list.push({
+                        member_name:member_name,
+                        member_username:member_username,
                         cplx:datas[i].type,
                         cpmc:datas[i].product_name,
                         dw:datas[i].unit,
                         dj:datas[i].price,
-                        dzbl:p_zhekou,
+                        dzbl:zhek,
                         // zhdj:zhehou / num,
-                        zhdj:datas[i].price*p_zhekou,
+                        zhdj:jine*zhek,
                         // zhje:zhehou,
-                        zhje:datas[i].price*p_zhekou*shul*zhek,
+                        zhje:shul*jine*zhek,
                         gs:shul
                     })
                 }
@@ -2246,6 +2232,8 @@
             data: {
                 pro_list: JSON.stringify(pro_list),
                 pro_num: pro_num,
+                member_name:member_name,
+                member_username,
                 youhui: p_zhekou
             },
             success: function(res){
@@ -2265,61 +2253,67 @@
     })
 
     document.getElementById("but3").onclick = function() {
-        $("#table1 tbody tr").remove();
-        var pro_list = []
-        var pro_num = $("#danhao").val();
-        var this_str1 = ""
-        var _number = 0;
-        var _money = 0;
-        $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
-            var id = $(this).children(".itemid").eq(0).text();
-            var num = $(this).children(".itemNum").children().eq(0).text();
-            var zhehou = $(this).children(".itemAmount").children().eq(1).text();
-            var money = $(this).children().eq(3).text();
-            console.log(id)
-            console.log(num)
-            console.log(zhehou)
-            console.log(datas)
-            for(var i=0; i<datas.length;i++){
-                if(datas[i].id == id){
-                    console.log(datas[i].id)
-                    this_str1 += "" +
-                        "<tr class=\"success\" ondblclick=\"ondblclick_f(this)\">" +
-                        "<td class=\"itemName1\">" + datas[i].product_name + "</td>"+
-                        "<td class=\"itemNum1\">" +
-                        "<span class=\"count\">" + num + "</span>"+
-                        "/"+
-                        "<span class=\"unit\">" + datas[i].unit + "</span>"+
-                        "</td>"+
-                        "<td class=\"itemAmount1\">" +
-                        "<span class=\"price\">" + money + "</span>"+
-                        "</td>"+
-                        "<td class=\"itemzheko\"><div class=\"aa\">1</div></td>"+
-                        "</tr>"
-                    console.log(this_str1)
+        var num = $('.Lblock #empty_mask .cont .table tbody tr').length;
+        if (num <1){
+            alert('购物车为空')
+        }else{
+            $("#table1 tbody tr").remove();
+            var pro_list = []
+            var pro_num = $("#danhao").val();
+            var this_str1 = ""
+            var _number = 0;
+            var _money = 0;
+            $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
+                var id = $(this).children(".itemid").eq(0).text();
+                var num = $(this).children(".itemNum").children().eq(0).text();
+                var zhehou = $(this).children(".itemAmount").children().eq(1).text();
+                var money = $(this).children().eq(3).text();
+                console.log(id)
+                console.log(num)
+                console.log(zhehou)
+                console.log(datas)
+                for(var i=0; i<datas.length;i++){
+                    if(datas[i].id == id){
+                        console.log(datas[i].id)
+                        this_str1 += "" +
+                            "<tr class=\"success\" ondblclick=\"ondblclick_f(this)\">" +
+                            "<td class=\"itemName1\">" + datas[i].product_name + "</td>"+
+                            "<td class=\"itemNum1\">" +
+                            "<span class=\"count\">" + num + "</span>"+
+                            "/"+
+                            "<span class=\"unit\">" + datas[i].unit + "</span>"+
+                            "</td>"+
+                            "<td class=\"itemAmount1\">" +
+                            "<span class=\"price\">" + money + "</span>"+
+                            "</td>"+
+                            "<td class=\"itemzheko\"><div class=\"aa\">1</div></td>"+
+                            "</tr>"
+                        console.log(this_str1)
+                    }
                 }
+            })
+            $("#table1 tbody").append(this_str1);
+            console.log(pro_list)
+            console.log(pro_num)
+            if(pro_num == ''){
+                alert("未填写订单号")
+                return;
             }
-        })
-        $("#table1 tbody").append(this_str1);
-        console.log(pro_list)
-        console.log(pro_num)
-        if(pro_num == ''){
-            alert("未填写订单号")
-            return;
+            console.log(pro_list.length)
+            if(datas.length == 0){
+                alert("未选择商品")
+                return;
+            }
+            $(".hover").click(function (){
+                $(".hover").removeClass("active")
+                $(".hover").addClass("active")
+            })
+            jQuery(".jiezhang_mask").show()
+            jQuery('#jiezhang').show();
+            $("body").addClass("mask")
+            huiyuan_sum();
         }
-        console.log(pro_list.length)
-        if(datas.length == 0){
-            alert("未选择商品")
-            return;
-        }
-        $(".hover").click(function (){
-            $(".hover").removeClass("active")
-            $(".hover").addClass("active")
-        })
-        jQuery(".jiezhang_mask").show()
-        jQuery('#jiezhang').show();
-        $("body").addClass("mask")
-        huiyuan_sum();
+
     };
 
     document.getElementById("but4").onclick = function() {
@@ -2392,7 +2386,7 @@
             _money =0;
         })
         console.log(_money)
-        $("#yingshou_Sum").html(_money).toFixed(2);
+        $("#yingshou_Sum").html(_money.toFixed(2));
 
     };
 
@@ -2479,20 +2473,45 @@
         });
     };
 
-    // document.getElementById("is_all").onclick = function() {
-    //
-    //     $("#table2 tbody tr").each(function () {
-    //         var xuanzhe1 = $(this).children(".itemxuanzhe1").eq(0).text();
-    //         console.log(xuanzhe1)
-    //         for(var i=0; i<datas.length;i++){
-    //             if(datas[i].id == id){
-    //
-    //             }
-    //         }
-    //     })
-    //
-    //
-    // };
+    function getEnterKey(){
+        if(event.keyCode==13){
+            var keyword = $('#huiyuan_window').val()
+            $.ajax({
+                type: 'post',
+                url: '/order_panel/select_huiyuan_list',
+                async:false,
+                data:{
+                    this_head:keyword,
+                },
+                timeout: 5000,
+                success: function(res){
+                    let result = JSON.parse(res)
+                    console.log('会员列表')
+                    console.log(result.datas)
+                    var this_str = ""
+                    for(var i = 0; i < result.datas.length; i++){
+                        this_str = this_str + "<tr>" +
+                            "<td>" + result.datas[i].username + "</td>" +
+                            "<td>" + result.datas[i].name + "</td>" +
+                            "<td>" + result.datas[i].gender + "</td>" +
+                            "<td>" + result.datas[i].phone + "</td>" +
+                            "<td>" + result.datas[i].state + "</td>" +
+                            "</tr>"
+                    }
+                    $("#huiyuan_table tbody tr").remove();
+                    $("#huiyuan_table tbody").append(this_str);
+
+                },
+                error: function(res){
+                    if(res.status == "timeout"){
+                        alert("网络超时，请稍后再试")
+                    }else{
+                        alert("网络错误，请稍后再试")
+                    }
+                }
+            });
+        }
+    }
 
     //改过了--------------
     //合计商品数量和价格
@@ -2530,8 +2549,8 @@
             _money += (num * this_money * zheko);
         })
         console.log(_money)
-        $("#yingshou_Sum").html(_money).toFixed(2)
-        $("#xiaofei_Sum").html(_money).toFixed(2);
+        $("#yingshou_Sum").html(_money.toFixed(2))
+        $("#xiaofei_Sum").html(_money.toFixed(2))
     }
 
     function tableShow(){
@@ -2887,6 +2906,8 @@
                 $(".product_details_id input").val(datas[i].id)
             }
         }
+        document.getElementById("xiangqing_Price").setAttribute('readonly',true);
+        document.getElementById("xiangqing_type").setAttribute('readonly',true);
     })
 
 
@@ -2935,21 +2956,6 @@
         tableShow()
     })
 </script>
-<!--<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>-->
-
-<!--<div id="app">{{ message }}</div>-->
-
-<!--<script>-->
-<!--    const { createApp } = Vue-->
-
-<!--    createApp({-->
-<!--        data() {-->
-<!--            return {-->
-<!--                message: 'Hello Vue!'-->
-<!--            }-->
-<!--        }-->
-<!--    }).mount('#app')-->
-<!--</script>-->
 </body>
 </html>
 <SCRIPT Language=VBScript></SCRIPT>

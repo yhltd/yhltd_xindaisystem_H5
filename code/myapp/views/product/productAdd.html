@@ -9,6 +9,7 @@
         function submitForm(){
             var formData = $('#formData').serialize();
             var params = JSON.parse(formToJson(decodeURIComponent(formData, true)))
+            params.p_file = p_file
             $("#checkFormCheckBox").attr('checked', checkForm(params));
         }
 
@@ -73,40 +74,55 @@
     <div class="tablebox" >
         <table id="tableId" border="0" cellspacing="0" cellpadding="0">
             <tr>
+                <td><p>商&nbsp品&nbsp编&nbsp码</p></td>
+                <td>
+                    <input class="form_input" name="product_bianhao" value="{{product_bianhao}}" />
+                </td>
                 <td><p>商&nbsp品&nbsp类&nbsp别</p></td>
                 <td>
-                    <input class="form_input" name="type" value="{{type}}"  />
+                    <select class="form_input" name="type" value="{{type}}">
+                        <option value="饮料">饮料</option>
+                        <option value="糕点">糕点</option>
+                        <option value="油炸">油炸</option>
+                        <option value="零食">零食</option>
+                    </select>
                 </td>
+            </tr>
+            <tr>
+
                 <td><p>商&nbsp品&nbsp名&nbsp称</p></td>
                 <td>
                     <input class="form_input" name="product_name" value="{{product_name}}" />
                 </td>
-            </tr>
-            <tr>
                 <td><p>单&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp位</p></td>
                 <td>
                     <input class="form_input" name="unit" value="{{unit}}" />
                 </td>
+            </tr>
+            <tr>
+
                 <td><p>单&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp价</p></td>
                 <td>
                     <input class="form_input" name="price" value="{{price}}" />
                 </td>
-            </tr>
-            <tr>
                 <td><p>成&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp本</p></td>
                 <td>
                     <input class="form_input" name="chengben" value="{{chengben}}" />
                 </td>
+            </tr>
+            <tr>
+
                 <td><p>商&nbsp品&nbsp规&nbsp格</p></td>
                 <td>
                     <input class="form_input" name="specifications" value="{{specifications}}" >
                 </td>
-            </tr>
-            <tr>
                 <td><p>保&nbsp存&nbsp方&nbsp式</p></td>
                 <td>
                     <input class="form_input" name="practice" value="{{practice}}" >
                 </td>
+            </tr>
+            <tr>
+
                 <td><p>是&nbsp否&nbsp停&nbsp用</p></td>
                 <td>
                     <select class="form_select" name="tingyong" value="{{tingyong}}" >
@@ -114,6 +130,13 @@
                         <option value="否" selected="selected">否</option>
                     </select>
                 </td>
+                <td><p>图&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp片</p></td>
+                <td colspan="2">
+                    <img id="image" style="width: 100px;height: 100px;" src="{{p_file}}">
+                </td>
+            </tr>
+            <tr>
+
             </tr>
             <tr>
                 <td colspan="4" align="right">
@@ -124,6 +147,30 @@
         {{msg}}
     </div>
     <input id="checkFormCheckBox" name="checkForm" type="checkbox" checked="" style="display: none"/>
+    <input type="file" id="file" hidden="hidden">
+    <input id="p_file" class="form_input" name="p_file" hidden="hidden">
 </form>
 </body>
-<SCRIPT Language=VBScript></SCRIPT>
+<script>
+    var p_file
+
+    $("#image").click(function () {
+        $('#file').trigger('click');
+    })
+    $('#file').change(function () {
+        var file = document.getElementById("file").files;
+        var oFReader = new FileReader();
+        var this_file = file[0];
+        var fileName = file[0].name;
+        var obj = [];
+        oFReader.readAsDataURL(this_file);
+        oFReader.onloadend = function (oFRevent) {
+            p_file = oFRevent.target.result;
+            console.log(p_file)
+            $('#image').attr('src',p_file)
+            $('#p_file').val(p_file)
+        };
+    });
+</script>
+<SCRIPT Language=VBScript></script>
+</html>

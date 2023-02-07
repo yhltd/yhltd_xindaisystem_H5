@@ -49,11 +49,6 @@
 <form action="/users/uadd" id="formData" onsubmit="submitForm()" method="post" align="center">
     <div id="header">
         <div class="header-text">新增员工</div>
-<!--        <div class="header-item">-->
-<!--            <a style="line-height: 0" class="right" href="/users/select" title="返回查询">-->
-<!--                <img class="header-icon" src="../../images/back.png">-->
-<!--            </a>-->
-<!--        </div>-->
     </div>
     <div class="toback">
         <a href="/users/select" title="返回查询">
@@ -67,8 +62,6 @@
                 <td>
                     <input class="form_input" name="position" value="{{position}}"  />
                 </td>
-            </tr>
-            <tr>
                 <td><p>员&nbsp&nbsp工</p></td>
                 <td>
                     <input class="form_input" name="uname" value="{{uname}}" />
@@ -79,15 +72,13 @@
                 <td>
                     <input class="form_input" name="account" value="{{account}}" />
                 </td>
-            </tr>
-            <tr>
                 <td><p>密&nbsp&nbsp码</p></td>
                 <td>
                     <input class="form_input" name="password" value="{{password}}" />
                 </td>
             </tr>
             <tr>
-                <td colspan="2" align="right">
+                <td colspan="4" align="right">
                     <input class="form_btn" type="submit" value="保存"  />
                 </td>
             </tr>

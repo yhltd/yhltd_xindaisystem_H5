@@ -102,10 +102,12 @@ router.all('/ass', function (req, res, next) {
     // console.log(account);
 
     let selectParams = {
-        product_name: ''
+        product_name: '',
+        type:''
     }
     if (isSelect) {
         selectParams.product_name = req.body.product_name;
+        selectParams.type = req.body.type;
         //selectParams.uname = toLiteral(selectParams.uname)
         localStorage.setItem("selectParams", JSON.stringify(selectParams))
     } else {
@@ -114,8 +116,11 @@ router.all('/ass', function (req, res, next) {
     if (selectParams.product_name == undefined) {
         selectParams.product_name = "";
     }
+    if (selectParams.type == undefined) {
+        selectParams.type = "";
+    }
     console.log("selectParams.product_name=>", selectParams.product_name)
-    let whereSql = "where company = '" + company + "' and product_name like '%" + selectParams.product_name + "%'"
+    let whereSql = "where company = '" + company + "' and product_name like '%" + selectParams.product_name + "%' and type like '%" + selectParams.type + "%'"
     let sql1 = "select count(*) as count from product " + whereSql;
     db.query(sql1, function (err, rows) {
         try {
@@ -187,48 +192,94 @@ router.post('/add', function (req, res) {
         let result = {
             type: "",
             product_name: "",
+            product_bianhao:"",
             unit:"" ,
             price: "",
             chengben: "",
             tingyong: "",
             specifications:"",
-            practice:""
+            practice:"",
+            p_file: "",
         };
         //let company = req.body.company;
         let type = req.body.type;
         result.type = type;
-        type = toLiteral(type);
+        // type = toLiteral(type);
         let product_name = req.body.product_name;
         result.product_name = product_name;
-        product_name = toLiteral(product_name);
+        // product_name = toLiteral(product_name);
         let unit = req.body.unit;
         result.unit = unit;
-        unit = toLiteral(unit);
+        // unit = toLiteral(unit);
         let price = req.body.price;
         result.price = price;
-        price = toLiteral(price);
+        // price = toLiteral(price);
         let chengben = req.body.chengben;
         result.chengben = chengben;
-        chengben = toLiteral(chengben);
+        // chengben = toLiteral(chengben);
         let tingyong = req.body.tingyong;
         result.tingyong = tingyong;
-        tingyong = toLiteral(tingyong);
+        // tingyong = toLiteral(tingyong);
         let specifications = req.body.specifications;
         result.specifications = specifications;
-        specifications = toLiteral(specifications)
+        // specifications = toLiteral(specifications)
         let practice = req.body.practice;
         result.practice = practice;
-        practice = toLiteral(practice)
+        // practice = toLiteral(practice)
+        let product_bianhao = req.body.product_bianhao;
+        result.product_bianhao = product_bianhao;
+        // product_bianhao = toLiteral(product_bianhao)
+        let p_file = req.body.p_file;
+        result.photo = p_file;
+        // p_file = toLiteral(p_file)
         company = data.company
 
-        let sql1 = "insert into product(company,type,product_name,unit,price,chengben,specifications,practice,tingyong) " +
-            "values('" + data.company + "','" + type + "','" + product_name + "','" + unit + "','" + price + "','" + chengben + "','" + specifications + "','" + practice + "','" + tingyong + "')"
+        console.log(p_file)
+
+        let sql1 = "insert into product(company,product_bianhao,type,product_name,unit,price,chengben,specifications,practice,tingyong,photo) " +
+            "values('" + data.company + "','" + product_bianhao + "','"+ type + "','" + product_name + "','" + unit + "','" + price + "','" + chengben + "','" + specifications + "','" + practice + "','" + tingyong + "','" + p_file + "')"
+        let sql2 = "select * from product where product_name like '%"+ product_name +"%'"
+        let sql3 = "select * from product where product_bianhao like '%"+ product_bianhao +"%'"
         console.log("sql1:" + sql1)
-        db.query(sql1, function (err, rows) {
+        console.log("sql2:"+sql2)
+        console.log("sql2:"+sql3)
+
+        db.query(sql3, function (err, rows) {
             try {
                 if (err) {
                     res.end('新增失败：');
                 } else {
+                    if(rows.length > 0){
+                        res.end('已有该商品编号，若要添加规格则在修改页面编辑：');
+                        // alert("已有该商品，若要添加规格则在修改页面编辑")
+                    }
+                    else{
+                        db.query(sql2, function (err, rows) {
+                            try {
+                                if (err) {
+                                    res.end('新增失败：');
+                                } else {
+                                    if(rows.length > 0){
+                                        res.end('已有该商品，若要添加规格则在修改页面编辑：');
+                                        // alert("已有该商品，若要添加规格则在修改页面编辑")
+                                    }
+                                    else{
+                                        db.query(sql1, function (err, rows) {
+                                            if (err) {
+                                                res.end('新增失败：');
+                                            } else {
+                                                res.redirect('/product/select');
+                                            }
+                                        })
+                                    }
+                                    res.redirect('/product/select');
+                                }
+                            } catch (e) {
+                                res.render("error.html", {error: '网络错误，请稍后再试'})
+                            }
+
+                        })
+                    }
                     res.redirect('/product/select');
                 }
             } catch (e) {
@@ -236,6 +287,7 @@ router.post('/add', function (req, res) {
             }
 
         })
+
 
     }
 });
@@ -282,7 +334,10 @@ router.get('/toUpdate/:id', function (req, res) {
         price: "",
         chengben: "",
         tingyong: "",
+        specifications:"",
+        practice:"",
         photo: "",
+        product_bianhao:""
     }
     // if (data.table["5"].upd == 1) {
         let id = req.params.id
@@ -303,7 +358,10 @@ router.get('/toUpdate/:id', function (req, res) {
                     result.price = values[0].price;
                     result.chengben = values[0].chengben;
                     result.tingyong = values[0].tingyong;
+                    result.specifications = values[0].specifications;
+                    result.practice = values[0].practice;
                     result.photo = values[0].photo;
+                    result.product_bianhao = values[0].product_bianhao;
                     res.render("product/productUpdate.html", {
                         datas:rows,
                         ...result
@@ -362,7 +420,45 @@ router.post('/updImg', function (req, res) {
     })
 
 });
+// 添加商品页面添加图片
+router.post('/addImg', function (req, res) {
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key, iv, token));
+    console.log(data)
 
+    let this_id = req.body.this_id;
+    let this_file = req.body.this_file;
+
+    let result = {
+        code: '',
+        msg: '',
+        data: []
+    }
+
+    var sql = "insert product set photo='" + this_file + "' where id = " + this_id
+
+    db.query(sql, function (err, rows) {
+        try {
+            if (err) {
+                console.log(err)
+                result.code = 500;
+                result.msg = "上传图片失败";
+                res.json(JSON.stringify(result));
+                res.end('获取失败：');
+            }else{
+                result.code = 200;
+                result.msg = "上传成功"
+                console.log('跳转')
+                res.json(JSON.stringify(result));
+            }
+        } catch (e) {
+            res.render("error.html", {error: '网络错误，请稍后再试'})
+        }
+    })
+
+});
 
 /**
  * 获取权限
@@ -399,6 +495,7 @@ router.all('/update/:id', function (req, res) {
         let result = {
             type: "",
             product_name: "",
+            product_bianhao:'',
             unit:"" ,
             price: "",
             chengben: "",
@@ -406,6 +503,8 @@ router.all('/update/:id', function (req, res) {
         }
         // let company = req.body.company;
         // company = toLiteral(company)
+        let product_bianhao = req.body.product_bianhao;
+        result.product_bianhao = product_bianhao;
         let type = req.body.type;
         result.type = type;
         type = toLiteral(type);
@@ -427,7 +526,7 @@ router.all('/update/:id', function (req, res) {
         let company = data.company;
         company = toLiteral(company);
 
-        let sql1 = "update product set type='" + type + "', product_name='" + product_name + "', unit='" + unit + "', price='" + price + "', chengben='" + chengben + "', tingyong='" + tingyong + "' where id=" + id;
+        let sql1 = "update product set type='" + type + "', product_name='" + product_name + "', product_bianhao='" + product_bianhao + "', unit='" + unit + "', price='" + price + "', chengben='" + chengben + "', tingyong='" + tingyong + "' where id=" + id;
         console.log("sql1->" + sql1)
         db.query(sql1, function (err, rows) {
             try {

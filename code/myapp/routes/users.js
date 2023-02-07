@@ -179,10 +179,14 @@ router.all('/ass', function (req, res, next) {
     // console.log(account);
 
     let selectParams = {
-        uname: ''
+        uname: '',
+        position:'',
+        account:''
     }
     if (isSelect) {
         selectParams.uname = req.body.uname;
+        selectParams.position = req.body.position;
+        selectParams.account = req.body.account;
         //selectParams.uname = toLiteral(selectParams.uname)
         localStorage.setItem("selectParams", JSON.stringify(selectParams))
     } else {
@@ -191,9 +195,16 @@ router.all('/ass', function (req, res, next) {
     if (selectParams.uname == undefined) {
         selectParams.uname = "";
     }
+    if (selectParams.position == undefined) {
+        selectParams.position = "";
+    }
+    if (selectParams.account == undefined) {
+        selectParams.account = "";
+    }
     console.log("selectParams.uname=>", selectParams.uname)
-    let whereSql = "where company = '" + company + "' and uname like '%" + selectParams.uname + "%'"
+    let whereSql = "where company = '" + company + "' and uname like '%" + selectParams.uname + "%' and position like '%" + selectParams.position + "%' and account like '%" + selectParams.account + "%'"
     let sql1 = "select count(*) as count from users " + whereSql;
+    console.log(sql1)
     db.query(sql1, function (err, rows) {
         try {
             if (err) {
@@ -351,7 +362,8 @@ router.get('/del/:id', function (req, res) {
                             res.end('权限删除失败：')
                         }
                     })
-                    res.redirect('/users/ass')
+                    // res.redirect('/users/ass')
+                    res.end('删除成功：')
                 }
             } catch (e) {
                 res.render("error.html", {error: '网络错误，请稍后再试'})
@@ -662,4 +674,42 @@ router.all('/Excel', function (req, res, next) {
 
 
 });
+
+router.post('/delete', function (req, res) {
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key, iv, token));
+    console.log(data)
+
+    let this_sql = req.body.sql;
+    let this_page = req.body.this_page;
+    let result = {
+        code: '',
+        msg: '',
+        data: []
+    }
+
+    company = data.company
+    uname = data.uname
+    type = data.type
+    account = data.account
+    console.log(this_sql)
+    db.query(this_sql, function (err, rows) {
+        try {
+            if (err) {
+                result.code = 500;
+                result.msg = "删除失败";
+                res.json(JSON.stringify(result));
+                res.end('获取失败：');
+            }else{
+                res.redirect('/users/ass?pagenum=' +this_page)
+            }
+        } catch (e) {
+            res.render("error.html", {error: '网络错误，请稍后再试'})
+        }
+    })
+
+});
+
 module.exports = router;

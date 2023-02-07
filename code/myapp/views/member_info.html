@@ -13,6 +13,7 @@
 <div class="select">
     <form class="select_form" action="/member_info/ass" method="post">
         <input class="select_input" type="text" name="name" placeholder="请输入会员姓名" value="{{name}}" />
+        <input class="select_input" type="text" name="phone" placeholder="请输入会员电话" value="{{phone}}" />
         <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px"/>
 
         <div class="header-item">
@@ -34,6 +35,7 @@
             <th>账号状态</th>
             <th>电话号</th>
             <th>生日</th>
+            <th>积分</th>
             <div>
                 <th colspan="2">操作</th>
             </div>
@@ -48,6 +50,7 @@
             <td >{{item.state}}</td>
             <td >{{item.phone}}</td>
             <td >{{item.birthday}}</td>
+            <td >{{item.points}}</td>
             <td style="width: 60px"><a href="/member_info/del/{{item.id}}" onclick="return confirm('您确认要删除本记录么？')"><span class="label del">删除</span></a></td>
             <td style="width: 60px"><a href="/member_info/toUpdate/{{item.id}}"><span class="label upd">修改</span></a></td>
         </tr>

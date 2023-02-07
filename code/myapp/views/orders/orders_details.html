@@ -5,26 +5,44 @@
     <title>产品明细</title>
     <link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>
     <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+    <style>
+        #printArea{
+            width: 30%;
+            height: 100%;
+            display: none;
+        }
+        #printArea h4,
+        #printArea h6{
+            text-align: center;
+            margin-top: 15px;
+        }
+        #printArea h6{
+            margin-bottom: 10px;
+        }
+        #print_table{
+            margin-top:10px;
+        }
+        .dayinxiaopiao{
+            display: inline;
+            padding: 0.2em 0.6em 0.3em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.25em;
+            background-color: #34A8FF;
+        }
+    </style>
 </head>
 
 <body background="/images/001.png" style="background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;">
 <form action="/orders_details/ass" method="post">
     <div id="header">
         <div class="header-text">产品明细</div>
-<!--        <div class="header-item">-->
-<!--            &lt;!&ndash;            <a style="line-height: 0" class="right" href="/day_trading/insert/{{datas[0].id}}" title="录入信息">&ndash;&gt;-->
-<!--            &lt;!&ndash;                <img class="header-icon" src="../../images/luru.png">&ndash;&gt;-->
-<!--            &lt;!&ndash;            </a>&ndash;&gt;-->
-<!--&lt;!&ndash;            <a href="/orders_details/insert/{{datas[0].id}}" style="float:left">&ndash;&gt;-->
-<!--&lt;!&ndash;                <div class="select_btn right" style="margin-left: 10px;text-align: center;vertical-align:middle;vertical-align: middle;display: table-cell;">录入</div>&ndash;&gt;-->
-<!--&lt;!&ndash;            </a>&ndash;&gt;-->
-<!--&lt;!&ndash;            <a href="/orders_details/Excel?id={{datas[0].id}}" title="导出EXCEL">&ndash;&gt;-->
-<!--&lt;!&ndash;                <img class="header-icon" src="../../images/excel2.png" style="margin-left: 10px;">&ndash;&gt;-->
-<!--&lt;!&ndash;            </a>&ndash;&gt;-->
-<!--            <a style="line-height: 0" class="right" href="/orders/select" title="返回查询">-->
-<!--                <img class="header-icon" src="../../images/back.png">-->
-<!--            </a>-->
-<!--        </div>-->
+
     </div>
     <div class="toback">
         <a href="/orders/select" title="返回查询">
@@ -63,6 +81,7 @@
         <table id="tableId" width="100%" border="1">
             <tr align="center">
                 <th>产品类型</th>
+<!--                <th>产品编码</th>-->
                 <th>产品名称</th>
                 <th>单位</th>
                 <th>单价</th>
@@ -75,6 +94,7 @@
             {% for item in datass %}
             <tr align="center">
                 <td>{{item.cplx}}</td>
+<!--                <td>{{item.product_bianhao}}</td>-->
                 <td>{{item.cpmc}}</td>
                 <td>{{item.dw}}</td>
                 <td>{{item.dj}}</td><!-- 单价 -->
@@ -91,6 +111,7 @@
             <div id="pg_member-paging" class="ui-pager-control" role="group">
                 <div id="member-paging_left">
                     <div class="paging_left">
+                        <button id="dayinxiaopiao" class="dayinxiaopiao" onclick="printpage()">打印小票</button>
 
                     </div>
                 </div>
@@ -109,14 +130,87 @@
                 </div>
             </div>
         </div>
+        <!--startprint-->
+        <div id="printArea">
+            <h4>欢迎光临</h4>
+            <h6>云掌柜购物广场</h6>
+            <talbe id="print_table" border="0" cellspacing="0" cellpadding="0">
+                <tr align="center">
+                    <th>品名</th>
+                    <th>&nbsp&nbsp&nbsp&nbsp</th>
+                    <th>单价</th>
+                    <th>&nbsp&nbsp&nbsp&nbsp</th>
+                    <th>数量</th>
+                    <th>&nbsp&nbsp&nbsp&nbsp</th>
+                    <th>金额</th>
+                </tr >
+                <br>
+                {% for item in datass %}
+                <tr align="center">
+                    <td>{{item.cpmc}}</td>
+                    <td>&nbsp&nbsp&nbsp&nbsp</td>
+                    <td>{{item.zhdj}}</td>
+                    <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</td>
+                    <td>{{item.gs}}</td>
+                    <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</td>
+                    <td>{{item.zhje}}</td>
+                </tr>
+                {% endfor %}
+                <br>
+                <tr align="center">
+                    <td>消费金额：</td>
+                    <td>{{datas[0].xfje}}</td>
+                </tr>
+                <br>
+                <tr align="center">
+                    <td>收银员：</td>
+                    <td>{{datas[0].syy}}</td>
+                </tr>
+                <br>
+                <tr align="center">
+                    <td>订单号：</td>
+                    <td>{{datas[0].ddh}}</td>
 
+                </tr>
+                <br>
+                <tr>
+                    <td>日期：</td>
+                    <td>{{datas[0].riqi}}</td>
+                </tr>
+                <br>
+                <tr align="center">
+                    <td>会员号：</td>
+                    <td>{{datas[0].hyzh}}</td>
+                </tr>
+            </talbe>
+
+            </div>
+        </div>
+        <!--endprint-->
     </div>
 
 </form>
-<!--<a id="dlink" style="display: none;"></a>-->
-<!--<input type="submit" value="导出EXCEL" onclick="method1('tableId')" />-->
 </body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
 <script>
+    $("#dayinxiaopiao").click(function(){
+        $("#printArea").css("display","block")
+    })
+
+    function printpage() {
+        $("#printArea").css("display","block")
+        let oldStr = window.document.body.innerHTML; // 获取body的内容
+        let start = "<!--startprint-->"; // 开始打印标识, 17个字符
+        let end = "<!--endprint-->"; // 结束打印标识
+        let newStr = oldStr.substr(oldStr.indexOf(start) + 17); // 截取开始打印标识之后的内容
+        newStr = newStr.substring(0, newStr.indexOf(end)); // 截取开始打印标识和结束打印标识之间的内容
+        window.document.body.innerHTML = newStr; // 把需要打印的指定内容赋给body
+        window.print(); // 调用浏览器的打印功能打印指定区域
+        window.document.body.innerHTML = oldStr; // body替换为原来的内容
+        $("#printArea").hide();
+        $("#printArea").css("display","none")
+    }
+
     function check(){
         var id = document.getElementById("id")
         //var id1 = document.getElementById("id1")
@@ -141,26 +235,6 @@
             return true;
         }
     }
-    // function check2(){
-    //     var id2 = document.getElementById("id2")
-    //     var did = id2.value;
-    //
-    //     if(did == "" || did == undefined){
-    //         alert("当前用户还没有日交易记录")
-    //         return false;
-    //     }
-    //     return confirm('您确认要删除本记录么？');
-    // }
-    // function check3(){
-    //     var id2 = document.getElementById("id2")
-    //     var did = id2.value;
-    //     if(did == "" || did == undefined){
-    //         alert("当前用户还没有日交易记录")
-    //         return false;
-    //     }else{
-    //         return true;
-    //     }
-    // }
 </script>
 </html>
 <SCRIPT Language=VBScript><!-- --></SCRIPT>

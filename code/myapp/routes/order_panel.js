@@ -318,7 +318,9 @@ router.post('/select_huiyuan_list', function (req, res, next) {
     let this_head = req.body.this_head;
 
     let selectParams = {
-        name: ''
+        name: '',
+        phone:'',
+        username:''
     }
     if (isSelect) {
         selectParams.name = req.body.name;
@@ -328,6 +330,12 @@ router.post('/select_huiyuan_list', function (req, res, next) {
     }
     if (selectParams.name == undefined) {
         selectParams.name = "";
+    }
+    if (selectParams.username == undefined) {
+        selectParams.username = "";
+    }
+    if (selectParams.phone == undefined) {
+        selectParams.phone = "";
     }
     console.log("selectParams.name=>", selectParams.name)
     let whereSql = "where company = '" + company + "' and ( username like '%" + this_head + "%' or phone like '%" + this_head + "%' or name like '%" + this_head + "%')"
@@ -347,7 +355,8 @@ router.post('/select_huiyuan_list', function (req, res, next) {
                 }
                 var this_count = rows[0].count
                 var this_page = Math.ceil(this_count / 5);
-                var sql = "select * from member_info " + whereSql + " limit 1,5"
+                var sql = "select * from member_info " + whereSql + " limit 0,4"
+                console.log(sql)
                 db.query(sql, function (err, rows) {
                     if (err) {
                         console.log(err);
@@ -385,15 +394,6 @@ router.post('/select_discount', function (req, res, next) {
         usertype:value[5],
     }
     console.log(users)
-    // if (data.table["5"].sel == 1) {
-    //
-    // } else {
-    //     res.render('me.html', {title: 'ExpressTitle', msg: '无权限查看'});
-    // }
-
-    // let account = req.cookies.account
-    // console.log(account);
-
     let selectParams = {
         name: ''
     }
@@ -455,6 +455,8 @@ router.post('/add', function (req, res) {
     let pro_list = JSON.parse(req.body.pro_list);
     let pro_num = req.body.pro_num;
     let youhui = req.body.youhui;
+    let user = req.body.member_name;
+    let username = req.body.member_username;
 
     let result = {
         code: '',
@@ -466,6 +468,7 @@ router.post('/add', function (req, res) {
     uname = data.uname
     type = data.type
     account = data.account
+
 
     var date = new Date();
     var year = date.getFullYear();
@@ -493,9 +496,9 @@ router.post('/add', function (req, res) {
                 }else{
                     var sql = ""
                     if(type == '商家'){
-                        sql = "insert into orders(riqi,ddh,yhfa,syy,company) values('" + today + "','" + pro_num + "','" + youhui + "','" + uname + "','" + company + "')"
+                        sql = "insert into orders(riqi,ddh,yhfa,syy,hyzh,hyxm,company) values('" + today + "','" + pro_num + "','" + youhui + "','" + uname + "','" + user + "','" + username + "','" + company + "')"
                     }else{
-                        sql = "insert into orders(riqi,ddh,hyzh,hyxm,yhfa,company) values('" + today + "','" + pro_num  + "','" + account  + "','" + uname + "','" + youhui + "','" + company + "')"
+                        sql = "insert into orders(riqi,ddh,hyzh,hyxm,hyjf,yhfa,company) values('" + today + "','" + pro_num  + "','" + account  + "','" + uname + "','" + youhui + "','" + company + "')"
                     }
                     db.query(sql, function (err, rows) {
                         if (err) {

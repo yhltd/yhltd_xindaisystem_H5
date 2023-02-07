@@ -101,10 +101,12 @@ router.all('/ass', function (req, res, next) {
     // console.log(account);
 
     let selectParams = {
-        name: ''
+        name: '',
+        phone:''
     }
     if (isSelect) {
         selectParams.name = req.body.name;
+        selectParams.phone = req.body.phone;
         localStorage.setItem("selectParams", JSON.stringify(selectParams))
     } else {
         selectParams = JSON.parse(localStorage.getItem("selectParams"));
@@ -112,8 +114,11 @@ router.all('/ass', function (req, res, next) {
     if (selectParams.name == undefined) {
         selectParams.name = "";
     }
+    if (selectParams.phone == undefined) {
+        selectParams.phone = "";
+    }
     console.log("selectParams.name=>", selectParams.name)
-    let whereSql = "where company = '" + company + "' and name like '%" + selectParams.name + "%'"
+    let whereSql = "where company = '" + company + "' and name like '%" + selectParams.name + "%' and phone like '%"+ selectParams.phone +"%'"
     let sql1 = "select count(*) as count from member_info " + whereSql;
     db.query(sql1, function (err, rows) {
         try {
@@ -139,7 +144,7 @@ router.all('/ass', function (req, res, next) {
                     result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
                     result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
                 }
-                let sql = "select * from member_info " + whereSql;
+                let sql = "select id,username,password,name,gender,state,phone,birthday,company,ifnull(jifen.points,0) as points from member_info left join(select hyxm,round(sum(zhje),2) as points from (select ddh,hyxm,ifnull(zhje,0) as zhje from orders left join orders_details on orders.ddh = orders_details.ddid) as o1 group by hyxm) as jifen on member_info.name = jifen.hyxm " + whereSql;
                 sql += " limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
                 console.log("sql=>", sql)
                 db.query(sql, function (err, rows) {
@@ -169,11 +174,7 @@ router.get('/add', function (req, res) {
     let key = '123456789abcdefg';
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
-    // if (data.table["5"].add == 1) {
     res.render('member_info/member_infoAdd.html');
-    // } else {
-    //     res.render('me.html', {title: 'ExpressTitle', msg: '无权限录入'});
-    // }
 
 });
 router.post('/add', function (req, res) {
@@ -190,8 +191,8 @@ router.post('/add', function (req, res) {
             state: "",
             phone: "",
             birthday: "",
+            points:"",
         };
-        //let company = req.body.company;
         let username = req.body.username;
         result.username = username;
         username = toLiteral(username);
@@ -213,11 +214,11 @@ router.post('/add', function (req, res) {
         let birthday = req.body.birthday;
         result.birthday = birthday;
         birthday = toLiteral(birthday);
+        let points = req.body.points;
+        result.points = points;
+        points = toLiteral(points);
 
         company = data.company
-        //data = toLiteral(account)
-        //let sql1 = "select account from users where account = " + account
-        //console.log("xinzeng")
 
         db.query("select username from member_info where username = '" + username + "' and company = '" + data.company + "'", function (err, rows) {
             try {
@@ -226,8 +227,8 @@ router.post('/add', function (req, res) {
                         msg: '会员已存在',
                         ...result});
                 } else {
-                    let sql1 = "insert into member_info(company,username,password,name,gender,state,phone,birthday) " +
-                        "values('" + data.company + "','" + username + "','" + password + "','" + name + "','" + gender + "','" + state + "','" + phone + "','" + birthday + "')"
+                    let sql1 = "insert into member_info(company,username,password,name,gender,state,phone,birthday,points) " +
+                        "values('" + data.company + "','" + username + "','" + password + "','" + name + "','" + gender + "','" + state + "','" + phone + "','" + birthday + "','" + points + "')"
                     console.log("sql1:" + sql1)
                     db.query(sql1, function (err, rows) {
                         try {
@@ -296,6 +297,7 @@ router.get('/toUpdate/:id', function (req, res) {
         state: "",
         phone: "",
         birthday: "",
+        points:"",
     }
     // if (data.table["5"].upd == 1) {
     let id = req.params.id
@@ -318,6 +320,7 @@ router.get('/toUpdate/:id', function (req, res) {
                 result.state = values[0].state;
                 result.phone = values[0].phone;
                 result.birthday = values[0].birthday;
+                result.points = values[0].points;
                 res.render("member_info/member_infoUpdate.html", {
                     datas:rows,
                     ...result
@@ -329,9 +332,6 @@ router.get('/toUpdate/:id', function (req, res) {
         }
     });
 
-    // } else {
-    //     res.render('me.html', {title: 'ExpressTitle', msg: '无权限修改'});
-    // }
 });
 
 /**
@@ -374,9 +374,8 @@ router.all('/update/:id', function (req, res) {
             state: "",
             phone: "",
             birthday: "",
+            points:"",
         }
-        // let company = req.body.company;
-        // company = toLiteral(company)
         let username = req.body.username;
         result.username = username;
         username = toLiteral(username);
@@ -398,6 +397,9 @@ router.all('/update/:id', function (req, res) {
         let birthday = req.body.birthday;
         result.birthday = birthday;
         birthday = toLiteral(birthday);
+        let points = req.body.points;
+        result.points = points;
+        points = toLiteral(points);
         let company = data.company;
         company = toLiteral(company);
 
@@ -409,7 +411,7 @@ router.all('/update/:id', function (req, res) {
                         msg: '会员已存在',
                         ...result});
                 } else {
-                    let sql1 = "update member_info set username='" + username + "', password='" + password + "', name='" + name + "', gender='" + gender + "', state='" + state + "', phone='" + phone + "', birthday='" + birthday + "' where id=" + id;
+                    let sql1 = "update member_info set username='" + username + "', password='" + password + "', name='" + name + "', gender='" + gender + "', state='" + state + "', phone='" + phone + "', birthday='" + birthday + "' , points='" + points + "' where id=" + id;
                     console.log("sql1->" + sql1)
                     db.query(sql1, function (err, rows) {
                         try {
@@ -427,11 +429,6 @@ router.all('/update/:id', function (req, res) {
                 res.render("error.html", {error: '网络错误，请稍后再试'})
             }
         })
-
-
-
-
-
     }
 });
 router.all('/Excel', function (req, res, next) {
@@ -480,7 +477,10 @@ router.all('/Excel', function (req, res, next) {
                 }, {
                     caption: '生日',
                     type: 'string'
-                }
+                },{
+                    caption: '积分',
+                    type: 'string'
+                },
             ];
             conf.rows = []
             for (let i = 0; i < rows.length; i++) {
@@ -493,6 +493,7 @@ router.all('/Excel', function (req, res, next) {
                 row.push(rows[i].state)
                 row.push(rows[i].phone)
                 row.push(rows[i].birthday)
+                row.push(rows[i].points)
                 conf.rows.push(row)
             }
             let result = nodeExcel.execute(conf);

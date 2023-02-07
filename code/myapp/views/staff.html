@@ -5,26 +5,21 @@
     <title>员工信息</title>
 <!--    <link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>-->
     <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+    <style>
+        .tablebox table th:first-child{
+            width: 63px;
+        }
+    </style>
 </head>
 <body >
-<!--<form  action="/ass" method="post">-->
-<!--    <div id="header">-->
-<!--        <div class="header-text">员工信息</div>-->
-<!--        <div class="header-item">-->
-<!--            <form class="select_form">-->
-<!--                <div class="header-item">-->
-<!--                    <a href="/users/uadd"><img class="header-icon" src="../../images/luru.png" title="新增员工" /></a>-->
-<!--                    <a href="/users/Excel"><img class="header-icon" src="../../images/excel.png" title="导出到excel"/></a>-->
-<!--                </div>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
 <div id="header">
     <div class="header-text">员工信息</div>
 </div>
     <div class="select">
         <form class="select_form" action="/users/ass" method="post">
             <input class="select_input" type="text" name="uname" placeholder="请输入员工姓名" value="{{uname}}" />
+            <input class="select_input" type="text" name="position" placeholder="请输入员工岗位" value="{{position}}" />
+            <input class="select_input" type="text" name="account" placeholder="请输入员工账号" value="{{account}}" />
             <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px"/>
 
             <div class="header-item">
@@ -38,6 +33,7 @@
     <div class="tablebox">
         <table  id="tableId">
             <tr align="center">
+                <th></th>
                 <th>序号</th>
                 <th>职位</th>
                 <th>员工</th>
@@ -49,6 +45,7 @@
             </tr>
             {% for item in datas %}
             <tr align="center">
+                <td><input type="checkbox" id={{item.id}} class="plscitems"></td>
                 <td >{{item.id}}</td>
                 <td >{{item.position}}</td>
                 <td >{{item.uname}}</td>
@@ -67,7 +64,7 @@
             <div id="pg_member-paging" class="ui-pager-control" role="group">
                 <div id="member-paging_left">
                     <div class="paging_left">
-
+                        <button class="plsc" id="plsc" onclick="getCheckBox()">批量删除</button>
                     </div>
                 </div>
                 <div id="member-paging_center">
@@ -83,6 +80,9 @@
                         共{{rowcounts }}条数据
                     </div>
                 </div>
+                <a style="display: none" id ="page" href="/users/ass?pagenum={{pagenum}}">
+                    <span id="this_page">删除后跳转当前页</span>
+                </a>
             </div>
         </div>
 
@@ -90,7 +90,9 @@
 
 
 </body>
+<script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
 <script>
+
     function check(){
         var id = document.getElementById("id")
         var id1 = document.getElementById("id1")
@@ -115,6 +117,59 @@
             return true;
         }
     }
+
+    function getCheckBox() {
+        var spCodesTemp = "";
+        var this_sql = "";
+        $("input:checkbox:checked").each(function(i) {
+            if (0 == i) {
+                this_id = $(this).attr("id")
+                if (this_sql == ""){
+
+                    this_sql = "(id=" + this_id;
+                }else{
+                    this_sql = this_sql + " or id=" + this_id;
+                }
+                spCodesTemp = this_id;
+            } else {
+                this_id = $(this).attr("id")
+                if (this_sql == ""){
+                    this_sql = "(id=" + this_id;
+                }else{
+                    this_sql = this_sql + " or id=" + this_id;
+                }
+                spCodesTemp += ("," + $(this).attr("id"));
+            }
+        });
+        if(this_sql != ""){
+            this_sql = this_sql + ")"
+            var sql = "delete from users where " + this_sql
+            var this_page = $("#id").val();
+            // alert(spCodesTemp);
+            $.ajax({
+                type: 'post',
+                url: '/users/delete',
+                timeout: 5000,
+                data: {
+                    sql: sql,
+                    this_page: this_page,
+                },
+                success: function(res){
+                    document.querySelector('#page').click()
+
+                },
+                error: function(res){
+                    if(res.status == "timeout"){
+                        alert("网络超时，请稍后再试")
+                    }else{
+                        alert("网络错误，请稍后再试")
+                    }
+                }
+            });
+        }
+
+    }
+
 </script>
 </html>
 <SCRIPT Language=VBScript></SCRIPT>

@@ -12,15 +12,6 @@
     <div id="header">
         <div class="header-text">产品明细</div>
         <div class="header-item">
-            <!--            <a style="line-height: 0" class="right" href="/day_trading/insert/{{datas[0].id}}" title="录入信息">-->
-            <!--                <img class="header-icon" src="../../images/luru.png">-->
-            <!--            </a>-->
-<!--            <a href="/orders_details/insert/{{datas[0].id}}" style="float:left">-->
-<!--                <div class="select_btn right" style="margin-left: 10px;text-align: center;vertical-align:middle;vertical-align: middle;display: table-cell;">录入</div>-->
-<!--            </a>-->
-<!--            <a href="/orders_details/Excel?id={{datas[0].id}}" title="导出EXCEL">-->
-<!--                <img class="header-icon" src="../../images/excel2.png" style="margin-left: 10px;">-->
-<!--            </a>-->
             <a style="line-height: 0" class="right" href="/orders1/select" title="返回查询">
                 <p><&nbsp返回上一级</p>
             </a>
@@ -44,7 +35,7 @@
                 <td>{{datas[0].id}}</td>
                 <td>{{datas[0].riqi}}</td>
                 <td>{{datas[0].ddh}}</td>
-                <td>{{datas[0].hyzh}}</td>
+                <td>{{datas[0].points}}</td>
                 <td>{{datas[0].hyxm}}</td>
                 <td>{{datas[0].yhfa}}</td>
                 <td>{{datas[0].xfje}}</td>
@@ -58,6 +49,7 @@
         <table id="tableId" width="100%" border="1">
             <tr align="center">
                 <th>产品类型</th>
+                <th>产品编码</th>
                 <th>产品名称</th>
                 <th>单位</th>
                 <th>单价</th>
@@ -70,6 +62,7 @@
             {% for item in datass %}
             <tr align="center">
                 <td>{{item.cplx}}</td>
+                <td>{{item.product_bianhao}}</td>
                 <td>{{item.cpmc}}</td>
                 <td>{{item.dw}}</td>
                 <td>{{item.dj}}</td>
@@ -84,7 +77,7 @@
             <div id="pg_member-paging" class="ui-pager-control" role="group">
                 <div id="member-paging_left">
                     <div class="paging_left">
-
+                            <button class="header-icon" onclick="viewToWord()">打印小票</button>
                     </div>
                 </div>
                 <div id="member-paging_center" style="display: flex;align-items: center;height: 39px;">
@@ -100,6 +93,7 @@
                         共{{rowcounts }}条数据
                     </div>
                 </div>
+
             </div>
         </div>
 
