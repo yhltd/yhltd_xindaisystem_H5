@@ -7,9 +7,27 @@
     <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
     <style>
         #printArea{
-            width: 30%;
+            width: 100%;
+            max-width: 600px;
             height: 100%;
             display: none;
+        }
+        #printArea table tbody tr td{
+            border-bottom: 0;
+        }
+        #printArea table tbody th td{
+            border-bottom: 0;
+        }
+        #printArea table tbody tr{
+            border-bottom: 0;
+            margin-bottom: 30px;
+        }
+        #printArea table tbody th{
+            margin-bottom: 30px;
+            border-bottom: 0;
+        }
+        #printArea table tbody{
+            border-bottom: 0;
         }
         #printArea h4,
         #printArea h6{
@@ -35,6 +53,8 @@
             border-radius: 0.25em;
             background-color: #34A8FF;
         }
+
+
     </style>
 </head>
 
@@ -134,55 +154,46 @@
         <div id="printArea">
             <h4>欢迎光临</h4>
             <h6>云掌柜购物广场</h6>
-            <talbe id="print_table" border="0" cellspacing="0" cellpadding="0">
+            <table style="border-bottom: 0px;width:100%;max-width: 600px;" id="print_table" border="0" cellspacing="0" cellpadding="0">
                 <tr align="center">
-                    <th>品名</th>
-                    <th>&nbsp&nbsp&nbsp&nbsp</th>
-                    <th>单价</th>
-                    <th>&nbsp&nbsp&nbsp&nbsp</th>
-                    <th>数量</th>
-                    <th>&nbsp&nbsp&nbsp&nbsp</th>
-                    <th>金额</th>
+                    <th style="width: 100px">品名</th>
+                    <th style="width: 100px">单价</th>
+                    <th style="width: 100px">数量</th>
+                    <th style="width: 100px">金额</th>
                 </tr >
                 <br>
                 {% for item in datass %}
                 <tr align="center">
                     <td>{{item.cpmc}}</td>
-                    <td>&nbsp&nbsp&nbsp&nbsp</td>
                     <td>{{item.zhdj}}</td>
-                    <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</td>
                     <td>{{item.gs}}</td>
-                    <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</td>
                     <td>{{item.zhje}}</td>
                 </tr>
                 {% endfor %}
-                <br>
+                <tr align="center">
+                    <td>&nbsp</td>
+                </tr>
                 <tr align="center">
                     <td>消费金额：</td>
                     <td>{{datas[0].xfje}}</td>
                 </tr>
-                <br>
                 <tr align="center">
                     <td>收银员：</td>
                     <td>{{datas[0].syy}}</td>
                 </tr>
-                <br>
                 <tr align="center">
                     <td>订单号：</td>
                     <td>{{datas[0].ddh}}</td>
-
                 </tr>
-                <br>
-                <tr>
+                <tr align="center">
                     <td>日期：</td>
                     <td>{{datas[0].riqi}}</td>
                 </tr>
-                <br>
                 <tr align="center">
                     <td>会员号：</td>
                     <td>{{datas[0].hyzh}}</td>
                 </tr>
-            </talbe>
+            </table>
 
             </div>
         </div>
