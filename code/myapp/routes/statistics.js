@@ -183,9 +183,10 @@ router.all('/Excel', function (req, res, next) {
     selectParams = JSON.parse(localStorage.getItem("selectParams"));
     //console.log("selectParams.date1-->"+selectParams.date1)
     //console.log(typeof selectParams.date1)
-    let whereSql = "where a.id=b.id and a.gongsi = '" + company + "' and a.date_time like '%" + selectParams.date1 + "%'"
+    let whereSql = "where a.id=b.id and a.gongsi = '" + company + "' and a.date_time between '" + selectParams.date1 + "' and '" + selectParams.date2 + "'"
     let sql = "select a.date_time,sum(a.repayment) as repayment,sum(a.swipe) as swipe,(sum(a.basics_service_charge)+sum(a.other_service_charge)) as the_total_fee,sum(a.swipe)*(b.service_charge)-sum(a.basics_service_charge)+sum(a.other_service_charge) as profit from day_trading as a,customer as b " + whereSql;
     sql += " group by a.date_time ";
+    console.log(sql)
 
     db.query(sql, function (err, rows) {
         try {
@@ -193,10 +194,10 @@ router.all('/Excel', function (req, res, next) {
                 console.log(err);
             } else {
                 let values = rows
-                //console.log("value=>",values)
+                console.log("value=>",values)
             }
-            let sql2 = JSON.stringify(sql);
-            let sql3 = JSON.parse(sql2);
+            // let sql2 = JSON.stringify(sql);
+            // let sql3 = JSON.parse(sql2);
             //console.log(sql3);
             let conf = {};
             conf.stylesXmlFile = "styles.xml";

@@ -94,34 +94,34 @@ router.all('/ass', function (req, res, next) {
     if (selectParams.drawee == undefined) {
         selectParams.drawee = "";
     }
-    if(selectParams.date1== undefined && selectParams.date2== undefined){
-        let myDate = new Date();
-        console.log("mydate" + myDate)
-        let n = myDate.getFullYear();
-        let y = myDate.getMonth() + 1
-        console.log("y=>" + y)
-        let r = myDate.getDate();
-        let date = n + "-" + (y < 10 ? '0' + y : y) + "-" + (r < 10 ? '0' + r : r);
-        selectParams.date1 = date;
-        selectParams.date2 = date;
-        selectParams.d1 = true;
-        selectParams.d2 = true;
-    }
+    // if(selectParams.date1== undefined && selectParams.date2== undefined){
+    //     let myDate = new Date();
+    //     console.log("mydate" + myDate)
+    //     let n = myDate.getFullYear();
+    //     let y = myDate.getMonth() + 1
+    //     console.log("y=>" + y)
+    //     let r = myDate.getDate();
+    //     let date = n + "-" + (y < 10 ? '0' + y : y) + "-" + (r < 10 ? '0' + r : r);
+    //     selectParams.date1 = date;
+    //     selectParams.date2 = date;
+    //     selectParams.d1 = true;
+    //     selectParams.d2 = true;
+    // }
 
     if(selectParams.date1== undefined || selectParams.date1 == ""){
-        // selectParams.d1 = true;
-        // selectParams.date1 ="1900-01-01";
-        let myDate = new Date();
-        console.log("mydate" + myDate)
-        let n = myDate.getFullYear();
-        let y = myDate.getMonth() + 1
-        console.log("y=>" + y)
-        let r = myDate.getDate();
-        let x = myDate.getHours();
-        let f = myDate.getMinutes();
-        selectParams.d1 = true
-        let date1 = n + "-" + (y < 10 ? '0' + y : y) + "-" + "01";
-        selectParams.date1 = date1;
+         selectParams.d1 = true;
+         selectParams.date1 ="1900-01-01";
+        // let myDate = new Date();
+        // console.log("mydate" + myDate)
+        // let n = myDate.getFullYear();
+        // let y = myDate.getMonth() + 1
+        // console.log("y=>" + y)
+        // let r = myDate.getDate();
+        // let x = myDate.getHours();
+        // let f = myDate.getMinutes();
+        // selectParams.d1 = true
+        // let date1 = n + "-" + (y < 10 ? '0' + y : y) + "-" + "01";
+        // selectParams.date1 = date1;
     }
     if(selectParams.date2== undefined || selectParams.date2 == ""){
         let myDate = new Date();
@@ -130,30 +130,38 @@ router.all('/ass', function (req, res, next) {
         let y = myDate.getMonth() + 1
         console.log("y=>" + y)
         let r = myDate.getDate();
-        switch (y)
-        {
-            case 1,3,5,7,8,10,12:
-                r = "31";
-                break;
-            case 4,6,9,11:
-                r = "30";
-                break;
-            default:
-                //2月
-                if (DateTime.IsLeapYear(DateTime.Now.Year))
-                    r = "29";
-                else
-                    r ="28";
-                break;
-        }
+        let x = myDate.getHours();
+        let f = myDate.getMinutes();
+        let date2 = n + "-" + (y < 10 ? '0' + y : y) + "-" + (r < 10 ? '0' + r : r);
         selectParams.d2 = true;
-        let date2 = n + "-" + (y < 10 ? '0' + y : y) + "-" + r;
         selectParams.date2 = date2;
-        //console.log("selectParams.date2=>",selectParams.date2);
+        console.log("selectParams.date2=>",selectParams.date2);
+        // let r = myDate.getDate();
+        // switch (y)
+        // {
+        //     case 1,3,5,7,8,10,12:
+        //         r = "31";
+        //         break;
+        //     case 4,6,9,11:
+        //         r = "30";
+        //         break;
+        //     default:
+        //         //2月
+        //         if (DateTime.IsLeapYear(DateTime.Now.Year))
+        //             r = "29";
+        //         else
+        //             r ="28";
+        //         break;
+        // }
+        selectParams.d2 = true;
+        // let date2 = n + "-" + (y < 10 ? '0' + y : y) + "-" + r;
+        selectParams.date2 = date2;
+        console.log("selectParams.date2=>",selectParams.date2);
     }
     selectParams.recipient = toLiteral(selectParams.recipient);
     selectParams.cardholder = toLiteral(selectParams.cardholder);
     selectParams.drawee = toLiteral(selectParams.drawee);
+    localStorage.setItem('selectParams', JSON.stringify(selectParams));
     let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%" + selectParams.cardholder + "%' and drawee like '%" + selectParams.drawee + "%' and a.date_time  >= '"+ selectParams.date1 + "' and a.date_time <= '"+ selectParams.date2 +"' ";
 
     let sql1 = " select a.id " +
