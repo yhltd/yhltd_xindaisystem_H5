@@ -378,30 +378,30 @@ router.all('/update/:id', function (req, res) {
         }
         let username = req.body.username;
         result.username = username;
-        username = toLiteral(username);
+        username = username;
         let password = req.body.password;
         result.password = password;
-        password = toLiteral(password);
+        password = password;
         let name = req.body.name;
         result.name = name;
-        name = toLiteral(name);
+        name = name;
         let gender = req.body.gender;
         result.gender = gender;
-        gender = toLiteral(gender);
+        gender = gender;
         let state = req.body.state;
         result.state = state;
-        state = toLiteral(state);
+        state = state;
         let phone = req.body.phone;
         result.phone = phone;
-        phone = toLiteral(phone);
+        phone = phone;
         let birthday = req.body.birthday;
         result.birthday = birthday;
-        birthday = toLiteral(birthday);
+        birthday = birthday;
         let points = req.body.points;
         result.points = points;
-        points = toLiteral(points);
+        points = points;
         let company = data.company;
-        company = toLiteral(company);
+        company = company;
 
 
         db.query("select username from member_info where username = '" + username + "' and company = '" + data.company + "' and id != " + id, function (err, rows) {
@@ -411,7 +411,7 @@ router.all('/update/:id', function (req, res) {
                         msg: '会员已存在',
                         ...result});
                 } else {
-                    let sql1 = "update member_info set username='" + username + "', password='" + password + "', name='" + name + "', gender='" + gender + "', state='" + state + "', phone='" + phone + "', birthday='" + birthday + "' , points='" + points + "' where id=" + id;
+                    let sql1 = "update member_info set username='" + username + "', password='" + password + "', name='" + name + "', gender='" + gender + "', state='" + state + "', phone='" + phone + "', birthday='" + birthday + "' where id=" + id;
                     console.log("sql1->" + sql1)
                     db.query(sql1, function (err, rows) {
                         try {

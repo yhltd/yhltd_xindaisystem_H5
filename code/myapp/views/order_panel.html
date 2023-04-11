@@ -2154,6 +2154,7 @@
         console.log("delete")
         $(".Lblock #empty_mask .cont .table tbody tr").remove();
         Table_sum();
+        location.replace(location.href);
     })
     //鼠标经过结账按钮
     var ceshiText=""
@@ -2250,6 +2251,7 @@
                 }
             }
         });
+        location.replace(location.href);
     })
 
     document.getElementById("but3").onclick = function() {
@@ -2551,6 +2553,7 @@
         console.log(_money)
         $("#yingshou_Sum").html(_money.toFixed(2))
         $("#xiaofei_Sum").html(_money.toFixed(2))
+
     }
 
     function tableShow(){
@@ -2633,6 +2636,7 @@
                 }
             }
         });
+
     }
 
     function member_select_tableShow(){

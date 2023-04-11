@@ -248,6 +248,7 @@ router.get('/toUpdate/:id', function (req, res) {
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     let id = req.params.id;
+    let value = Object.values(data);
     console.log(id)
     db.query("select * from orders where id=" + id, function (err, rows) {
         try {
@@ -281,7 +282,7 @@ router.post('/update', function (req, res) {
         let company = value[0];
         //let company = req.cookies.company
         let id = req.body.id;
-        let old_id = req.body.old_id;
+        let old_id = req.body.old_ddh;
         let riqi = req.body.riqi;
         let ddh = req.body.ddh;
         let hyzh = req.body.hyzh;
