@@ -270,6 +270,7 @@ router.get('/del/:id', function (req, res) {
                     res.end('删除失败：')
                 } else {
                     res.redirect('/member_info/ass')
+
                 }
             } catch (e) {
                 res.render("error.html", {error: '网络错误，请稍后再试'})

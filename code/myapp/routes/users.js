@@ -363,7 +363,7 @@ router.get('/del/:id', function (req, res) {
                         }
                     })
                     // res.redirect('/users/ass')
-                    res.end('删除成功：')
+                    res.redirect('/users/select');
                 }
             } catch (e) {
                 res.render("error.html", {error: '网络错误，请稍后再试'})
