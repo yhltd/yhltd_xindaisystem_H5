@@ -165,7 +165,7 @@ router.all('/ass', function (req, res, next) {
     let whereSql = " where a.id=b.id and a.gongsi = '" + company + "' and recipient like '%" + selectParams.recipient + "%' and cardholder like '%" + selectParams.cardholder + "%' and drawee like '%" + selectParams.drawee + "%' and a.date_time  >= '"+ selectParams.date1 + "' and a.date_time <= '"+ selectParams.date2 +"' ";
 
     let sql1 = " select a.id " +
-        "from day_trading as a,customer as b " + whereSql;
+        "from month_trading as a,customer as b " + whereSql;
     sql1 += "group by b.id";
     let sql2 = "select Count(c.id) as count from ( " + sql1 + ") as c"
 
@@ -207,7 +207,7 @@ router.all('/ass', function (req, res, next) {
                     "sum(a.basics_service_charge)+sum(a.other_service_charge) as the_total_fee," +
                     "sum(a.swipe)*(b.service_charge)+sum(a.repayment)-sum(a.swipe) as collected_amount," +
                     "sum(a.swipe)*(b.service_charge)-sum(a.basics_service_charge)+sum(a.other_service_charge) as profit " +
-                    "from day_trading as a,customer as b " + whereSql;
+                    "from month_trading as a,customer as b " + whereSql;
 
                 sql += " group by b.id ";
                 sql += "limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
