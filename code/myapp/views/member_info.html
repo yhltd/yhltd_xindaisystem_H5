@@ -51,7 +51,7 @@
             <td >{{item.phone}}</td>
             <td >{{item.birthday}}</td>
             <td >{{item.points}}</td>
-            <td style="width: 60px"><a href="/member_info/del/{{item.id}}" onclick="return confirm('您确认要删除本记录么？')"><span class="label del">删除</span></a></td>
+            <td style="width: 60px"><a href="/member_info/del/{{item.id}}" onclick="return confirm('您确认要删除本记录么？');"><span class="label del">删除</span></a></td>
             <td style="width: 60px"><a href="/member_info/toUpdate/{{item.id}}"><span class="label upd">修改</span></a></td>
         </tr>
         {% endfor %}

@@ -195,28 +195,28 @@ router.post('/add', function (req, res) {
         };
         let username = req.body.username;
         result.username = username;
-        username = toLiteral(username);
+        username = username;
         let password = req.body.password;
         result.password = password;
-        password = toLiteral(password);
+        password = password;
         let name = req.body.name;
         result.name = name;
-        name = toLiteral(name);
+        name = name;
         let gender = req.body.gender;
         result.gender = gender;
-        gender = toLiteral(gender);
+        gender = gender;
         let state = req.body.state;
         result.state = state;
-        state = toLiteral(state);
+        state = state;
         let phone = req.body.phone;
         result.phone = phone;
-        phone = toLiteral(phone);
+        phone = phone;
         let birthday = req.body.birthday;
         result.birthday = birthday;
-        birthday = toLiteral(birthday);
+        birthday = birthday;
         let points = req.body.points;
         result.points = points;
-        points = toLiteral(points);
+        points = points;
 
         company = data.company
 
@@ -227,8 +227,8 @@ router.post('/add', function (req, res) {
                         msg: '会员已存在',
                         ...result});
                 } else {
-                    let sql1 = "insert into member_info(company,username,password,name,gender,state,phone,birthday,points) " +
-                        "values('" + data.company + "','" + username + "','" + password + "','" + name + "','" + gender + "','" + state + "','" + phone + "','" + birthday + "','" + points + "')"
+                    let sql1 = "insert into member_info(company,username,password,name,gender,state,phone,birthday) " +
+                        "values('" + data.company + "','" + username + "','" + password + "','" + name + "','" + gender + "','" + state + "','" + phone + "','" + birthday + "')"
                     console.log("sql1:" + sql1)
                     db.query(sql1, function (err, rows) {
                         try {
