@@ -5,6 +5,9 @@
     <title>日交易记录</title>
     <link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>
     <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/jquery-confirm.css"/>
+    <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery-confirm.js"></script>
     <style>
         .header-item {
             zoom: 0.9;
@@ -126,7 +129,7 @@
                 <td>{{item.basics_service_charge}}</td>
                 <td>{{item.other_service_charge}}</td>
                 <td><a href="/day_trading/toUpdate/{{item.did}}?id={{datas[0].id}}" onclick="return check3()"><span class="label upd">修改</span></a></td>
-                <td><a href="/day_trading/del/{{item.did}}?id={{datas[0].id}}" onclick="return check2();  "><span class="label del">删除</span></a></td>
+                <td><a href="#" onclick="check2({{item.did}},{{datas[0].id}})"><span class="label del">删除</span></a></td>
                 <input type="hidden" value="{{item.did}}" id="id2">
             </tr>
             {% endfor %}
@@ -167,7 +170,6 @@
         var pagenum = id.value;
         //var pagecounts = id1.value;
         if(pagenum <= 1){
-            alert("当前是第一页")
             return false;
         }else{
             return true;
@@ -179,27 +181,34 @@
         var pagenum = id.value;
         var pagecounts = id1.value;
         if(pagenum >= pagecounts){
-            alert("当前是最后一页")
             return false;
         }else{
             return true;
         }
     }
-    function check2(){
+    function check2(id1,id2){
         var id2 = document.getElementById("id2")
         var did = id2.value;
 
         if(did == "" || did == undefined){
-            alert("当前用户还没有日交易记录")
             return false;
         }
-        return confirm('您确认要删除本记录么？');
+        $.confirm({
+            title: '提示!',
+            content: '您确认要删除本记录吗？',
+            buttons: {
+                确定: function () {
+                    window.location.href = "/day_trading/del/" + id1 + "?id=" + id2
+                },
+                取消: function () {
+                },
+            }
+        });
     }
     function check3(){
         var id2 = document.getElementById("id2")
         var did = id2.value;
         if(did == "" || did == undefined){
-            alert("当前用户还没有日交易记录")
             return false;
         }else{
             return true;

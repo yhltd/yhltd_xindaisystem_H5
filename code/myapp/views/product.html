@@ -5,6 +5,9 @@
     <title>商品配置</title>
     <!--    <link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>-->
     <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/jquery-confirm.css"/>
+    <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery-confirm.js"></script>
 </head>
 <body >
 <div id="header">
@@ -51,7 +54,7 @@
             <td >{{item.price}}</td>
             <td >{{item.chengben}}</td>
             <td >{{item.tingyong}}</td>
-            <td style="width: 60px"><a href="/product/del/{{item.id}}" onclick="return confirm('您确认要删除本记录么？')"><span class="label del">删除</span></a></td>
+            <td style="width: 60px"><a href="#" onclick="queren({{item.id}})"><span class="label del">删除</span></a></td>
             <td style="width: 60px"><a href="/product/toUpdate/{{item.id}}"><span class="label upd">修改</span></a></td>
         </tr>
         {% endfor %}
@@ -89,7 +92,6 @@
         var pagenum = id.value;
         var pagecounts = id1.value;
         if(pagenum <= 1){
-            alert("当前是第一页")
             return false;
         }else{
             return true;
@@ -101,11 +103,24 @@
         var pagenum = id.value;
         var pagecounts = id1.value;
         if(pagenum >= pagecounts){
-            alert("当前是最后一页")
             return false;
         }else{
             return true;
         }
+    }
+
+    function queren(id){
+        $.confirm({
+            title: '提示!',
+            content: '您确认要删除本记录吗？',
+            buttons: {
+                确定: function () {
+                    window.location.href = "/product/del/" + id
+                },
+                取消: function () {
+                },
+            }
+        });
     }
 </script>
 </html>

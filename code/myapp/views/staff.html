@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>员工信息</title>
 <!--    <link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>-->
     <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/jquery-confirm.css"/>
+    <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery-confirm.js"></script>
     <style>
         .tablebox table th:first-child{
             width: 63px;
@@ -51,7 +55,7 @@
                 <td >{{item.uname}}</td>
                 <td >{{item.account}}</td>
                 <td >{{item.password}}</td>
-                <td style="width: 60px"><a href="/users/del/{{item.id}}" onclick="return confirm('您确认要删除本记录么？')">
+                <td style="width: 60px"><a href="#" onclick="queren({{item.id}})">
                     <span class="label del">删除</span>
                 </a></td>
                 <td style="width: 60px"><a href="/users/toUpdate/{{item.id}}">
@@ -90,7 +94,6 @@
 
 
 </body>
-<script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
 <script>
 
     function check(){
@@ -99,7 +102,6 @@
         var pagenum = id.value;
         var pagecounts = id1.value;
         if(pagenum <= 1){
-            alert("当前是第一页")
             return false;
         }else{
             return true;
@@ -111,7 +113,6 @@
         var pagenum = id.value;
         var pagecounts = id1.value;
         if(pagenum >= pagecounts){
-            alert("当前是最后一页")
             return false;
         }else{
             return true;
@@ -168,6 +169,20 @@
             });
         }
 
+    }
+
+    function queren(id){
+        $.confirm({
+            title: '提示!',
+            content: '您确认要删除本记录吗？',
+            buttons: {
+                确定: function () {
+                    window.location.href = "/users/del/" + id
+                },
+                取消: function () {
+                },
+            }
+        });
     }
 
 </script>
