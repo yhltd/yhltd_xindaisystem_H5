@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 //引入数据库包
 let db = require("./db.js");
+let db_sqlserver = require("./db_sqlserver.js")
 let nodeExcel = require('excel-export');
 //const fs = require("fs");
 const crypto = require("crypto");
@@ -77,66 +78,114 @@ router.post('/search', function (req, res) {
     let isRem = req.body.isRem;
     let sql = "select u.*,m.`Add`,m.`Del`,m.`Upd`,m.`Sel`,m.`Table` from users as u left join management as m on u.id = m.Uid where u.company = '" + company + "' and u.account='" + account + "' and u.`password` = '" + password + "'";
 
-    db.query(sql, function (err, rows) {
-        try {
-            let value = JSON.stringify(rows);						//将rows转为字符串
-            value = JSON.parse(value);                          //再转换为为 JavaScript 对象
-            if (err) {
-                res.end('登录失败：');
+    let jiami_sql = "select * from control_soft_time where name = '" + company + "' and soft_name = '门店'"
+
+    db_sqlserver.sql(jiami_sql, function (err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log('data :', result);
+        console.log(result.recordset.length)
+        var list = result.recordset
+        if(list.length == 0){
+            res.render('users.html', {title: 'ExpressTitle', msg: '工具到期，请联系我公司续费。'});
+        }else{
+            var endtime = result.recordset[0].endtime.trim().replace("/","-")
+            var mark2 = result.recordset[0].mark2.trim().replace("/","-")
+            if(endtime == ""){
+                res.render('users.html', {title: 'ExpressTitle', msg: '工具到期，请联系我公司续费。'});
             }
-            if (rows.length > 0) {
-                if (company === value[0].company && account === value[0].account && password === value[0].password) {	//判断输入的内容是否与数据库的内容相等。
-                    console.log('登陆成功')
-                    let key = '123456789abcdefg';
-                    let iv = 'abcdefg123456789';
-                    let findTable = function (id, value) {
-                        for (let index = 0; index < value.length; index++) {
-                            if (value[index].Table == id) {
-                                return {
-                                    add: value[index].Add,
-                                    del: value[index].Del,
-                                    upd: value[index].Upd,
-                                    sel: value[index].Sel
+            if(mark2 == ""){
+                res.render('users.html', {title: 'ExpressTitle', msg: '服务器到期，请联系我公司续费。'});
+            }
+            var mark3 = result.recordset[0].mark3.trim()
+            if(mark3 == ""){
+                mark3 = ""
+            }else{
+                mark3 = mark3.split(":")[1]
+                mark3 = mark3.replace("(","")
+                mark3 = mark3.replace(")","")
+            }
+            var thisdate = new Date();
+            var endtime = new Date(endtime + " EST");
+            var mark2 = new Date(mark2 + " EST");
+            console.log(thisdate)
+            console.log(endtime)
+            console.log(mark2)
+            console.log(mark3)
+            if(thisdate > endtime){
+                res.render('users.html', {title: 'ExpressTitle', msg: '工具到期，请联系我公司续费。'});
+            }
+            if(thisdate > mark2){
+                res.render('users.html', {title: 'ExpressTitle', msg: '服务器到期，请联系我公司续费。'});
+            }
+
+            db.query(sql, function (err, rows) {
+                try {
+                    let value = JSON.stringify(rows);						//将rows转为字符串
+                    value = JSON.parse(value);                          //再转换为为 JavaScript 对象
+                    if (err) {
+                        res.end('登录失败：');
+                    }
+                    if (rows.length > 0) {
+                        if (company === value[0].company && account === value[0].account && password === value[0].password) {	//判断输入的内容是否与数据库的内容相等。
+                            console.log('登陆成功')
+                            let key = '123456789abcdefg';
+                            let iv = 'abcdefg123456789';
+                            let findTable = function (id, value) {
+                                for (let index = 0; index < value.length; index++) {
+                                    if (value[index].Table == id) {
+                                        return {
+                                            add: value[index].Add,
+                                            del: value[index].Del,
+                                            upd: value[index].Upd,
+                                            sel: value[index].Sel
+                                        }
+                                    }
                                 }
                             }
-                        }
-                    }
-                    let table = {
-                        1: findTable(1, value),
-                        2: findTable(2, value),
-                        3: findTable(3, value),
-                        4: findTable(4, value),
-                        5: findTable(5, value)
-                    }
+                            let table = {
+                                1: findTable(1, value),
+                                2: findTable(2, value),
+                                3: findTable(3, value),
+                                4: findTable(4, value),
+                                5: findTable(5, value)
+                            }
 
-                    let datas = {
-                        company: value[0].company,
-                        account: value[0].account,
-                        password: value[0].password,
-                        table: table,
-                        isRem: isRem,
-                        id: value[0].id,
-                        type: '商家',
-                        uname: value[0].uname,
-                    };
-                    console.log(datas)
-                    datas = encrypt(key, iv, JSON.stringify(datas));
-                    localStorage.setItem("token", datas);
-                    // if (isRem){
-                    //
-                    // }
-                    // if (isRem == undefined){
-                    //     localStorage.removeItem("token")
-                    // }
-                    res.render("index.html", {datas: rows});
+                            let datas = {
+                                company: value[0].company,
+                                account: value[0].account,
+                                password: value[0].password,
+                                table: table,
+                                isRem: isRem,
+                                id: value[0].id,
+                                type: '商家',
+                                uname: value[0].uname,
+                                mark3: mark3
+                            };
+                            console.log(datas)
+                            datas = encrypt(key, iv, JSON.stringify(datas));
+                            localStorage.setItem("token", datas);
+                            // if (isRem){
+                            //
+                            // }
+                            // if (isRem == undefined){
+                            //     localStorage.removeItem("token")
+                            // }
+                            res.render("index.html", {datas: rows});
+                        }
+                    } else {
+                        res.render('users.html', {title: 'ExpressTitle', msg: '用户名密码错误'});
+                    }
+                } catch (e) {
+                    res.render("error.html", {error: '网络错误，请稍后再试'})
                 }
-            } else {
-                res.render('users.html', {title: 'ExpressTitle', msg: '用户名密码错误'});
-            }
-        } catch (e) {
-            res.render("error.html", {error: '网络错误，请稍后再试'})
+            });
+
         }
     });
+
 });
 
 /**
@@ -260,7 +309,17 @@ router.get('/uadd', function (req, res) {
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     if (data.table["5"].add == 1) {
-        res.render('users1/uadd.html');
+        db.query("select count(id) as id from users where company = '" + data.company + "'", function (err, rows) {
+            try {
+                if (rows[0].id >= data.mark3 * 1) {
+                    res.render('me.html', {title: 'ExpressTitle', msg: '已有账号数量过多，请删除无用账号后再试'});
+                } else {
+                    res.render('users1/uadd.html');
+                }
+            } catch (e) {
+                res.render("error.html", {error: '网络错误，请稍后再试'})
+            }
+        })
     } else {
         res.render('me.html', {title: 'ExpressTitle', msg: '无权限录入'});
     }
