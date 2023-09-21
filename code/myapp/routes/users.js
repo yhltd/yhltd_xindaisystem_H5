@@ -1,4 +1,6 @@
 let express = require('express');
+const CryptoJS = require("crypto-js");
+
 let router = express.Router();
 //引入数据库包
 let db = require("./db.js");
@@ -188,6 +190,147 @@ router.post('/search', function (req, res) {
 
 });
 
+//扫二维码登录
+router.post('/searchQR', function (req, res) {
+    var userInfo = JSON.parse(req.body.userInfo)
+    console.log(userInfo)
+    let key = CryptoJS.enc.Utf8.parse('20230906IsMaimes');
+    let encryptedHexStr  = CryptoJS.enc.Hex.parse(userInfo);
+    let encryptedBase64Str  = CryptoJS.enc.Base64.stringify(encryptedHexStr);
+    let decryptedData  = CryptoJS.AES.decrypt(encryptedBase64Str, key, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    userInfo = decryptedData.toString(CryptoJS.enc.Utf8).split("`");
+    console.log(userInfo)
+    userInfo = {
+        account:userInfo[0],
+        password:userInfo[1],
+        company:userInfo[2],
+    }
+    console.log(userInfo)
+    localStorage.removeItem("token")
+    let company = userInfo.company;
+    company = toLiteral(company)
+    console.log(company)
+    let account = userInfo.account;
+    account = toLiteral(account)
+    let password = userInfo.password;
+    password = toLiteral(password)
+    let isRem = "";
+    let sql = "select u.*,m.`Add`,m.`Del`,m.`Upd`,m.`Sel`,m.`Table` from users as u left join management as m on u.id = m.Uid where u.company = '" + company + "' and u.account='" + account + "' and u.`password` = '" + password + "'";
+
+    let jiami_sql = "select * from control_soft_time where name = '" + company + "' and soft_name = '门店'"
+
+    db_sqlserver.sql(jiami_sql, function (err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log('data :', result);
+        console.log(result.recordset.length)
+        var list = result.recordset
+        if(list.length == 0){
+            res.render('users.html', {title: 'ExpressTitle', msg: '工具到期，请联系我公司续费。'});
+        }else{
+            var endtime = result.recordset[0].endtime.trim().replace("/","-")
+            var mark2 = result.recordset[0].mark2.trim().replace("/","-")
+            if(endtime == ""){
+                res.render('users.html', {title: 'ExpressTitle', msg: '工具到期，请联系我公司续费。'});
+            }
+            if(mark2 == ""){
+                res.render('users.html', {title: 'ExpressTitle', msg: '服务器到期，请联系我公司续费。'});
+            }
+            var mark3 = result.recordset[0].mark3.trim()
+            if(mark3 == ""){
+                mark3 = ""
+            }else{
+                mark3 = mark3.split(":")[1]
+                mark3 = mark3.replace("(","")
+                mark3 = mark3.replace(")","")
+            }
+            var thisdate = new Date();
+            var endtime = new Date(endtime + " EST");
+            var mark2 = new Date(mark2 + " EST");
+            console.log(thisdate)
+            console.log(endtime)
+            console.log(mark2)
+            console.log(mark3)
+            if(thisdate > endtime){
+                res.render('users.html', {title: 'ExpressTitle', msg: '工具到期，请联系我公司续费。'});
+            }
+            if(thisdate > mark2){
+                res.render('users.html', {title: 'ExpressTitle', msg: '服务器到期，请联系我公司续费。'});
+            }
+
+            db.query(sql, function (err, rows) {
+                try {
+                    let value = JSON.stringify(rows);						//将rows转为字符串
+                    value = JSON.parse(value);                          //再转换为为 JavaScript 对象
+                    if (err) {
+                        res.end('登录失败：');
+                    }
+                    if (rows.length > 0) {
+                        if (company === value[0].company && account === value[0].account && password === value[0].password) {	//判断输入的内容是否与数据库的内容相等。
+                            console.log('登陆成功')
+                            let key = '123456789abcdefg';
+                            let iv = 'abcdefg123456789';
+                            let findTable = function (id, value) {
+                                for (let index = 0; index < value.length; index++) {
+                                    if (value[index].Table == id) {
+                                        return {
+                                            add: value[index].Add,
+                                            del: value[index].Del,
+                                            upd: value[index].Upd,
+                                            sel: value[index].Sel
+                                        }
+                                    }
+                                }
+                            }
+                            let table = {
+                                1: findTable(1, value),
+                                2: findTable(2, value),
+                                3: findTable(3, value),
+                                4: findTable(4, value),
+                                5: findTable(5, value)
+                            }
+
+                            let datas = {
+                                company: value[0].company,
+                                account: value[0].account,
+                                password: value[0].password,
+                                table: table,
+                                isRem: isRem,
+                                id: value[0].id,
+                                type: '商家',
+                                uname: value[0].uname,
+                                mark3: mark3
+                            };
+                            console.log(datas)
+                            datas = encrypt(key, iv, JSON.stringify(datas));
+                            localStorage.setItem("token", datas);
+                            // if (isRem){
+                            //
+                            // }
+                            // if (isRem == undefined){
+                            //     localStorage.removeItem("token")
+                            // }
+                            res.render("index.html", {datas: rows});
+                        }
+                    } else {
+                        res.render('users.html', {title: 'ExpressTitle', msg: '用户名密码错误'});
+                    }
+                } catch (e) {
+                    res.render("error.html", {error: '网络错误，请稍后再试'})
+                }
+            });
+
+        }
+    });
+
+});
+
+
 /**
  * 查询列表页
  */
@@ -299,6 +442,41 @@ router.all('/ass', function (req, res, next) {
         }
     });
 });
+
+router.post('/jiamiGet', function (req, res, next) {
+    let isSelect = req.query.pagenum == undefined;
+    let token = localStorage.getItem("token")
+    let key = '123456789abcdefg';
+    //console.log('加密的key:', key);
+    let iv = 'abcdefg123456789';
+    //console.log('加密的iv:', iv);
+    let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    let company = value[0];
+    console.log(value)
+    let users = {
+        name:value[6],
+        username:value[1],
+        password:value[2],
+        company:value[0],
+        usertype:value[5],
+    }
+    console.log(users)
+    let this_head = JSON.parse(req.body.this_head);
+    console.log(this_head)
+    try {
+        let key = CryptoJS.enc.Utf8.parse('20230906IsMaimes'); //密钥必须是16位，且避免使用保留字符
+        let encryptedData  = CryptoJS.AES.encrypt(this_head.account + "`" + this_head.password + "`" + this_head.company , key, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        let hexData = encryptedData.ciphertext.toString();
+        res.json(JSON.stringify(this_head.url + hexData));
+    } catch (e) {
+        res.render("error.html", {error: '网络错误，请稍后再试！'})
+    }
+});
+
 /**
  * 新增页面跳转
  */

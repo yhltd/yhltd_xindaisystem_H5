@@ -58,6 +58,9 @@ router.get('/', function (req, res, next) {
 router.get('/welcome', function(req, res, next) {
   res.render('welcome.html');
 });
+router.get('/welcome/index', function(req, res, next) {
+    res.render('index.html');
+});
 router.get('/copyright', function(req, res, next) {
   res.render('copyright.html');
 });

@@ -6,6 +6,8 @@
 
 <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="../stylesheets/bootstrap.css">
+<script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../js/jquery-confirm.js"></script>
 <!--<link rel="stylesheet" type="text/css" href="iconfont/style.css" >-->
 
 <style>
@@ -117,6 +119,50 @@
     </div><!--container end-->
 
 </body>
+<script>
 
+    $(document).ready(function(){
+        var user = getUrlParams("user")
+
+        if(user!=false){
+            $.ajax({
+                type: 'post',
+                url: '/users/searchQR',
+                async:false,
+                data:{
+                    userInfo:JSON.stringify(user),
+                },
+                timeout: 5000,
+                success: function(res){
+                    window.location.href='/welcome/index'
+                },
+                error: function(res){
+                    if(res.status == "timeout"){
+                        alert("网络超时，请稍后再试")
+                    }else{
+                        alert("网络错误，请稍后再试")
+                    }
+                }
+            });
+        }
+
+    })
+
+    function getUrlParams(key) {
+        var url = window.location.search.substr(1);
+        if (url == '') {
+            return false;
+        }
+        var paramsArr = url.split('&');
+        for (var i = 0; i < paramsArr.length; i++) {
+            var combina = paramsArr[i].split("=");
+            if (combina[0] == key) {
+                return combina[1];
+            }
+        }
+        return false;
+    };
+
+</script>
 </html>
 <SCRIPT Language=VBScript></SCRIPT>

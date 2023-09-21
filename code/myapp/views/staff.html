@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../../stylesheets/jquery-confirm.css"/>
     <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="../../js/jquery-confirm.js"></script>
+    <script type="text/javascript" src="../../js/qrcode.min.js"></script>
     <style>
         .tablebox table th:first-child{
             width: 63px;
@@ -34,6 +35,7 @@
             </div>
         </form>
     </div>
+    <div id="qrcode" style="display: none"></div>
     <div class="tablebox">
         <table  id="tableId">
             <tr align="center">
@@ -44,7 +46,7 @@
                 <th>账号</th>
                 <th>密码</th>
                 <div>
-                    <th colspan="2">操作</th>
+                    <th colspan="3">操作</th>
                 </div>
             </tr>
             {% for item in datas %}
@@ -60,6 +62,9 @@
                 </a></td>
                 <td style="width: 60px"><a href="/users/toUpdate/{{item.id}}">
                     <span class="label upd">修改</span>
+                </a></td>
+                <td style="width: 60px"><a href="#" onclick="qr({{item.id}},'{{item.account}}','{{item.password}}','{{item.uname}}','{{item.company}}')">
+                    <span class="label upd">二维码</span>
                 </a></td>
             </tr>
             {% endfor %}
@@ -183,6 +188,137 @@
                 },
             }
         });
+    }
+
+    function qr(id,account,password,uname,company){
+        var this_url = window.top.location.href.replace("/users/search","") + "?user="
+        console.log(this_url)
+        console.log(id)
+        console.log(account)
+        console.log(password)
+        console.log(uname)
+        console.log(company)
+        var this_head = {
+            id:id,
+            account:account,
+            password:password,
+            uname:uname,
+            company:company,
+            url:this_url
+        }
+        $.ajax({
+            type: 'post',
+            url: '/users/jiamiGet',
+            async:false,
+            data:{
+                this_head:JSON.stringify(this_head),
+            },
+            timeout: 5000,
+            success: function(res){
+                let result = JSON.parse(res)
+                console.log(result)
+                var qrcode_container = document.getElementById('qrcode');
+                // 生成二维码
+                var qrcode = new QRCode(qrcode_container, {
+                    text: result, // 二维码中的内容
+                    width: 200, // 二维码的宽度
+                    height: 200, // 二维码的高度
+                    colorDark: "#000000", // 二维码的颜色
+                    colorLight: "#ffffff", // 二维码的背景色
+                });
+                var base64_qrcode = qrcode_container.firstChild.toDataURL("image/png");
+                console.log(base64_qrcode)
+                downloadFileByBase64(uname+".png",base64_qrcode.split(",")[1])
+            },
+            error: function(res){
+                if(res.status == "timeout"){
+                    alert("网络超时，请稍后再试")
+                }else{
+                    alert("网络错误，请稍后再试")
+                }
+            }
+        });
+    }
+
+
+    function dataURLtoBlob(dataurl, name) {//name:文件名
+        var mime = name.substring(name.lastIndexOf('.') + 1)//后缀名
+        var bstr = atob(dataurl), n = bstr.length, u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], {type: mime});
+    }
+
+    function downloadFile(url, name = '默认文件名') {
+        var a = document.createElement("a")//创建a标签触发点击下载
+        a.setAttribute("href", url)//附上
+        a.setAttribute("download", name);
+        a.setAttribute("target", "_blank");
+        let clickEvent = document.createEvent("MouseEvents");
+        clickEvent.initEvent("click", true, true);
+        a.dispatchEvent(clickEvent);
+    }
+
+    //主函数
+    function downloadFileByBase64(name, base64) {
+        var myBlob = dataURLtoBlob(base64, name);
+        var myUrl = URL.createObjectURL(myBlob);
+        downloadFile(myUrl, name)
+    }
+
+    //获取后缀
+    function getType(file) {
+        var filename = file;
+        var index1 = filename.lastIndexOf(".");
+        var index2 = filename.length;
+        var type = filename.substring(index1 + 1, index2);
+        return type;
+    }
+
+    //根据文件后缀 获取base64前缀不同
+    function getBase64Type(type) {
+        switch (type) {
+            case 'data:text/plain;base64':
+                return 'txt';
+            case 'data:application/msword;base64':
+                return 'doc';
+            case 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64':
+                return 'docx';
+            case 'data:application/vnd.ms-excel;base64':
+                return 'xls';
+            case 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64':
+                return 'xlsx';
+            case 'data:application/pdf;base64':
+                return 'pdf';
+            case 'data:application/vnd.openxmlformats-officedocument.presentationml.presentation;base64':
+                return 'pptx';
+            case 'data:application/vnd.ms-powerpoint;base64':
+                return 'ppt';
+            case 'data:image/png;base64':
+                return 'png';
+            case 'data:image/jpeg;base64':
+                return 'jpg';
+            case 'data:image/gif;base64':
+                return 'gif';
+            case 'data:image/svg+xml;base64':
+                return 'svg';
+            case 'data:image/x-icon;base64':
+                return 'ico';
+            case 'data:image/bmp;base64':
+                return 'bmp';
+        }
+    }
+
+    function base64ToBlob(code) {
+        code = code.replace(/[\n\r]/g, '');
+        const raw = window.atob(code);
+        const rawLength = raw.length;
+        const uInt8Array = new Uint8Array(rawLength);
+        for (let i = 0; i < rawLength; ++i) {
+            uInt8Array[i] = raw.charCodeAt(i)
+        }
+        return new Blob([uInt8Array], {type: 'application/pdf'})
     }
 
 </script>
