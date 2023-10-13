@@ -496,7 +496,7 @@ router.post('/add', function (req, res) {
                 }else{
                     var sql = ""
                     if(type == '商家'){
-                        sql = "insert into orders(riqi,ddh,yhfa,syy,hyzh,hyxm,company) values('" + today + "','" + pro_num + "','" + youhui + "','" + uname + "','" + user + "','" + username + "','" + company + "')"
+                        sql = "insert into orders(riqi,ddh,yhfa,syy,hyzh,hyxm,company) values('" + today + "','" + pro_num + "','" + youhui + "','" + uname + "','" + username + "','" + user + "','" + company + "')"
                     }else{
                         sql = "insert into orders(riqi,ddh,hyzh,hyxm,hyjf,yhfa,company) values('" + today + "','" + pro_num  + "','" + account  + "','" + uname + "','" + youhui + "','" + company + "')"
                     }
