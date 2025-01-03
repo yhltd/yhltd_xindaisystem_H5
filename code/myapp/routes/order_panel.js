@@ -338,11 +338,18 @@ router.post('/select_huiyuan_list', function (req, res, next) {
         selectParams.phone = "";
     }
     console.log("selectParams.name=>", selectParams.name)
-    let whereSql = "where company = '" + company + "' and ( username like '%" + this_head + "%' or phone like '%" + this_head + "%' or name like '%" + this_head + "%')"
+    let whereSql = " where company = '" + company + "' and ( username like '%" + this_head + "%' or phone like '%" + this_head + "%' or name like '%" + this_head + "%')"
     let type = req.params.type
     console.log(req.params)
     console.log(req.query)
-    let sql1 = "select count(*) as count from member_info " + whereSql;
+    // console.log(company)
+    // console.log(username)
+    // console.log(this_head)
+    // console.log(phone)
+    // console.log(name)
+     let sql1 = "select username,name,gender,state,phone,ifnull(jifen.points,0) as points from member_info left join(select hyxm,round(sum(zhje),2) as points from (select ddh,hyxm,ifnull(zhje,0) as zhje from orders left join orders_details on orders.ddh = orders_details.ddid) as o1 group by hyxm) as jifen on member_info.name = jifen.hyxm where company = '" + company + "' and ( username like '%" + this_head + "%' or phone like '%" + this_head + "%' or name like '%" + this_head + "%') ";
+    // let sql1 = "select username,name,gender,state,phone from member_info where company = '" + company + "'";
+
     console.log(sql1)
     db.query(sql1, function (err, rows) {
         try {
@@ -355,7 +362,7 @@ router.post('/select_huiyuan_list', function (req, res, next) {
                 }
                 var this_count = rows[0].count
                 var this_page = Math.ceil(this_count / 5);
-                var sql = "select * from member_info " + whereSql + " limit 0,4"
+                var sql = "select username,name,gender,state,phone,ifnull(jifen.points,0) as points from member_info left join(select hyxm,round(sum(zhje),2) as points from (select ddh,hyxm,ifnull(zhje,0) as zhje from orders left join orders_details on orders.ddh = orders_details.ddid) as o1 group by hyxm) as jifen on member_info.name = jifen.hyxm where company = '" + company + "' and ( username like '%" + this_head + "%' or phone like '%" + this_head + "%' or name like '%" + this_head + "%') limit 0,4"
                 console.log(sql)
                 db.query(sql, function (err, rows) {
                     if (err) {

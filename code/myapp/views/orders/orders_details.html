@@ -132,13 +132,12 @@
                 <div id="member-paging_left">
                     <div class="paging_left">
                         <button id="dayinxiaopiao" class="dayinxiaopiao" onclick="printpage()">打印小票</button>
-
                     </div>
                 </div>
                 <div id="member-paging_center" style="display: flex;align-items: center">
                     <a class="page_button" href="/orders_details/orders_details/{{datas[0].ddh}}?pagenum=1" onclick="return check();">◀◀</a>
                     <a class="page_button" href="/orders_details/orders_details/{{datas[0].ddh}}?pagenum={{pagenum-1}}" onclick="return check();">◀</a>
-                    <input class="ui-pg-input form-control" type="text" size="2" maxlength="7" value={{pagenum }} role="textbox">
+                    <input  class="ui-pg-input form-control" type="text" size="2" maxlength="7" value={{pagenum }} role="textbox">
                     共 {{pagecounts }} 页
                     <a class="page_button" href="/orders_details/orders_details/{{datas[0].ddh}}?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
                     <a class="page_button" href="/orders_details/orders_details/{{datas[0].ddh}}?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>

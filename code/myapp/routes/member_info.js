@@ -216,8 +216,7 @@ router.post('/add', function (req, res) {
         birthday = birthday;
         let points = req.body.points;
         result.points = points;
-        points = points;
-
+        // points = points;
         company = data.company
 
         db.query("select username from member_info where username = '" + username + "' and company = '" + data.company + "'", function (err, rows) {
@@ -432,24 +431,26 @@ router.all('/update/:id', function (req, res) {
         })
     }
 });
+
+
 router.all('/Excel', function (req, res, next) {
     let token = localStorage.getItem("token");
     let key = '123456789abcdefg';
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     selectParams = JSON.parse(localStorage.getItem("selectParams"));
-    let sql = "select * from member_info where company = '" + data.company + "'";
+    let sql = "select id,username,password,name,gender,state,phone,birthday,company,ifnull(jifen.points,0) as points from member_info left join(select hyxm,round(sum(zhje),2) as points from (select ddh,hyxm,ifnull(zhje,0) as zhje from orders left join orders_details on orders.ddh = orders_details.ddid) as o1 group by hyxm) as jifen on member_info.name = jifen.hyxm where company = '" + data.company + "'";
     db.query(sql, function (err, rows) {
         try {
             if (err) {
                 console.log(err);
             } else {
                 let values = rows
-                //console.log("value=>",values)
+                console.log("value=>",values)
             }
             let sql2 = JSON.stringify(sql);
             let sql3 = JSON.parse(sql2);
-            //console.log(sql3);
+            console.log(sql3);
             let conf = {};
             conf.stylesXmlFile = "styles.xml";
             conf.name = "mysheet";
@@ -480,8 +481,8 @@ router.all('/Excel', function (req, res, next) {
                     type: 'string'
                 },{
                     caption: '积分',
-                    type: 'string'
-                },
+                    type: 'number'
+                }
             ];
             conf.rows = []
             for (let i = 0; i < rows.length; i++) {
@@ -497,6 +498,7 @@ router.all('/Excel', function (req, res, next) {
                 row.push(rows[i].points)
                 conf.rows.push(row)
             }
+            console.log(conf)
             let result = nodeExcel.execute(conf);
             res.setHeader('Content-Type', 'application/vnd.openxmlformats');
             res.setHeader("Content-Disposition", "attachment; filename=" + "member_info.xlsx");
@@ -505,7 +507,6 @@ router.all('/Excel', function (req, res, next) {
             res.render("error.html", {error: '网络错误，请稍后再试'})
         }
     });
-
-
 });
+
 module.exports = router;

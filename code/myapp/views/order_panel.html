@@ -1565,7 +1565,7 @@
                         <div class="cont">
                             <table id="table1" class="table table-hover">
                                 <tbody>
-                                <!--                        //自动添加商品-->
+                                <!--    //自动添加商品-->
                                 </tbody>
                             </table>
                         </div>
@@ -1820,6 +1820,7 @@
                                     <td>性别</td>
                                     <td>电话</td>
                                     <td>状态</td>
+                                    <td>积分</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -2210,9 +2211,9 @@
                         dj:datas[i].price,
                         dzbl:zhek,
                         // zhdj:zhehou / num,
-                        zhdj:jine*zhek,
+                        zhdj:jine*zhek/shul,
                         // zhje:zhehou,
-                        zhje:shul*jine*zhek,
+                        zhje:jine*zhek*shul/shul,
                         gs:shul
                     })
                 }
@@ -2454,11 +2455,12 @@
                 var this_str = ""
                 for(var i=0; i<result.datas.length; i++){
                     this_str = this_str + "<tr>" +
-                            "<td>" + result.datas[i].username + "</td>" +
+                        "<td>" + result.datas[i].username + "</td>" +
                         "<td>" + result.datas[i].name + "</td>" +
                         "<td>" + result.datas[i].gender + "</td>" +
                         "<td>" + result.datas[i].phone + "</td>" +
                         "<td>" + result.datas[i].state + "</td>" +
+                        "<td>" + result.datas[i].points + "</td>" +
                         "</tr>"
                 }
                 $("#huiyuan_table tbody tr").remove();
@@ -2532,6 +2534,7 @@
             console.log($(this).children().eq(3).children(".itemAmount").text())
             _number += (number * 1);
             _money += (money * 1);
+
         })
         console.log(_number)
         console.log(_money)
@@ -2542,17 +2545,20 @@
     }
 
     function huiyuan_sum(){
+
         var _money = 0;
         $("#table1 tbody tr").each(function () {
             var num = $(this).children(".itemNum1").children().eq(0).text();
             var this_money = $(this).children(".itemAmount1").children().eq(0).text();
             this_money = this_money.replace("￥","")
             var zheko = $(this).children(".itemzheko").children().eq(0).text();
-            _money += (num * this_money * zheko);
+
+            _money = _money + (this_money * zheko);
         })
         console.log(_money)
-        $("#yingshou_Sum").html(_money.toFixed(2))
         $("#xiaofei_Sum").html(_money.toFixed(2))
+        $("#yingshou_Sum").html(_money.toFixed(2))
+
 
     }
 

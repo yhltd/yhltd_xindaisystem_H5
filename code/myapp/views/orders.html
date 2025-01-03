@@ -68,13 +68,27 @@
 
             <div style="position: relative;left: 400px;">
                 <td><a href="/orders_details/orders_details/{{item.ddh}}"><span class="label look">查看</span></a></td>
-                <td><a href="#" onclick="queren({{item.id}})"><span class="label del">删除</span></a></td>
+                <td><a href="/orders/del/{{item.id}}?did={{datas[0].ddh}}"><span class="label del">删除</span></a></td>
                 <td><a href="/orders/toUpdate/{{item.id}}" ><span class="label upd">修改</span></a></td>
             </div>
         </tr>
 
         {% endfor %}
     </table>
+
+    <!--<div style="width: 40%;float: left;">-->
+        <!--第<span class="cont-page">&nbsp;{{pagenum }}&nbsp;</span>页 / 共{{pagecounts }}页 / 共{{rowcounts }}条-->
+    <!--</div>-->
+    <!--<div style="width: 60%;float: left;">-->
+        <!--<a href="/orders_details/orders_details?pagenum=1">◀◀</a>-->
+        <!--&nbsp;&nbsp;&nbsp;&nbsp;-->
+        <!--<a href="/orders_details/orders_details?pagenum={{pagenum-1}}">◀</a>-->
+        <!--&nbsp;&nbsp;&nbsp;&nbsp;-->
+        <!--<a href="/orders_details/orders_details?pagenum={{pagenum+1}}">▶</a>-->
+        <!--&nbsp;&nbsp;&nbsp;&nbsp;-->
+        <!--<a href="/orders_details/orders_details?pagenum={{pagecounts}}">▶▶</a>-->
+    <!--</div>-->
+<!--</div>-->
 
     <div id="member-paging" class="ui-jqgrid-pager" dir="ltr">
         <div id="pg_member-paging" class="ui-pager-control" role="group">
@@ -86,7 +100,7 @@
             <div id="member-paging_center">
                 <a class="page_button" href="/orders/ass?pagenum=1" onclick="return check();">◀◀</a>
                 <a class="page_button" href="/orders/ass?pagenum={{pagenum-1}}" onclick="return check();">◀</a>
-                <input id="id" class="ui-pg-input form-control" type="text" size="2" maxlength="7" value={{pagenum }} role="textbox">
+                <input id="ddh" class="ui-pg-input form-control" type="text" size="2" maxlength="7" value={{pagenum }} role="textbox">
                 共 {{pagecounts }} 页
                 <a class="page_button" href="/orders/ass?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
                 <a class="page_button" href="/orders/ass?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>

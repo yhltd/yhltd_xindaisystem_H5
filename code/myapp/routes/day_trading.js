@@ -45,14 +45,13 @@ router.get('/del/:did', function (req, res) {
     if (data.table["2"].del == 1) {
         let did = req.params.did;
         let id = req.query.id;
-        //console.log("id==>"+id)
+        console.log("id==>"+id)
 
         db.query("delete from day_trading where did=" + did, function (err, rows) {
             try {
                 if (err) {
                     res.end('删除失败：' + err)
                 } else {
-
                     res.redirect('/day_trading/select_day/' + id);
                 }
             } catch (e) {
@@ -257,6 +256,9 @@ router.get('/ass/:id', function (req, res, next) {
 //         }
 //     })
 // });
+
+
+
 router.all('/select_day/:id', function (req, res, next) {
     //console.log("开始")
     let token = localStorage.getItem("token");
@@ -286,7 +288,8 @@ router.all('/select_day/:id', function (req, res, next) {
                     rowcounts: 0,
                     pagecounts: 0,
                     pagenum: 0,
-                    pageSize: 6
+                    pageSize: 6,
+                    msg:''
                 }
                 //console.log("isSelect=>",isSelect)
                 if (isSelect) {
@@ -317,9 +320,9 @@ router.all('/select_day/:id', function (req, res, next) {
             res.render("error.html", {error: '网络错误，请稍后再试'})
         }
     });
-
-
 });
+
+
 router.all('/Excel', function (req, res, next) {
 
     // let selectParams = {

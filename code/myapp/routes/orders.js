@@ -212,13 +212,16 @@ router.get('/del/:id', function (req, res) {
     let data = JSON.parse(decrypt(key, iv, token));
     if (data.table["1"].del == 1) {
         let id = req.params.id;
+        console.log("id==>"+id)
+        let did = req.query.did;
+        console.log("did==>"+did)
 
         db.query("delete from orders where id=" + id, function (err, rows) {
             try {
                 if (err) {
                     res.end('删除失败：')
                 } else {
-                    db.query("delete from orders where id =" +id,function (err,rows) {
+                    db.query("delete from orders_details where ddid =" +did,function (err,rows) {
                         if (err){
                             res.end('删除失败：')
                         } else{
@@ -339,8 +342,7 @@ router.all('/Excel', function (req, res, next) {
     // console.log(typeof selectParams.date1)
     console.log(selectParams)
     let panduan = {}
-    let whereSql = " where company = '" + company + "'"
-    let sql = "select * from orders " + whereSql;
+    let sql = "select id,riqi,ddh,hyzh,hyxm,yhfa,heji.xfje,heji.ssje,heji.yhje,syy,ord.company from orders as ord left join(select ddid,company,sum(convert(dj,float) * convert(gs,float)) as xfje,sum(convert(zhdj,float) * convert(gs,float)) as ssje,round(sum(convert(dj,float) * convert(gs,float)) - sum(convert(zhdj,float) * convert(gs,float)),2) as yhje from orders_details group by ddid) as heji on ord.ddh = heji.ddid and ord.company = heji.company  where ord.company = '" + data.company + "'";
     console.log(sql)
     db.query(sql, function (err, rows) {
         try {
@@ -350,9 +352,9 @@ router.all('/Excel', function (req, res, next) {
                 let values = rows
                 console.log("value=>", values)
             }
-            // let sql2 = JSON.stringify(sql);
-            // let sql3 = JSON.parse(sql2);
-            //console.log(sql3);
+            let sql2 = JSON.stringify(sql);
+            let sql3 = JSON.parse(sql2);
+            console.log(sql3);
             let conf = {};
             conf.stylesXmlFile = "styles.xml";
             conf.name = "mysheet";
@@ -360,8 +362,7 @@ router.all('/Excel', function (req, res, next) {
                 {
                     caption: '序号',
                     type: 'number'
-                },
-                {
+                }, {
                     caption: '日期',
                     type: 'string'
                 }, {
@@ -373,21 +374,18 @@ router.all('/Excel', function (req, res, next) {
                 }, {
                     caption: '会员姓名',
                     type: 'string'
-                },{
-                    caption: '会员积分',
-                    type: 'string'
-                },{
+                }, {
                     caption: '优惠方案',
                     type: 'string'
                 }, {
                     caption: '消费金额',
-                    type: 'string'
+                    type: 'number'
                 }, {
                     caption: '实收金额',
-                    type: 'string'
+                    type: 'number'
                 }, {
                     caption: '优惠金额',
-                    type: 'string'
+                    type: 'number'
                 }, {
                     caption: '收银员',
                     type: 'string'
@@ -401,13 +399,11 @@ router.all('/Excel', function (req, res, next) {
                 row.push(rows[i].ddh)
                 row.push(rows[i].hyzh)
                 row.push(rows[i].hyxm)
-                row.push(rows[i].hyjf)
                 row.push(rows[i].yhfa)
                 row.push(rows[i].xfje)
                 row.push(rows[i].ssje)
                 row.push(rows[i].yhje)
                 row.push(rows[i].syy)
-
                 conf.rows.push(row)
             }
             console.log(conf)

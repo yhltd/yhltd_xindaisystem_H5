@@ -129,7 +129,7 @@
                 <td>{{item.basics_service_charge}}</td>
                 <td>{{item.other_service_charge}}</td>
                 <td><a href="/day_trading/toUpdate/{{item.did}}?id={{datas[0].id}}" onclick="return check3()"><span class="label upd">修改</span></a></td>
-                <td><a href="#" onclick="check2({{item.did}},{{datas[0].id}})"><span class="label del">删除</span></a></td>
+                <td><a href="/day_trading/del/{{item.did}}?id={{datas[0].id}}"><span class="label del">删除</span></a></td>
                 <input type="hidden" value="{{item.did}}" id="id2">
             </tr>
             {% endfor %}
@@ -144,7 +144,7 @@
                 <div id="member-paging_center">
                     <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum=1" onclick="return check();">◀◀</a>
                     <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum-1}}" onclick="return check();">◀</a>
-                    <input id="id" class="ui-pg-input form-control" type="text" size="2" maxlength="7" value={{pagenum }} role="textbox">
+                    <input  class="ui-pg-input form-control" type="text" size="2" maxlength="7" value={{pagenum }} role="textbox">
                     共 {{pagecounts }} 页
                     <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
                     <a class="page_button" href="/day_trading/select_day/{{datas[0].id}}?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>

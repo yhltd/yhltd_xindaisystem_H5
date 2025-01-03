@@ -45,6 +45,7 @@ router.get('/del/:id', function (req, res) {
     let id = req.params.id;
     console.log("id==>"+id)
     let did = req.query.did;
+    console.log("did==>"+did)
     db.query("delete from orders_details where id=" + id, function (err, rows) {
         try {
             if (err) {
@@ -243,7 +244,7 @@ router.get('/ass/:id', function (req, res, next) {
 
 });
 router.all('/orders_details/:id', function (req, res, next) {
-    //console.log("开始")
+    console.log("开始")
     let token = localStorage.getItem("token");
     let key = '123456789abcdefg';
     let iv = 'abcdefg123456789';
@@ -252,7 +253,7 @@ router.all('/orders_details/:id', function (req, res, next) {
     let id = req.params.id;
     let isSelect = req.query.pagenum == undefined;
 
-    let sql1 = "select Count(*) as count from orders_details where ddid='" + id + "' and company = '" + data.company + "'";
+     let sql1 = "select Count(*) as count from orders_details where ddid='" + id + "' and company = '" + data.company + "'";
     //console.log(sql1);
 
     db.query(sql1, function (err, rows) {
@@ -268,25 +269,31 @@ router.all('/orders_details/:id', function (req, res, next) {
                     rowcounts: 0,
                     pagecounts: 0,
                     pagenum: 0,
-                    pageSize: 6
+                    pageSize: 3,
                 }
-                //console.log("isSelect=>",isSelect)
-                if (isSelect) {
-                    result.rowcounts = value[0].count
-                    result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
-                    result.pagenum = 1
-                } else {
-                    result.rowcounts = value[0].count
-                    result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
-                    result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
-                }
-                //let sql = "select * from orders_details right join orders on orders.id = orders_details.ddid where orders.id=" + id;
+
+                // let sql = "select * from orders_details right join orders on orders.id = orders_details.ddid where orders.id=" + id;
                 let sql = "select id,riqi,ddh,hyzh,hyxm,yhfa,heji.xfje,heji.ssje,heji.yhje,syy,ord.company from orders as ord left join(select ddid,company,sum(convert(dj,float) * convert(gs,float)) as xfje,sum(convert(zhdj,float) * convert(gs,float)) as ssje,round(sum(convert(dj,float) * convert(gs,float)) - sum(convert(zhdj,float) * convert(gs,float)),2) as yhje from orders_details group by ddid) as heji on ord.ddh = heji.ddid and ord.company = heji.company where ddh='" + id + "' and ord.company = '" + data.company + "' ";
-                sql += " limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
+                console.log(sql)
+                // sql += " limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
                 db.query(sql, function (err, rows) {
                     if (err) {
                         res.render('orders/orders_details.html', {title: 'Express', ...result});
                     } else {
+
+                        // console.log("isSelect=>",isSelect)
+                        if (isSelect) {
+                            result.rowcounts = value[0].count
+                            result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
+                            result.pagenum = 1
+                        } else {
+
+                            result.rowcounts = value[0].count
+                            result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
+                            result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
+
+                        }
+
                         result.datas = rows
                         let sql1 = "select * from orders_details  where ddid='" + id + "' and company ='" + data.company + "'";
                         //let sql1 = "select od.id,od.ddid,od.cplx,od.cpmc,od.dw,od.dj,od.dzbl,od.zhdj,od.zhje,od.gs,o.riqi,o.ddh,o.hyzh,o.hyxm,o.yhfa,od.xfje,od.ssje,od.yhje,o.syy,o.company from (select id,sum(dj*gs) as xfje,sum(zhdj*gs) as ssje,sum(dj*gs)-sum(zhdj*gs) as yhje,ddid,cplx,cpmc,dw,dj,dzbl,zhdj,zhje,gs,company from orders_details group by ddid) as od  right join orders as o on o.id = od.ddid where o.id=" + id;
@@ -314,6 +321,11 @@ router.all('/orders_details/:id', function (req, res, next) {
 
 
 });
+
+
+
+
+
 router.get('/select_ass', function (req, res, next) {
     let token = localStorage.getItem("token");
     let key = '123456789abcdefg';

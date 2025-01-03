@@ -279,7 +279,7 @@ router.all('/Excel', function (req, res, next) {
             }
             let sql2 = JSON.stringify(sql);
             let sql3 = JSON.parse(sql2);
-            //console.log(sql3);
+            console.log(sql3);
             let conf = {};
             conf.stylesXmlFile = "styles.xml";
             conf.name = "mysheet";
@@ -356,8 +356,10 @@ router.all('/Excel', function (req, res, next) {
                 row.push(rows[i].swipe)
                 row.push(rows[i].balance_of_credit_card)
                 row.push(rows[i].the_total_fee)
+                row.push(rows[i].collected_amount)
                 row.push(rows[i].profit)
                 conf.rows.push(row)
+
             }
             let result = nodeExcel.execute(conf);
             res.setHeader('Content-Type', 'application/vnd.openxmlformats');
