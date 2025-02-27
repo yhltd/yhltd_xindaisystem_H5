@@ -11,20 +11,47 @@
     <script type="text/javascript" src="../../js/jquery-confirm.js"></script>
     <!--<script type="text/javascript" src="../../js/bundled.js"></script>-->
 </head>
+<style>
+    .tablebox table td {
+        font-size: 16px;
+        text-align: center;
+        line-height: 16px;
+        background: #ffffff;
+        /* padding: 12px; */
+        padding: 8px 10px;
+    }
+    .tablebox table th {
+        height: 30px;
+        line-height: 30px;
+        /* background: url(../images/title.png); */
+        font-size: 16px;
+        font-weight: bold;
+        /* color: #3872f6; */
+        color: #000;
+        border-left: 1px solid #EAEAEC;
+        border-right: 1px solid #EAEAEC;
+    }
+</style>
 <body >
-<div id="header">
+<div id="header" style="background-color: rgba(0, 0, 0, 0.2)">
+<!--#292a2a-->
+<!--<div id="header" style="background-color: #3fafff;">-->
     <div class="header-text">商品配置</div>
+
 </div>
 <div class="select">
     <form class="select_form" action="/product/ass" method="post">
         <input class="select_input" type="text" name="product_name" placeholder="请输入商品名称" value="{{product_name}}" />
         <input class="select_input" type="text" name="type" placeholder="请输入商品类别" value="{{type}}" />
-        <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px"/>
+        <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px ; width:110px"/>
 
         <div class="header-item">
             <a href="/product/add" style="float:left">
                 <input class="select_btn right btn_err" type="button" value="录入"/>
             </a>
+            <!--<a href="/product/Excel" style="float:left;">-->
+                <!--<input class="select_btn right btn_err" type="button" value="导出到excel"/>-->
+            <!--</a>-->
             <a href="/product/Excel" style="float:left;margin-left: 10px;margin-top: 3px"><img class="header-icon" src="../../images/excel2.png" title="导出到excel"/></a>
         </div>
     </form>

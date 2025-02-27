@@ -9,15 +9,36 @@
     <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="../../js/jquery-confirm.js"></script>
 </head>
+<style>
+    .tablebox table td {
+        font-size: 16px;
+        text-align: center;
+        line-height: 16px;
+        background: #ffffff;
+        /* padding: 12px; */
+        padding: 8px 10px;
+    }
+    .tablebox table th {
+        height: 30px;
+        line-height: 30px;
+        /* background: url(../images/title.png); */
+        font-size: 16px;
+        font-weight: bold;
+        /* color: #3872f6; */
+        color: #000;
+        border-left: 1px solid #EAEAEC;
+        border-right: 1px solid #EAEAEC;
+    }
+</style>
 <body >
-<div id="header">
+<div id="header" style="background-color: rgba(0, 0, 0, 0.2)">
     <div class="header-text">会员管理</div>
 </div>
 <div class="select">
     <form class="select_form" action="/member_info/ass" method="post">
         <input class="select_input" type="text" name="name" placeholder="请输入会员姓名" value="{{name}}" />
         <input class="select_input" type="text" name="phone" placeholder="请输入会员电话" value="{{phone}}" />
-        <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px"/>
+        <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px;margin-top: 8px ;width: 100px" />
 
         <div class="header-item">
             <a href="/member_info/add" style="float:left">

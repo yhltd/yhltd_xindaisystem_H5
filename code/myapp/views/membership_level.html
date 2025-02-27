@@ -8,17 +8,38 @@
     <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="../../js/jquery-confirm.js"></script>
 </head>
+<style>
+    .tablebox table td {
+        font-size: 16px;
+        text-align: center;
+        line-height: 16px;
+        background: #ffffff;
+        /* padding: 12px; */
+        padding: 8px 10px;
+    }
+    .tablebox table th {
+        height: 30px;
+        line-height: 30px;
+        /* background: url(../images/title.png); */
+        font-size: 16px;
+        font-weight: bold;
+        /* color: #3872f6; */
+        color: #000;
+        border-left: 1px solid #EAEAEC;
+        border-right: 1px solid #EAEAEC;
+    }
+</style>
 <body>
-<div id="header">
+<div id="header" style="background-color: rgba(0, 0, 0, 0.2)">
     <div class="header-text">会员等级</div>
 </div>
 <div class="select">
     <form class="select_form" action="/membership_level/ass" method="post">
         <input class="select_input" type="text" name="jibie" placeholder="请输入会员级别" value="{{jibie}}" />
-        <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px"/>
+        <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px;width: 85px;"/>
 
         <div class="header-item">
-            <a href="/membership_level/add" style="float:left">
+            <a href="/membership_level/add" style="float:left;width: 81%;">
                 <input class="select_btn right btn_err" type="button" value="录入"/>
             </a>
 
@@ -28,12 +49,12 @@
 <div class="tablebox">
     <table  id="tableId">
         <tr align="center">
-            <th >序号</th>
-            <th >级别名称</th>
+            <th>序号</th>
+            <th>级别名称</th>
             <th >消费额度门槛</th>
             <th >折扣比例</th>
             <div>
-                <th colspan="2">操作</th>
+                <th colspan="2" width="200px">操作</th>
             </div>
         </tr>
         {% for item in datas %}

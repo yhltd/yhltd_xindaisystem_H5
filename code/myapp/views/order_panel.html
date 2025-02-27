@@ -173,11 +173,17 @@
         }
         .modal{position:fixed;top:0;left:0;z-index:1050;display:none;width:100%;height:100%;overflow:hidden;outline:0}
         #jiezhang{
-            width: 1200px;
-            height: 700px;
-            background-color: #F7F7F7;
+            width: 97%;
+            height: 850px;
+            background-color: white;
             left: 50%;
+            align-items: center;    /* 垂直居中 */
             top: 3%;
+            /*background-image: url('..img//icons/logo.png');*/
+            /*background-image: url('https://img1.baidu.com/it/u=1695799435,3749054909&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500');*/
+            background-image: url('../../images/diandan.webp');
+            background-size: cover;
+            /*background-image: url('../images/截图20250116132521.png');*/
             transform: translateX(-50%);
             border: 1px solid white;
             box-shadow: 0 5px 15px rgb(0 0 0 / 50%);
@@ -187,7 +193,7 @@
             width: 100%;
             margin: 5px auto;
             font-size: 22px;
-            background-color: #fff;
+            background-color: #7ea1f1;
             border-radius: 6px;
             display: flex;
             justify-content: space-between;
@@ -214,12 +220,15 @@
         }
         .modal-content-left{
             float: left;
-            width: 540px;
-            height: 640px;
+            width: 450px;
+            height: 650px;
             background-color: white;
+            /*background-color: #1693ff;*/
+
             margin: 0px 4px 36px 0px;
-            border-radius: 11px;
+            border-radius: 6px;
         }
+
         /*.itemName1{*/
         /*    transform: translateX(-4px);*/
         /*}*/
@@ -247,13 +256,14 @@
         .modal-content-center{
             float:left;
             width: 90px;
-            height: 640px;
-            background-color: white;
+            height: 650px;
+            /*background-color: #ffc800;*/
+            background-color: rgb(0 135 187 / 20%);
             /*margin: 13px 4px 10px 12px;*/
             border-radius: 15px;
             margin-left:12px;
         }
-        #but4,#but5,#but6{
+        #but4,#but5,#but6,#but78,#but79{
             width: 80%;
             height: 84px;
             text-align: center;
@@ -264,7 +274,7 @@
             padding: 10px 0;
             border-bottom: 1px solid #f1f1f1;
         }
-        #but4 img, #but5 img,#but6 img{
+        #but4 img, #but5 img,#but6 img, #but78 img,#but79 img{
             width: 76%;
             height: 62%;
             margin: 5px auto;
@@ -272,16 +282,17 @@
         .modal-content-right{
             float:right;
             display:inline-block;
-            width: 540px;
-            height: 640px;
-            background-color: white;
+            width: 550px;
+            height: 650px;
+            /*background-color: #dfe79a;*/
+            background-color: rgb(0 135 187 / 20%);
             /*margin: 13px 14px 10px 0px;*/
             border-radius: 15px;
         }
         .choose_member_head{
-            width: 91%;
+            width: 95%;
             height: 37px;
-            background: #EBEBEB url(http://zkwsoft.cn/qtye/img/png_search.png) no-repeat 1% center;
+            background: #e1f92d url(http://zkwsoft.cn/qtye/img/png_search.png) no-repeat 1% center;
             border-radius: 10px;
             margin: 10px auto;
             display: flex;
@@ -299,7 +310,7 @@
         .choose_member_head a{
             position: absolute;
             line-height: 34px;
-            right: 34px;
+            right: 50px;
             text-decoration: underline;
             width: 66px;
             font-size: 14px;
@@ -340,7 +351,7 @@
             align-items: center;
             padding: 0px 10px;
             border-top: 1px solid #eee;
-            color: #aaaaaa;
+            color: #0a0909;
             width: 90%;
             margin: 0px auto;
             font-size: 14px;
@@ -384,7 +395,7 @@
             cursor: pointer;
         }
         .calculate table.table tr td:last-child {
-            color: #FECD64;
+            color: #dc9efe;
             border: 1px solid #9c9c9c;
             font-weight: 600;
             cursor: pointer;
@@ -496,7 +507,7 @@
             margin-top: 5px;
         }
         #table1 tr td:not(:first-child){
-            width: 107px;
+            width: 103px;
             text-align: center;
         }
         #table2 tr td:not(:nth-child(2)){
@@ -536,10 +547,12 @@
         border: 0;
         margin: 0;
         padding: 0;
+        /*width: 318px;*/
+        background-color: #ffffff;
         vertical-align: baseline;
         height: 37px;
         line-height: 37px;
-        color: #9c9c9c;
+        color: #000000;
     }
 
     a {
@@ -555,9 +568,12 @@
 
     .index {
         display: flex;
-        height: 94%;
-        width: 97%;
+        height: 98%;
+        width: 98%;
         background-color: #f7f7f7;
+        /*background-image: url('https://img1.baidu.com/it/u=1695799435,3749054909&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500');*/
+        background-image: url('../../images/diandan.webp');
+        background-size: cover;
         padding: 12px;
     }
 
@@ -602,7 +618,7 @@
         flex: 2;
         display: flex;
         flex-direction: column;
-        height: 100%;
+        height: 91%;
         min-width: 320px;
         margin-right: 10px;
         color: #9c9c9c;
@@ -613,14 +629,15 @@
     }
 
     .table{
-        width: 100%;
-        max-width: 100%;
+        width: 97%;
+        max-width: 97%;
         text-align: center;
     }
 
     table{
         border-collapse: collapse;
         border-spacing: 0;
+        width: 100%;
     }
 
     .Lblock .room_info{
@@ -631,6 +648,7 @@
     .Lblock .title{
         border-top: 1px solid #ccc;
         border-bottom: 1px solid #ccc;
+
     }
 
     .Lblock .title .itemOrderNO，
@@ -652,8 +670,8 @@
 
     .Lblock .title .itemAmount,
     .Lblock .cont .table tbody .itemAmount{
-        text-align: right;
-        width: 50px;
+        /*text-align: right;*/
+        width: 60px;
     }
 
     .Lblock .room_info h4{
@@ -661,11 +679,12 @@
         margin: 0 5px 0 12px;
         width: 155px;
         line-height: 50px;
-        color: #9c9c9c;
+        color: #1a1515;
     }
     .Lblock #empty_mask{
         flex: 1;
         overflow: hidden;
+        /*width: 318px;*/
     }
 
     .Lblock .menu ul {
@@ -746,7 +765,7 @@
 
     .Lblock #empty_mask .cont {
         /* width: 107%; */
-        overflow-y: auto;
+        /*overflow-y: auto;*/
         height: 100%;
         /* width: calc(100% + 17px);*/
     }
@@ -877,10 +896,12 @@
         font-weight: normal;
     }
     .index >div{
-        padding: 10px;
-        background-color: #ffffff;
+        padding: 27px;
+        /*background-color: #ffffff;*/
+        background-color: rgb(0 135 187 / 20%);
         border: 1px solid #ececec;
         border-radius: 15px;
+
     }
 
     .btn{
@@ -899,7 +920,7 @@
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
-        background: #04b9e1;
+        background: #dce104;
         border: 1px solid transparent;
         margin-right: 10px;
         border-radius: 5px;
@@ -911,7 +932,7 @@
         flex: 1;
         max-width: 130px;
         margin-right: 10px;
-        height: 100%;
+        height: 91%;
     }
 
     .btns>div{
@@ -924,7 +945,7 @@
         height: 40px;
         line-height: 40px;
         padding: 0;
-        background-color: #E8E9EE;
+        background-color: #0aa0f6;
         font-weight: normal;
         font-size: 16px
     }
@@ -941,7 +962,17 @@
         height: 40px;
         line-height: 40px;
         padding: 0;
-        background-color: #E8E9EE;
+        background-color: #fdc139;
+        font-weight: normal;
+        font-size: 16px;
+    }
+
+    .btns .jian{
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        padding: 0;
+        background-color:#fff;
         font-weight: normal;
         font-size: 16px;
     }
@@ -950,7 +981,7 @@
         flex: 7;
         display: flex;
         flex-direction: column;
-        height: 100%;
+        height: 91%;
         overflow: hidden;
         min-width: 547px;
     }
@@ -1108,6 +1139,7 @@
         width: 48%;
         font-size: 20px;
         justify-content: space-between;
+        /*color: rgb(63, 175, 255);*/
         padding: 8px;
     }
 
@@ -1158,6 +1190,26 @@
     .Lblock .table .cont li div.none {
         display: none;
     }
+    /* 容器样式 */
+    .Lblock .table .cont li {
+        list-style-type: none; /* 移除默认的列表样式 */
+        padding: 10px;         /* 添加内边距 */
+        margin: 5px 0;         /* 添加外边距 */
+        border-bottom: 1px solid #ddd; /* 添加下边框 */
+    }
+
+    /* 隐藏具有特定类名的 div 元素 */
+    .Lblock .table .cont li div.none {
+        display: none;
+    }
+
+    /* 可选：为显示的 div 元素添加样式 */
+    .Lblock .table .cont li div {
+        padding: 5px;
+        background-color: rgba(234, 234, 254, 0.88); /* 背景色 */
+        border: 1px solid #3b7ddd;    /* 边框 */
+        margin-top: 5px;           /* 上边距 */
+    }
 
     .none {
         display: none;
@@ -1175,11 +1227,16 @@
         border: none;
     }
     .detailed_info > p:not(:first-child) {
+        width: 100%;
+        height: 35px;
+        font-size: 19px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: #A4A4A4;
-        padding: 0 0 10px;
+        color: #000000;
+        background-color: #ffb099;
+        padding: 0 -2 10px;
+        border-radius: 6px;
     }
     .modal-body .search input{
         outline: none;
@@ -1240,6 +1297,9 @@
         height: 500px;
         background-color: #F7F7F7;
         /* margin: 10vh; */
+        /*background-image: url("https://img1.baidu.com/it/u=1695799435,3749054909&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500");*/
+        background-image: url('../../images/diandan.webp');
+        background-size: cover;
         left: 50%;
         top: 10%;
         transform: translateX(-50%);
@@ -1251,6 +1311,7 @@
         /*border: 1px solid;*/
         width: 100%;
         height: 79%;
+        background-color: rgb(0 135 187 / 20%);
         /*background: yellow;*/
         border-radius: 6px;
         display: flex;
@@ -1335,7 +1396,7 @@
         outline: none;
     }
     .modal-content-r-content{
-        color: #9F9F9F;
+        color: #000;
     }
     .product_details_id{
         display: none;
@@ -1380,14 +1441,14 @@
 <!--               <li>金额</li>-->
 <!--               <li style="border-radius:0px 15px 0px 0px">操作</li>-->
 <!--           </div>-->
-        <div class="title">
+        <div class="title" style=" color: #75c0ff;">
             <table class="table">
                 <thead>
                     <tr>
-                        <td class="itemOrderNO">序号</td>
-                        <td class="itemName">商品名称</td>
-                        <td class="itemNum">数量</td>
-                        <td class="itemAmount">金额</td>
+                        <td class="itemOrderNO" style="width: 68px">序号</td>
+                        <td class="itemName" style="width: 68px">商品名称</td>
+                        <td class="itemNum" style="width: 68px">数量</td>
+                        <td class="itemAmount" style="width: 41px">金额</td>
                     </tr>
                 </thead>
             </table>
@@ -1424,7 +1485,11 @@
 
 
     </div>
-    <div class="btns">
+    <div class="btns" >
+
+        <!--<div>-->
+            <!--<li target="main"><img src="../images/企业微信截图_1737706980108.png" style="width:35px;height: 35px"></li>-->
+        <!--</div>-->
         <div>
             <button id="jia" class="btn jia">+</button>
         </div>
@@ -1530,11 +1595,16 @@
         </div>
     </div>
     <!--    结账窗体-->
-    <div id="jiezhang" class="modal fade" tabindex="-1">
+    <div id="jiezhang" class="modal fade" tabindex="-1"   src="../images/logo.png" style="width:1122px;height: 700px" >
+        <!--<img src="https://img1.baidu.com/it/u=589959643,4213752690&fm=253&fmt=auto&app=138&f=JPEG?w=608&h=405">-->
+
+
+
         <div class="modal-dialog modal-lg">
             <div class="modal-content" id="lll">
                 <div id="jiezhang_move" class="modal-header">
-                    <div class="modal-title modal-title-left">商品结账</div>
+                    <div class="modal-title modal-title-left"> <div class="sppz" style="font-size: 20px">商品结账</div></div>
+
                     <div class="modal-title modal-title-right" onclick="jQuery('#jiezhang').hide();jQuery('.jiezhang_mask').hide()">
                         <img src="../../images/guanbi.png">
                     </div>
@@ -1552,11 +1622,11 @@
                     <div class="title">
                         <table class="table">
                             <thead>
-                            <tr style="border-bottom: 4px solid #f7f7f7;">
-                                <td class="itemName1"style="transform: translateX(2px);">商品名称</td>
-                                <td class="itemNum1"style="transform: translateX(4px);">数量</td>
-                                <td class="itemAmount1" style="transform: translateX(8px);">金额</td>
-                                <td class="itemzheko"style="transform: translateX(4px);">折扣</td>
+                            <tr style="border-bottom: 4px solid #d8e1e6;">
+                                <td class="itemName1"style="transform: translateX(2px);width: 130px">商品名称</td>
+                                <td class="itemNum1"style="transform: translateX(1px);">数量</td>
+                                <td class="itemAmount1" style="transform: translateX(2px);">金额</td>
+                                <td class="itemzheko"style="transform: translateX(2px);">折扣</td>
                             </tr>
                             </thead>
                         </table>
@@ -1573,18 +1643,32 @@
                 </div>
                 <div class="modal-content-center">
                     <div id="but4">
-                        <img src="http://zkwsoft.cn/qtye/img/png_renyizhe.png">
+                        <!--<img src="https://img1.baidu.com/it/u=589959643,4213752690&fm=253&fmt=auto&app=138&f=JPEG?w=608&h=405">-->
+                        <img src="../../images/zhe.webp">
                         <span >折&nbsp扣</span>
                     </div>
-<!--                    <div><img src="../../images/zheko1.png" style="width: 80px;height: 80px;margin-left: 2px;margin-top: 5px"><span>折扣</span></div>-->
+                    <!--<div><img src="../../images/zheko1.png" style="width: 80px;height: 80px;margin-left: 2px;margin-top: 5px"><span>折扣</span></div>-->
                     <div id="but5">
-                        <img src="http://zkwsoft.cn/qtye/img/png_miandan.png">
+                        <img src="../images/免单.png">
+                        <!--<img src="http://zkwsoft.cn/qtye/img/png_miandan.png">-->
                         <span >免&nbsp单</span>
                     </div>
                     <div id="but6">
-                        <img src="http://zkwsoft.cn/qtye/img/png_beizhu.png">
+                        <!--<img src="http://zkwsoft.cn/qtye/img/png_beizhu.png">-->
+                        <!--<img src="https://img2.baidu.com/it/u=562474378,1823153239&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500">-->
+                        <img src="../../images/beizhu.webp">
                         <span >备&nbsp注</span>
                     </div>
+                    <!--<div id="but78">-->
+                        <!--&lt;!&ndash;<img src="http://zkwsoft.cn/qtye/img/png_beizhu.png">&ndash;&gt;-->
+                        <!--<img src="https://img.sxsme.com.cn/uploadimg/ico/2022/0830/1661845499557226.jpg">-->
+                        <!--<span >开&nbsp票</span>-->
+                    <!--</div>-->
+                    <!--<div id="but79">-->
+                        <!--&lt;!&ndash;<img src="http://zkwsoft.cn/qtye/img/png_beizhu.png">&ndash;&gt;-->
+                        <!--<img src="https://img2.baidu.com/it/u=2971057363,1347840469&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500">-->
+                        <!--<span >抹&nbsp零</span>-->
+                    <!--</div>-->
                 </div>
                 <div class="modal-content-right">
                         <div class="choose_member">
@@ -1620,7 +1704,7 @@
 
                         <div class="list">
                             <div class="con1">
-                                <span>应收：</span><span id="yingshou_Sum"></span>
+                                <span>应收：</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp ￥<span id="yingshou_Sum"> </span>
                             </div>
                             <div class="types">
                                 <!-- <div>
@@ -1636,7 +1720,7 @@
                             </div>
                             <div class="con1">
                                 <span>找零</span>
-                                <span class="change">0.00</span>
+                                <span class="change">￥ 0.00</span>
 
                             </div>
 
@@ -1689,24 +1773,25 @@
                                     <td>5</td>
                                     <td>6</td>
 
-                                    <td class="disabled">100</td>
+                                    <td class="disabled">￥ 100</td>
                                 </tr>
                                 <tr>
                                     <td>1</td>
                                     <td>2</td>
                                     <td>3</td>
-                                    <td>50</td>
+                                    <td>￥ 50</td>
                                 </tr>
                                 <tr>
                                     <td>0</td>
                                     <td>.</td>
                                     <td>C</td>
-                                    <td>20</td>
+                                    <td>￥ 20</td>
                                 </tr>
                                 </tbody></table>
                         </div>
 
                 </div>
+
             </div>
         </div>
     </div>
@@ -2351,7 +2436,7 @@
                         "<span class=\"price\">" + money + "</span>"+
                         "</td>"+
                         "<td class=\"itemzheko\">1</td>"+
-                        "<td class=\"itemid\" style='visibility: hidden;width: 0px;margin: 0;padding: 0'>" +
+                        "<td class=\"itemid\" style='visibility: hidden;width: 10px;margin: 0;padding: 0'>" +
                         "<span class=\"id\">" + datas[i].id + "</span>"+
                         "</td>"+
                         "</tr>"

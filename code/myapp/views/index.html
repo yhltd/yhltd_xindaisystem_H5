@@ -20,8 +20,8 @@
         #header{
             height:80px;
             line-height:80px;
-            background-image:linear-gradient(to right,#00CCFF,#004bc3);
-
+            background-image:linear-gradient(to right, #00b1e1, #49adff);
+            /*style="background-color: #3fafff;*/
             width:100%;
             position:absolute;
             z-index:5;
@@ -77,7 +77,7 @@
         /**左侧菜单***/
         .left_menu {
             float:left;
-            width:210px;
+            width:225px;
             /*background:#f6f6f6;*/
             height:100%;
             position:absolute;
@@ -86,7 +86,8 @@
             overflow:auto;
             border-left:0px solid #32323a;
             /*改之前是#444c63*/
-            background-color: #2f3a58;
+            /*background-color: #1e4258;*/
+            background-color: #444c63;
 
         }
         .left_menu ul li {
@@ -115,7 +116,8 @@
         .main{
             width:100%;
             height:100%;
-            background:#f6f6f6;
+            /*background: #9eb4ff;*/
+            background: #b4d4ff;
             overflow:auto;
             zoom: 0.8;
         }
@@ -157,7 +159,8 @@
         /*}*/
         #content .left_menu #nav_dot li a{
             -webkit-transition: all .3s;
-            color: #9F9F9F;
+            /*color: #9F9F9F;*/
+            color: #ededed;
             font-size: 16px;
             width: 85%;
             padding: 0px 31px 6px 0;
@@ -195,6 +198,7 @@
         #header{
             zoom: 0.8;
             box-shadow: 2px 3px 7px #6f7180;
+
         }
 
     </style>
@@ -214,14 +218,20 @@
 <!--    </div>-->
 	<div class="navigation">
 		<ul>
+            <li target="main"><img src="../images/截图20250116132521.png" style="width:35px;height: 35px"></li>
             <li><a style="font-family: 'STHupo'" href="../app-debug.apk" target="main">下载APP</a></li>
+            <li target="main"><img src="../../images/excel2.png" style="width:35px;height: 35px"></li>
             <li><a style="font-family: 'STHupo'" href="../智慧门店收银系统(20231012).xlsm" target="main">下载Excel</a></li>
             <li target="main"><img src="../images/new_pics/人员.png" style="width:35px;height: 35px"></li>
 		 	<li target="main">欢迎您：{{datas[0].uname}}</li>
+            <li target="main"><img src="../images/修改1.png" style="width:35px;height: 35px"></li>
 			<li><a href="/users/password_toUpdate" target="main">密码修改</a></li>
+            <li target="main"><img src="../images/f18b2189aa345a767eb8b9e42b164970(1)(1).png" style="width:35px;height: 35px"></li>
             <li><a href="/copyright" target="main">关于</a></li>
+            <li target="main"><img src="../images/企业微信截图_17370057492913.png" style="width:35px;height: 35px"></li>
             <li><a href="/help" target="main">帮助</a></li>
-			<li><a href="/users">退出</a></li>
+            <li target="main"><img src="../images/截图20250116135534.png" style="width:35px;height: 35px"></li>
+            <li><a href="http://localhost:3000/">退出</a></li>
 		</ul>
 	</div>
 </div>
