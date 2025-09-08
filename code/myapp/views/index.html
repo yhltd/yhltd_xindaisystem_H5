@@ -20,7 +20,7 @@
         #header{
             height:80px;
             line-height:80px;
-            background-image:linear-gradient(to right, #00b1e1, #49adff);
+            background-image:linear-gradient(to right,#fb7b1c, #ffb019);
             /*style="background-color: #3fafff;*/
             width:100%;
             position:absolute;
@@ -33,32 +33,41 @@
             justify-content: space-between;
             line-height:80px;
             font-size:30px;
-            color:#fff;
+            color:#dee0ef;
             font-family: "STHupo";
             letter-spacing:3px;
             margin-left: 21px;
             float:left;
+            text-shadow:
+                    -1.5px -1.5px 0 #FFD700, 1.5px -1.5px 0 #FFD700, -1.5px 1.5px 0 #FFD700, 1.5px 1.5px 0 #FFD700;
         }
         .navigation{
             float:right;
             margin:5px 50px 0 0;
-            color:#fff;
+            color: #000000;
             font-size:17px;
         }
         .navigation ul li{
             height:30px;
             line-height:30px;
             text-align:center;
-            font-size: 17px;
-            font-family: "STXingkai";
+            font-size: 20px;
+            font-family: 'Times New Roman';
             float:left;
             margin-left:15px;
-            margin-top: 20px
+            margin-top: 20px;
+            /*text-shadow: 1px 1px 5px #e5e5e3;*/
+        }
+        .nav-a:hover{
+            background: #bcd9f5;
+            border-radius: 8px;
+            transform: translateY(-3px);
         }
         .navigation ul li a{
-            color:#fff;
-            font-size: 17px;
-            font-family: "STXingkai"
+            color: #000000;
+            font-size: 20px;
+            font-family: 'Times New Roman';
+
         }
         .navigation ul li a:hover{
             color:#fff;
@@ -84,10 +93,11 @@
             top:0px;
             left:0px;
             overflow:auto;
+            overflow-x: hidden;
             border-left:0px solid #32323a;
             /*改之前是#444c63*/
             /*background-color: #1e4258;*/
-            background-color: #444c63;
+            background:linear-gradient(to right, #fb7b1c, #fc811c)
 
         }
         .left_menu ul li {
@@ -107,7 +117,7 @@
         .left_menu h4 span{display: block;float: left;width: 26px;height: 26px;padding-right: 10px;background-repeat: no-repeat;margin-top: 6px;}
         .left_menu img {width:26px;height: 26px; }
         /***右侧内容****/
-        .m-right{margin-left:210px;margin-bottom:0px;height:100%;}
+        .m-right{margin-left:225px;margin-bottom:0px;height:100%;}
         .right-nav{height:50px;border-bottom:1px solid #d1d1d1;background:#f6f6f6;}
         .right-nav li{float:left;margin-left:5px;line-height:50px;color:#464646;font-size: 14px;}
         .right-nav li img{position:relative;top:17px;left:15px;}
@@ -160,33 +170,55 @@
         #content .left_menu #nav_dot li a{
             -webkit-transition: all .3s;
             /*color: #9F9F9F;*/
-            color: #ededed;
-            font-size: 16px;
+            color: #ffffff;
+            margin: 5px 0;
+            font-size: 18px;
+            font-weight: 800;
+            /*background:*/
+            /*            !*linear-gradient(to right, #38cb37, #14c113);*!*/
+            /*            !*radial-gradient(circle, #a1c4fd, #dcfdff, #a6c1ee);*!*/
+            /*            !*linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);*!*/
+            /*            !*linear-gradient(to right, #4facfe 0%, #00f2fe 100%);*!*/
+            background: linear-gradient(45deg, #00c6fb, #005bea, #00c6fb);
+            background-size: 200% auto;
             width: 85%;
             padding: 0px 31px 6px 0;
             height: 45px;
             float: left;
+            position: relative;
+            clip-path: polygon(
+                    10% 0%,  /* 左上角内凹点 */
+                    90% 0%,   /* 右上角内凹点 */
+                    100% 50%, /* 右侧三角形顶点 */
+                    90% 100%, /* 右下角内凹点 */
+                    10% 100%, /* 左下角内凹点 */
+                    0% 50%    /* 左侧三角形顶点 */
+            );
         }
-        /*#content .left_menu #nav_dot li a::after{*/
-        /*    content: '';*/
+        /*#content .left_menu #nav_dot li a::before {*/
+        /*    content: "";*/
         /*    position: absolute;*/
-        /*    height: 23px;*/
-        /*    width: 6px;*/
-        /*    background-color: skyblue;*/
-        /*    right: 8px;*/
-        /*    transform: translateY(16px);*/
-        /*    border-radius: 2px;*/
+        /*    left: -15px;*/
+        /*    top: 0;*/
+        /*    width: 60px;*/
+        /*    height: 100%;*/
+        /*    background: #f7a53c;*/
+        /*    border-top-left-radius: 5px;*/
+        /*    border-bottom-left-radius: 5px;*/
+        /*    clip-path: ellipse(50% 50% at left center);*/
         /*}*/
+
         #content .left_menu #nav_dot li a img{
             transform: translateY(20%);
-            padding-left: 20px;
+            padding-left: 27px;
             padding-top: 10px;
-            padding-right: 34px;
+            padding-right: 10px;
             width: 25px;
             height: 25px;
         }
         #content .left_menu #nav_dot li a:hover{
-            background-color: #e2e2e2;
+            background-position: right center;
+            transform: translateY(-3px);
         }
         .on{
             background-color: rgb(19, 19, 19);
@@ -218,20 +250,20 @@
 <!--    </div>-->
 	<div class="navigation">
 		<ul>
-            <li target="main"><img src="../images/截图20250116132521.png" style="width:35px;height: 35px"></li>
-            <li><a style="font-family: 'STHupo'" href="../app-debug.apk" target="main">下载APP</a></li>
-            <li target="main"><img src="../../images/excel2.png" style="width:35px;height: 35px"></li>
-            <li><a style="font-family: 'STHupo'" href="../智慧门店收银系统(20231012).xlsm" target="main">下载Excel</a></li>
+            <li target="main"><img src="../images/下载.png" style="width:35px;height: 35px"></li>
+            <li  class="nav-a"><a  href="../app-debug.apk" target="main">下载APP</a></li>
+            <li target="main"><img src="../../images/下载excel.png" style="width:35px;height: 35px"></li>
+            <li  class="nav-a"><a  href="../智慧门店收银系统(20231012).xlsm" target="main" >下载Excel</a></li>
             <li target="main"><img src="../images/new_pics/人员.png" style="width:35px;height: 35px"></li>
 		 	<li target="main">欢迎您：{{datas[0].uname}}</li>
-            <li target="main"><img src="../images/修改1.png" style="width:35px;height: 35px"></li>
-			<li><a href="/users/password_toUpdate" target="main">密码修改</a></li>
-            <li target="main"><img src="../images/f18b2189aa345a767eb8b9e42b164970(1)(1).png" style="width:35px;height: 35px"></li>
-            <li><a href="/copyright" target="main">关于</a></li>
-            <li target="main"><img src="../images/企业微信截图_17370057492913.png" style="width:35px;height: 35px"></li>
-            <li><a href="/help" target="main">帮助</a></li>
-            <li target="main"><img src="../images/截图20250116135534.png" style="width:35px;height: 35px"></li>
-            <li><a href="http://localhost:3000/">退出</a></li>
+            <li target="main"><img src="../images/修改密码.png" style="width:35px;height: 35px"></li>
+			<li class="nav-a"><a href="/users/password_toUpdate" target="main">密码修改</a></li>
+            <li target="main"><img src="../images/关于.png" style="width:35px;height: 35px"></li>
+            <li class="nav-a"><a href="/copyright" target="main">关于</a></li>
+            <li target="main"><img src="../images/帮助.png" style="width:35px;height: 35px"></li>
+            <li class="nav-a"><a href="/help" target="main">帮助</a></li>
+            <li target="main"><img src="../images/退出.png" style="width:35px;height: 35px"></li>
+            <li class="nav-a"><a href="http://localhost:3000/">退出</a></li>
 		</ul>
 	</div>
 </div>
@@ -297,7 +329,7 @@
     </div>
     <div class="m-right">
         <div>
-            <iframe src="/welcome" name="main" class="main"></iframe>
+            <iframe id="iframe" src="/welcome" name="main" class="main"></iframe>
         </div>
     </div>
 </div>

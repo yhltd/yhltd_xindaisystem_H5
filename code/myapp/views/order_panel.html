@@ -19,7 +19,7 @@
         html,
         body {
             height: 100%;
-            zoom: 0.9;
+            zoom: 1.08;
         }
 
         #app {
@@ -171,6 +171,11 @@
             background-color: #fff;
             color: #0AA0F6;
         }
+
+        .hover a:hover{
+            background-color: white;
+            color: #0AA0F6!important;
+        }
         .modal{position:fixed;top:0;left:0;z-index:1050;display:none;width:100%;height:100%;overflow:hidden;outline:0}
         #jiezhang{
             width: 97%;
@@ -193,7 +198,7 @@
             width: 100%;
             margin: 5px auto;
             font-size: 22px;
-            background-color: #7ea1f1;
+            background-color: #fd9d1a;
             border-radius: 6px;
             display: flex;
             justify-content: space-between;
@@ -542,13 +547,16 @@
         background: #fff;
         overflow-y: scroll;
     }
+    .itemOrderNO,.itemName,.itemNum,.itemAmount{
+        white-space: normal; word-wrap: break-word;
+    }
 
     thead, tr, th, td {
         border: 0;
         margin: 0;
         padding: 0;
         /*width: 318px;*/
-        background-color: #ffffff;
+        background-color: rgba(255, 255, 255, 0);
         vertical-align: baseline;
         height: 37px;
         line-height: 37px;
@@ -572,9 +580,10 @@
         width: 98%;
         background-color: #f7f7f7;
         /*background-image: url('https://img1.baidu.com/it/u=1695799435,3749054909&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500');*/
-        background-image: url('../../images/diandan.webp');
-        background-size: cover;
+        /*background-image: url('../../images/diandan.webp');*/
         padding: 12px;
+        background-image: url(https://gips0.baidu.com/it/u=1542980621,3565762236&fm=3086&app=3086&f=JPEG&wm=1,baiduai3,0,0,13,9&wmo=5,5&w=1280&h=720);
+        background-size: 100% 109%;
     }
 
     .Lmenu {
@@ -629,8 +638,8 @@
     }
 
     .table{
-        width: 97%;
-        max-width: 97%;
+        width: 100%;
+        max-width: 100%;
         text-align: center;
     }
 
@@ -646,8 +655,8 @@
     }
 
     .Lblock .title{
-        border-top: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
+        /*border-top: 1px solid #ccc;*/
+        /*border-bottom: 1px solid #ccc;*/
 
     }
 
@@ -671,20 +680,21 @@
     .Lblock .title .itemAmount,
     .Lblock .cont .table tbody .itemAmount{
         /*text-align: right;*/
-        width: 60px;
+        /*width: 60px;*/
     }
 
     .Lblock .room_info h4{
+        font-size: 21px;
         font-weight: 400;
-        margin: 0 5px 0 12px;
+        /* margin: 0 5px 0 12px; */
         width: 155px;
         line-height: 50px;
         color: #1a1515;
     }
     .Lblock #empty_mask{
         flex: 1;
-        overflow: hidden;
-        /*width: 318px;*/
+        overflow:hidden;
+        width: 320px;
     }
 
     .Lblock .menu ul {
@@ -747,7 +757,7 @@
         color: #000;
         /*background-color: #ebe9e9;*/
         text-align: center;
-        background-color:rgb(188 209 253);
+        background-color:#f5e4a3f0
     }
 
     .Lblock #empty_mask .cont > table tbody tr{
@@ -765,9 +775,11 @@
 
     .Lblock #empty_mask .cont {
         /* width: 107%; */
-        /*overflow-y: auto;*/
+        overflow-y: auto;
+        font-size: 22px;
         height: 100%;
-        /* width: calc(100% + 17px);*/
+         /*width: calc(100% + 17px);*/
+        scrollbar-width: none;
     }
 
     .Lblock #empty_mask .cont table{
@@ -818,8 +830,9 @@
     }
 
     .Lblock .end {
-        margin-top: 8px;
-        padding: 9px 10px;
+        /*margin-top: 8px;*/
+        padding: 9px 0px;
+        width: 97%;
         height: 38px;
         font-size: 15px;
         display: flex;
@@ -862,10 +875,13 @@
     }
 
     .Lblock .button .but2 {
+        font-size: 30px;
+        height: 60px;
+        width: 180px;
         color: #fff;
         transition: .3s;
-        flex: 0 50%;
-        background-color: #ff0000b8;
+        /*flex: 0 50%;*/
+        background: #ff0000b8;
         border-radius: 10px;
         box-shadow: 0px 5px 8px rgb(0 0 0 / 20%);
         font-weight: normal;
@@ -888,17 +904,29 @@
     /*}*/
 
     .Lblock .button .but3 {
+        width: 180px;
+        height: 60px;
+        font-size: 30px;
         color: #fff;
         transition: .3s;
-        background-color: #0aa0f6;
+        background: #fd9e1a;
         border-radius: 10px;
         box-shadow: 0px 5px 8px rgb(0 0 0 / 20%);
         font-weight: normal;
     }
+    .but3:hover{
+        transform: translateY(-5px);
+        background: #d28315!important;
+    }
+
+    .but2:hover{
+        transform: translateY(-5px);
+        background: rgba(199, 2, 2, 0.72)!important;
+    }
     .index >div{
-        padding: 27px;
+        padding: 20px;
         /*background-color: #ffffff;*/
-        background-color: rgb(0 135 187 / 20%);
+        /*background-color: rgb(0 135 187 / 20%);*/
         border: 1px solid #ececec;
         border-radius: 15px;
 
@@ -945,9 +973,9 @@
         height: 40px;
         line-height: 40px;
         padding: 0;
-        background-color: #0aa0f6;
+        background-color: #1dc41c;
         font-weight: normal;
-        font-size: 16px
+        font-size: 30px
     }
 
     hr {
@@ -964,17 +992,19 @@
         padding: 0;
         background-color: #fdc139;
         font-weight: normal;
-        font-size: 16px;
+        font-size: 65px;
     }
 
     .btns .jian{
+        justify-content: center;
+        font-size: 90px;
+        display: flex;
         width: 100%;
         height: 40px;
         line-height: 40px;
         padding: 0;
         background-color:#fff;
         font-weight: normal;
-        font-size: 16px;
     }
 
     .Rblock {
@@ -1021,7 +1051,7 @@
         height: 53px;
         width: 97%;
         /* border-bottom: 2px solid #0AA0F6; */
-        background-color: #0AA0F6;
+        background-color: #fd9e1a;
         box-shadow: 0px 5px 8px rgb(10 160 246 / 30%);
         border-radius: 12px;
     }
@@ -1068,7 +1098,7 @@
     .Rblock .Bmenu .hover .menuType {
         /*color: rgb(32, 32, 246);*/
         color: white;
-        font-size: 17px;
+        font-size: 22px;
         font-weight: 400;
         padding: 7px 20px;
         /*background-color: #0AA0F6;*/
@@ -1141,6 +1171,7 @@
         justify-content: space-between;
         /*color: rgb(63, 175, 255);*/
         padding: 8px;
+        background: #96d7eb52;
     }
 
     .Rblock .block li .title {
@@ -1172,7 +1203,7 @@
         height: 36px;
         transition: .3s;
         margin-top: 8px;
-        font-size: 20px;
+        font-size: 24px;
         border: none;
     }
     .room_info #danhao1{
@@ -1298,7 +1329,7 @@
         background-color: #F7F7F7;
         /* margin: 10vh; */
         /*background-image: url("https://img1.baidu.com/it/u=1695799435,3749054909&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500");*/
-        background-image: url('../../images/diandan.webp');
+        background-image: url('https://gips0.baidu.com/it/u=1542980621,3565762236&fm=3086&app=3086&f=JPEG&wm=1,baiduai3,0,0,13,9&wmo=5,5&w=1280&h=720');
         background-size: cover;
         left: 50%;
         top: 10%;
@@ -1321,7 +1352,7 @@
     .modal-content-l{
         /*border: 1px solid;*/
         width: 10000%;
-        height: 97%;
+        height: 100%;
         /*background: green;*/
         border-radius: 6px;
         flex-grow: 1;
@@ -1353,7 +1384,7 @@
     .modal-footer .Product_details_close ,
     .modal-footer .Product_details_Ok{
         color: #fff;
-        background-color: #118eeb;
+        background-color: #fd9d1a;
         padding: 6px 36px;
         display: inline-block;
         margin-bottom: 0;
@@ -1415,6 +1446,62 @@
         cursor: pointer;
     }
 
+
+
+    .glass-container {
+        overflow: hidden;
+        width: 80%;
+        padding: 2.5rem;
+        /*background: rgba(255, 255, 255, 0.15);*/
+        background: linear-gradient(178deg, rgb(0 91 234 / 35%), #00c6fb94);
+
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2),
+        0 5px 15px rgba(0, 0, 0, 0.1),
+        inset 0 0 15px rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        color: white;
+        text-align: center;
+    }
+    .glass{
+
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2),
+        0 5px 15px rgba(0, 0, 0, 0.1),
+        inset 0 0 15px rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        color: white;
+        text-align: center;
+    }
+
+    /* 装饰性粒子 */
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.6);
+        animation: float 15s infinite linear;
+    }
+
+
+    /* 动画定义 */
+    @keyframes float {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(-100vh) rotate(360deg); }
+    }
+
+    @keyframes ripple {
+        to {
+            transform: scale(2);
+            opacity: 0;
+        }
+    }
 </style>
 
 <body>
@@ -1423,7 +1510,7 @@
 <!--    <div class="Lmenu">-->
 <!--    </div>-->
 
-    <div class="Lblock">
+    <div class="Lblock glass-container advanced-container" data-bg-id="1">
 <!--        <div class="menu">-->
 <!--            <ul>-->
 <!--            </ul>-->
@@ -1441,14 +1528,14 @@
 <!--               <li>金额</li>-->
 <!--               <li style="border-radius:0px 15px 0px 0px">操作</li>-->
 <!--           </div>-->
-        <div class="title" style=" color: #75c0ff;">
+        <div class="title" style=" color: #75c0ff; font-size: 22px;">
             <table class="table">
                 <thead>
-                    <tr>
-                        <td class="itemOrderNO" style="width: 68px">序号</td>
+                    <tr style="background: #fd9e1a;border-radius: 10px;">
+                        <td class="itemOrderNO" style="width: 68px   ;  border-radius: 10px 0 0 0px;">序号</td>
                         <td class="itemName" style="width: 68px">商品名称</td>
                         <td class="itemNum" style="width: 68px">数量</td>
-                        <td class="itemAmount" style="width: 41px">金额</td>
+                        <td class="itemAmount" style="width: 41px ;border-radius: 0px 10px 0px 0;">金额</td>
                     </tr>
                 </thead>
             </table>
@@ -1463,11 +1550,11 @@
             </div>
         </div>
         <div class="end">
-            <div>
+            <div style="font-size: 20px">
                 合计数量:
                 <span class="count">0</span>
             </div>
-            <div>
+            <div style="font-size: 20px">
                 合计金额:
                 <span>
                     ￥
@@ -1485,7 +1572,7 @@
 
 
     </div>
-    <div class="btns" >
+    <div class="btns  glass-container advanced-container" data-bg-id="2" >
 
         <!--<div>-->
             <!--<li target="main"><img src="../images/企业微信截图_1737706980108.png" style="width:35px;height: 35px"></li>-->
@@ -1494,13 +1581,13 @@
             <button id="jia" class="btn jia">+</button>
         </div>
         <div>
-            <button id="jian" class="btn jian">-</button>
+            <button id="jian" class="btn jian"><p style="line-height: 25px;">-</p></button>
         </div>
         <div>
             <button id="is_zengsong" class="btn is_zengsong">赠送</button>
         </div>
     </div>
-    <div class="Rblock">
+    <div class="Rblock  glass-container advanced-container" data-bg-id="3">
         <div class="Bmenu">
             <div class="menu">
                 <li class="hover">
@@ -1543,7 +1630,7 @@
             </div>
         </div>
         <div class="modal-body"></div>
-        <div class="details_modal-content">
+        <div class="details_modal-content glass">
             <!--            商品图片栏-->
             <div class="modal-content-l">
 
@@ -2139,7 +2226,7 @@
     $("body").on('click','.success',function(){
         //单点一份的1
         console.log('dd')
-        $('.success').css('background-color', 'rgb(188 209 253)');
+        $('.success').css('background-color', 'rgba(245,228,163,0.94)');
         $(this).css('background-color', '#ebe9e9');
     });
 
@@ -3050,6 +3137,41 @@
     $("body").on('click','#Bmenu_showAll',function (){
         tableShow()
     })
+
+    // 生成装饰粒子
+    function createParticles() {
+        const particleCount = 30;
+        document.querySelectorAll('.advanced-container').forEach(container => {
+            // 为每个容器独立生成粒子
+            const id = container.dataset.bgId;
+
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                // 随机大小 (2px - 8px)
+                const size = Math.random() * 6 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+
+                // 随机位置
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+
+                // 随机动画延迟和持续时间
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+
+                container.appendChild(particle);
+            }
+        });
+    }
+
+    // 初始化效果
+    window.addEventListener('DOMContentLoaded', () => {
+        createParticles();
+    });
 </script>
 </body>
 </html>

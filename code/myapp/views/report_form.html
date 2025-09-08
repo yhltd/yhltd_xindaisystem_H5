@@ -13,7 +13,7 @@
 </head>
 <style>
     #tableId {
-        width: 97%;
+        width: 100%;
     }
     .select_form>p {
         font-size: 12px;
@@ -29,7 +29,7 @@
         /* background-color: rgba(8, 46, 84, 0.5); */
         padding: 12px;
         /* color: white; */
-        background-color: #fff;
+        /*background-color: #fff;*/
     }
     #tableId tr td{
         padding-top: 23px;
@@ -42,7 +42,7 @@
         /* border-top: none; */
         /* border-left: none; */
         /* border-right: none; */
-        border-radius: 3px;
+        border-radius:8px;
         /* padding-left: 10px; */
         text-align: center;
         transition: .3s;
@@ -67,49 +67,58 @@
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
 </style>
-<body >
-<div id="header" style="background-color: rgba(0, 0, 0, 0.2)">
-    <div class="header-text">统计报表</div>
+<body class="bg-img">
+<div class="time-bar">
+    <div class="time-display">
+        <div class="time-text">当前页:统计报表</div>
+        <span class="time-text" id="current-date">2025年8月15日 星期五</span>
+
+        <span class="time-text" id="current-time">14:31:33</span>
+    </div>
+
+    <div class="session-time">
+        <i class="bi bi-hourglass-split icon"></i>
+        <span class="time-text">已使用: <span id="session-timer">00:00:00</span></span>
+    </div>
 </div>
 <div class="select">
     <div class="select_form">
         <input id="start_date" class="select_input" type="date" name="start_date"/>
-        <p>至</p>
         <input id="stop_date" class="select_input" type="date" name="stop_date"/>
         <button id="select-btn" class="select_btn right" type="button">查询</button>
     </div>
 </div>
 
 
-    <table id="tableId" border="0" cellspacing="0" cellpadding="0">
+<table id="tableId"  class="gradient-table" >
         <tr>
-            <td><p>会&nbsp&nbsp&nbsp员&nbsp&nbsp&nbsp总&nbsp&nbsp&nbsp数</p></td>
+            <td><p class="tongji">会&nbsp&nbsp&nbsp员&nbsp&nbsp&nbsp总&nbsp&nbsp&nbsp数</p></td>
             <td>
-                <input class="form_input" name="position" id="huiyuan_sum" readonly="readonly" />
+                <input class="form_input tongji" name="position" id="huiyuan_sum" readonly="readonly" />
             </td>
-            <td><p>下&nbsp单&nbsp会&nbsp员&nbsp人&nbsp数</p></td>
+            <td><p class="tongji">下&nbsp单&nbsp会&nbsp员&nbsp人&nbsp数</p></td>
             <td>
-                <input class="form_input" name="uname" id="xiadan_sum" readonly="readonly"/>
+                <input class="form_input tongji" name="uname" id="xiadan_sum" readonly="readonly"/>
             </td>
         </tr>
         <tr>
-            <td><p>订&nbsp&nbsp&nbsp单&nbsp&nbsp&nbsp总&nbsp&nbsp&nbsp数</p></td>
+            <td><p class="tongji">订&nbsp&nbsp&nbsp单&nbsp&nbsp&nbsp总&nbsp&nbsp&nbsp数</p></td>
             <td>
-                <input class="form_input" name="account" id="dingdan_sum" readonly="readonly"/>
+                <input class="form_input tongji" name="account" id="dingdan_sum" readonly="readonly"/>
             </td>
-            <td><p>消&nbsp&nbsp&nbsp费&nbsp&nbsp&nbsp金&nbsp&nbsp&nbsp额</p></td>
+            <td><p class="tongji">消&nbsp&nbsp&nbsp费&nbsp&nbsp&nbsp金&nbsp&nbsp&nbsp额</p></td>
             <td>
-                <input class="form_input" name="password" id="xiaofei_sum" readonly="readonly"/>
+                <input class="form_input tongji" name="password" id="xiaofei_sum" readonly="readonly"/>
             </td>
         </tr>
         <tr>
-            <td><p>实&nbsp&nbsp&nbsp收&nbsp&nbsp&nbsp金&nbsp&nbsp&nbsp额</p></td>
+            <td><p class="tongji">实&nbsp&nbsp&nbsp收&nbsp&nbsp&nbsp金&nbsp&nbsp&nbsp额</p></td>
             <td>
-                <input class="form_input" name="account" id="shishou_sum" readonly="readonly"/>
+                <input class="form_input tongji" name="account" id="shishou_sum" readonly="readonly"/>
             </td>
-            <td><p>优&nbsp&nbsp&nbsp惠&nbsp&nbsp&nbsp金&nbsp&nbsp&nbsp额</p></td>
+            <td><p class="tongji">优&nbsp&nbsp&nbsp惠&nbsp&nbsp&nbsp金&nbsp&nbsp&nbsp额</p></td>
             <td>
-                <input class="form_input" name="password" id="youhui_sum" readonly="readonly"/>
+                <input class="form_input tongji" name="password" id="youhui_sum" readonly="readonly"/>
             </td>
         </tr>
 
@@ -249,15 +258,30 @@
         var option;
 
         option = {
+            backgroundColor:'#f4e4a6',
+
             title: {
                 text: '点单收入情况汇总',
+                textStyle: {
+                    fontSize:25
+                }
             },
             xAxis: {
                 type: 'category',
-                data: data1
+                data: data1,
+                axisLabel: {
+                    textStyle: {
+                        fontSize: 18  // 设置字体大小为14
+                    }
+                }
             },
             yAxis: {
-                type: 'value'
+                type: 'value',
+                axisLabel: {
+                    textStyle: {
+                        fontSize: 18  // 设置字体大小为14
+                    }
+                }
             },
             series: [
                 {
@@ -286,6 +310,33 @@
 
 
     }
+
+    // 初始化时间显示
+    function updateTime() {
+        const now = new Date();
+        document.getElementById('current-date').textContent =
+            `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 星期${['日','一','二','三','四','五','六'][now.getDay()]}`;
+        document.getElementById('current-time').textContent =
+            `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+    }
+
+    // 会话计时器
+    let startTime = Date.now();
+    function updateSessionTime() {
+        const elapsed = Date.now() - startTime;
+        const hours = Math.floor(elapsed / 3600000);
+        const minutes = Math.floor((elapsed % 3600000) / 60000);
+        const seconds = Math.floor((elapsed % 60000) / 1000);
+
+        document.getElementById('session-timer').textContent =
+            `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+    }
+
+    // 启动定时器
+    updateTime();
+    updateSessionTime();
+    setInterval(updateTime, 1000);
+    setInterval(updateSessionTime, 1000);
 </script>
 </html>
 <SCRIPT Language=VBScript></SCRIPT>

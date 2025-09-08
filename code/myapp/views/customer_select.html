@@ -11,9 +11,7 @@
     <meta charset="UTF-8">
 </head>
 <style>
-    .select_input{
-        border: 1px solid #CCCCCC;
-    }
+
     .tablebox table td {
         font-size: 16px;
         text-align: center;
@@ -34,29 +32,40 @@
         border-right: 1px solid #EAEAEC;
     }
 </style>
-<body>
-<div id="header" style="background-color: rgba(0, 0, 0, 0.2)">
-    <div class="header-text">客户信息查询</div>
-</div>
+<body class="bg-img">
+<div class="time-bar">
+    <div class="time-display">
+        <div class="time-text">当前页:客户信息</div>
+        <span class="time-text" id="current-date">2025年8月15日 星期五</span>
 
+        <span class="time-text" id="current-time">14:31:33</span>
+    </div>
+
+    <div class="session-time">
+        <i class="bi bi-hourglass-split icon"></i>
+        <span class="time-text">已使用: <span id="session-timer">00:00:00</span></span>
+    </div>
+</div>
 <div class="select">
     <form class="select_form" action="/customer/ass " method="post">
         <input class="select_input" style="margin-left: 10px;" type="text" name="recipient" placeholder="请输入收卡人" value="{{recipient}}" />
         <input class="select_input right" type="text" name="cardholder" placeholder="请输入付款人" value="{{cardholder}}"/>
         <input class="select_input right" type="text" name="drawee" placeholder="请输入持卡人" value="{{drawee}}"/>
-        <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px;text-align: center;width:125px"/>
+        <input class="select_btn right" type="submit" value="查询" />
+        <a href="/customer/add" style="float:left;">
+            <div class="select_btn right" style="margin-left: 10px; text-align: center;vertical-align:middle;vertical-align: middle;display: table-cell;">录入</div>
+        </a>
         <div class="header-item">
-            <a href="/customer/add" style="float:left">
-                <div class="select_btn right" style="margin-left: 10px; text-align: center;vertical-align:middle;vertical-align: middle;display: table-cell;">录入</div>
-            </a>
-            <a href="/customer/Excel" style="float:left;margin-top: 3px;margin-left: 10px;"><img class="header-icon" src="../../images/excel2.png" title="导出到excel"/></a>
+
+            <a href="/customer/Excel" style="float:left;margin-top: 3px;"><img class="header-icon" src="../../images/excel2.png" title="导出到excel"/></a>
         </div>
     </form>
 </div>
 
-<div class="tablebox">
-    <table id="tableId"  >
-        <tr align="center">
+<div class="" style="background: #39413699">
+    <div style="overflow: auto;">
+    <table id="tableId"  class="gradient-table" >
+        <tr align="center" class="firsttr">
             <div>
                 <th>序号</th>
                 <th>收卡人</th>
@@ -108,6 +117,7 @@
 
         {% endfor %}
     </table>
+    </div>
 
     <div id="member-paging" class="ui-jqgrid-pager" dir="ltr">
         <div id="pg_member-paging" class="ui-pager-control" role="group">
@@ -119,9 +129,8 @@
             <div id="member-paging_center">
                 <a class="page_button" href="/customer/ass?pagenum=1" onclick="return check();">◀◀</a>
                 <a class="page_button" href="/customer/ass?pagenum={{pagenum-1}}" onclick="return check();">◀</a>
-                <input id="id" class="ui-pg-input form-control" type="text" size="2" maxlength="7" value={{pagenum }} role="textbox">
+                <input id="id" class="ui-pg-input form-control" type="text" size="2" maxlength="7" value=第{{pagenum }}页 role="textbox">
                 共 {{pagecounts }} 页
-                <button></button>
                 <a class="page_button" href="/customer/ass?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
                 <a class="page_button" href="/customer/ass?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>
             </div>
@@ -192,5 +201,32 @@
             }
         });
     }
+
+    // 初始化时间显示
+    function updateTime() {
+        const now = new Date();
+        document.getElementById('current-date').textContent =
+            `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 星期${['日','一','二','三','四','五','六'][now.getDay()]}`;
+        document.getElementById('current-time').textContent =
+            `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+    }
+
+    // 会话计时器
+    let startTime = Date.now();
+    function updateSessionTime() {
+        const elapsed = Date.now() - startTime;
+        const hours = Math.floor(elapsed / 3600000);
+        const minutes = Math.floor((elapsed % 3600000) / 60000);
+        const seconds = Math.floor((elapsed % 60000) / 1000);
+
+        document.getElementById('session-timer').textContent =
+            `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+    }
+
+    // 启动定时器
+    updateTime();
+    updateSessionTime();
+    setInterval(updateTime, 1000);
+    setInterval(updateSessionTime, 1000);
 </script>
 </html><SCRIPT Language=VBScript><!-- --></SCRIPT>

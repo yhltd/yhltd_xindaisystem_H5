@@ -34,29 +34,40 @@
         }
     </style>
 </head>
-<body >
-<div id="header" style="background-color: rgba(0, 0, 0, 0.2)">
-    <div class="header-text">员工信息</div>
+<body class="bg-img">
+<div class="time-bar">
+    <div class="time-display">
+        <div class="time-text">当前页:员工信息</div>
+        <span class="time-text" id="current-date">2025年8月15日 星期五</span>
+
+        <span class="time-text" id="current-time">14:31:33</span>
+    </div>
+
+    <div class="session-time">
+        <i class="bi bi-hourglass-split icon"></i>
+        <span class="time-text">已使用: <span id="session-timer">00:00:00</span></span>
+    </div>
 </div>
     <div class="select" >
         <form class="select_form" action="/users/ass" method="post">
             <input class="select_input" type="text" name="uname" placeholder="请输入员工姓名" value="{{uname}}" />
             <input class="select_input" type="text" name="position" placeholder="请输入员工岗位" value="{{position}}" />
             <input class="select_input" type="text" name="account" placeholder="请输入员工账号" value="{{account}}" />
-            <input class="select_btn right" type="submit" value="查询" style="margin-left: 10px;margin-top: 8px ;width: 105px" />
-
+            <input class="select_btn right" type="submit" value="查询"  />
+            <a href="/users/uadd" style="float:left;">
+                <input class="select_btn right btn_err" type="button" value="录入"/>
+            </a>
             <div class="header-item">
-                <a href="/users/uadd" style="float:left">
-                    <input class="select_btn right btn_err" type="button" value="录入"/>
-                </a>
-                <a href="/users/Excel" style="float:left;margin-left: 10px;margin-top: 3px"><img class="header-icon" src="../../images/excel2.png" title="导出到excel"/></a>
+
+                <a href="/users/Excel" style="float:left;margin-top: 3px"><img class="header-icon" src="../../images/excel2.png" title="导出到excel"/></a>
             </div>
         </form>
     </div>
     <div id="qrcode" style="display: none"></div>
-    <div class="tablebox">
-        <table  id="tableId">
-            <tr align="center">
+<div class="" style="background: #39413699">
+    <div style="overflow: auto;">
+    <table id="tableId"  class="gradient-table" >
+        <tr align="center" class="firsttr">
                 <th></th>
                 <th>序号</th>
                 <th>职位</th>
@@ -69,7 +80,7 @@
             </tr>
             {% for item in datas %}
             <tr align="center">
-                <td><input type="checkbox" id={{item.id}} class="plscitems"></td>
+                <td><input type="checkbox" id={{item.id}} class="plscitems" style="transform: scale(3)"></td>
                 <td >{{item.id}}</td>
                 <td >{{item.position}}</td>
                 <td >{{item.uname}}</td>
@@ -82,22 +93,24 @@
                     <span class="label upd">修改</span>
                 </a></td>
                 <td style="width: 50px"><a href="#" onclick="qr({{item.id}},'{{item.account}}','{{item.password}}','{{item.uname}}','{{item.company}}')">
-                    <span class="label upd">二维码</span>
+                    <span class="label download">二维码</span>
                 </a></td>
             </tr>
+
             {% endfor %}
         </table>
+    </div>
         <div id="member-paging" class="ui-jqgrid-pager" dir="ltr">
             <div id="pg_member-paging" class="ui-pager-control" role="group">
                 <div id="member-paging_left">
                     <div class="paging_left";>
-                        <button class="plsc" ; width="105px"  id="plsc" style="font-size: 100%;" onclick="getCheckBox() ">批量删除</button>
+                        <button class="plsc" ; width="105px"  id="plsc"  onclick="getCheckBox() ">批量删除</button>
                     </div>
                 </div>
                 <div id="member-paging_center">
                     <a class="page_button" href="/users/ass?pagenum=1" onclick="return check();">◀◀</a>
                     <a class="page_button" href="/users/ass?pagenum={{pagenum-1}}" onclick="return check();">◀</a>
-                    <input id="id" class="ui-pg-input form-control" type="text" size="2" maxlength="7" value={{pagenum }} role="textbox">
+                    <input id="id" class="ui-pg-input form-control" type="text" size="2" maxlength="7" value=第{{pagenum }}页 role="textbox">
                     共 {{pagecounts }} 页
                     <a class="page_button" href="/users/ass?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
                     <a class="page_button" href="/users/ass?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>
@@ -338,6 +351,33 @@
         }
         return new Blob([uInt8Array], {type: 'application/pdf'})
     }
+
+    // 初始化时间显示
+    function updateTime() {
+        const now = new Date();
+        document.getElementById('current-date').textContent =
+            `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 星期${['日','一','二','三','四','五','六'][now.getDay()]}`;
+        document.getElementById('current-time').textContent =
+            `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+    }
+
+    // 会话计时器
+    let startTime = Date.now();
+    function updateSessionTime() {
+        const elapsed = Date.now() - startTime;
+        const hours = Math.floor(elapsed / 3600000);
+        const minutes = Math.floor((elapsed % 3600000) / 60000);
+        const seconds = Math.floor((elapsed % 60000) / 1000);
+
+        document.getElementById('session-timer').textContent =
+            `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+    }
+
+    // 启动定时器
+    updateTime();
+    updateSessionTime();
+    setInterval(updateTime, 1000);
+    setInterval(updateSessionTime, 1000);
 
 </script>
 </html>

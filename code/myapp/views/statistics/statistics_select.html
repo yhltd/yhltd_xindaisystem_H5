@@ -14,6 +14,33 @@
         var date2 = document.getElementById("date2");
         date2.value ="";
     }
+
+    // 初始化时间显示
+    function updateTime() {
+        const now = new Date();
+        document.getElementById('current-date').textContent =
+            `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 星期${['日','一','二','三','四','五','六'][now.getDay()]}`;
+        document.getElementById('current-time').textContent =
+            `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+    }
+
+    // 会话计时器
+    let startTime = Date.now();
+    function updateSessionTime() {
+        const elapsed = Date.now() - startTime;
+        const hours = Math.floor(elapsed / 3600000);
+        const minutes = Math.floor((elapsed % 3600000) / 60000);
+        const seconds = Math.floor((elapsed % 60000) / 1000);
+
+        document.getElementById('session-timer').textContent =
+            `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+    }
+
+    // 启动定时器
+    updateTime();
+    updateSessionTime();
+    setInterval(updateTime, 1000);
+    setInterval(updateSessionTime, 1000);
 </script>
 <style>
     .tablebox table td {
@@ -37,25 +64,35 @@
     }
 </style>
 </head>
-<div id="header" style="background-color: rgba(0, 0, 0, 0.2)">
-    <div class="header-text">统计信息查询</div>
-</div>
+<body class="bg-img">
+<div class="time-bar">
+    <div class="time-display">
+        <div class="time-text">当前页:交易总额</div>
+        <span class="time-text" id="current-date">2025年8月15日 星期五</span>
 
+        <span class="time-text" id="current-time">14:31:33</span>
+    </div>
+
+    <div class="session-time">
+        <i class="bi bi-hourglass-split icon"></i>
+        <span class="time-text">已使用: <span id="session-timer">00:00:00</span></span>
+    </div>
+</div>
 <div class="select">
     <form class="select_form" action="/statistics/ass " method="post">
         <input class="select_input right" type="date" id="date1" name="date1" value="{{date1}}" style="margin-right: 8px;"/>
-            <P>至</P>
         <input class="select_input right" type="date" id="date2" name="date2" value="{{date2}}" style="margin-left: 8px;"/>
-        <input class="select_btn" type="submit" value="查询" style="margin-left: 10px;"/>
+        <input class="select_btn" type="submit" value="查询" />
         <input class="select_btn" type="button" value="清空" onclick="run()" style="margin-left: 10px;"/>
         <div class="header-item">
             <a href="/statistics/Excel"><img class="header-icon" src="../../images/excel2.png" title="导出到excel"/></a>
         </div>
     </form>
 </div>
-<div class="tablebox" >
-    <table  id="tableId" border="0" cellspacing="0" cellpadding="0">
-        <tr align="center">
+<div class="" style="background: #39413699">
+    <div style="overflow: auto;">
+    <table id="tableId"  class="gradient-table" >
+        <tr align="center" class="firsttr">
             <th>日期</th>
             <th>交易额</th>
             <th>已刷额</th>
@@ -83,6 +120,7 @@
         </tr>
         {% endfor %}
     </table>
+    </div>
     <div id="member-paging" class="ui-jqgrid-pager" dir="ltr">
         <div id="pg_member-paging" class="ui-pager-control" role="group">
             <div id="member-paging_left">
@@ -93,7 +131,7 @@
             <div id="member-paging_center">
                 <a class="page_button" href="/statistics/ass?pagenum=1" onclick="return check();">◀◀</a>
                 <a class="page_button" href="/statistics/ass?pagenum={{pagenum-1}}" onclick="return check();">◀</a>
-                <input id="id" class="ui-pg-input form-control" type="text" size="2" maxlength="7" value={{pagenum }} role="textbox">
+                <input id="id" class="ui-pg-input form-control" type="text" size="2" maxlength="7" value=第{{pagenum }}页 role="textbox">
                 共 {{pagecounts }} 页
                 <a class="page_button" href="/statistics/ass?pagenum={{pagenum+1}}" onclick="return check1();">▶</a>
                 <a class="page_button" href="/statistics/ass?pagenum={{pagecounts}}" onclick="return check1();">▶▶</a>

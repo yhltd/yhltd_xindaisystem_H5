@@ -70,6 +70,102 @@
         text-decoration: none;
     }
 
+    /* =================登录容器主样式===================== */
+    .login-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        max-width: 420px;
+        overflow: hidden;
+        transform: translateY(0);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+
+    .login-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 25px;
+        text-align: center;
+    }
+
+    .login-body {
+        padding: 30px;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 25px;
+        width: 100%;
+    }
+
+
+
+    .form-input {
+        width: 100%;
+        padding: 14px 20px 14px 45px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        color: black;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    }
+
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+        color: black;
+    }
+
+    .checkbox-container input {
+        width: 18px;
+        height: 18px;
+        margin: 0 10px 0 0 ;
+        accent-color: #667eea;
+    }
+
+    .login-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .login-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .login-btn:active {
+        transform: translateY(0);
+    }
+
+    .error-message {
+        margin-top: 20px;
+        padding: 12px;
+        background-color: rgba(239, 68, 68, 0.1);
+        border-radius: 8px;
+        text-align: center;
+        color: #ef4444;
+        animation: fadeIn 0.3s ease;
+    }
+     /*============================================*/
+
 </style>
 
 </head>
@@ -81,27 +177,31 @@
         <div style="float:left">
             <img src="../images/login_yuansu1.png" style="width:350px;margin-top: 80%">
         </div>
-        <div class="col-sm-8 col-md-5 center-auto pd-sm-50 pd-xs-20 main_content" style="float:right">
-            <p class="text-center font16">商家端用户登录</p>
+        <div class=" login-container " style="float:right">
+<!--            <p class="text-center font16">商家端用户登录</p>-->
+            <div class="login-header">
+                <h1 class="text-2xl font-bold">商家端用户登录</h1>
+            </div>
+            <div class="login-body">
             <form action="/users/search" method="post" align="center">
-                <div class="form-group mg-t20">
+                <div class="  input-group">
                     <i class="icon-company icon_font"></i>
-                    <input  name="company" class="login_input"  placeholder="请输入公司名称" value="{{company}}" />
+                    <input  name="company"class="form-input" placeholder="请输入公司名称" value="{{company}}" />
                 </div>
-                <div class="form-group mg-t20">
+                <div class="input-group ">
                     <i class="icon-user icon_font"></i>
-                    <input  name="account" class="login_input"  placeholder="请输入账户" value = "{{account}}" />
+                    <input  name="account" class="form-input" placeholder="请输入账户" value = "{{account}}" />
                 </div>
-                <div class="form-group mg-t20">
+                <div class="input-group">
                     <i class="icon-lock icon_font"></i>
-                    <input  type="password" name="password" class="login_input"  placeholder="请输入密码" value = "{{password}}" />
+                    <input  type="password" name="password" class="form-input" placeholder="请输入密码" value = "{{password}}" />
                 </div>
-                <div class="checkbox mg-b25">
-                    <label>
+                <div class="checkbox-container">
+                    <label style="font-weight: 500; display: flex;">
                         <input name="isRem" type="checkbox" id="remPwd" />记住我的登录信息
                     </label>
                 </div>
-                <button type="submit" class="login_btn">登 录</button>
+                <button type="submit" class="login-btn">登 录</button>
             </form>
 
             <h3 style="color: red">{{msg}}</h3>
@@ -117,7 +217,7 @@
             <!--</ul>-->
         <!--</div>-->
     </div><!--container end-->
-
+    </div>
 </body>
 <script>
 
