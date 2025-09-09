@@ -48,6 +48,7 @@ router.get('/', function (req, res, next) {
     let isRem = value[4];
     if (isRem) {
       res.render("users.html", {company: company, account: account, password: password})
+
     } else {
       res.render("users.html");
     }

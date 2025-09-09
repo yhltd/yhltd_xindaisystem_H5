@@ -9,6 +9,7 @@ var pool = mysql.createPool({
     dateString: true
 });
 
+
 function query(sql, callback) {
     pool.getConnection(function (err, connection) {
         if(connection == undefined){
@@ -20,5 +21,6 @@ function query(sql, callback) {
         });
     });
 }
+
 
 exports.query = query;

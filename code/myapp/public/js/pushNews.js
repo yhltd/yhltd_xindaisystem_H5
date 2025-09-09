@@ -1,0 +1,284 @@
+let carouselInterval = null; // 全局轮播定时器
+
+function fetchPushNews() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/pushnews/getnews', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.withCredentials = true;
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    var data = JSON.parse(xhr.responseText);
+
+                    if (data.success) {
+                        const newsData = data.data.recordset || data.data.recordsets[0] || [];
+
+                        if (newsData && newsData.length > 0) {
+                            const firstNews = newsData[0];
+
+                            // 清除之前的定时器
+                            if (carouselInterval) {
+                                clearInterval(carouselInterval);
+                                carouselInterval = null;
+                            }
+
+                            // 设置主图片（悬浮图）
+                            const xuantu = firstNews.tptop1 ? "data:image/jpg;base64," + firstNews.tptop1 : "";
+
+                            // 设置悬浮图
+                            const targetImg = document.querySelector('.index-images img');
+                            if (targetImg && xuantu) {
+                                targetImg.src = xuantu;
+                                targetImg.alt = "悬浮主图";
+                            }
+
+                            // 设置轮播图片
+                            const carouselImages = [];
+
+                            // 添加轮播图片（只添加有数据的图片）
+                            if (firstNews.tptop2 && firstNews.tptop2.trim() !== "") {
+                                carouselImages.push({
+                                    url: "data:image/jpg;base64," + firstNews.tptop2,
+                                    alt: "轮播图1"
+                                });
+                            }
+                            if (firstNews.tptop3 && firstNews.tptop3.trim() !== "") {
+                                carouselImages.push({
+                                    url: "data:image/jpg;base64," + firstNews.tptop3,
+                                    alt: "轮播图2"
+                                });
+                            }
+                            if (firstNews.tptop4 && firstNews.tptop4.trim() !== "") {
+                                carouselImages.push({
+                                    url: "data:image/jpg;base64," + firstNews.tptop4,
+                                    alt: "轮播图3"
+                                });
+                            }
+                            if (firstNews.tptop5 && firstNews.tptop5.trim() !== "") {
+                                carouselImages.push({
+                                    url: "data:image/jpg;base64," + firstNews.tptop5,
+                                    alt: "轮播图4"
+                                });
+                            }
+                            if (firstNews.tptop6 && firstNews.tptop6.trim() !== "") {
+                                carouselImages.push({
+                                    url: "data:image/jpg;base64," + firstNews.tptop6,
+                                    alt: "轮播图5"
+                                });
+                            }
+
+                            // 如果没有轮播图片，使用默认图片
+                            if (carouselImages.length === 0) {
+                                carouselImages.push({
+                                    url: "https://picsum.photos/id/10/800/500",
+                                    alt: "默认轮播图"
+                                });
+                            }
+
+                            const tankuan = firstNews.xuankuan || 100;
+                            const dinggao = firstNews.topgao || 300;
+                            const textboxValue = firstNews.textbox || "";
+
+                            // 存储到localStorage
+                            localStorage.setItem('marqueeTextValue', textboxValue);
+
+
+                            // 设置容器样式
+                            const carouselContainer = document.querySelector('.carousel-container');
+                            if (carouselContainer) {
+                                carouselContainer.style.width = '100%';
+                                carouselContainer.style.height = dinggao + 'px';
+                            }
+
+                            // 初始化轮播图（只有在有轮播图片的情况下）
+                            if (carouselImages.length > 0) {
+                                initCarousel(carouselImages, dinggao);
+                            }
+
+                            // 设置CSS变量
+                            document.documentElement.style.setProperty('--tankuan', tankuan + "px");
+                            document.documentElement.style.setProperty('--dinggao', dinggao + "px");
+
+                            // 更新跑马灯文本
+                            updateMarqueeText(textboxValue);
+
+                        } else {
+                            console.warn(' 没有找到新闻数据');
+                        }
+                    } else {
+                        console.warn('请求返回失败:', data.message);
+                    }
+                } catch (e) {
+                    console.error('JSON解析错误:', e);
+                }
+            } else {
+                console.error('HTTP错误! 状态码:', xhr.status);
+            }
+        }
+    };
+
+    xhr.onerror = function() {
+        console.error('网络请求失败');
+    };
+
+    xhr.timeout = 10000;
+    xhr.ontimeout = function() {
+        console.error('请求超时');
+    };
+
+    xhr.send();
+}
+
+// 初始化轮播图
+function initCarousel(carouselImages, dinggao) {
+    let currentIndex = 0;
+    const totalItems = carouselImages.length;
+
+    // 获取轮播图容器
+    const carouselImagesContainer = document.getElementById('carouselImages');
+
+    // 检查容器是否存在
+    if (!carouselImagesContainer) {
+        console.error('轮播图容器不存在');
+        return;
+    }
+
+    // 清空现有的轮播内容
+    carouselImagesContainer.innerHTML = '';
+
+    // 动态生成轮播项
+    carouselImages.forEach((image, index) => {
+        // 创建轮播项
+        const item = document.createElement('div');
+        item.className = 'carousel-item';
+        item.id = `carouselImg${index + 1}`;
+
+        if (index === 0) {
+            item.classList.add('active');
+        }
+
+        const img = document.createElement('img');
+        img.src = image.url;
+        img.alt = image.alt;
+        img.style.width = '100%';
+        img.style.height = dinggao + 'px';
+        img.style.objectFit = 'cover';
+
+        item.appendChild(img);
+        carouselImagesContainer.appendChild(item);
+    });
+
+    // 切换到指定幻灯片
+    function goToSlide(index) {
+        // 隐藏所有图片
+        document.querySelectorAll('.carousel-item').forEach(item => {
+            item.classList.remove('active');
+        });
+
+        // 显示指定图片
+        const nextItem = document.getElementById(`carouselImg${index + 1}`);
+        if (nextItem) {
+            nextItem.classList.add('active');
+        }
+
+        currentIndex = index;
+    }
+
+    // 切换图片函数
+    function switchImage() {
+        goToSlide((currentIndex + 1) % totalItems);
+    }
+
+    // 设置自动切换（只有在多张图片的情况下）
+    if (totalItems > 1) {
+        carouselInterval = setInterval(switchImage, 5000);
+    }
+
+    // 鼠标悬停时暂停轮播
+    const container = document.querySelector('.carousel-container');
+    if (container && totalItems > 1) {
+        container.addEventListener('mouseenter', () => {
+            if (carouselInterval) {
+                clearInterval(carouselInterval);
+                carouselInterval = null;
+            }
+        });
+
+        container.addEventListener('mouseleave', () => {
+            if (!carouselInterval) {
+                carouselInterval = setInterval(switchImage, 5000);
+            }
+        });
+    }
+}
+
+// 更新跑马灯文本
+function updateMarqueeText(textboxValue) {
+    const marqueeText = document.getElementById('marqueeText');
+    if (marqueeText && textboxValue) {
+        marqueeText.textContent = textboxValue;
+    }
+}
+
+// 隐藏轮播图
+function yinClick() {
+    const carouselContainer = document.querySelector('.carousel-container');
+    if (carouselContainer) {
+        carouselContainer.style.display = 'none';
+    }
+}
+
+// 隐藏悬浮图
+function tanClick() {
+    const carouselIndex = document.querySelector('.carousel-index');
+    if (carouselIndex) {
+        carouselIndex.style.display = 'none';
+    }
+}
+
+// 显示轮播图（如果需要的话）
+function showCarousel() {
+    const carouselContainer = document.querySelector('.carousel-container');
+    if (carouselContainer) {
+        carouselContainer.style.display = 'block';
+    }
+}
+
+// 显示悬浮图（如果需要的话）
+function showPopupImage() {
+    const carouselIndex = document.querySelector('.carousel-index');
+    if (carouselIndex) {
+        carouselIndex.style.display = 'block';
+    }
+}
+
+// 页面卸载时清理定时器
+window.addEventListener('beforeunload', function() {
+    if (carouselInterval) {
+        clearInterval(carouselInterval);
+        carouselInterval = null;
+    }
+});
+
+// DOM加载完成后执行
+document.addEventListener('DOMContentLoaded', function() {
+    // 从localStorage获取跑马灯文本
+    const textboxValue = localStorage.getItem('marqueeTextValue');
+    updateMarqueeText(textboxValue);
+
+    // 开始获取新闻数据
+    fetchPushNews();
+});
+
+// 添加到全局作用域
+window.testPushNews = function() {
+    fetchPushNews();
+};
+
+window.fetchPushNews = fetchPushNews;
+window.yinClick = yinClick;
+window.tanClick = tanClick;
+window.showCarousel = showCarousel;
+window.showPopupImage = showPopupImage;
