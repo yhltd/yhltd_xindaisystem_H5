@@ -675,7 +675,7 @@ member-paging_left{
 }/*====================================================================*/
 
 .bg-img{
-    background: url(https://gips3.baidu.com/it/u=3434029378,3459108034&fm=3086&app=3086&f=JPEG&wm=1,baiduai3,0,0,13,9&wmo=5,5&w=1024&h=1024);
+    background: url(../images/biaoge-img.png);
     background-size: cover;
     overflow-x: hidden;
 }

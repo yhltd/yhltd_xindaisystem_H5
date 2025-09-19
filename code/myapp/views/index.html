@@ -120,11 +120,23 @@
             border-left:0px solid #32323a;
             /*改之前是#444c63*/
             /*background-color: #1e4258;*/
-            background:linear-gradient(to right, #fb7b1c, #fc811c)
+            background:linear-gradient(to right, #fb7b1c, #fc811c);
+            display: flex;
+
 
         }
+        .left_menu_ri{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:linear-gradient(to right, #fb7b1c, #fc811c);
+        }
+        .left_menu_ri img{
+            width: 20px;
+            height: 40px;
+        }
         .left_menu ul li {
-            width:210px;
+            width:190px;
             display:inline;
             /*border-bottom: 2.5px solid #7c7c7c;*/
             padding-bottom: 4px;
@@ -1119,7 +1131,7 @@
     <button type="button" class="index-btn-div" onclick="tanClick()">×</button>
     <div class="index-images">
         <div class="index-item" id="Div1">
-            <img src="https://picsum.photos/id/13/800/500" alt="图5">
+            <img src="" alt="图5">
         </div>
     </div>
 </div>
@@ -1167,9 +1179,10 @@
 </div>
 <div id="content">
 	<div class="left_menu">
+        <div class="left_menu_lf">
 		<ul id="nav_dot">
             <li>
-                <a href="/welcome" target="main" ><img src="../images/new_pics/首页.png">首&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp页</a>
+                <a href="/welcome" target="main" ><img src="../images/new_pics/首页.png">首&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp页</a>
             </li>
             <li>
                 <a href="/customer/select" target="main"><img src="../images/new_pics/客户信息管理.png">客&nbsp户&nbsp信&nbsp息</a>
@@ -1199,6 +1212,9 @@
                 <a href="/order_panel/select" target="main"><img src="../images/new_pics/点餐.png">点&nbsp单&nbsp面&nbsp板</a>
             </li>
             <li>
+                <a href="/order_table/ass" target="main"><img src="../images/new_pics/桌位.png">桌&nbsp位&nbsp管&nbsp理</a>
+            </li>
+            <li>
                 <a href="/orders/select" target="main"><img src="../images/new_pics/订单信息.png">订&nbsp单&nbsp信&nbsp息</a>
             </li>
             <li>
@@ -1211,7 +1227,7 @@
                 <a href="../app-debug.apk" target="main"><img src="../images/new_pics/统计报表.png">下&nbsp载&nbspAPP</a>
             </li>
             <li>
-                <a href="../智慧门店收银系统(20231012).xlsm" target="main"><img src="../images/new_pics/统计报表.png">下&nbsp载&nbspExcel</a>
+                <a href="../智慧门店收银系统(20231012).xlsm" target="main"><img src="../images/new_pics/统计报表.png">下载Excel</a>
             </li>
 <!--            <li>-->
 <!--                <a href="/event_discount/select" target="main"><img src="../images/new_pics/统计报表.png">优&nbsp惠&nbsp方&nbsp案</a>-->
@@ -1223,6 +1239,10 @@
                 <a href="#javascript" onclick="exitFullScreen()"><img src="../images/new_pics/tuichuquanping.png">退&nbsp出&nbsp全&nbsp屏</a>
             </li>
         </ul>
+        </div>
+        <div class="left_menu_ri">
+            <img id="daohang1" src="../images/new_pics/收起.png">
+        </div>
 <!--        <img src="../images/logo2.png"  />-->
     </div>
     <div class="m-right">
@@ -1248,8 +1268,20 @@
             $(".left_menu").width(0);
             $(".m-right").css("marginLeft",0);
         }else{
-            $(".left_menu").width(210);
-            $(".m-right").css("marginLeft",210);
+            $(".left_menu").width(225);
+            $(".m-right").css("marginLeft",225);
+        }
+
+    })
+    $("#daohang1").click(function () {
+        var divWidth = $(".left_menu").width();
+        console.log(divWidth)
+        if(divWidth > 0){
+            $(".left_menu").width(0);
+            $(".m-right").css("marginLeft",0);
+        }else{
+            $(".left_menu").width(225);
+            $(".m-right").css("marginLeft",225);
         }
 
     })

@@ -233,6 +233,86 @@ router.post('/select', function (req, res, next) {
     });
 });
 
+// 模糊查询
+router.post('/getlist', function (req, res, next) {
+    console.log("yuangong")
+
+    let isSelect = req.query.pagenum == undefined;
+    let token = localStorage.getItem("token")
+    let key = '123456789abcdefg';
+    //console.log('加密的key:', key);
+    let iv = 'abcdefg123456789';
+    //console.log('加密的iv:', iv);
+    let data = JSON.parse(decrypt(key, iv, token));
+    let value = Object.values(data);
+    let company = value[0];
+    console.log(value)
+    let users = {
+        name:value[6],
+        username:value[1],
+        password:value[2],
+        company:value[0],
+        usertype:value[5],
+    }
+    console.log(users)
+
+    let selectParams = {
+        name: ''
+    }
+    if (isSelect) {
+        selectParams.name = req.body.name;
+        localStorage.setItem("selectParams", JSON.stringify(selectParams))
+    } else {
+        selectParams = JSON.parse(localStorage.getItem("selectParams"));
+    }
+    if (selectParams.name == undefined) {
+        selectParams.name = "";
+    }
+    console.log("selectParams.name=>", selectParams.name)
+
+    // 修改这里：添加模糊查询条件
+    let whereSql = "where company = '" + company + "'";
+    if (selectParams.name && selectParams.name.trim() !== "") {
+        // 添加商品名称的模糊查询
+        whereSql += " and product_name LIKE '%" + selectParams.name + "%'";
+    }
+
+    let type = req.params.type
+    console.log(req.params)
+    console.log(req.query)
+    let sql1 = "select distinct type from product " + whereSql;
+    console.log(sql1)
+    db.query(sql1, function (err, rows) {
+        try {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(rows)
+                let result = {
+                    datas: [],
+                    types:[],
+                    users:users,
+                }
+                result.types = rows
+                console.log("isSelect=>", isSelect)
+                let sql = "select * from product " + whereSql;
+                console.log("sql=>", sql)
+                db.query(sql, function (err, rows) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        result.datas = rows
+                        console.log("result=>", result)
+                        res.json(JSON.stringify(result));
+                    }
+                });
+            }
+        } catch (e) {
+            res.render("error.html", {error: '网络错误，请稍后再试！'})
+        }
+    });
+});
+
 // 订单号
 router.post('/select_order_number', function (req, res, next) {
     console.log("yuangong")
@@ -464,6 +544,11 @@ router.post('/add', function (req, res) {
     let youhui = req.body.youhui;
     let user = req.body.member_name;
     let username = req.body.member_username;
+    let yhje = req.body.yhje;
+    let ssje = req.body.ssje;
+    let xfje = req.body.xfje;
+    console.log(yhje,"这是后端内容")
+
 
     let result = {
         code: '',
@@ -475,6 +560,7 @@ router.post('/add', function (req, res) {
     uname = data.uname
     type = data.type
     account = data.account
+
 
 
     var date = new Date();
@@ -503,9 +589,9 @@ router.post('/add', function (req, res) {
                 }else{
                     var sql = ""
                     if(type == '商家'){
-                        sql = "insert into orders(riqi,ddh,yhfa,syy,hyzh,hyxm,company) values('" + today + "','" + pro_num + "','" + youhui + "','" + uname + "','" + username + "','" + user + "','" + company + "')"
+                        sql = "insert into orders(riqi,ddh,yhfa,syy,hyzh,hyxm,company,yhje,ssje,xfje) values('" + today + "','" + pro_num + "','" + youhui + "','" + uname + "','" + username + "','" + user + "','" + company + "','" + yhje + "','" + ssje + "','" + xfje + "')"
                     }else{
-                        sql = "insert into orders(riqi,ddh,hyzh,hyxm,hyjf,yhfa,company) values('" + today + "','" + pro_num  + "','" + account  + "','" + uname + "','" + youhui + "','" + company + "')"
+                        sql = "insert into orders(riqi,ddh,hyzh,hyxm,hyjf,yhfa,company,yhje,ssje,xfje) values('" + today + "','" + pro_num  + "','" + account  + "','" + uname + "','" + youhui + "','" + company + "','" + yhje + "','" + ssje + "','" + xfje + "')"
                     }
                     db.query(sql, function (err, rows) {
                         if (err) {
@@ -550,6 +636,280 @@ router.post('/add', function (req, res) {
     })
 
 });
+
+
+router.post('/addguazhang', function (req, res) {
+    let token = localStorage.getItem("token");
+    let key = '123456789abcdefg';
+    let iv = 'abcdefg123456789';
+    let data = JSON.parse(decrypt(key, iv, token));
+    console.log(data)
+
+    let pro_list = JSON.parse(req.body.pro_list);
+    let pro_num = req.body.pro_num;
+    let youhui = req.body.youhui;
+    let user = req.body.member_name;
+    let username = req.body.member_username;
+    let yhje = req.body.yhje;
+    let ssje = req.body.ssje;
+    let xfje = req.body.xfje;
+    console.log(yhje,"这是后端内容")
+
+
+    let result = {
+        code: '',
+        msg: '',
+        data: []
+    }
+
+    company = data.company
+    uname = data.uname
+    type = data.type
+    account = data.account
+    zt = "未结账"
+
+
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+
+    month = (month > 9) ? month : ("0" + month);
+    day = (day < 10) ? ("0" + day) : day;
+    var today = year + "-" + month + "-" + day;
+
+    var sql = "select * from orders where ddh = '" + pro_num + "' and company ='" + company + "'"
+
+    db.query(sql, function (err, rows) {
+        try {
+            if (err) {
+                result.code = 500;
+                result.msg = "单号查询失败";
+                res.json(JSON.stringify(result));
+                res.end('获取失败：');
+            }else{
+                if(rows.length > 0){
+                    result.code = 402;
+                    result.msg = "订单号重复";
+                    res.json(JSON.stringify(result));
+                }else{
+                    var sql = ""
+                    if(type == '商家'){
+                        sql = "insert into orders(riqi,ddh,yhfa,syy,hyzh,hyxm,company,yhje,ssje,xfje) values('" + today + "','" + pro_num + "','" + youhui + "','" + uname + "','" + username + "','" + user + "','" + company + "','" + yhje + "','" + ssje + "','" + xfje + "')"
+                    }else{
+                        sql = "insert into orders(riqi,ddh,hyzh,hyxm,hyjf,yhfa,company,yhje,ssje,xfje) values('" + today + "','" + pro_num  + "','" + account  + "','" + uname + "','" + youhui + "','" + company + "','" + yhje + "','" + ssje + "','" + xfje + "')"
+                    }
+                    db.query(sql, function (err, rows) {
+                        if (err) {
+                            console.log(err)
+                            result.code = 500;
+                            result.msg = "插入订单信息失败";
+                            res.json(JSON.stringify(result));
+                            res.end('获取失败：');
+                        }else{
+
+                            var sql1 = "insert into orders_details(ddid,cplx,cpmc,dw,dj,dzbl,zhdj,zhje,gs,company) values ";
+                            var sql2 = "";
+                            for(var i=0; i<pro_list.length; i++){
+                                if(sql2 == ""){
+                                    sql2 = "('" + pro_num + "','" + pro_list[i].cplx + "','" + pro_list[i].cpmc + "','" + pro_list[i].dw + "','" + pro_list[i].dj + "','" + youhui + "','" + pro_list[i].zhdj + "','" + pro_list[i].zhje + "','" + pro_list[i].gs + "','" + company  + "')"
+                                }else{
+                                    sql2 = sql2 + ",('" + pro_num + "','" + pro_list[i].cplx + "','" + pro_list[i].cpmc + "','" + pro_list[i].dw + "','" + pro_list[i].dj + "','" + youhui + "','" + pro_list[i].zhdj + "','" + pro_list[i].zhje + "','" + pro_list[i].gs + "','" + company  + "')"
+                                }
+                            }
+                            var sql = sql1 + sql2;
+                            console.log(sql)
+                            db.query(sql, function (err, rows) {
+                                if (err) {
+                                    console.log(err)
+                                    result.code = 500;
+                                    result.msg = "插入订单产品信息失败";
+                                    res.json(JSON.stringify(result));
+                                    res.end('获取失败：');
+                                }else{
+
+                                    var sql = `UPDATE orders_details SET zt = 1 WHERE ddid LIKE '%${pro_num}%'`;
+
+                                    db.query(sql, function (err, result) {
+                                        if (err) {
+                                            console.error('数据库错误:', err);
+                                            return res.status(500).json({
+                                                success: false,
+                                                message: '更新桌位状态失败',
+                                                error: err.message
+                                            });
+                                        }
+
+                                        // 检查是否有行被更新
+                                        if (result.affectedRows === 0) {
+                                            return res.status(404).json({
+                                                success: false,
+                                                message: '未找到匹配的桌位记录'
+                                            });
+                                        }
+
+
+                                        res.json({
+                                            success: true,
+                                            message: '添加成功',
+                                            affectedRows: result.affectedRows
+                                        });
+                                    });
+
+                                    // result.code = 200;
+                                    // result.msg = "添加成功"
+                                    // res.json(JSON.stringify(result));
+                                }
+                            })
+                        }
+                    })
+                }
+
+            }
+        } catch (e) {
+            res.render("error.html", {error: '网络错误，请稍后再试'})
+        }
+    })
+
+});
+
+
+// router.post('/addguazhang', function (req, res) {
+//     let token = localStorage.getItem("token");
+//     let key = '123456789abcdefg';
+//     let iv = 'abcdefg123456789';
+//     let data = JSON.parse(decrypt(key, iv, token));
+//     console.log(data)
+//
+//     let pro_list = JSON.parse(req.body.pro_list);
+//     let pro_num = req.body.pro_num;
+//     let youhui = req.body.youhui;
+//     let user = req.body.member_name;
+//     let username = req.body.member_username;
+//     let yhje = req.body.yhje;
+//     let ssje = req.body.ssje;
+//     let xfje = req.body.xfje;
+//     console.log(yhje,"这是后端内容")
+//
+//
+//     let result = {
+//         code: '',
+//         msg: '',
+//         data: []
+//     }
+//
+//     company = data.company
+//     uname = data.uname
+//     type = data.type
+//     account = data.account
+//     zt = "未结账"
+//
+//
+//     var date = new Date();
+//     var year = date.getFullYear();
+//     var month = date.getMonth() + 1;
+//     var day = date.getDate();
+//
+//     month = (month > 9) ? month : ("0" + month);
+//     day = (day < 10) ? ("0" + day) : day;
+//     var today = year + "-" + month + "-" + day;
+//
+//     var sql = "select * from orders where ddh = '" + pro_num + "' and company ='" + company + "'"
+//
+//     db.query(sql, function (err, rows) {
+//         try {
+//             if (err) {
+//                 result.code = 500;
+//                 result.msg = "单号查询失败";
+//                 res.json(JSON.stringify(result));
+//                 res.end('获取失败：');
+//             }else{
+//                 if(rows.length > 0){
+//                     result.code = 402;
+//                     result.msg = "订单号重复";
+//                     res.json(JSON.stringify(result));
+//                 }else{
+//                     var sql = ""
+//                     if(type == '商家'){
+//                         sql = "insert into orders(riqi,ddh,yhfa,syy,hyzh,hyxm,company,yhje,ssje,xfje) values('" + today + "','" + pro_num + "','" + youhui + "','" + uname + "','" + username + "','" + user + "','" + company + "','" + yhje + "','" + ssje + "','" + xfje + "')"
+//                     }else{
+//                         sql = "insert into orders(riqi,ddh,hyzh,hyxm,hyjf,yhfa,company,yhje,ssje,xfje) values('" + today + "','" + pro_num  + "','" + account  + "','" + uname + "','" + youhui + "','" + company + "','" + yhje + "','" + ssje + "','" + xfje + "')"
+//                     }
+//                     db.query(sql, function (err, rows) {
+//                         if (err) {
+//                             console.log(err)
+//                             result.code = 500;
+//                             result.msg = "插入订单信息失败";
+//                             res.json(JSON.stringify(result));
+//                             res.end('获取失败：');
+//                         }else{
+//
+//                             var sql1 = "insert into orders_details(ddid,cplx,cpmc,dw,dj,dzbl,zhdj,zhje,gs,company) values ";
+//                             var sql2 = "";
+//                             for(var i=0; i<pro_list.length; i++){
+//                                 if(sql2 == ""){
+//                                     sql2 = "('" + pro_num + "','" + pro_list[i].cplx + "','" + pro_list[i].cpmc + "','" + pro_list[i].dw + "','" + pro_list[i].dj + "','" + youhui + "','" + pro_list[i].zhdj + "','" + pro_list[i].zhje + "','" + pro_list[i].gs + "','" + company  + "')"
+//                                 }else{
+//                                     sql2 = sql2 + ",('" + pro_num + "','" + pro_list[i].cplx + "','" + pro_list[i].cpmc + "','" + pro_list[i].dw + "','" + pro_list[i].dj + "','" + youhui + "','" + pro_list[i].zhdj + "','" + pro_list[i].zhje + "','" + pro_list[i].gs + "','" + company  + "')"
+//                                 }
+//                             }
+//                             var sql = sql1 + sql2;
+//                             console.log(sql)
+//                             db.query(sql, function (err, rows) {
+//                                 if (err) {
+//                                     console.log(err)
+//                                     result.code = 500;
+//                                     result.msg = "插入订单产品信息失败";
+//                                     res.json(JSON.stringify(result));
+//                                     res.end('获取失败：');
+//                                 }else{
+//
+//                                     var sql = `UPDATE orders_details SET zt = 1 WHERE ddid LIKE '%${pro_num}%'`;
+//
+//                                     db.query(sql, function (err, result) {
+//                                         if (err) {
+//                                             console.error('数据库错误:', err);
+//                                             return res.status(500).json({
+//                                                 success: false,
+//                                                 message: '更新桌位状态失败',
+//                                                 error: err.message
+//                                             });
+//                                         }
+//
+//                                         // 检查是否有行被更新
+//                                         if (result.affectedRows === 0) {
+//                                             return res.status(404).json({
+//                                                 success: false,
+//                                                 message: '未找到匹配的桌位记录'
+//                                             });
+//                                         }
+//
+//
+//                                         res.json({
+//                                             success: true,
+//                                             message: '添加成功',
+//                                             affectedRows: result.affectedRows
+//                                         });
+//                                     });
+//
+//                                     // result.code = 200;
+//                                     // result.msg = "添加成功"
+//                                     // res.json(JSON.stringify(result));
+//                                 }
+//                             })
+//                         }
+//                     })
+//                 }
+//
+//             }
+//         } catch (e) {
+//             res.render("error.html", {error: '网络错误，请稍后再试'})
+//         }
+//     })
+//
+// });
+
+
 
 /**
  * 获取权限

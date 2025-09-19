@@ -23,6 +23,7 @@ var orders_detailsRouter = require('./routes/orders_details');
 var orders_details_memberRouter = require('./routes/orders_details_member');
 var report_formRouter = require('./routes/report_form');
 var pushNewsRouter = require('./routes/push_news');
+var order_tableRouter = require('./routes/order_table');
 // var event_discountRouter = require('./routes/event_discount');
 var app = express();
 
@@ -65,6 +66,7 @@ app.use('/orders_details', orders_detailsRouter);
 app.use('/orders_details_member', orders_details_memberRouter);
 app.use('/report_form', report_formRouter);
 app.use('/pushnews', pushNewsRouter);
+app.use('/order_table', order_tableRouter);
 // app.use('/event_discount', event_discountRouter);
 
 
@@ -79,7 +81,7 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+    // render the error page
   res.status(err.status || 500);
   // res.render('views/error');
   // res.json({ message: err.message, error: err });

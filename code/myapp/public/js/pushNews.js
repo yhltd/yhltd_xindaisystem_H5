@@ -69,14 +69,6 @@ function fetchPushNews() {
                                 });
                             }
 
-                            // 如果没有轮播图片，使用默认图片
-                            if (carouselImages.length === 0) {
-                                carouselImages.push({
-                                    url: "https://picsum.photos/id/10/800/500",
-                                    alt: "默认轮播图"
-                                });
-                            }
-
                             const tankuan = firstNews.xuankuan || 100;
                             const dinggao = firstNews.topgao || 300;
                             const textboxValue = firstNews.textbox || "";
