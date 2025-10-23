@@ -18,6 +18,64 @@ function fetchPushNews() {
                         if (newsData && newsData.length > 0) {
                             const firstNews = newsData[0];
 
+                            if (firstNews.beizhu2 && firstNews.beizhu2.trim() !== "") {
+                                var logoImage = "data:image/jpg;base64," + firstNews.beizhu2;
+                                var logoImg = document.querySelector('a[href="http://www.yhocn.cn"] img');
+
+                                if (logoImg) {
+                                    logoImg.src = logoImage;
+                                    console.log("网站Logo已更新");
+                                }
+                            }
+
+                            if (firstNews.beizhu3) {
+                                if (firstNews.beizhu3.trim() !== "") {
+                                    // 替换logo文字
+                                    var logoTextElement = document.querySelector('div.logo');
+                                    if (logoTextElement) {
+                                        // 方法1：使用文本节点替换（推荐，不会破坏HTML结构）
+                                        var textNodes = [];
+                                        for (var i = 0; i < logoTextElement.childNodes.length; i++) {
+                                            if (logoTextElement.childNodes[i].nodeType === 3) { // 文本节点
+                                                textNodes.push(logoTextElement.childNodes[i]);
+                                            }
+                                        }
+
+                                        if (textNodes.length > 0) {
+                                            // 替换第一个文本节点的内容
+                                            textNodes[0].textContent = firstNews.beizhu3;
+                                            console.log("Logo文字已替换为:", firstNews.beizhu3);
+                                        } else {
+                                            // 方法2：如果没有文本节点，在img标签前插入文字
+                                            var imgElement = logoTextElement.querySelector('img#daohang');
+                                            if (imgElement) {
+                                                var textNode = document.createTextNode(firstNews.beizhu3);
+                                                logoTextElement.insertBefore(textNode, imgElement);
+                                                console.log("Logo文字已插入为:", firstNews.beizhu3);
+                                            }
+                                        }
+                                    } else {
+                                        console.log("未找到div.logo元素");
+                                    }
+                                }
+                            }
+
+                            if(firstNews.beizhu1 == "隐藏广告"){
+                                // 添加隐藏类
+                                var carouselIndex1 = document.querySelector('.carousel-index');
+                                var carouselContainer1 = document.querySelector('.carousel-container');
+
+                                if (carouselIndex1) {
+                                    carouselIndex1.classList.add('hidden-ad');
+                                }
+                                if (carouselContainer1) {
+                                    carouselContainer1.classList.add('hidden-ad');
+                                }
+
+                                return;
+                            }
+
+
                             // 清除之前的定时器
                             if (carouselInterval) {
                                 clearInterval(carouselInterval);

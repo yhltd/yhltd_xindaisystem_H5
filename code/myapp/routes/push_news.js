@@ -8,7 +8,7 @@ router.get('/getnews', function (req, res) {
     console.log('📢 getnews接口被调用');
 
     // var sql = `SELECT * FROM product_pushnews WHERE gsname = '云合未来' AND xtname = '云合智慧门店收银系统'`;
-    var sql = `SELECT * FROM product_pushnews WHERE gsname = '云合未来' AND xtname = '云合智慧门店收银系统'AND (qidate IS NULL OR GETUTCDATE() >= CONVERT(DATETIME, LEFT(qidate, 10), 120))AND (zhidate IS NULL OR GETUTCDATE() <= CONVERT(DATETIME, LEFT(zhidate, 10), 120))`;
+    var sql = `SELECT * FROM product_pushnews WHERE gsname = '合肥康飞金融有限公司' AND xtname = '云合智慧门店收银系统'AND (qidate IS NULL OR GETUTCDATE() >= CONVERT(DATETIME, LEFT(qidate, 10), 120))AND (zhidate IS NULL OR GETUTCDATE() <= CONVERT(DATETIME, LEFT(zhidate, 10), 120))`;
 
     db.sql(sql, function(err, results) {
         if (err) {
