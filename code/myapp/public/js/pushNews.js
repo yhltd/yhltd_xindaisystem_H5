@@ -1,8 +1,25 @@
 let carouselInterval = null; // 全局轮播定时器
 
+// function fetchPushNews() {
+// //     var xhr = new XMLHttpRequest();
+// //     xhr.open('GET', '/pushnews/getnews', true);
+// //     xhr.setRequestHeader('Content-Type', 'application/json');
+// //     xhr.withCredentials = true;
+// //
+// //     xhr.onreadystatechange = function() {
+// //         if (xhr.readyState === 4) {
+// //             if (xhr.status >= 200 && xhr.status < 300) {
+// //                 try {
+// //                     var data = JSON.parse(xhr.responseText);
 function fetchPushNews() {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/pushnews/getnews', true);
+
+    // 从本地存储获取公司名称
+    var companyName = localStorage.getItem('savedCompany') || '默认公司名称';
+    console.log('获取到的公司名称:', companyName);
+
+    // 将公司名称作为参数传递
+    xhr.open('GET', '/pushnews/getnews?company=' + encodeURIComponent(companyName), true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.withCredentials = true;
 
