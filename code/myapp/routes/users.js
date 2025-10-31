@@ -82,34 +82,47 @@ router.post('/search', function (req, res) {
     let sql = "select u.*,m.`Add`,m.`Del`,m.`Upd`,m.`Sel`,m.`Table` from users as u left join management as m on u.id = m.Uid where u.company = '" + company + "' and u.account='" + account + "' and u.`password` = '" + password + "'";
 
     let jiami_sql = "select * from control_soft_time where name = '" + company + "' and soft_name = '门店'"
-
+    console.log("进入1");
     db_sqlserver.sql(jiami_sql, function (err, result) {
         if (err) {
-            console.log(err);
+            console.log("进入2");
+
             return;
         }
         console.log('data :', result);
         console.log(result.recordset.length)
         var list = result.recordset
+        console.log("进入3");
         if(list.length == 0){
             res.render('users.html', {title: 'ExpressTitle', msg: '工具到期，请联系我公司续费。'});
         }else{
+            console.log("进入4");
             var endtime = result.recordset[0].endtime.trim().replace("/","-")
+            console.log("验证1");
             var mark2 = result.recordset[0].mark2.trim().replace("/","-")
+            console.log("验证2");
             if(endtime == ""){
+
                 res.render('users.html', {title: 'ExpressTitle', msg: '工具到期，请联系我公司续费。'});
             }
             if(mark2 == ""){
+
                 res.render('users.html', {title: 'ExpressTitle', msg: '服务器到期，请联系我公司续费。'});
             }
-            var mark3 = result.recordset[0].mark3.trim()
+            console.log("验证3");
+            // var mark3 = result.recordset[0].mark3.trim()
+            var mark3 = result.recordset[0].mark3 ? result.recordset[0].mark3.trim() : "";
+            console.log("验证4");
             if(mark3 == ""){
+
                 mark3 = ""
             }else{
+                console.log("进入5");
                 mark3 = mark3.split(":")[1]
                 mark3 = mark3.replace("(","")
                 mark3 = mark3.replace(")","")
             }
+            console.log("进入6");
             var thisdate = new Date();
             var endtime = new Date(endtime + " EST");
             var mark2 = new Date(mark2 + " EST");
@@ -125,13 +138,16 @@ router.post('/search', function (req, res) {
             }
 
             db.query(sql, function (err, rows) {
+                console.log("进入7");
                 try {
                     let value = JSON.stringify(rows);						//将rows转为字符串
                     value = JSON.parse(value);                          //再转换为为 JavaScript 对象
                     if (err) {
                         res.end('登录失败：');
                     }
+                    console.log("进入8");
                     if (rows.length > 0) {
+                        console.log("进入9");
                         if (company === value[0].company && account === value[0].account && password === value[0].password) {	//判断输入的内容是否与数据库的内容相等。
                             console.log('登陆成功')
                             let key = '123456789abcdefg';
