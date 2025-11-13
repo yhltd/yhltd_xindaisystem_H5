@@ -35,13 +35,27 @@ function fetchPushNews() {
                         if (newsData && newsData.length > 0) {
                             const firstNews = newsData[0];
 
+                            // if (firstNews.beizhu2 && firstNews.beizhu2.trim() !== "") {
+                            //     var logoImage = "data:image/jpg;base64," + firstNews.beizhu2;
+                            //     var logoImg = document.querySelector('a[href="http://www.yhocn.cn"] img');
+                            //
+                            //     if (logoImg) {
+                            //         logoImg.src = logoImage;
+                            //         console.log("网站Logo已更新");
+                            //     }
+                            // }
                             if (firstNews.beizhu2 && firstNews.beizhu2.trim() !== "") {
-                                var logoImage = "data:image/jpg;base64," + firstNews.beizhu2;
-                                var logoImg = document.querySelector('a[href="http://www.yhocn.cn"] img');
+                                // 简化的base64检查
+                                if (isLikelyBase64(firstNews.beizhu2)) {
+                                    var logoImage = "data:image/jpg;base64," + firstNews.beizhu2;
+                                    var logoImg = document.querySelector('a[href="http://www.yhocn.cn"] img');
 
-                                if (logoImg) {
-                                    logoImg.src = logoImage;
-                                    console.log("网站Logo已更新");
+                                    if (logoImg) {
+                                        logoImg.src = logoImage;
+                                        console.log("网站Logo已更新");
+                                    }
+                                } else {
+                                    console.log("beizhu2内容不是base64格式，跳过Logo更新");
                                 }
                             }
 
@@ -311,6 +325,18 @@ function showCarousel() {
     if (carouselContainer) {
         carouselContainer.style.display = 'block';
     }
+}
+
+function isLikelyBase64(str) {
+    // 基础检查
+    if (!str || str.trim() === "") return false;
+
+    // 检查长度（base64长度通常是4的倍数）
+    if (str.length % 4 !== 0) return false;
+
+    // 检查字符集（base64只包含特定字符）
+    var base64Regex = /^[A-Za-z0-9+/]+={0,2}$/;
+    return base64Regex.test(str);
 }
 
 // 显示悬浮图（如果需要的话）

@@ -183,6 +183,119 @@ router.get('/add', function (req, res) {
     // }
 
 });
+// router.post('/add', function (req, res) {
+//     if (req.body.checkForm) {
+//         let token = localStorage.getItem("token");
+//         let key = '123456789abcdefg';
+//         let iv = 'abcdefg123456789';
+//         let data = JSON.parse(decrypt(key, iv, token));
+//         let result = {
+//             type: "",
+//             product_name: "",
+//             product_bianhao:"",
+//             unit:"" ,
+//             price: "",
+//             chengben: "",
+//             tingyong: "",
+//             specifications:"",
+//             practice:"",
+//             p_file: "",
+//             xiangqing: "",
+//         };
+//         //let company = req.body.company;
+//         let type = req.body.type;
+//         result.type = type;
+//
+//         let xiangqing = req.body.xiangqing;
+//         result.xiangqing = xiangqing;
+//
+//         // type = toLiteral(type);
+//         let product_name = req.body.product_name;
+//         result.product_name = product_name;
+//         // product_name = toLiteral(product_name);
+//         let unit = req.body.unit;
+//         result.unit = unit;
+//         // unit = toLiteral(unit);
+//         let price = req.body.price;
+//         result.price = price;
+//         // price = toLiteral(price);
+//         let chengben = req.body.chengben;
+//         result.chengben = chengben;
+//         // chengben = toLiteral(chengben);
+//         let tingyong = req.body.tingyong;
+//         result.tingyong = tingyong;
+//         // tingyong = toLiteral(tingyong);
+//         let specifications = req.body.specifications;
+//         result.specifications = specifications;
+//         // specifications = toLiteral(specifications)
+//         let practice = req.body.practice;
+//         result.practice = practice;
+//         // practice = toLiteral(practice)
+//         let product_bianhao = req.body.product_bianhao;
+//         result.product_bianhao = product_bianhao;
+//         // product_bianhao = toLiteral(product_bianhao)
+//         let p_file = req.body.p_file;
+//         result.photo = p_file;
+//         // p_file = toLiteral(p_file)
+//         company = data.company
+//
+//         console.log(p_file)
+//
+//         let sql1 = "insert into product(company,product_bianhao,type,product_name,unit,price,chengben,specifications,practice,tingyong,photo,xiangqing) " +
+//             "values('" + data.company + "','" + product_bianhao + "','"+ type + "','" + product_name + "','" + unit + "','" + price + "','" + chengben + "','" + specifications + "','" + practice + "','" + tingyong + "','" + p_file + "','" + xiangqing + "')"
+//         let sql2 = "select * from product where product_name like '%"+ product_name +"%'"
+//         let sql3 = "select * from product where product_bianhao like '%"+ product_bianhao +"%'"
+//         console.log("sql1:" + sql1)
+//         console.log("sql2:"+sql2)
+//         console.log("sql2:"+sql3)
+//
+//         db.query(sql3, function (err, rows) {
+//             try {
+//                 if (err) {
+//                     res.end('新增失败：');
+//                 } else {
+//                     if(rows.length > 0){
+//                         res.end('已有该商品编号，若要添加规格则在修改页面编辑：');
+//                         // alert("已有该商品，若要添加规格则在修改页面编辑")
+//                     }
+//                     else{
+//                         db.query(sql2, function (err, rows) {
+//                             try {
+//                                 if (err) {
+//                                     res.end('新增失败：');
+//                                 } else {
+//                                     if(rows.length > 0){
+//                                         res.end('已有该商品，若要添加规格则在修改页面编辑：');
+//                                         // alert("已有该商品，若要添加规格则在修改页面编辑")
+//                                     }
+//                                     else{
+//                                         db.query(sql1, function (err, rows) {
+//                                             if (err) {
+//                                                 res.end('新增失败：');
+//                                             } else {
+//                                                 res.redirect('/product/select');
+//                                             }
+//                                         })
+//                                     }
+//                                     res.redirect('/product/select');
+//                                 }
+//                             } catch (e) {
+//                                 res.render("error.html", {error: '网络错误，请稍后再试'})
+//                             }
+//
+//                         })
+//                     }
+//                     res.redirect('/product/select');
+//                 }
+//             } catch (e) {
+//                 res.render("error.html", {error: '网络错误，请稍后再试'})
+//             }
+//
+//         })
+//
+//
+//     }
+// });
 router.post('/add', function (req, res) {
     if (req.body.checkForm) {
         let token = localStorage.getItem("token");
@@ -200,95 +313,113 @@ router.post('/add', function (req, res) {
             specifications:"",
             practice:"",
             p_file: "",
+            xiangqing: "",
         };
-        //let company = req.body.company;
+
+        // 获取表单数据
         let type = req.body.type;
         result.type = type;
-        // type = toLiteral(type);
+        let xiangqing = req.body.xiangqing;
+        result.xiangqing = xiangqing;
         let product_name = req.body.product_name;
         result.product_name = product_name;
-        // product_name = toLiteral(product_name);
         let unit = req.body.unit;
         result.unit = unit;
-        // unit = toLiteral(unit);
         let price = req.body.price;
         result.price = price;
-        // price = toLiteral(price);
         let chengben = req.body.chengben;
         result.chengben = chengben;
-        // chengben = toLiteral(chengben);
         let tingyong = req.body.tingyong;
         result.tingyong = tingyong;
-        // tingyong = toLiteral(tingyong);
         let specifications = req.body.specifications;
         result.specifications = specifications;
-        // specifications = toLiteral(specifications)
         let practice = req.body.practice;
         result.practice = practice;
-        // practice = toLiteral(practice)
         let product_bianhao = req.body.product_bianhao;
         result.product_bianhao = product_bianhao;
-        // product_bianhao = toLiteral(product_bianhao)
         let p_file = req.body.p_file;
         result.photo = p_file;
-        // p_file = toLiteral(p_file)
-        company = data.company
+        let company = data.company;
 
-        console.log(p_file)
+        console.log(p_file);
 
-        let sql1 = "insert into product(company,product_bianhao,type,product_name,unit,price,chengben,specifications,practice,tingyong,photo) " +
-            "values('" + data.company + "','" + product_bianhao + "','"+ type + "','" + product_name + "','" + unit + "','" + price + "','" + chengben + "','" + specifications + "','" + practice + "','" + tingyong + "','" + p_file + "')"
-        let sql2 = "select * from product where product_name like '%"+ product_name +"%'"
-        let sql3 = "select * from product where product_bianhao like '%"+ product_bianhao +"%'"
-        console.log("sql1:" + sql1)
-        console.log("sql2:"+sql2)
-        console.log("sql2:"+sql3)
+        console.log("xiangqing 内容:", xiangqing);
+        console.log("xiangqing 长度:", xiangqing ? xiangqing.length : 0);
+
+        let sql1 = "insert into product(company,xiangqing,product_bianhao,type,product_name,unit,price,chengben,specifications,practice,tingyong,photo) " +
+            "values('" + data.company + "','" + xiangqing + "','" + product_bianhao + "','"+ type + "','" + product_name + "','" + unit + "','" + price + "','" + chengben + "','" + specifications + "','" + practice + "','" + tingyong + "','" + p_file + "')";
+        let sql2 = "select * from product where product_name like '%"+ product_name +"%'";
+        let sql3 = "select * from product where product_bianhao like '%"+ product_bianhao +"%'";
+
+        console.log("sql1:" + sql1);
+        console.log("sql2:"+sql2);
+        console.log("sql3:"+sql3);
 
         db.query(sql3, function (err, rows) {
             try {
                 if (err) {
-                    res.end('新增失败：');
+                    // 错误时返回表单页面并显示错误信息
+                    return res.render("product/productAdd.html", {
+                        msg: '查询商品编号失败',
+                        ...result
+                    });
                 } else {
                     if(rows.length > 0){
-                        res.end('已有该商品编号，若要添加规格则在修改页面编辑：');
-                        // alert("已有该商品，若要添加规格则在修改页面编辑")
-                    }
-                    else{
+                        // 返回表单页面并保留用户输入的数据
+                        return res.render("product/productAdd.html", {
+                            msg: '已有该商品编号，若要添加规格请在修改页面编辑',
+                            ...result
+                        });
+                    } else {
                         db.query(sql2, function (err, rows) {
                             try {
                                 if (err) {
-                                    res.end('新增失败：');
+                                    return res.render("product/productAdd.html", {
+                                        msg: '查询商品名称失败',
+                                        ...result
+                                    });
                                 } else {
                                     if(rows.length > 0){
-                                        res.end('已有该商品，若要添加规格则在修改页面编辑：');
-                                        // alert("已有该商品，若要添加规格则在修改页面编辑")
-                                    }
-                                    else{
+                                        return res.render("product/productAdd.html", {
+                                            msg: '已有该商品，若要添加规格请在修改页面编辑',
+                                            ...result
+                                        });
+                                    } else {
                                         db.query(sql1, function (err, rows) {
                                             if (err) {
-                                                res.end('新增失败：');
+                                                return res.render("product/productAdd.html", {
+                                                    msg: '新增失败：' + err.message,
+                                                    ...result
+                                                });
                                             } else {
-                                                res.redirect('/product/select');
+                                                // 只有成功时才重定向
+                                                return res.redirect('/product/select');
                                             }
-                                        })
+                                        });
                                     }
-                                    res.redirect('/product/select');
                                 }
                             } catch (e) {
-                                res.render("error.html", {error: '网络错误，请稍后再试'})
+                                return res.render("product/productAdd.html", {
+                                    msg: '网络错误，请稍后再试',
+                                    ...result
+                                });
                             }
-
-                        })
+                        });
                     }
-                    res.redirect('/product/select');
                 }
             } catch (e) {
-                res.render("error.html", {error: '网络错误，请稍后再试'})
+                return res.render("product/productAdd.html", {
+                    msg: '网络错误，请稍后再试',
+                    ...result
+                });
             }
-
-        })
-
-
+        });
+    } else {
+        // 表单验证失败
+        res.render("product/productAdd.html", {
+            msg: '表单验证失败，请检查输入',
+            ...req.body
+        });
     }
 });
 
@@ -337,6 +468,7 @@ router.get('/toUpdate/:id', function (req, res) {
         specifications:"",
         practice:"",
         photo: "",
+        xiangqing: "",
         product_bianhao:""
     }
     // if (data.table["5"].upd == 1) {
@@ -361,6 +493,7 @@ router.get('/toUpdate/:id', function (req, res) {
                     result.specifications = values[0].specifications;
                     result.practice = values[0].practice;
                     result.photo = values[0].photo;
+                    result.xiangqing = values[0].xiangqing;
                     result.product_bianhao = values[0].product_bianhao;
                     res.render("product/productUpdate.html", {
                         datas:rows,
@@ -500,11 +633,16 @@ router.all('/update/:id', function (req, res) {
             price: "",
             chengben: "",
             tingyong: "",
+            xiangqing: "",
         }
         // let company = req.body.company;
         // company = toLiteral(company)
         let product_bianhao = req.body.product_bianhao;
         result.product_bianhao = product_bianhao;
+
+        let product_xiangqing = req.body.xiangqing;
+        result.xiangqing = product_xiangqing;
+
         let type = req.body.type;
         result.type = type;
         type = toLiteral(type);
@@ -526,7 +664,7 @@ router.all('/update/:id', function (req, res) {
         let company = data.company;
         company = toLiteral(company);
 
-        let sql1 = "update product set type='" + type + "', product_name='" + product_name + "', product_bianhao='" + product_bianhao + "', unit='" + unit + "', price='" + price + "', chengben='" + chengben + "', tingyong='" + tingyong + "' where id=" + id;
+        let sql1 = "update product set type='" + type + "', product_name='" + product_name + "', product_bianhao='" + product_bianhao + "', unit='" + unit + "', price='" + price + "', chengben='" + chengben + "', tingyong='" + tingyong + "', xiangqing='" + product_xiangqing + "' where id=" + id;
         console.log("sql1->" + sql1)
         db.query(sql1, function (err, rows) {
             try {

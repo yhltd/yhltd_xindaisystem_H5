@@ -1446,7 +1446,7 @@
     .product_details_specification,
     .product_details_flavor,
     .product_details_price{
-        margin-top: 20px;
+        margin-top: 10px;
         height: 45px;
         line-height: 45px;
     }
@@ -2831,6 +2831,12 @@
                         商品价格
                         <input id="xiangqing_Price" type="text" value="">
                     </div>
+
+                    <div class="product_details_content" style="display: flex; align-items: center; gap: 10px; margin-left: 17px;">
+                        详情内容
+                        <textarea id="xiangqing_content" style="width: 210px;" rows="3"></textarea>
+                    </div>
+
                     <div class="product_details_id">
                         商品id
                         <input id="product_details_id_input" type="text" value="">
@@ -4673,6 +4679,7 @@ console.log("被惦记")
                 // $(".product_details_flavor select").val(datas[i].practice)
                 var this_arr = datas[i].price.split(",")
                 $(".product_details_price input").val(this_arr[0])
+                $(".product_details_content textarea").val(datas[i].xiangqing)
                 $(".product_details_id input").val(datas[i].id)
             }
         }
