@@ -24,13 +24,18 @@
             top: 0; /* 垂直居中 */
             left: 0; /* 水平偏移 */
             z-index: 10; /* 高值确保在上层 */
+            overflow: auto;
         }
 
         .link-group{
+            width: 100%;
             display: flex;
-            gap: 30px;
+            /* gap: 120px; */
             text-align: center;
             margin-top: 50px;
+            /* padding-left: 50px; */
+            padding: 0 50px;
+            justify-content: space-between;
         }
 
 
@@ -42,14 +47,15 @@
             height: 230px;
             border-radius: 50%;
             background: linear-gradient(145deg, #fb831b, #ffb019);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border: none;
             color: white;
             font-size: 40px;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin: 0 90px;
-            text-decoration:none;
+            margin: 0 40px;
+            /* margin-left: 33px; */
+            text-decoration: none;
         }
         .circle-link img{
             width: 80px;

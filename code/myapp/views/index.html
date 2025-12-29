@@ -1,10 +1,10 @@
 <!DOCTYPE>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>云合智慧门店收银系统-云合未来</title>
-<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="../js/menu.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>云合智慧门店收银系统-云合未来</title>
+    <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../js/menu.js"></script>
     <link rel="stylesheet" href="./iconfont.css">
     <script src="/js/pushNews.js"></script>
     <style>
@@ -15,9 +15,10 @@
         body{font-family:Microsoft YaHei,Verdana,Arial,SimSun;color:#666;font-size:14px;background:#f6f6f6; overflow:hidden}
         .block, #block{display:block;}
         .none, #none{display:none;}
+
         /*****头部和尾部******/
-        /*.top{height:0;line-height:5px;background:#f6f6f6;width:100%;position:fixed;z-index:255;top:79px;text-align:center;}*/
         .bottom{height:5px;line-height:5px;background:#f6f6f6;width:100%;position:fixed;z-index:255;bottom:50px;text-align:center;}
+
         #header {
             height: 80px;
             line-height: 80px;
@@ -26,26 +27,8 @@
             text-align: center;
             display: flex;
             flex-shrink: 0;
-            /* 移除固定定位相关属性 */
-            position: relative; /* 或者不设置 position 属性 */
-
+            position: relative;
         }
-
-        /*#header {*/
-            /*height: 80px;*/
-            /*background-image: linear-gradient(to right, #fb7b1c, #ffb019);*/
-            /*width: 100%;*/
-            /*display: flex;*/
-            /*align-items: center;*/
-            /*justify-content: space-between;*/
-            /*padding: 0 20px;*/
-            /*flex-shrink: 0;*/
-            /*box-shadow: 2px 3px 7px #6f7180;*/
-            /*zoom: 0.8;*/
-            /*position: relative;*/
-            /*z-index: 100;*/
-        /*}*/
-
 
         .logo{
             display: flex;
@@ -57,15 +40,15 @@
             letter-spacing:3px;
             margin-left: 21px;
             float:left;
-            /*text-shadow:*/
-                    /*-1.5px -1.5px 0 #FFD700, 1.5px -1.5px 0 #FFD700, -1.5px 1.5px 0 #FFD700, 1.5px 1.5px 0 #FFD700;*/
         }
+
         .navigation{
             float:right;
             margin:5px 50px 0 0;
             color: #000000;
             font-size:17px;
         }
+
         .navigation ul li{
             height:30px;
             line-height:30px;
@@ -75,104 +58,230 @@
             float:left;
             margin-left:15px;
             margin-top: 20px;
-            /*text-shadow: 1px 1px 5px #e5e5e3;*/
         }
+
         .nav-a:hover{
             background: #bcd9f5;
             border-radius: 8px;
             transform: translateY(-3px);
         }
+
         .navigation ul li a{
             color: #000000;
             font-size: 20px;
             font-family: 'Times New Roman';
-
         }
+
         .navigation ul li a:hover{
             color:#fff;
         }
-        #footer{height:50px;line-height:50px;background:#5e5e5e;width:100%;z-index:200;bottom:0;text-align:center;}
-        #footer p{text-align:center;line-height:50px;color:#fbfbfb;}
-        /*****主体部分******/
-        #content{
-            transform: scale(0.8);
-            transform-origin: 0 0;
-            width: 125%;
-            height: 115%;
-            /* zoom: 0.8; */
-            /* width: 100%; */
-            top:80px;
-            /*position:absolute;*/
-            z-index:10;
-            bottom:5px;
+
+        #footer{
+            height:50px;
+            line-height:50px;
+            background:#5e5e5e;
+            width:100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index:200;
+            text-align:center;
         }
+
+        #footer p{
+            text-align:center;
+            line-height:50px;
+            color:#fbfbfb;
+        }
+
+        /*****主体部分 - 重构解决空白问题 ******/
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        #content {
+            flex: 1;
+            display: flex;
+            min-height: 0;
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
         /**左侧菜单***/
         .left_menu {
-            float:left;
-            width:225px;
-            /*background:#f6f6f6;*/
-            height:100%;
-            /*position:absolute;*/
-            top:0px;
-            left:0px;
-            overflow:auto;
-            overflow-x: hidden;
-            border-left:0px solid #32323a;
-            /*改之前是#444c63*/
-            /*background-color: #1e4258;*/
+            flex: 0 0 225px;
             background:linear-gradient(to right, #fb7b1c, #fc811c);
+            height: 100%;
+            overflow: auto;
+            overflow-x: hidden;
+            position: relative;
             display: flex;
-
-
+            transition: flex-basis 0.3s ease;
+            -webkit-transition:.3s;
         }
+
+        .left_menu.collapsed {
+            flex: 0 0 0;
+            overflow: hidden;
+        }
+
         .left_menu_ri{
             display: flex;
             align-items: center;
             justify-content: center;
             background:linear-gradient(to right, #fb7b1c, #fc811c);
+            flex-shrink: 0;
         }
+
         .left_menu_ri img{
             width: 20px;
             height: 40px;
+            cursor: pointer;
         }
+
         .left_menu ul li {
             width:190px;
             display:inline;
-            /*border-bottom: 2.5px solid #7c7c7c;*/
             padding-bottom: 4px;
         }
-        .left_menu ul li .list-item a{width:210px;padding-left:110px;text-decoration:none;font-size:14px;color:#f5f5f5;line-height:30px;display:block;}
-        .left_menu ul li a.noline { border-bottom:none; }
-        .left_menu ul li a:hover{ color:#03329c; }
-        .left_menu ul li a { color:#000000; }
-        .left_menu ul li h4 { cursor:pointer; background:url(../images/bg1.png) no-repeat 270px 18px; padding-left:30px; text-decoration:none; font-size:16px; color:#000000; display:block;  line-height:40px; font-weight:normal; }
-        .left_menu ul li.noline { border-bottom:none; }
-        .left_menu ul li.selected h4 { background-position:200px -45px;background-color:#00a5a5;}
-        .left_menu li .list-item { padding:5px 0; position:relative; zoom:1 ;background:#11b6b6;overflow:hidden;}
-        .left_menu h4 span{display: block;float: left;width: 26px;height: 26px;padding-right: 10px;background-repeat: no-repeat;margin-top: 6px;}
-        .left_menu img {width:26px;height: 26px; }
-        /***右侧内容****/
-        .m-right{margin-left:225px;margin-bottom:0px;height:100%;}
-        .right-nav{height:50px;border-bottom:1px solid #d1d1d1;background:#f6f6f6;}
-        .right-nav li{float:left;margin-left:5px;line-height:50px;color:#464646;font-size: 14px;}
-        .right-nav li img{position:relative;top:17px;left:15px;}
-        .right-nav li a{color:#464646;}
-        .right-nav li a:hover{color:#00a5a5; text-decoration:underline;}
-        .main{
 
-            /*background: #9eb4ff;*/
+        .left_menu ul li .list-item a{
+            width:210px;
+            padding-left:110px;
+            text-decoration:none;
+            font-size:14px;
+            color:#f5f5f5;
+            line-height:30px;
+            display:block;
+        }
+
+        .left_menu ul li a.noline {
+            border-bottom:none;
+        }
+
+        .left_menu ul li a:hover{
+            color:#03329c;
+        }
+
+        .left_menu ul li a {
+            color:#000000;
+        }
+
+        .left_menu ul li h4 {
+            cursor:pointer;
+            background:url(../images/bg1.png) no-repeat 270px 18px;
+            padding-left:30px;
+            text-decoration:none;
+            font-size:16px;
+            color:#000000;
+            display:block;
+            line-height:40px;
+            font-weight:normal;
+        }
+
+        .left_menu ul li.noline {
+            border-bottom:none;
+        }
+
+        .left_menu ul li.selected h4 {
+            background-position:200px -45px;
+            background-color:#00a5a5;
+        }
+
+        .left_menu li .list-item {
+            padding:5px 0;
+            position:relative;
+            zoom:1;
+            background:#11b6b6;
+            overflow:hidden;
+        }
+
+        .left_menu h4 span{
+            display: block;
+            float: left;
+            width: 26px;
+            height: 26px;
+            padding-right: 10px;
+            background-repeat: no-repeat;
+            margin-top: 6px;
+        }
+
+        .left_menu img {
+            width:26px;
+            height: 26px;
+        }
+
+        /***右侧内容****/
+        .m-right{
+            flex: 1;
+            position: relative;
+            min-width: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        .m-right.expanded {
+            margin-left: 0 !important;
+        }
+
+        .right-nav{
+            height:50px;
+            border-bottom:1px solid #d1d1d1;
+            background:#f6f6f6;
+        }
+
+        .right-nav li{
+            float:left;
+            margin-left:5px;
+            line-height:50px;
+            color:#464646;
+            font-size: 14px;
+        }
+
+        .right-nav li img{
+            position:relative;
+            top:17px;
+            left:15px;
+        }
+
+        .right-nav li a{
+            color:#464646;
+        }
+
+        .right-nav li a:hover{
+            color:#00a5a5;
+            text-decoration:underline;
+        }
+
+        .main {
             background: #b4d4ff;
-            overflow:auto;
-            /*zoom: 0.8;*/
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             transform: scale(0.8);
             transform-origin: 0 0;
             width: 125%;
             height: 125%;
-            /* zoom: 0.8; */
-            /* width: 100%; */
-            top: 64px;
         }
-        a{color: #f6f6f6}
+
+        a{
+            color: #f6f6f6;
+        }
 
         /***********************************/
         #header .logo #daohang{
@@ -182,111 +291,89 @@
             margin-top: 24px;
             z-index: 999;
             display: block;
+            cursor: pointer;
         }
-        .m-right #daohang active{
-            display: none;
-        }
-        #content .left_menu{
-            /*box-shadow: 10px 10px 10px 0px rgba(204,204,204,0.5);*/
-            -webkit-transition:.3s;
-        }
-        #content .left_menu #nav_dot{
-            /*margin-top: 7px;*/
-            height: 90%;
-            /*height: 100%;*/
-        }
-        #content .left_menu #nav_dot li{
-            margin: 10px auto;
-        }
+
         #header #daohang img{
             width: 31px;
             height: 35px;
-            /*box-shadow: 2px 2px 2px rgba(184, 177, 177,0.5);*/
             transition: .3s;
+            cursor: pointer;
         }
+
+        #content .left_menu{
+            box-shadow: none;
+        }
+
+        #content .left_menu #nav_dot{
+            height: auto;
+            min-height: 100%;
+            padding: 10px 0;
+        }
+
+        #content .left_menu #nav_dot li{
+            margin: 8px auto;
+            display: block;
+        }
+
         #content .m-right #daohang img:hover{
             background-color: #00a5a5;
-
         }
+
         #content .left_menu #nav_dot li a{
             -webkit-transition: all .3s;
-            /*color: #9F9F9F;*/
             color: #ffffff;
             margin: 5px 0;
             font-size: 18px;
             font-weight: 800;
-            /*background:*/
-            /*            !*linear-gradient(to right, #38cb37, #14c113);*!*/
-            /*            !*radial-gradient(circle, #a1c4fd, #dcfdff, #a6c1ee);*!*/
-            /*            !*linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);*!*/
-            /*            !*linear-gradient(to right, #4facfe 0%, #00f2fe 100%);*!*/
             background: linear-gradient(45deg, #00c6fb, #005bea, #00c6fb);
             background-size: 200% auto;
             width: 85%;
             padding: 0px 31px 6px 0;
             height: 45px;
-            float: left;
+            display: flex;
+            align-items: center;
             position: relative;
             clip-path: polygon(
-                    10% 0%,  /* 左上角内凹点 */
-                    90% 0%,   /* 右上角内凹点 */
-                    100% 50%, /* 右侧三角形顶点 */
-                    90% 100%, /* 右下角内凹点 */
-                    10% 100%, /* 左下角内凹点 */
-                    0% 50%    /* 左侧三角形顶点 */
+                    10% 0%,
+                    90% 0%,
+                    100% 50%,
+                    90% 100%,
+                    10% 100%,
+                    0% 50%
             );
+            text-decoration: none;
         }
-        /*#content .left_menu #nav_dot li a::before {*/
-        /*    content: "";*/
-        /*    position: absolute;*/
-        /*    left: -15px;*/
-        /*    top: 0;*/
-        /*    width: 60px;*/
-        /*    height: 100%;*/
-        /*    background: #f7a53c;*/
-        /*    border-top-left-radius: 5px;*/
-        /*    border-bottom-left-radius: 5px;*/
-        /*    clip-path: ellipse(50% 50% at left center);*/
-        /*}*/
 
         #content .left_menu #nav_dot li a img{
-            transform: translateY(20%);
+            transform: translateY(0);
             padding-left: 27px;
-            padding-top: 10px;
             padding-right: 10px;
             width: 25px;
             height: 25px;
+            flex-shrink: 0;
         }
+
         #content .left_menu #nav_dot li a:hover{
             background-position: right center;
             transform: translateY(-3px);
         }
+
         .on{
             background-color: rgb(19, 19, 19);
-            /*background-image: linear-gradient(to bottom,#747171,#000);*/
         }
-        #content .m-right{
-            left: 26px;
-        }
+
         #header{
-            zoom: 0.8;
             box-shadow: 2px 3px 7px #6f7180;
-
+            flex-shrink: 0;
         }
 
-
-
+        /*****原有的其他样式保持不变*****/
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
-        }
-
-        body {
-            background-color: #f5f7fa;
-            color: #333;
-            /*padding: 20px;*/
         }
 
         .container {
@@ -298,7 +385,6 @@
             overflow: hidden;
         }
 
-        /* 优化后的导航栏容器 */
         .container-fluid {
             width: 100%;
             display: flex;
@@ -311,7 +397,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* 添加装饰元素增强深度感 */
         .container-fluid::before {
             content: '';
             position: absolute;
@@ -324,102 +409,14 @@
             z-index: 2;
         }
 
-
         .navbar-header {
-            width: auto !important; /* 取消固定宽度限制 */
-            min-width: unset; /* 移除最小宽度 */
+            width: auto !important;
+            min-width: unset;
             display: flex;
             align-items: center;
-            flex: 0 0 auto; /* 根据内容自动调整宽度 */
+            flex: 0 0 auto;
             padding: 0 15px;
         }
-
-        /* 确保容器正确布局 */
-        .container-fluid {
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* 左右分散对齐 */
-            padding: 0 20px;
-        }
-
-        /* 导航菜单项优化 */
-        .nav.navbar-nav {
-            display: flex;
-            align-items: center;
-            flex: 1; /* 占据剩余空间 */
-            justify-content: flex-end; /* 右对齐 */
-            margin: 0;
-            padding: 0;
-        }
-
-        /* 搜索框区域优化 */
-        .form-inline {
-            display: flex;
-            min-width: 250px;
-            margin-left: 15px;
-        }
-
-        /* 响应式调整 */
-        @media (max-width: 1200px) {
-            .navbar-header {
-                flex: 0 0 auto;
-            }
-
-            .navbar-brand {
-                font-size: 16px;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .navbar-header {
-                width: 100% !important;
-                justify-content: center;
-                margin-bottom: 10px;
-            }
-
-            .nav.navbar-nav {
-                width: 100%;
-                justify-content: center;
-                order: 2;
-            }
-
-            .form-inline {
-                width: 100%;
-                margin: 10px 0;
-                order: 3;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container-fluid {
-                flex-direction: column;
-                padding: 10px;
-            }
-
-            .navbar-header {
-                margin-bottom: 10px;
-            }
-
-            .nav.navbar-nav {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .nav.navbar-nav > li {
-                margin: 5px;
-            }
-
-            .form-inline {
-                min-width: 100%;
-            }
-        }
-
-        /*.navbar-header {*/
-        /*    width: 100%;*/
-        /*    min-width: 220px;*/
-        /*    display: flex;*/
-        /*    align-items: center;*/
-        /*}*/
 
         .navbar-header img {
             width: 36px;
@@ -585,30 +582,6 @@
             display: flex;
         }
 
-        /*.btn-default {*/
-        /*    background: linear-gradient(135deg, #FF9966, #FF5E62);*/
-        /*    border: none;*/
-        /*    color: white;*/
-        /*    cursor: pointer;*/
-        /*    transition: all 0.3s ease;*/
-        /*    white-space: nowrap;*/
-        /*    font-weight: 600;*/
-        /*    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);*/
-        /*    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);*/
-        /*    min-width: 60px;*/
-        /*}*/
-
-        /*.btn-default:hover {*/
-        /*    background: linear-gradient(135deg, #FF5E62, #FF9966);*/
-        /*    transform: translateY(-3px);*/
-        /*    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);*/
-        /*}*/
-
-        /*.btn-default:active {*/
-        /*    transform: translateY(1px);*/
-        /*    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);*/
-        /*}*/
-
         .search-btn {
             display: inline-flex;
             align-items: center;
@@ -641,19 +614,9 @@
             box-shadow: 0 2px 4px rgba(74, 66, 181, 0.15);
         }
 
-        /* 搜索图标样式 */
         .search-btn i {
             margin-right: 6px;
             font-size: 14px;
-        }
-
-        /* 响应式调整 */
-        @media (max-width: 768px) {
-            .search-btn {
-                width: 100%;
-                margin: 10px 0 0 0;
-                justify-content: center;
-            }
         }
 
         .dropdown {
@@ -717,9 +680,6 @@
             font-size: 14px;
             transition: all 0.2s ease;
             position: relative;
-
-
-
         }
 
         .dropdown-menu li a::before {
@@ -770,12 +730,12 @@
             line-height: 1.6;
         }
 
+        /* 响应式调整 */
         @media (max-width: 1200px) {
             .navbar-header {
                 width: 30%;
                 min-width: 200px;
             }
-
 
             .nav.navbar-nav > li {
                 margin-left: 6px;
@@ -797,7 +757,6 @@
                 min-width: 180px;
             }
 
-
             .nav.navbar-nav > li > a {
                 padding: 10px 5px;
                 font-size: 13px;
@@ -805,10 +764,6 @@
 
             .input-group {
                 min-width: 140px;
-            }
-
-            .btn-default {
-                padding: 10px 12px;
             }
         }
 
@@ -843,6 +798,16 @@
 
             .form-control {
                 min-width: auto;
+            }
+
+            .left_menu {
+                position: absolute;
+                z-index: 1000;
+                height: 100%;
+            }
+
+            .left_menu.collapsed {
+                display: none;
             }
         }
 
@@ -909,15 +874,14 @@
         #tupian-modal .modal-body {
             padding: 30px 20px;
             display: flex;
-            flex-direction: column; /* 改为垂直布局 */
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             background: white;
-            position: relative; /* 为背景添加定位 */
-            overflow: hidden; /* 防止背景溢出 */
+            position: relative;
+            overflow: hidden;
         }
 
-        /* 添加背景装饰 */
         #tupian-modal .modal-body::before {
             content: '';
             position: absolute;
@@ -935,7 +899,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            z-index: 1; /* 确保内容在背景之上 */
+            z-index: 1;
         }
 
         #tupian-modal #qrcode {
@@ -950,7 +914,6 @@
             z-index: 1;
         }
 
-        /* 添加加载中的动画效果 */
         #tupian-modal #qrcode:not([src]) {
             display: flex;
             align-items: center;
@@ -963,7 +926,6 @@
             font-size: 14px;
         }
 
-        /* 文字部分布局优化 */
         #tupian-modal .modal-body-text {
             margin-bottom: 20px;
             text-align: center;
@@ -973,7 +935,6 @@
             position: relative;
         }
 
-        /* 响应式调整 */
         @media (max-width: 576px) {
             #tupian-modal .modal-dialog {
                 width: 250px;
@@ -997,9 +958,9 @@
             justify-content: space-between;
             margin-bottom: 10px;
         }
+
         .carousel-index {
             width: var(--tankuan);
-            /*width: 300px;*/
             position: fixed;
             z-index: 9998;
             box-shadow: 0 0 30px rgba(0,0,0,0.6);
@@ -1052,6 +1013,7 @@
             text-align: center;
             margin: 10px;
             transform: none;
+            cursor: pointer;
         }
 
         .index-btn-div {
@@ -1069,19 +1031,18 @@
             text-align: center;
             margin: 10px;
             transform: none;
-        }
-
-        .index-btn-div:hover {
             cursor: pointer;
         }
 
+        .index-btn-div:hover,
         .clean-btn-div:hover {
             cursor: pointer;
+            opacity: 0.8;
         }
+
         .hidden {
             display: none;
         }
-
 
         .carousel-container {
             width: 100%;
@@ -1089,17 +1050,14 @@
             position: relative;
             overflow: hidden;
             margin-bottom:5px;
-
         }
 
-        /* 轮播图片容器 */
         .carousel-images {
             width: 100%;
             height: 100%;
             position: relative;
         }
 
-        /* 轮播项样式 */
         .carousel-item {
             position: absolute;
             width: 100%;
@@ -1125,10 +1083,39 @@
             visibility: hidden !important;
         }
 
+        /* 滚动条样式优化 */
+        .left_menu::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .left_menu::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .left_menu::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .left_menu::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* 响应式调整 */
+        @media (max-height: 600px) {
+            #content .left_menu #nav_dot li a {
+                height: 40px;
+                font-size: 16px;
+            }
+
+            #content .left_menu #nav_dot li a img {
+                padding-top: 8px;
+            }
+        }
     </style>
 
 </head>
-
+<body style="    transform: scale(0.8);transform-origin: 0 0;width: 125%;height: 125%;overflow: auto;">
 <div class="top"></div>
 
 
@@ -1140,123 +1127,128 @@
         </div>
     </div>
 </div>
-<div>
 
+<div style="height: 100%;">
     <div class="carousel-container">
         <button type="button" class="clean-btn-div" onclick="yinClick()">×</button>
         <div class="carousel-images" id="carouselImages"></div>
     </div>
-<div id="header">
+
+    <div id="header" style="height: 11%;">
 
 
-    <div>
-        <a href="http://www.yhocn.cn"><img src="../images/LOG.png" class="logo" style="width: 80px; height: 66px; " ></a>
-    </div>
-	<div class="logo">云合智慧门店收银系统<img id="daohang" src="../images/new_pics/收起.png"></div>
-    <!--<div id="daohang">-->
+        <div>
+            <a href="http://www.yhocn.cn"><img src="../images/LOG.png" class="logo" style="width: 80px; height: 66px; " ></a>
+        </div>
+
+        <div class="logo"> <span>云合智慧门店收银系统</span><img id="daohang" src="../images/new_pics/收起.png"></div>
+        <!--<div id="daohang">-->
         <!--<img src="../images/new_pics/收起.png" style="position: absolute;">-->
         <!--&lt;!&ndash;            <span class="iconfont icon-shouqi-copy"></span>&ndash;&gt;-->
-    <!--</div>-->
-    <div class="marquee-container">
-        <div class="marquee-content" id="marqueeText">
+        <!--</div>-->
+        <div class="marquee-container">
+            <div class="marquee-content" id="marqueeText">
 
+            </div>
         </div>
-    </div>
-	<div class="navigation">
-		<ul>
-            <li target="main"><img src="../images/下载.png" style="width:35px;height: 35px"></li>
-            <li  class="nav-a"><a  href="../app-debug.apk" target="main">下载APP</a></li>
-            <li target="main"><img src="../../images/下载excel.png" style="width:35px;height: 35px"></li>
-            <li  class="nav-a"><a  href="../智慧门店收银系统(20231012).xlsm" target="main" >下载Excel</a></li>
-            <li target="main"><img src="../images/new_pics/人员.png" style="width:35px;height: 35px"></li>
-		 	<li target="main">欢迎您：{{datas[0].uname}}</li>
-            <li target="main"><img src="../images/修改密码.png" style="width:35px;height: 35px"></li>
-			<li class="nav-a"><a href="/users/password_toUpdate" target="main">密码修改</a></li>
-            <li target="main"><img src="../images/关于.png" style="width:35px;height: 35px"></li>
-            <li class="nav-a"><a href="/copyright" target="main">关于</a></li>
-            <li target="main"><img src="../images/帮助.png" style="width:35px;height: 35px"></li>
-            <li class="nav-a"><a href="/help" target="main">帮助</a></li>
-            <li target="main"><img src="../images/退出.png" style="width:35px;height: 35px"></li>
-            <li class="nav-a"><a href="http://localhost:3000/">退出</a></li>
-		</ul>
-	</div>
+        <div class="navigation">
+            <ul>
+                <li target="main"><img src="../images/下载.png" style="width:35px;height: 35px"></li>
+                <li  class="nav-a"><a  href="../app-debug.apk" target="main">下载APP</a></li>
+                <li target="main"><img src="../../images/下载excel.png" style="width:35px;height: 35px"></li>
+                <li  class="nav-a"><a  href="../智慧门店收银系统(20231012).xlsm" target="main" >下载Excel</a></li>
+                <li target="main"><img src="../images/new_pics/人员.png" style="width:35px;height: 35px"></li>
+                <li target="main">欢迎您：{{datas[0].uname}}</li>
+                <li target="main"><img src="../images/修改密码.png" style="width:35px;height: 35px"></li>
+                <li class="nav-a"><a href="/users/password_toUpdate" target="main">密码修改</a></li>
+                <li target="main"><img src="../images/关于.png" style="width:35px;height: 35px"></li>
+                <li class="nav-a"><a href="/copyright" target="main">关于</a></li>
+                <li target="main"><img src="../images/帮助.png" style="width:35px;height: 35px"></li>
+                <li class="nav-a"><a href="/help" target="main">帮助</a></li>
+                <li target="main"><img src="../images/退出.png" style="width:35px;height: 35px"></li>
+                <li class="nav-a"><a href="http://localhost:3000/">退出</a></li>
+            </ul>
+        </div>
 
-</div>
-<div id="content">
-	<div class="left_menu">
-        <div class="left_menu_lf">
-		<ul id="nav_dot">
-            <li>
-                <a href="/welcome" target="main" ><img src="../images/new_pics/首页.png">首&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp页</a>
-            </li>
-            <li>
-                <a href="/customer/select" target="main"><img src="../images/new_pics/客户信息管理.png">客户信息</a>
-            </li>
-            <li>
-               <a href="/day_trading/select_ass" target="main"><img src="../images/new_pics/交易记录 (1).png">日交易额</a>
-            </li>
-            <li>
-                <a href="/month_trading/select" target="main"><img src="../images/new_pics/交易记录.png">月交易额</a>
-            </li>
-            <li>
-                <a href="/statistics/select" target="main"><img src="../images/new_pics/交易总额.png">交易总额</a>
-            </li>
-            <li>
-                <a href="/users/select" target="main"><img src="../images/new_pics/员工信息.png">员工信息</a>
-            </li>
-            <li>
-                <a href="/product/select" target="main"><img src="../images/new_pics/商品.png">商品设置</a>
-            </li>
-            <li>
-                <a href="/member_info/select" target="main"><img src="../images/new_pics/会员管理.png">会员管理</a>
-            </li>
-            <li>
-                <a href="/membership_level/select" target="main"><img src="../images/new_pics/会员等级等级钻石.png">会员等级</a>
-            </li>
-            <li>
-                <a href="/order_panel/select" target="main"><img src="../images/new_pics/点餐.png">点单面板</a>
-            </li>
-            <li>
-                <a href="/order_table/ass" target="main"><img src="../images/new_pics/桌位.png">桌位管理</a>
-            </li>
-            <li>
-                <a href="/orders/select" target="main"><img src="../images/new_pics/订单信息.png">订单信息</a>
-            </li>
-            <li>
-                <a href="/report_form/select" target="main"><img src="../images/new_pics/统计报表.png">统计报表</a>
-            </li>
-            <li>
-                <a href="../云合智慧门店收银系统_使用说明.rar" target="main"><img src="../images/new_pics/统计报表.png">使用说明</a>
-            </li>
-            <li>
-                <a href="../app-debug.apk" target="main"><img src="../images/new_pics/统计报表.png">下载APP</a>
-            </li>
-            <li>
-                <a href="../智慧门店收银系统(20231012).xlsm" target="main"><img src="../images/new_pics/统计报表.png">下载Excel</a>
-            </li>
-<!--            <li>-->
-<!--                <a href="/event_discount/select" target="main"><img src="../images/new_pics/统计报表.png">优&nbsp惠&nbsp方&nbsp案</a>-->
-<!--            </li>-->
-            <li>
-                <a href="#javascript" onclick="fullScreen()"><img src="../images/new_pics/quanpingxianshi.png">全屏显示</a>
-            </li>
-            <li>
-                <a href="#javascript" onclick="exitFullScreen()"><img src="../images/new_pics/tuichuquanping.png">退出全屏</a>
-            </li>
-        </ul>
-        </div>
-        <div class="left_menu_ri">
-            <img id="daohang1" src="../images/new_pics/收起.png">
-        </div>
-<!--        <img src="../images/logo2.png"  />-->
     </div>
-    <div class="m-right">
-        <div>
-            <iframe id="iframe" src="/welcome" name="main" class="main"></iframe>
+    <div id="content" style="height: 89%;">
+        <div style="height: 100%;overflow: auto">
+            <div class="left_menu">
+                <div class="left_menu_lf">
+                    <ul id="nav_dot">
+                        <li>
+                            <a href="/welcome" target="main" ><img src="../images/new_pics/首页.png">首&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp页</a>
+                        </li>
+                        <li>
+                            <a href="/customer/select" target="main"><img src="../images/new_pics/客户信息管理.png">客户信息</a>
+                        </li>
+                        <li>
+                            <a href="/day_trading/select_ass" target="main"><img src="../images/new_pics/交易记录 (1).png">日交易额</a>
+                        </li>
+                        <li>
+                            <a href="/month_trading/select" target="main"><img src="../images/new_pics/交易记录.png">月交易额</a>
+                        </li>
+                        <li>
+                            <a href="/statistics/select" target="main"><img src="../images/new_pics/交易总额.png">交易总额</a>
+                        </li>
+                        <li>
+                            <a href="/users/select" target="main"><img src="../images/new_pics/员工信息.png">员工信息</a>
+                        </li>
+                        <li>
+                            <a href="/product/select" target="main"><img src="../images/new_pics/商品.png">商品设置</a>
+                        </li>
+                        <li>
+                            <a href="/member_info/select" target="main"><img src="../images/new_pics/会员管理.png">会员管理</a>
+                        </li>
+                        <li>
+                            <a href="/membership_level/select" target="main"><img src="../images/new_pics/会员等级等级钻石.png">会员等级</a>
+                        </li>
+                        <li>
+                            <a href="/order_panel/select" target="main"><img src="../images/new_pics/点餐.png">点单面板</a>
+                        </li>
+                        <li>
+                            <a href="/order_table/ass" target="main"><img src="../images/new_pics/桌位.png">桌位管理</a>
+                        </li>
+                        <li>
+                            <a href="/orders/select" target="main"><img src="../images/new_pics/订单信息.png">订单信息</a>
+                        </li>
+                        <li>
+                            <a href="/report_form/select" target="main"><img src="../images/new_pics/统计报表.png">统计报表</a>
+                        </li>
+                        <li>
+                            <a href="../云合智慧门店收银系统_使用说明.rar" target="main"><img src="../images/new_pics/统计报表.png">使用说明</a>
+                        </li>
+                        <li>
+                            <a href="../app-debug.apk" target="main"><img src="../images/new_pics/统计报表.png">下载APP</a>
+                        </li>
+                        <li>
+                            <a href="../智慧门店收银系统(20231012).xlsm" target="main"><img src="../images/new_pics/统计报表.png">下载Excel</a>
+                        </li>
+                        <!--            <li>-->
+                        <!--                <a href="/event_discount/select" target="main"><img src="../images/new_pics/统计报表.png">优&nbsp惠&nbsp方&nbsp案</a>-->
+                        <!--            </li>-->
+                        <li>
+                            <a href="#javascript" onclick="fullScreen()"><img src="../images/new_pics/quanpingxianshi.png">全屏显示</a>
+                        </li>
+                        <li>
+                            <a href="#javascript" onclick="exitFullScreen()"><img src="../images/new_pics/tuichuquanping.png">退出全屏</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="left_menu_ri">
+                    <img id="daohang1" src="../images/new_pics/收起.png">
+                </div>
+                <!--        <img src="../images/logo2.png"  />-->
+            </div>
+        </div>
+        <div class="m-right">
+            <div>
+                <iframe id="iframe" src="/welcome" name="main" class="main"></iframe>
+            </div>
         </div>
     </div>
 </div>
-</div>
+</body>
 <script>
     navList(12);
 
@@ -1271,10 +1263,10 @@
         console.log(divWidth)
         if(divWidth > 0){
             $(".left_menu").width(0);
-            $(".m-right").css("marginLeft",0);
+            // $(".m-right").css("marginLeft",0);
         }else{
             $(".left_menu").width(225);
-            $(".m-right").css("marginLeft",225);
+            // $(".m-right").css("marginLeft",225);
         }
 
     })
@@ -1286,7 +1278,7 @@
             $(".m-right").css("marginLeft",0);
         }else{
             $(".left_menu").width(225);
-            $(".m-right").css("marginLeft",225);
+            // $(".m-right").css("marginLeft",225);
         }
 
     })

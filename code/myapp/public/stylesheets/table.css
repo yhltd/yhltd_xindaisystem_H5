@@ -231,9 +231,9 @@ table, tbody, tfoot, thead, tr, th, td {
     background-color: #00a5a5;
 }
 .header-icon{
-    width: 80px;
-    height: 80px;
-    transform: translateY(2px);
+    width: 60px;
+    height: 60px;
+    transform: translateY(10px);
     /*border: 1px solid #000;*/
 
 }
