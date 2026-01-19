@@ -42,9 +42,7 @@ router.all('/ass', function (req, res, next) {
     let isSelect = req.query.pagenum == undefined;
     let token = localStorage.getItem("token")
     let key = '123456789abcdefg';
-    //console.log('加密的key:', key);
     let iv = 'abcdefg123456789';
-    //console.log('加密的iv:', iv);
     let data = JSON.parse(decrypt(key, iv, token));
     let value = Object.values(data);
     let company = value[0];
@@ -56,6 +54,7 @@ router.all('/ass', function (req, res, next) {
         hyxm: ''
     }
     console.log('isSelect:', isSelect);
+
     if (isSelect) {
         selectParams.date1 = req.body.date1;
         selectParams.date2 = req.body.date2;
@@ -66,6 +65,7 @@ router.all('/ass', function (req, res, next) {
     } else {
         selectParams = JSON.parse(localStorage.getItem("selectParams"));
     }
+
     if (selectParams.ddh == undefined){
         selectParams.ddh ="";
     }
@@ -81,10 +81,35 @@ router.all('/ass', function (req, res, next) {
     if (selectParams.date2 == undefined || selectParams.date2 == ''){
         selectParams.date2 ="2122-01-01";
     }
-    let whereSql = "  and ddh like '%" + toLiteral(selectParams.ddh) + "%' and ifnull(syy,'') like '%" + toLiteral(selectParams.syy) + "%' and ifnull(hyxm,'') like '%" + toLiteral(selectParams.hyxm) + "%' and riqi>='" + toLiteral(selectParams.date1) + "' and riqi<='" + toLiteral(selectParams.date2) + "'"
+
+    // ============ 关键修改：日期格式转换 ============
+    // 将横杠格式转换为斜杠格式，以匹配数据库中的格式
+    function convertDateForSQL(dateStr) {
+        if (!dateStr) return dateStr;
+        // 如果是横杠格式，转为斜杠格式
+        if (dateStr.includes('-')) {
+            return dateStr.replace(/-/g, '/');
+        }
+        // 如果已经是斜杠格式，直接返回
+        return dateStr;
+    }
+
+    // 转换查询条件中的日期
+    let sqlDate1 = convertDateForSQL(selectParams.date1);
+    let sqlDate2 = convertDateForSQL(selectParams.date2);
+
+    // ============ 修改whereSql部分 ============
+    let whereSql = "  and ddh like '%" + toLiteral(selectParams.ddh) + "%' " +
+        "and ifnull(syy,'') like '%" + toLiteral(selectParams.syy) + "%' " +
+        "and ifnull(hyxm,'') like '%" + toLiteral(selectParams.hyxm) + "%' " +
+        "and riqi>='" + toLiteral(sqlDate1) + "' " +  // 使用转换后的日期
+        "and riqi<='" + toLiteral(sqlDate2) + "'";    // 使用转换后的日期
+
+    console.log('查询条件 date1:', selectParams.date1, '-> SQL格式:', sqlDate1);
+    console.log('查询条件 date2:', selectParams.date2, '-> SQL格式:', sqlDate2);
+    console.log('完整WHERE语句:', whereSql);
 
     let sql1 = "select Count(*) as count from orders where company = '" + toLiteral(company) + "'" + whereSql;
-
     //console.log(sql1)
     db.query(sql1, function (err, rows) {
         try {

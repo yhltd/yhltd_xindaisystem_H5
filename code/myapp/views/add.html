@@ -10,8 +10,12 @@
             var formData = $('#formData').serialize();
             var params = JSON.parse(formToJson(decodeURIComponent(formData, true)))
             $("#checkFormCheckBox").attr('checked', checkForm(params));
-        }
 
+            // 如果表单验证通过，显示保存提示
+            if(checkForm(params)) {
+                alert("保存成功！");
+            }
+        }
         function checkForm(params){
             var temp = /^\d+(\.\d+)?$/
             if(params.recipient==""){

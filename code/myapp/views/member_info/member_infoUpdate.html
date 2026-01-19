@@ -3,6 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>修改页面</title>
+
+    <!-- 第一步：立即修复日期格式 -->
+    <script>
+        // 立即执行，修复日期格式
+        (function() {
+            console.log("开始修复日期格式...");
+
+            // 修复单个日期值
+            function fixDateValue(value) {
+                if (!value || typeof value !== 'string') return value;
+
+                if (value.includes('/')) {
+                    var parts = value.split('/');
+                    if (parts.length === 3) {
+                        var year = parts[0];
+                        var month = parts[1].padStart(2, '0');
+                        var day = parts[2].padStart(2, '0');
+                        return year + '-' + month + '-' + day;
+                    }
+                }
+                return value;
+            }
+
+            // DOM加载完成后执行
+            function initDates() {
+                // 修复生日字段
+                var birthdayInput = document.querySelector('input[name="birthday"]');
+
+                if (birthdayInput) {
+                    var originalValue = birthdayInput.getAttribute('value') || birthdayInput.value;
+                    var fixedValue = fixDateValue(originalValue);
+                    birthdayInput.setAttribute('value', fixedValue);
+                    birthdayInput.value = fixedValue;
+                    console.log("修复生日:", originalValue, "->", fixedValue);
+                }
+            }
+
+            // 立即执行一次
+            initDates();
+
+            // DOM加载后再次执行
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initDates);
+            } else {
+                initDates();
+            }
+        })();
+    </script>
+
     <style>
         .iframe_d
         {
@@ -203,6 +252,9 @@
             var formData = $('#formData').serialize();
             var params = JSON.parse(formToJson(decodeURIComponent(formData, true)))
             $("#checkFormCheckBox").attr('checked', checkForm(params));
+            if(checkForm(params)) {
+                alert("修改成功！");
+            }
         }
 
         function checkForm(params){

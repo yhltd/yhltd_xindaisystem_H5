@@ -193,6 +193,7 @@
             transform: translateX(-50%);
             border: 1px solid white;
             box-shadow: 0 5px 15px rgb(0 0 0 / 50%);
+            z-index: 1000;
         }
         .modal-header{
             height: 36px;
@@ -382,7 +383,7 @@
             padding: 5px 25px;
             font-size: 13px;
             color: #9c9c9c;
-            height: 48px;
+
         }
         .list{
             height: 120px;
@@ -469,6 +470,7 @@
             border: 1px solid white;
             border-radius: 9px;
             box-shadow: 0 5px 15px rgb(0 0 0 / 50%);
+            z-index: 1001;
         }
         .zhekou_content{
             width: 97%;
@@ -530,6 +532,7 @@
             transform: translateX(-50%);
             box-shadow: 0 5px 15px rgb(0 0 0 / 50%);
             border-radius: 10px;
+            z-index: 1001;
         }
         .modal-body{
             width: 96%;
@@ -545,6 +548,7 @@
             display: none;
             border: none;
             border-radius: 0;
+            z-index: 999;
         }
         .con1{
             display: flex;
@@ -570,6 +574,7 @@
             border: 1px solid white;
             border-radius: 9px;
             box-shadow: 0 5px 15px rgb(0 0 0 / 50%);
+            z-index: 1001;
         }
         #huiyuan .modal-header{
             width: 97%;
@@ -577,6 +582,7 @@
         #huiyuan .modal-body > div{
             background-color: #fff;
         }
+
     </style>
 </head>
 <style>
@@ -1383,6 +1389,7 @@
         /* transform: translateY(-50%); */
         border: 1px solid white;
         box-shadow: 0 5px 15px rgb(0 0 0 / 50%);
+        z-index: 1001;
     }
     .details_modal-content{
         /*border: 1px solid;*/
@@ -2822,7 +2829,7 @@
                         </select>
                     </div>
                     <div class="product_details_flavor">
-                        商品口味
+                        保存方式
                         <select>
 
                         </select>
@@ -2940,20 +2947,19 @@
 
                                 </div>
                             </div>
-                        </div>
+
                         <!-- 辅助搜索会员提示 -->
                         <div class="tishi_list" style="display: none;">
 
                         </div>
-                        <div class="detailed_info">
-                            <p style="padding: 5px 0;border-top: 1px solid #eee; margin: 0; display: none;">详细信息</p>
-                            <p>
-                                <span>消费总额: <span id="xiaofei_Sum"></span></span>
-<!--                                <span>打折优惠: <span class="bills_Discountamount">0.00</span></span>-->
-<!--                                <span>免单金额: <span class="bills_FreeBillsPrice">0.00</span></span>-->
-                                <span>抹零金额: <span class="bills_ReducedPrice">0.00</span></span>
-                                <span>挂账金额: <span class="guazhang">0.00</span></span>
-                            </p>
+                    <div class="detailed_info">
+                        <p style="padding: 5px 0;border-top: 1px solid #eee; margin: 0; display: none;">详细信息</p>
+                        <p>
+                            <span>原价总额: <span id="original_price">0.00</span></span>
+                            <span>抹零金额: <span class="bills_ReducedPrice">0.00</span></span>
+                            <span>挂账金额: <span class="guazhang">0.00</span></span>
+                        </p>
+                    </div>
 <!--                            <p>-->
 <!--                                <span>抹零金额: <span class="bills_ReducedPrice">0.00</span></span>-->
 <!--                                <span>挂账金额: <span class="guazhang">0.00</span></span>-->
@@ -2961,9 +2967,17 @@
 <!--                            </p>-->
                         </div>
 
-                        <div class="list">
+                        <div class="list" style="overflow: auto;">
                             <div class="con1">
-                                <span>应收：</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp ￥<span id="yingshou_Sum"> </span>
+                                <span>总金额:</span>
+                                <span class="zongjine" style="color: #ff5500; font-weight: bold;"><span id="zongjine_value">0.00</span></span>
+                            </div>
+                            <div class="con1">
+                                <span>优惠金额:</span>
+                                <span class="youhuijine" style="color: #1ec413; font-weight: bold;"><span id="youhuijine_value">0.00</span></span>
+                            </div>
+                            <div class="con1">
+                                <span>应收：</span> <span id="yingshou_Sum"> </span>
                             </div>
                             <div class="types">
                                 <!-- <div>
@@ -2984,13 +2998,18 @@
                             </div>
                             <div class="con1">
                                 <span>找零</span>
-                                <span class="change">￥ 0.00</span>
+                                <span class="change"> 0.00</span>
+                                <!-- 添加备注显示区域 -->
+                            </div>
+                               <div class="con1 beizhu_display" style="display: none;">
+                                    <span>备注</span>
+                                    <span class="remark_text" style="color: #666; font-style: italic;"></span>
 
                             </div>
 
                             <div class="con1 youhui">
                                 <span>实际金额</span>
-                                <span class="change" id="shiji">￥ 0.00</span>
+                                <span class="change" id="shiji"> 0.00</span>
 
                             </div>
 
@@ -3142,6 +3161,29 @@
         </div>
     </div>
     <!--    备注窗体-->
+    <!--<div id="beizhu" class="modal fade" tabindex="-1" >-->
+        <!--<div class="modal-dialog modal-lg">-->
+            <!--<div class="modal-content" >-->
+                <!--<div id="beizhu_move" class="modal-header" >-->
+                    <!--<div class="modal-title modal-title-left" >备注</div>-->
+                    <!--<div class="modal-title modal-title-right" onclick="jQuery('#beizhu').hide()">-->
+                        <!--<img src="../../images/guanbi.png" style="width: 26px;height: 26px">-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="modal-body">-->
+                    <!--<label>-->
+                        <!--&lt;!&ndash; <p>备注</p> &ndash;&gt;-->
+                        <!--<textarea style="width: 100%;height:100px;font-size: 18px;padding: 10px 0;outline: none;border: 1px solid #ccc;" name=""  cols="30" rows="3" class="form-control beizhu" resize="none" placeholder="请输入备注，最多30字" onchange="this.value=this.value.substring(0,30)" onkeydown="this.value=this.value.substring(0,30)" onkeyup="this.value=this.value.substring(0,30)"></textarea>-->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--<div class="modal-footer">-->
+                    <!--<button style="float: right" type="button" class="btn btn-primary beizhu_btn" onclick="jQuery('#beizhu').hide()">确定</button>-->
+                    <!--&lt;!&ndash; <button type="button" class="btn btn-default" data-dismiss="modal">取消</button> &ndash;&gt;-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!-- 备注窗体 -->
     <div id="beizhu" class="modal fade" tabindex="-1" >
         <div class="modal-dialog modal-lg">
             <div class="modal-content" >
@@ -3153,13 +3195,13 @@
                 </div>
                 <div class="modal-body">
                     <label>
-                        <!-- <p>备注</p> -->
-                        <textarea style="width: 100%;height:100px;font-size: 18px;padding: 10px 0;outline: none;border: 1px solid #ccc;" name=""  cols="30" rows="3" class="form-control beizhu" resize="none" placeholder="请输入备注，最多30字" onchange="this.value=this.value.substring(0,30)" onkeydown="this.value=this.value.substring(0,30)" onkeyup="this.value=this.value.substring(0,30)"></textarea>
+                    <textarea id="remark_input" style="width: 100%;height:100px;font-size: 18px;padding: 10px 0;outline: none;border: 1px solid #ccc;"
+                              name="remark" cols="30" rows="3" class="form-control beizhu"
+                              placeholder="请输入备注，最多30字" maxlength="30"></textarea>
                     </label>
                 </div>
                 <div class="modal-footer">
-                    <button style="float: right" type="button" class="btn btn-primary beizhu_btn" onclick="jQuery('#beizhu').hide()">确定</button>
-                    <!-- <button type="button" class="btn btn-default" data-dismiss="modal">取消</button> -->
+                    <button style="float: right" type="button" class="btn btn-primary beizhu_btn" id="save_remark_btn">确定</button>
                 </div>
             </div>
         </div>
@@ -3247,11 +3289,11 @@
 
 
 <script>
-    let datas = []
+    var datas = window.datas = [];
     let p_zhekou = 1
     let p_name = ""
     let p_username = ""
-
+    let currentRemark = ""
 
     $("body").on('click','#daijinquan',function (){
         console.log("进入设置高度")
@@ -3420,27 +3462,166 @@
 
 
 
-    $("body").on('click','#huiyuan_table tbody tr',function(){
-        //单点一份的1
-        var name = $(this).children().eq(1).text();
-        var username = $(this).children().eq(0).text();
-        p_name = name
-        p_username = username
-        console.log(name)
-        jQuery('#huiyuan').hide();
-        var this_str = "<p>" +
-            "           <span>会员:</span>" +
-            "           <span class=\"member_name\" title=\"" + name + "\">" + name + "</span>" +
-            "           <span class=\"member_username_title\">会员账号:</span>" +
-            "           <span class=\"member_username\" title=\"" + username + "\">" + username + "</span>" +
-            "           </p>"
-        $(".memeber_info p").remove()
-        $(".memeber_info").append(this_str)
-        $(".member_username_title").css('margin-left','70px')
-        $(".memeber_info").css('display','flex')
-    });
+    // $("body").on('click','#huiyuan_table tbody tr',function(){
+    //     //单点一份的1
+    //     var name = $(this).children().eq(1).text();
+    //     var username = $(this).children().eq(0).text();
+    //     p_name = name
+    //     p_username = username
+    //     console.log(name)
+    //     jQuery('#huiyuan').hide();
+    //     var this_str = "<p>" +
+    //         "           <span>会员:</span>" +
+    //         "           <span class=\"member_name\" title=\"" + name + "\">" + name + "</span>" +
+    //         "           <span class=\"member_username_title\">会员账号:</span>" +
+    //         "           <span class=\"member_username\" title=\"" + username + "\">" + username + "</span>" +
+    //         "           </p>"
+    //     $(".memeber_info p").remove()
+    //     $(".memeber_info").append(this_str)
+    //     $(".member_username_title").css('margin-left','70px')
+    //     $(".memeber_info").css('display','flex')
+    // });
+    // 修改会员行点击事件
 
+    // 简化版会员等级弹窗
+    function showMemberLevelPopup(name, level, discount, points, isError = false) {
+        // 移除已有的弹窗
+        $('.member-level-popup').remove();
+        $('.popup-overlay').remove();
 
+        // 简约弹窗HTML
+        var popupHtml = `
+        <div class="member-level-popup" style="
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 9999;
+            text-align: center;
+            min-width: 250px;
+        ">
+            <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">
+                ${name}
+            </div>
+
+            <div style="margin-bottom: 15px; font-size: 14px; color: #666;">
+                <div style="margin-bottom: 5px;">等级: ${level}</div>
+                <div style="margin-bottom: 5px;">折扣: ${discount}</div>
+                <div>积分: ${points.toFixed(2)}</div>
+            </div>
+
+            <div style="margin: 10px 0; padding: 8px; background: #f5f5f5; border-radius: 3px;">
+                <div style="font-size: 12px; color: #666;">折扣已自动应用到购物车</div>
+            </div>
+
+            <button onclick="$(this).closest('.member-level-popup').remove();"
+                style="
+                    margin-top: 10px;
+                    padding: 6px 20px;
+                    background: #007bff;
+                    border: none;
+                    color: white;
+                    border-radius: 3px;
+                    cursor: pointer;
+                    font-size: 14px;
+                ">
+                确认
+            </button>
+        </div>
+    `;
+
+        // 添加遮罩层（半透明灰色背景）
+        $('body').append('<div class="popup-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);z-index:9998;"></div>');
+
+        $('body').append(popupHtml);
+
+        // 2秒后自动关闭
+        setTimeout(function() {
+            $('.member-level-popup').fadeOut(200, function() {
+                $(this).remove();
+                $('.popup-overlay').remove();
+            });
+        }, 2000);
+    }
+
+    // 更新会员信息显示区域
+    function updateMemberInfoDisplay(name, username, level, discount) {
+        var this_str = `
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 10px;">
+            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="color: #666; font-size: 14px;">会员:</span>
+                    <span style="color: #e74c3c; font-weight: bold; font-size: 16px;">${name}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="color: #666; font-size: 14px;">卡号:</span>
+                    <span style="color: #3498db; font-size: 16px;">${username}</span>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;
+                background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+                padding: 6px 15px;
+                border-radius: 20px;
+                border: 1px solid #ff7700;
+                box-shadow: 0 2px 8px rgba(255, 119, 0, 0.2);">
+                <span style="color: #d35400; font-weight: bold; font-size: 14px;">${level}</span>
+                <div style="width: 1px; height: 20px; background: rgba(0,0,0,0.1);"></div>
+                <span style="color: #27ae60; font-size: 14px;">${discount}</span>
+            </div>
+        </div>
+    `;
+
+        $(".memeber_info").empty().append(this_str).css({
+            'display': 'flex',
+            'flex-direction': 'column',
+            'padding': '0',
+            'background': 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+            'border-radius': '10px',
+            'border': '1px solid #dee2e6'
+        });
+    }
+    // 应用会员折扣到所有商品的函数
+    function applyMemberDiscountToAllProducts() {
+        var member_discount = p_zhekou || 1;
+
+        console.log("🔄 应用会员折扣:", member_discount);
+
+        // 1. 更新结账窗口的价格显示
+        $("#table1 tbody tr").each(function() {
+            var priceElement = $(this).find('.itemAmount1 .price');
+            var priceText = priceElement.text().trim();
+            var currentPrice = parseFloat(priceText) || 0;
+
+            // 重新计算价格（原价 × 会员折扣）
+            var productName = $(this).find('.itemName1').text().trim();
+            var count = parseFloat($(this).find('.itemNum1 .count').text().trim()) || 1;
+
+            // 查找原价
+            for(var i = 0; i < window.datas.length; i++) {
+                if(window.datas[i].product_name == productName) {
+                    var priceStr = window.datas[i].price.split(",")[0];
+                    var originalUnitPrice = parseFloat(priceStr) || 0;
+                    var newPrice = originalUnitPrice * count * member_discount;
+
+                    // 更新显示
+                    priceElement.text(newPrice.toFixed(2));
+                    console.log("更新价格:", productName, "原单价:", originalUnitPrice, "新总价:", newPrice);
+                    break;
+                }
+            }
+        });
+
+        // 2. 立即更新结账窗口显示
+        if (jQuery('#jiezhang').is(':visible')) {
+            console.log("结账窗口已显示，更新金额");
+            updateJiezhangAmounts();  // 使用修复后的函数
+        }
+    }
     function ondblclick_f(obj){
         $(obj).remove();
         Table_sum();
@@ -3454,59 +3635,80 @@
     });
 
     $("body").on('click','#jia',function(){
-        //单点一份的1
-        console.log('jia')
+        console.log('jia');
 
         $("#table tbody tr").each(function(){
-            var a = $(this).css('background-color');
-            if(a == 'rgb(249, 249, 249)'){
-                console.log('选中')
-                var count = $(this).children().eq(2).children().eq(0);
-                var this_count = $(this).children().eq(2).children().eq(0).text();
-                var money = $(this).children().eq(3);
-                var this_money = $(this).children().eq(3).text();
-                this_money = this_money.replace("￥","")
-                console.log(count)
-                console.log(this_count)
-                console.log(money)
-                console.log(this_money)
-                var danjia = this_money / this_count
-                this_count = this_count * 1 + 1 * 1
-                this_money = this_money * 1 + danjia * 1
-                console.log(this_count)
-                console.log(this_money)
-                count.text(this_count)
-                money.text("￥" + this_money)
+            var bgColor = $(this).css('background-color');
+            console.log('背景色:', bgColor); // 调试用
+
+            if(bgColor === 'rgb(235, 233, 233)') {
+                console.log('✅ 找到选中行');
+
+                var countElement = $(this).find('.itemNum .count');
+                var moneyElement = $(this).find('.itemAmount .price');
+
+                var this_count = parseFloat(countElement.text());
+                var this_money = parseFloat(moneyElement.text());
+
+                console.log('当前数量:', this_count);
+                console.log('当前金额:', this_money);
+
+                // 计算单价
+                var danjia = this_money / this_count;
+                console.log('单价:', danjia);
+
+                // 更新数量（加1）
+                var new_count = this_count + 1;
+                var new_money = danjia * new_count;
+
+                console.log('新数量:', new_count);
+                console.log('新金额:', new_money);
+
+                // 更新显示
+                countElement.text(new_count);
+                moneyElement.text(new_money.toFixed(2));
             }
         });
         Table_sum();
     });
 
     $("body").on('click','#jian',function(){
-        //单点一份的1
-        console.log('jian')
+        console.log('jian');
+
         $("#table tbody tr").each(function(){
-            var a = $(this).css('background-color');
-            if(a == 'rgb(249, 249, 249)'){
-                console.log('选中')
-                var count = $(this).children().eq(2).children().eq(0);
-                var this_count = $(this).children().eq(2).children().eq(0).text();
-                var money = $(this).children().eq(3);
-                var this_money = $(this).children().eq(3).text();
-                this_money = this_money.replace("￥","")
-                console.log(count)
-                console.log(this_count)
-                console.log(money)
-                console.log(this_money)
-                var danjia = this_money / this_count
-                this_count = this_count * 1 - 1 * 1
-                this_money = this_money * 1 - danjia * 1
-                console.log(this_count)
-                console.log(this_money)
-                count.text(this_count)
-                money.text("￥" + this_money)
-                if(this_count < 1){
-                    $(this).remove();
+            var bgColor = $(this).css('background-color');
+
+            if(bgColor === 'rgb(235, 233, 233)') {
+                console.log('✅ 找到选中行');
+
+                var countElement = $(this).find('.itemNum .count');
+                var moneyElement = $(this).find('.itemAmount .price');
+
+                var this_count = parseFloat(countElement.text());
+                var this_money = parseFloat(moneyElement.text());
+
+                console.log('当前数量:', this_count);
+                console.log('当前金额:', this_money);
+
+                // 计算单价
+                var danjia = this_money / this_count;
+                console.log('单价:', danjia);
+
+                // 更新数量（减1）
+                if(this_count > 1) {
+                    var new_count = this_count - 1;
+                    var new_money = danjia * new_count;
+
+                    console.log('新数量:', new_count);
+                    console.log('新金额:', new_money);
+
+                    countElement.text(new_count);
+                    moneyElement.text(new_money.toFixed(2));
+                } else if(this_count === 1) {
+                    // 数量为1时点击减号，询问是否删除
+                    if(confirm('确定要删除该商品吗？')) {
+                        $(this).remove();
+                    }
                 }
             }
         });
@@ -3514,29 +3716,20 @@
     });
 
     $("body").on('click','#is_zengsong',function(){
-        console.log()
+        console.log('is_zengsong');
+
         $("#table tbody tr").each(function(){
-            var a = $(this).css('background-color');
-            if(a == 'rgb(249, 249, 249)'){
-                console.log('选中')
-                var count = $(this).children().eq(2).children().eq(0);
-                var this_count = $(this).children().eq(2).children().eq(0).text();
-                var money = $(this).children().eq(3);
-                var this_money = $(this).children().eq(3).text();
-                this_money = this_money.replace("￥","")
-                console.log(count)
-                console.log(this_count)
-                console.log(money)
-                console.log(this_money)
-                var danjia = this_money / this_count
-                this_money = 0
-                console.log(this_count)
-                console.log(this_money)
-                count.text(this_count)
-                money.text("￥" + this_money)
-                // if(this_count < 1){
-                //     $(this).remove();
-                // }
+            var bgColor = $(this).css('background-color');
+
+            if(bgColor === 'rgb(235, 233, 233)') {
+                console.log('✅ 找到选中行');
+
+                var moneyElement = $(this).find('.itemAmount .price');
+
+                // 将价格设置为0（赠送）
+                moneyElement.text('0.00');
+
+                console.log('已设置为赠送（价格设为0）');
             }
         });
         Table_sum();
@@ -3577,56 +3770,84 @@
         msg.lang = "zh-CN";
         synth.cancel(msg);
     }
-    //结账按钮点击后
-    $(".but7").click(function () {
 
-        console.log("add")
-        var pro_list = []
+    // 备注处理相关函数 ==============================================
+    // 保存备注按钮点击事件
+    $('#save_remark_btn').on('click', function() {
+        var remarkText = $('#remark_input').val().trim();
+
+        if (remarkText) {
+            // 在右侧显示备注内容
+            $('.remark_text').text(remarkText);
+            $('.beizhu_display').show();
+
+            // 保存到全局变量，供结账时使用
+            window.currentRemark = remarkText;
+
+            // 可选：语音播报
+            handleSpeak("备注已添加：" + remarkText);
+        } else {
+            // 如果没有备注内容，隐藏显示区域
+            $('.beizhu_display').hide();
+            window.currentRemark = '';
+        }
+
+        // 关闭备注窗口
+        jQuery('#beizhu').hide();
+    });
+
+    // 结账按钮点击事件
+    $(".but7").click(function () {
+        console.log("add");
+        var pro_list = [];
         var pro_num = $("#danhao").val();
-        var member_name=p_name
-        var member_username=p_username
+        var member_name = p_name;
+        var member_username = p_username;
+        var yingshouValue = parseFloat($('#yingshou_Sum').text()) || 0;
+        var shijiValue = parseFloat($('#shiji').text()) || 0;
+        var youhuiValue = parseFloat($('#youhui').val()) || 0;
+        var member_discount = p_zhekou || 1;
 
         $("#table1 tbody tr").each(function () {
             var id = $(this).children().eq(0).text();
             var jine = $(this).children(".itemAmount1").children().eq(0).text();
-            jine = jine.replace("￥","")
-            var shul= $(this).children(".itemNum1").children().eq(0).text();
-            var zhek= $(this).children(".itemzheko").children().eq(0).text();
+            jine = parseFloat(jine.replace("￥","")) || 0;
+            var shul = parseFloat($(this).children(".itemNum1").find('.count').text()) || 1;
+            var zhek = parseFloat($(this).children(".itemzheko").find('.aa').text()) || 1;
 
-            console.log(jine)
-            console.log(shul)
-            console.log(zhek)
-            for(var i=0; i<datas.length;i++){
+            var finalDiscount = zhek * member_discount;
+            var finalPrice = jine * member_discount;
+
+            for(var i=0; i<datas.length; i++){
                 if(datas[i].product_name == id){
                     pro_list.push({
-                        member_name:member_name,
-                        member_username:member_username,
-                        cplx:datas[i].type,
-                        cpmc:datas[i].product_name,
-                        dw:datas[i].unit,
-                        dj:datas[i].price,
-                        dzbl:zhek,
-                        // zhdj:zhehou / num,
-                        zhdj:jine*zhek/shul,
-                        // zhje:zhehou,
-                        zhje:jine*zhek*shul/shul,
-                        gs:shul
-                    })
+                        member_name: member_name,
+                        member_username: member_username,
+                        cplx: datas[i].type,
+                        cpmc: datas[i].product_name,
+                        dw: datas[i].unit,
+                        dj: datas[i].price,
+                        dzbl: member_discount,
+                        zhdj: finalPrice / shul,
+                        zhje: finalPrice,
+                        gs: shul
+                    });
+                    break;
                 }
-
             }
-        })
+        });
 
-        jQuery("#jiezhang").hide()
-        jQuery(".jiezhang_mask").hide()
-        $(".Lblock #empty_mask .cont table tr").remove()
-        console.log(pro_list)
-        console.log(pro_num)
-        var yingshouValue = parseFloat($('#yingshou_Sum').text()) || 0;
-        var shijiValue = parseFloat($('#shiji').text()) || 0;
-        var youhuiValue = parseFloat($('#youhui').val()) || 0;
+        jQuery("#jiezhang").hide();
+        jQuery(".jiezhang_mask").hide();
+        $(".Lblock #empty_mask .cont table tr").remove();
 
+        console.log(pro_list);
+        console.log(pro_num);
 
+        // 获取当前桌号
+        var currentTableNumber = window.cachedTableNumber || zhuohao ||
+            sessionStorage.getItem('currentTableNumber') ||
+            localStorage.getItem('currentTableNumber');
 
         $.ajax({
             type: 'post',
@@ -3635,122 +3856,416 @@
             data: {
                 pro_list: JSON.stringify(pro_list),
                 pro_num: pro_num,
-                member_name:member_name,
-                member_username,
+                member_name: member_name,
+                member_username: member_username,
                 youhui: p_zhekou,
-                yhje:youhuiValue,
-                ssje:shijiValue,
-                xfje:yingshouValue
+                yhje: youhuiValue,
+                ssje: shijiValue,
+                xfje: yingshouValue,
+                remark: window.currentRemark || '',
+                zhuohao: currentTableNumber  // 传递桌号
             },
             success: function(res){
-                let result = JSON.parse(res)
-                alert(result.msg)
+                let result = res;
+                alert(result.msg);
                 tableShow();
                 orders_auto();
+
+                // 如果是在桌位模式下，更新桌位
+                if (currentTableNumber) {
+                    // 更新桌位状态
+                    uptableTable(pro_num, currentTableNumber);
+                }
+
+                // 结账后清空备注
+                $('.remark_text').text('');
+                $('.beizhu_display').hide();
+                window.currentRemark = '';
+                $('#remark_input').val('');
+
+                // 清空购物车
+                $(".Lblock #empty_mask .cont table tr").remove();
+                Table_sum();
+
+                // 重新生成订单号
+                orders_auto();
+
+                // 如果是桌位模式，重新加载该桌位数据
+                if (currentTableNumber) {
+                    setTimeout(function() {
+                        console.log("🔄 重新加载桌位数据:", currentTableNumber);
+                        sendSearchRequest(currentTableNumber);
+                    }, 800);
+                }
+
+                location.replace(location.href);
             },
             error: function(res){
                 if(res.status == "timeout"){
-                    alert("网络超时，请稍后再试")
+                    alert("网络超时，请稍后再试");
                 }else{
-                    alert("网络错误，请稍后再试")
+                    alert("网络错误，请稍后再试");
                 }
             }
         });
-        location.replace(location.href);
-    })
-
+    });
+    //
+    // document.getElementById("but3").onclick = function() {
+    //     console.log("=== 结账按钮点击开始 ===");
+    //     // 使用当前最新的会员折扣
+    //     var member_discount = p_zhekou || 1;
+    //     console.log("当前会员折扣:", member_discount);
+    //
+    //     // 检查datas是否已加载
+    //     if (!window.datas || !Array.isArray(window.datas)) {
+    //         console.error("商品数据未加载或格式错误:", window.datas);
+    //         alert("商品数据加载异常，请刷新页面");
+    //         return;
+    //     }
+    //
+    //     console.log("商品数据已加载，数量:", window.datas.length);
+    //
+    //     // 检查购物车是否为空
+    //     var num = $('.Lblock #empty_mask .cont .table tbody tr').length;
+    //     console.log("购物车商品数量:", num);
+    //
+    //     if (num < 1){
+    //         alert('购物车为空');
+    //         return;
+    //     }
+    //
+    //     // 检查订单号是否填写
+    //     var pro_num = $("#danhao").val();
+    //     if(pro_num.trim() == ''){
+    //         alert("未填写订单号");
+    //         return;
+    //     }
+    //
+    //     // 清空结账表格
+    //     $("#table1 tbody tr").remove();
+    //
+    //     var this_str1 = "";
+    //     var member_discount = window.p_zhekou || 1;
+    //     var hasProducts = false;
+    //
+    //     console.log("当前会员折扣:", member_discount);
+    //     console.log("开始填充结账表格...");
+    //
+    //     // 填充结账表格数据
+    //     $(".Lblock #empty_mask .cont .table tbody tr").each(function (index) {
+    //         console.log("处理第" + (index + 1) + "行商品");
+    //
+    //         // 获取商品ID
+    //         var id = $(this).find('.itemid .id').text().trim();
+    //         console.log("商品ID:", id);
+    //
+    //         // 检查商品ID是否存在
+    //         if(!id || id == '') {
+    //             console.warn("第" + index + "行商品ID为空");
+    //             return;
+    //         }
+    //
+    //         // 获取数量
+    //         var num = $(this).find('.itemNum .count').text().trim();
+    //         console.log("商品数量:", num);
+    //
+    //         // 获取当前价格
+    //         var priceElement = $(this).find('.itemAmount .price');
+    //         var priceText = priceElement.text().trim();
+    //
+    //         // 移除￥符号和其他非数字字符
+    //         var priceStr = priceText.replace(/[^\d.-]/g, '');
+    //         var currentPrice = parseFloat(priceStr) || 0;
+    //
+    //         console.log("价格文本:", priceText, "解析后价格:", currentPrice);
+    //
+    //         // 应用会员折扣
+    //         var finalPrice = currentPrice * member_discount;
+    //
+    //         // 查找商品信息
+    //         var productFound = false;
+    //         console.log("开始查找商品ID:", id, "在datas中...");
+    //
+    //         // 使用本地变量datas，而不是window.datas
+    //         var localDatas = window.datas || [];
+    //
+    //         for(var i=0; i<localDatas.length; i++){
+    //             console.log("比较:", localDatas[i].id, "===", id);
+    //             if(localDatas[i].id == id){
+    //                 console.log("找到商品:", localDatas[i].product_name);
+    //                 this_str1 += "" +
+    //                     "<tr class=\"success\">" +
+    //                     "<td class=\"itemName1\">" + localDatas[i].product_name + "</td>"+
+    //                     "<td class=\"itemNum1\">" +
+    //                     "<span class=\"count\">" + num + "</span>"+
+    //                     "/"+
+    //                     "<span class=\"unit\">" + localDatas[i].unit + "</span>"+
+    //                     "</td>"+
+    //                     "<td class=\"itemAmount1\">" +
+    //                     "<span class=\"price\">" + finalPrice.toFixed(2) + "</span>"+
+    //                     "</td>"+
+    //                     "<td class=\"itemzheko\"><div class=\"aa\">1</div></td>"+
+    //                     "</tr>";
+    //                 productFound = true;
+    //                 hasProducts = true;
+    //                 break;
+    //             }
+    //         }
+    //
+    //         if(!productFound) {
+    //             console.warn("未找到ID为" + id + "的商品信息");
+    //         }
+    //     });
+    //
+    //     // 检查是否有找到商品
+    //     if(!hasProducts) {
+    //         alert("未选择有效商品");
+    //         return;
+    //     }
+    //
+    //     console.log("结账表格HTML:", this_str1);
+    //     $("#table1 tbody").append(this_str1);
+    //
+    //     // 计算消费总额
+    //     huiyuan_sum();
+    //
+    //     // 显示弹窗
+    //     console.log("准备显示弹窗...");
+    //     jQuery(".jiezhang_mask").show();
+    //     jQuery('#jiezhang').show();
+    //     $("body").addClass("mask");
+    //
+    //     console.log("=== 结账按钮点击结束 ===");
+    //
+    //     // 更新人数统计
+    //     try {
+    //         var danhao = $("#danhao").val().slice(-3);
+    //         var startIndex = 0;
+    //         while (startIndex < danhao.length && danhao[startIndex] === '0') {
+    //             startIndex++;
+    //         }
+    //
+    //         var validNumber = startIndex < danhao.length ? danhao.substring(startIndex) : '0';
+    //         var finalCount = parseInt(validNumber) - 1;
+    //         $("h3.renshu").text("累计结账：" + finalCount + "人");
+    //     } catch (e) {
+    //         console.warn("更新人数统计时出错:", e);
+    //     }
+    // };
+    // 在 order_panel.html 中搜索
     document.getElementById("but3").onclick = function() {
+        console.log("=== 结账按钮点击开始 ===");
+
+        // 检查购物车是否为空
         var num = $('.Lblock #empty_mask .cont .table tbody tr').length;
-        if (num <1){
-            alert('购物车为空')
-        }else{
-            $("#table1 tbody tr").remove();
-            var pro_list = []
-            var pro_num = $("#danhao").val();
+        console.log("购物车商品数量:", num);
 
+        if (num < 1){
+            alert('购物车为空');
+            return;
+        }
 
-            var this_str1 = ""
-            var _number = 0;
-            var _money = 0;
-            $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
-                var id = $(this).children(".itemid").eq(0).text();
+        // 检查订单号是否填写
+        var pro_num = $("#danhao").val();
+        if(pro_num.trim() == ''){
+            alert("未填写订单号");
+            return;
+        }
 
-                var num = $(this).children(".itemNum").children().eq(0).text();
+        // 清空结账表格
+        $("#table1 tbody tr").remove();
 
-                var zhehou = $(this).children(".itemAmount").children().eq(1).text();
+        var this_str1 = "";
+        var member_discount = window.p_zhekou || 1;
+        var hasProducts = false;
+        var totalOriginal = 0; // 原价总额
+        var totalFinal = 0;    // 最终总额
 
-                var money = $(this).children().eq(3).text();
+        console.log("当前会员折扣:", member_discount);
+        console.log("开始填充结账表格...");
 
+        // 填充结账表格数据
+        $(".Lblock #empty_mask .cont .table tbody tr").each(function (index) {
+            // 获取商品ID
+            var id = $(this).find('.itemid .id').text().trim();
+            var productName = $(this).find('.itemName').text().trim();
+            var count = parseFloat($(this).find('.itemNum .count').text()) || 1;
+            var currentPrice = parseFloat($(this).find('.itemAmount .price').text()) || 0;
 
-                for(var i=0; i<datas.length;i++){
-
-                    if(datas[i].id == id){
-
-                        console.log(datas[i].id)
-                        this_str1 += "" +
-                            "<tr class=\"success\" ondblclick=\"ondblclick_f(this)\">" +
-                            "<td class=\"itemName1\">" + datas[i].product_name + "</td>"+
-                            "<td class=\"itemNum1\">" +
-                            "<span class=\"count\">" + num + "</span>"+
-                            "/"+
-                            "<span class=\"unit\">" + datas[i].unit + "</span>"+
-                            "</td>"+
-                            "<td class=\"itemAmount1\">" +
-                            "<span class=\"price\">" + money + "</span>"+
-                            "</td>"+
-                            "<td class=\"itemzheko\"><div class=\"aa\">1</div></td>"+
-                            "</tr>"
-                        console.log(this_str1)
-                    }
-
+            // 查找商品的原始单价
+            var originalUnitPrice = 0;
+            var unit = "";
+            for(var i=0; i<window.datas.length; i++) {
+                if(window.datas[i].id == id) {
+                    var priceStr = window.datas[i].price.split(",")[0];
+                    originalUnitPrice = parseFloat(priceStr) || 0;
+                    unit = window.datas[i].unit || "瓶";
+                    break;
                 }
-            })
-            $("#table1 tbody").append(this_str1);
-            console.log(pro_list)
-            console.log(pro_num)
+            }
 
-            if(cachedTableNumber != ''){
-                uptableTable(pro_num,cachedTableNumber)
+            if(originalUnitPrice > 0) {
+                // 计算原始总价
+                var originalTotal = originalUnitPrice * count;
+                // 当前显示价格已经是折扣后的价格
+                var finalPrice = currentPrice;
+
+                totalOriginal += originalTotal;
+                totalFinal += finalPrice;
+
+                this_str1 += "" +
+                    "<tr class=\"success\">" +
+                    "<td class=\"itemName1\">" + productName + "</td>"+
+                    "<td class=\"itemNum1\">" +
+                    "<span class=\"count\">" + count + "</span>"+
+                    "/"+
+                    "<span class=\"unit\">" + unit + "</span>"+
+                    "</td>"+
+                    "<td class=\"itemAmount1\">" +
+                    "<span class=\"price\">" + finalPrice.toFixed(2) + "</span>"+
+                    "</td>"+
+                    "<td class=\"itemzheko\"><div class=\"aa\">1</div></td>"+
+                    "</tr>";
+                hasProducts = true;
             }
-            if(pro_num == ''){
-                alert("未填写订单号")
-                return;
-            }
-            console.log(pro_list.length)
-            if(datas.length == 0){
-                alert("未选择商品")
-                return;
-            }
-            $(".hover").click(function (){
-                $(".hover").removeClass("active")
-                $(".hover").addClass("active")
-            })
-            jQuery(".jiezhang_mask").show()
-            jQuery('#jiezhang').show();
-            $("body").addClass("mask")
-            huiyuan_sum();
+        });
+
+        if(!hasProducts) {
+            alert("未选择有效商品");
+            return;
         }
 
-        var danhao = $("#danhao").val().slice(-4);
+        console.log("结账表格HTML:", this_str1);
+        $("#table1 tbody").append(this_str1);
 
-        // 找到第一个非零数字的起始位置
-        var startIndex = 0;
-        while (startIndex < danhao.length && danhao[startIndex] === '0') {
-            startIndex++;
+        // 计算优惠金额
+        var discountAmount = totalOriginal - totalFinal;
+
+        // 更新结账窗口的金额显示
+        updateJiezhangAmounts(totalOriginal, totalFinal, discountAmount);
+
+        // 显示弹窗 - 简化版本
+        console.log("准备显示弹窗...");
+
+        // 1. 先显示遮罩层
+        jQuery(".jiezhang_mask").show();
+
+        // 2. 显示结账窗口 - 不使用过高的z-index
+        jQuery('#jiezhang').show();
+
+        $("body").addClass("mask");
+
+        console.log("=== 结账按钮点击结束 ===");
+
+        // 更新人数统计
+        try {
+            var danhao = $("#danhao").val().slice(-3);
+            var startIndex = 0;
+            while (startIndex < danhao.length && danhao[startIndex] === '0') {
+                startIndex++;
+            }
+
+            var validNumber = startIndex < danhao.length ? danhao.substring(startIndex) : '0';
+            var finalCount = parseInt(validNumber) - 1;
+            // $("h3.renshu").text("累计结账：" + finalCount + "人");
+        } catch (e) {
+            console.warn("更新人数统计时出错:", e);
         }
-
-        // 提取有效数字部分
-        var validNumber = startIndex < danhao.length ? danhao.substring(startIndex) : '0';
-        var finalCount = parseInt(validNumber) - 1;
-
-        // 更新人数显示
-        $("h3.renshu").text("累计结账：" + finalCount + "人");
-
-
-
     };
 
+    $("body").on('click','#huiyuan_table tbody tr',function(){
+        // 从data属性获取所有信息
+        var username = $(this).data('username');
+        var name = $(this).data('name');
+        var points = parseFloat($(this).data('points')) || 0;
+        var jibie = $(this).data('jibie') || '普通会员';
+        var discount = parseFloat($(this).data('discount')) || 1;
+        var discountText = $(this).data('discounttext') || '无折扣';
 
+        console.log("====== 选择会员 ======");
+        console.log("从data属性获取:", {
+            name: name,
+            username: username,
+            points: points,
+            jibie: jibie,
+            discount: discount,
+
+        });
+
+        // 如果discountText是undefined，重新计算
+        if (!discountText || discountText === 'undefined') {
+            discountText = discount == 1 ? '无折扣' : (discount * 10).toFixed(1) + '折';
+        }
+
+        console.log("最终计算结果:", {
+            等级: jibie,
+            折扣值: discount,
+            折扣显示: discount
+        });
+
+        // 保存到全局变量
+        p_name = name;
+        p_username = username;
+        p_zhekou = discount;
+
+        // 显示弹窗提示
+        showMemberLevelPopup(name, jibie, discount, points);
+
+        // 隐藏会员选择窗口
+        jQuery('#huiyuan').hide();
+
+        // 更新会员信息显示
+        updateMemberInfoDisplay(name, username, jibie, discount);
+
+        // 计算购物车的原价总额
+        var totalOriginal = 0;
+
+        // 从主购物车table计算原价总额
+        $(".Lblock #empty_mask .cont .table tbody tr").each(function() {
+            var id = $(this).find('.itemid .id').text().trim();
+            var count = parseFloat($(this).find('.itemNum .count').text().trim()) || 1;
+
+            // 查找商品信息
+            for(var i = 0; i < window.datas.length; i++) {
+                if(window.datas[i].id == id) {
+                    var priceStr = window.datas[i].price.split(",")[0];
+                    var originalPrice = parseFloat(priceStr) || 0;
+                    totalOriginal += originalPrice * count;
+                    break;
+                }
+            }
+        });
+        totalFinal=discount*totalOriginal;
+        discountAmount=totalOriginal-totalFinal;
+
+
+        setTimeout(function() {
+            updateJiezhangAmounts(totalOriginal, totalFinal, discountAmount); // 使用上面修复的简单函数
+        }, 300);
+    });
+    // 新增：更新结账窗口金额的函数
+    function updateJiezhangAmounts(original, final, discount) {
+        // 更新总金额
+        $("#zongjine_value").text(original.toFixed(2));
+
+        // 更新优惠金额
+        $("#youhuijine_value").text(discount.toFixed(2));
+
+        // 更新应收金额
+        $("#yingshou_Sum").text(final.toFixed(2));
+
+        // 更新原价总额
+        $("#original_price").text(original.toFixed(2));
+
+        // 更新实际金额
+        $("#shiji").text('￥ ' + final.toFixed(2));
+
+        console.log("金额更新完成:", {
+            总金额: original,
+            优惠金额: discount,
+            应收金额: final
+        });
+    }
     function uptableTable(pro_num,cachedTableNumber) {
         $.ajax({
             type: 'post',
@@ -3776,67 +4291,276 @@
         });
     }
 
+    // document.getElementById("but4").onclick = function() {
+    //     console.log("add")
+    //     $("#table2 tbody tr").remove();
+    //     var pro_list = []
+    //     var pro_num = $("#danhao").val();
+    //     var this_str1 = ""
+    //     $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
+    //         var id = $(this).children(".itemid").eq(0).text();
+    //         var num = $(this).children(".itemNum").children().eq(0).text();
+    //         var zhehou = $(this).children(".itemAmount").children().eq(1).text();
+    //         var money = $(this).children().eq(3).text();
+    //         console.log(id)
+    //         console.log(num)
+    //         console.log(zhehou)
+    //         console.log(datas)
+    //         console.log(id)
+    //         for(var i=0; i<datas.length;i++){
+    //             if(datas[i].id == id){
+    //                 console.log(datas[i].id)
+    //                 this_str1 += "" +
+    //                     "<tr class=\"success\" ondblclick=\"ondblclick_f(this)\">" +
+    //                     "<td class=\"itemxuanzhe\"><input class=\"itemxuanzhe1\" type=\"checkbox\"></td>"+
+    //                     "<td class=\"itemName2\">" + datas[i].product_name + "</td>"+
+    //                     "<td class=\"itemNum2\">" +
+    //                     "<span class=\"count\">" + num + "</span>"+
+    //                     "/"+
+    //                     "<span class=\"unit\">" + datas[i].unit + "</span>"+
+    //                     "</td>"+
+    //                     "<td class=\"itemAmount2\">" +
+    //                     "<span class=\"price\">" + money + "</span>"+
+    //                     "</td>"+
+    //                     "<td class=\"itemzheko\">1</td>"+
+    //                     "<td class=\"itemid\" style='visibility: hidden;width: 10px;margin: 0;padding: 0'>" +
+    //                     "<span class=\"id\">" + datas[i].id + "</span>"+
+    //                     "</td>"+
+    //                     "</tr>"
+    //
+    //                 console.log(this_str1)
+    //             }
+    //         }
+    //     })
+    //     $("#table2 tbody").append(this_str1);
+    //     console.log(pro_list)
+    //     console.log(pro_num)
+    //     if(pro_num == ''){
+    //         alert("未填写订单号")
+    //         return;
+    //     }
+    //     console.log(pro_list.length)
+    //     if(datas.length == 0){
+    //         alert("未选择商品")
+    //         return;
+    //     }
+    //     $(".hover").click(function (){
+    //         $(".hover").removeClass("active")
+    //         $(".hover").addClass("active")
+    //     })
+    //     jQuery('#zheko').show();
+    //     huiyuan_sum();
+    // };
+    ////////////////////////////////////////////////////////////////////////////////
+    // document.getElementById("but4").onclick = function() {
+    //     console.log("打开折扣窗口");
+    //     $("#table2 tbody tr").remove();
+    //     var pro_num = $("#danhao").val();
+    //
+    //     if(pro_num == ''){
+    //         alert("未填写订单号");
+    //         return;
+    //     }
+    //
+    //     var this_str1 = "";
+    //     var itemIndex = 0;
+    //
+    //     $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
+    //         itemIndex++;
+    //
+    //         // 获取商品ID
+    //         var id = $(this).find('.itemid .id').text().trim();
+    //
+    //         // 获取商品数量
+    //         var num = $(this).find('.itemNum .count').text().trim();
+    //
+    //         // 获取金额
+    //         var money = $(this).find('.itemAmount .price').text().trim();
+    //
+    //         // 查找商品信息
+    //         var productInfo = null;
+    //         for(var i=0; i<datas.length; i++){
+    //             if(datas[i].id == id){
+    //                 productInfo = datas[i];
+    //                 break;
+    //             }
+    //         }
+    //
+    //         if(productInfo) {
+    //             this_str1 += "" +
+    //                 "<tr class=\"success\">" +
+    //                 "<td class=\"itemxuanzhe\"><input class=\"itemxuanzhe1\" type=\"checkbox\"></td>"+
+    //                 "<td class=\"itemName2\">" + productInfo.product_name + "</td>"+
+    //                 "<td class=\"itemNum2\">" +
+    //                 "<span class=\"count\">" + num + "</span>"+
+    //                 "/"+
+    //                 "<span class=\"unit\">" + productInfo.unit + "</span>"+
+    //                 "</td>"+
+    //                 "<td class=\"itemAmount2\">" +
+    //                 "<span class=\"price\">" + money + "</span>"+
+    //                 "</td>"+
+    //                 "<td class=\"itemzheko\">1</td>"+
+    //                 "<td class=\"itemid\" style='display:none'>" +
+    //                 "<span class=\"id\">" + productInfo.id + "</span>"+
+    //                 "</td>"+
+    //                 "</tr>";
+    //         }
+    //     });
+    //
+    //     $("#table2 tbody").append(this_str1);
+    //     jQuery('#zheko').show();
+    // };
+    // document.getElementById("but4").onclick = function() {
+    //     console.log("打开折扣窗口");
+    //     $("#table2 tbody tr").remove();
+    //     var pro_num = $("#danhao").val();
+    //
+    //     if(pro_num == ''){
+    //         alert("未填写订单号");
+    //         return;
+    //     }
+    //
+    //     var this_str1 = "";
+    //     var itemIndex = 0;
+    //
+    //     // 创建一个映射来获取折扣值（从结账窗口）
+    //     var discountMap = {};
+    //     $("#table1 tbody tr").each(function (index) {
+    //         var discount = $(this).find('.itemzheko .aa').text().trim();
+    //         discountMap[index] = discount ? parseFloat(discount) : 1;
+    //     });
+    //
+    //     $(".Lblock #empty_mask .cont .table tbody tr").each(function (index) {
+    //         // 获取商品ID
+    //         var id = $(this).find('.itemid .id').text().trim();
+    //
+    //         // 获取商品数量
+    //         var num = $(this).find('.itemNum .count').text().trim();
+    //
+    //         // 获取商品原始单价 - 这里的关键是计算原始单价
+    //         var count = parseFloat($(this).find('.itemNum .count').text()) || 1;
+    //         var totalPrice = parseFloat($(this).find('.itemAmount .price').text()) || 0;
+    //         var currentDiscount = discountMap[index] || 1;
+    //
+    //         // 计算原始总价：当前总价 / 当前折扣率
+    //         var originalTotalPrice = currentDiscount > 0 ? totalPrice / currentDiscount : totalPrice;
+    //
+    //         // 获取商品信息
+    //         var productInfo = null;
+    //         for(var i=0; i<datas.length; i++){
+    //             if(datas[i].id == id){
+    //                 productInfo = datas[i];
+    //                 break;
+    //             }
+    //         }
+    //
+    //         if(productInfo) {
+    //             // 折扣值从映射中获取，如果没有则默认为1
+    //             var discountValue = discountMap[index] || 1;
+    //
+    //             this_str1 += "" +
+    //                 "<tr class=\"success\" data-index=\"" + index + "\">" +
+    //                 "<td class=\"itemxuanzhe\"><input class=\"itemxuanzhe1\" type=\"checkbox\"></td>"+
+    //                 "<td class=\"itemName2\">" + productInfo.product_name + "</td>"+
+    //                 "<td class=\"itemNum2\">" +
+    //                 "<span class=\"count\">" + num + "</span>"+
+    //                 "/"+
+    //                 "<span class=\"unit\">" + productInfo.unit + "</span>"+
+    //                 "</td>"+
+    //                 "<td class=\"itemAmount2\">" +
+    //                 "<span class=\"price\" data-original=\"" + originalTotalPrice.toFixed(2) + "\">" + originalTotalPrice.toFixed(2) + "</span>"+
+    //                 "</td>"+
+    //                 "<td class=\"itemzheko\">" + discountValue + "</td>"+
+    //                 "<td class=\"itemid\" style='display:none'>" +
+    //                 "<span class=\"id\">" + productInfo.id + "</span>"+
+    //                 "</td>"+
+    //                 "</tr>";
+    //         }
+    //     });
+    //
+    //     $("#table2 tbody").append(this_str1);
+    //     jQuery('#zheko').show();
+    // };
     document.getElementById("but4").onclick = function() {
-        console.log("add")
+        console.log("打开折扣窗口");
         $("#table2 tbody tr").remove();
-        var pro_list = []
         var pro_num = $("#danhao").val();
-        var this_str1 = ""
-        $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
-            var id = $(this).children(".itemid").eq(0).text();
-            var num = $(this).children(".itemNum").children().eq(0).text();
-            var zhehou = $(this).children(".itemAmount").children().eq(1).text();
-            var money = $(this).children().eq(3).text();
-            console.log(id)
-            console.log(num)
-            console.log(zhehou)
-            console.log(datas)
-            console.log(id)
-            for(var i=0; i<datas.length;i++){
-                if(datas[i].id == id){
-                    console.log(datas[i].id)
-                    this_str1 += "" +
-                        "<tr class=\"success\" ondblclick=\"ondblclick_f(this)\">" +
-                        "<td class=\"itemxuanzhe\"><input class=\"itemxuanzhe1\" type=\"checkbox\"></td>"+
-                        "<td class=\"itemName2\">" + datas[i].product_name + "</td>"+
-                        "<td class=\"itemNum2\">" +
-                        "<span class=\"count\">" + num + "</span>"+
-                        "/"+
-                        "<span class=\"unit\">" + datas[i].unit + "</span>"+
-                        "</td>"+
-                        "<td class=\"itemAmount2\">" +
-                        "<span class=\"price\">" + money + "</span>"+
-                        "</td>"+
-                        "<td class=\"itemzheko\">1</td>"+
-                        "<td class=\"itemid\" style='visibility: hidden;width: 10px;margin: 0;padding: 0'>" +
-                        "<span class=\"id\">" + datas[i].id + "</span>"+
-                        "</td>"+
-                        "</tr>"
 
-                    console.log(this_str1)
+        if(pro_num == ''){
+            alert("未填写订单号");
+            return;
+        }
+
+        var this_str1 = "";
+
+        $(".Lblock #empty_mask .cont .table tbody tr").each(function (index) {
+            // 获取商品ID
+            var id = $(this).find('.itemid .id').text().trim();
+
+            // 获取商品数量
+            var numElement = $(this).find('.itemNum .count');
+            var num = numElement.text().trim();
+            num = parseFloat(num) || 1;
+
+            // 获取商品信息
+            var productInfo = null;
+            var originalUnitPrice = 0; // 单价
+
+            for(var i=0; i<datas.length; i++){
+                if(datas[i].id == id){
+                    productInfo = datas[i];
+                    var priceStr = productInfo.price.split(",")[0];
+                    originalUnitPrice = parseFloat(priceStr) || 0;
+                    break;
                 }
             }
-        })
-        $("#table2 tbody").append(this_str1);
-        console.log(pro_list)
-        console.log(pro_num)
-        if(pro_num == ''){
-            alert("未填写订单号")
-            return;
-        }
-        console.log(pro_list.length)
-        if(datas.length == 0){
-            alert("未选择商品")
-            return;
-        }
-        $(".hover").click(function (){
-            $(".hover").removeClass("active")
-            $(".hover").addClass("active")
-        })
-        jQuery('#zheko').show();
-        huiyuan_sum();
-    };
 
+            if(productInfo) {
+                // 计算商品总价 = 单价 × 数量
+                var originalTotalPrice = originalUnitPrice * num;
+
+                // 获取当前应用的折扣（如果有的话）
+                var currentDiscount = 1; // 默认为1（不打折）
+
+                // 尝试从结账窗口获取当前折扣
+                var jiezhangRow = $("#table1 tbody tr").eq(index);
+                if(jiezhangRow.length) {
+                    var discountText = jiezhangRow.find('.itemzheko .aa').text().trim();
+                    currentDiscount = parseFloat(discountText) || 1;
+                }
+
+                // ✅ 显示商品总价（单价 × 数量）
+                this_str1 += "" +
+                    "<tr class=\"success\" data-index=\"" + index + "\" data-quantity=\"" + num + "\">" +
+                    "<td class=\"itemxuanzhe\"><input class=\"itemxuanzhe1\" type=\"checkbox\"></td>"+
+                    "<td class=\"itemName2\">" + productInfo.product_name + "</td>"+
+                    "<td class=\"itemNum2\">" +
+                    "<span class=\"count\">" + num + "</span>"+
+                    "/"+
+                    "<span class=\"unit\">" + productInfo.unit + "</span>"+
+                    "</td>"+
+                    "<td class=\"itemAmount2\">" +
+                    "<span class=\"price\" data-original=\"" + originalTotalPrice.toFixed(2) + "\">" + originalTotalPrice.toFixed(2) + "</span>"+
+                    "</td>"+
+                    "<td class=\"itemzheko\">" + currentDiscount + "</td>"+
+                    "<td class=\"itemid\" style='display:none'>" +
+                    "<span class=\"id\">" + productInfo.id + "</span>"+
+                    "</td>"+
+                    "</tr>";
+
+                console.log("折扣窗口 - 商品:", {
+                    "名称": productInfo.product_name,
+                    "单价": originalUnitPrice,
+                    "数量": num,
+                    "总价": originalTotalPrice,
+                    "当前折扣": currentDiscount
+                });
+            }
+        });
+
+        $("#table2 tbody").append(this_str1);
+        jQuery('#zheko').show();
+    };
     document.getElementById("but5").onclick = function() {
         var _money = 0;
         $("#table2 tbody tr").each(function () {
@@ -3850,40 +4574,192 @@
 
     };
 
+    // document.getElementById("but6").onclick = function() {
+    //     jQuery('#beizhu').show();
+    //     huiyuan_sum();
+    // };
     document.getElementById("but6").onclick = function() {
+        // 如果已有备注，加载到输入框
+        if (window.currentRemark) {
+            $('#remark_input').val(window.currentRemark);
+        } else {
+            $('#remark_input').val('');
+        }
+
         jQuery('#beizhu').show();
         huiyuan_sum();
     };
 
+    // document.getElementById("dazhe").onclick = function() {
+    //     var xiabiao_arr = []
+    //     var bianliang = 1
+    //     var zheko_zhi = $("#qb_xz").val();
+    //     $("#table2 tbody tr").each(function () {
+    //         var this_check = $(this).children(".itemxuanzhe").children().is(':checked');
+    //         console.log(this_check)
+    //         if (this_check == true) {
+    //             console.log('判断成功')
+    //             console.log($(this).children(".itemzheko").eq(0).text())
+    //             $(this).children(".itemzheko").eq(0).text(zheko_zhi);
+    //             xiabiao_arr.push(bianliang)
+    //             // $("#table1 tbody tr").children(".itemzheko").children().eq(0).text(zheko_zhi);
+    //         }
+    //         bianliang = bianliang + 1
+    //     })
+    //     bianliang = 1
+    //     $("#table1 tbody tr").each(function () {
+    //         if (xiabiao_arr.indexOf(bianliang) != -1) {
+    //             console.log('判断成功')
+    //             $(this).children(".itemzheko").children().eq(0).text(zheko_zhi);
+    //         }
+    //         bianliang = bianliang + 1
+    //     })
+    //
+    //     jQuery('#zheko').hide()
+    //     huiyuan_sum();
+    // };
+    // 折扣应用函数 - 改回原逻辑
+    // document.getElementById("dazhe").onclick = function() {
+    //     var xiabiao_arr = [];
+    //     var zheko_zhi = $("#qb_xz").val();
+    //
+    //     // 验证折扣值
+    //     if(zheko_zhi > 1) {
+    //         alert("折扣比例不能大于1！请输入0-1之间的值");
+    //         $("#qb_xz").val(1);
+    //         $("#qb_xz").focus();
+    //         return;
+    //     }
+    //
+    //     if(zheko_zhi < 0) {
+    //         alert("折扣比例不能小于0！请输入0-1之间的值");
+    //         $("#qb_xz").val(0);
+    //         $("#qb_xz").focus();
+    //         return;
+    //     }
+    //
+    //     console.log("应用折扣:", zheko_zhi);
+    //
+    //     // 应用选中行的折扣
+    //     var rowIndex = 0;
+    //     $("#table2 tbody tr").each(function () {
+    //         var this_check = $(this).find('.itemxuanzhe1').is(':checked');
+    //         if (this_check == true) {
+    //             // 获取当前行的原始价格和数量
+    //             var priceText = $(this).find('.itemAmount2 .price').text();
+    //             var originalPrice = parseFloat(priceText) || 0;
+    //             var countText = $(this).find('.itemNum2 .count').text();
+    //             var count = parseFloat(countText) || 1;
+    //
+    //             // 计算折扣后价格
+    //             var discountedPrice = originalPrice * zheko_zhi;
+    //
+    //             // 更新折扣窗口
+    //             $(this).find('.itemAmount2 .price').text(discountedPrice.toFixed(2));
+    //             $(this).find('.itemzheko').text(zheko_zhi);
+    //
+    //             // 更新结账窗口对应行
+    //             var jiezhangRow = $("#table1 tbody tr").eq(rowIndex);
+    //             if(jiezhangRow.length) {
+    //                 jiezhangRow.find('.itemAmount1 .price').text(discountedPrice.toFixed(2));
+    //                 jiezhangRow.find('.itemzheko .aa').text(zheko_zhi);
+    //             }
+    //
+    //             // 更新主表格对应行
+    //             var mainTableRow = $(".Lblock #empty_mask .cont .table tbody tr").eq(rowIndex);
+    //             if(mainTableRow.length) {
+    //                 mainTableRow.find('.itemAmount .price').text(discountedPrice.toFixed(2));
+    //             }
+    //         }
+    //         rowIndex++;
+    //     });
+    //
+    //     jQuery('#zheko').hide();
+    //     Table_sum();  // 更新总数
+    //     huiyuan_sum(); // 更新结账总额
+    // };
     document.getElementById("dazhe").onclick = function() {
-        var xiabiao_arr = []
-        var bianliang = 1
-        var zheko_zhi = $("#qb_xz").val();
+        var zheko_zhi_input = $("#qb_xz").val();
+        var member_discount = p_zhekou || 1;
+
+        console.log("应用折扣 - 输入值:", zheko_zhi_input, "会员折扣:", member_discount);
+
+        // 转换折扣值
+        var discountValue = parseFloat(zheko_zhi_input);
+
+        // 处理不同格式的输入
+        if (isNaN(discountValue)) {
+            alert("请输入有效的数字");
+            return;
+        }
+
+        // 如果输入大于1且小于等于100，认为是百分比（如90表示90%）
+        if (discountValue > 1 && discountValue <= 100) {
+            discountValue = discountValue / 100;
+        } else if (discountValue > 100) {
+            alert("折扣值不能大于100%");
+            return;
+        }
+
+        // 验证折扣范围
+        if (discountValue > 1 || discountValue < 0) {
+            alert("折扣比例应在0-1之间");
+            return;
+        }
+
+        console.log("应用折扣 - 最终折扣值:", discountValue);
+
+        // 应用选中行的折扣
         $("#table2 tbody tr").each(function () {
-            var this_check = $(this).children(".itemxuanzhe").children().is(':checked');
-            console.log(this_check)
+            var this_check = $(this).find('.itemxuanzhe1').is(':checked');
             if (this_check == true) {
-                console.log('判断成功')
-                console.log($(this).children(".itemzheko").eq(0).text())
-                $(this).children(".itemzheko").eq(0).text(zheko_zhi);
-                xiabiao_arr.push(bianliang)
-                // $("#table1 tbody tr").children(".itemzheko").children().eq(0).text(zheko_zhi);
-            }
-            bianliang = bianliang + 1
-        })
-        bianliang = 1
-        $("#table1 tbody tr").each(function () {
-            if (xiabiao_arr.indexOf(bianliang) != -1) {
-                console.log('判断成功')
-                $(this).children(".itemzheko").children().eq(0).text(zheko_zhi);
-            }
-            bianliang = bianliang + 1
-        })
+                // 获取商品总价（从data-original属性）
+                var priceElement = $(this).find('.itemAmount2 .price');
+                var originalTotalPrice = parseFloat(priceElement.data('original')) || parseFloat(priceElement.text()) || 0;
 
-        jQuery('#zheko').hide()
-        huiyuan_sum();
+                // 获取商品数量
+                var quantity = parseFloat($(this).data('quantity')) || 1;
+
+                var rowIndex = $(this).data('index');
+
+                console.log("处理商品 - 行:", rowIndex, "总价:", originalTotalPrice, "数量:", quantity, "应用折扣:", discountValue);
+
+                // 只更新折扣列
+                $(this).find('.itemzheko').text(discountValue);
+
+                // 计算最终折扣（商品折扣 × 会员折扣）
+                var finalDiscount = discountValue * member_discount;
+
+                // 计算折扣后总价 = 原总价 × 最终折扣
+                var discountedTotalPrice = originalTotalPrice * finalDiscount;
+
+                console.log("折扣计算:", {
+                    "原总价": originalTotalPrice,
+                    "商品折扣": discountValue,
+                    "会员折扣": member_discount,
+                    "最终折扣": finalDiscount,
+                    "折扣后总价": discountedTotalPrice
+                });
+
+                // 更新结账窗口对应行
+                var jiezhangRow = $("#table1 tbody tr").eq(rowIndex);
+                if(jiezhangRow.length) {
+                    jiezhangRow.find('.itemAmount1 .price').text(discountedTotalPrice.toFixed(2));
+                    jiezhangRow.find('.itemzheko .aa').text(discountValue);
+                }
+
+                // 更新主表格对应行
+                var mainTableRow = $(".Lblock #empty_mask .cont .table tbody tr").eq(rowIndex);
+                if(mainTableRow.length) {
+                    mainTableRow.find('.itemAmount .price').text(discountedTotalPrice.toFixed(2));
+                }
+            }
+        });
+
+        jQuery('#zheko').hide();
+        Table_sum();  // 更新总数
+        huiyuan_sum(); // 更新结账总额
     };
-
     $("#is_all").change(function() {
         var this_check = $("#is_all").is(':checked')
         console.log(this_check)
@@ -3895,80 +4771,320 @@
         // }
     });
 
+    // document.getElementById("huiyuan_xz").onclick = function() {
+    //     jQuery('#huiyuan').show();
+    //     $.ajax({
+    //         type: 'post',
+    //         url: '/order_panel/select_huiyuan_list',
+    //         async:false,
+    //         data:{
+    //             this_head:"",
+    //         },
+    //         timeout: 5000,
+    //         success: function(res){
+    //             let result = JSON.parse(res)
+    //             console.log('会员列表')
+    //             console.log(result.datas)
+    //             var this_str = ""
+    //             for(var i=0; i<result.datas.length; i++){
+    //                 this_str = this_str + "<tr>" +
+    //                     "<td>" + result.datas[i].username + "</td>" +
+    //                     "<td>" + result.datas[i].name + "</td>" +
+    //                     "<td>" + result.datas[i].gender + "</td>" +
+    //                     "<td>" + result.datas[i].phone + "</td>" +
+    //                     "<td>" + result.datas[i].state + "</td>" +
+    //                     "<td>" + result.datas[i].points + "</td>" +
+    //                     "</tr>"
+    //             }
+    //             $("#huiyuan_table tbody tr").remove();
+    //             $("#huiyuan_table tbody").append(this_str);
+    //
+    //         },
+    //         error: function(res){
+    //             if(res.status == "timeout"){
+    //                 alert("网络超时，请稍后再试")
+    //             }else{
+    //                 alert("网络错误，请稍后再试")
+    //             }
+    //         }
+    //     });
+    // };
+    // 在 document.getElementById("huiyuan_xz").onclick 函数的 success 回调中修改
     document.getElementById("huiyuan_xz").onclick = function() {
         jQuery('#huiyuan').show();
+
+        $("#huiyuan_table tbody").html('<tr><td colspan="6" style="text-align: center; padding: 20px;">加载中...</td></tr>');
+
         $.ajax({
             type: 'post',
             url: '/order_panel/select_huiyuan_list',
-            async:false,
-            data:{
-                this_head:"",
+            dataType: 'json',
+            data: {
+                this_head: "",
+                page: 1,
+                limit: 50  // 增加限制，确保获取足够数据
             },
             timeout: 5000,
             success: function(res){
-                let result = JSON.parse(res)
-                console.log('会员列表')
-                console.log(result.datas)
-                var this_str = ""
-                for(var i=0; i<result.datas.length; i++){
-                    this_str = this_str + "<tr>" +
-                        "<td>" + result.datas[i].username + "</td>" +
-                        "<td>" + result.datas[i].name + "</td>" +
-                        "<td>" + result.datas[i].gender + "</td>" +
-                        "<td>" + result.datas[i].phone + "</td>" +
-                        "<td>" + result.datas[i].state + "</td>" +
-                        "<td>" + result.datas[i].points + "</td>" +
-                        "</tr>"
-                }
-                $("#huiyuan_table tbody tr").remove();
-                $("#huiyuan_table tbody").append(this_str);
+                console.log("会员列表完整响应:", res);
 
-            },
-            error: function(res){
-                if(res.status == "timeout"){
-                    alert("网络超时，请稍后再试")
-                }else{
-                    alert("网络错误，请稍后再试")
+                if (res && res.success === true && res.datas && res.datas.length > 0) {
+                    console.log("找到会员数量:", res.datas.length);
+                    console.log("第一个会员数据:", res.datas[0]);
+
+                    var this_str = "";
+
+                    for(var i = 0; i < res.datas.length; i++) {
+                        var member = res.datas[i];
+
+                        // 调试：查看每个会员的等级信息
+                        console.log(`会员 ${i}:`, {
+                            name: member.name,
+                            jibie: member.jibie,
+                            points: member.points,
+                            hasJibie: 'jibie' in member
+                        });
+
+                        this_str += '<tr ' +
+                            'data-username="' + member.username + '" ' +
+                            'data-name="' + member.name + '" ' +
+                            'data-points="' + (member.points || 0) + '" ' +
+                            'data-jibie="' + (member.jibie || '普通会员') + '" ' +
+                            'style="cursor: pointer;">';
+
+                        this_str += '<td>' + (member.username || '') + '</td>';
+                        this_str += '<td>' + (member.name || '') + '</td>';
+                        this_str += '<td>' + (member.gender || '') + '</td>';
+                        this_str += '<td>' + (member.phone || '') + '</td>';
+                        this_str += '<td>' + (member.state || '') + '</td>';
+                        this_str += '<td>' + (parseFloat(member.points) || 0).toFixed(2) + '</td>';
+                        this_str += '</tr>';
+                    }
+
+                    $("#huiyuan_table tbody").html(this_str);
+                    updatePagination(res);
+                    // 显示统计信息
+                    var membersWithLevel = res.datas.filter(m => m.jibie).length;
+                    console.log(`总计 ${res.datas.length} 个会员，其中 ${membersWithLevel} 个有等级信息`);
+
+                } else {
+                    var errorMsg = '<tr><td colspan="6" style="text-align: center; padding: 20px;">';
+                    if (!res) {
+                        errorMsg += '响应为空';
+                    } else if (!res.datas) {
+                        errorMsg += '数据为空: ' + JSON.stringify(res);
+                    } else {
+                        errorMsg += '暂无会员数据';
+                    }
+                    errorMsg += '</td></tr>';
+
+                    $("#huiyuan_table tbody").html(errorMsg);
                 }
+
+                if (res && res.total !== undefined) {
+                    $(".modal-title-left").text("选择会员 (共 " + res.total + " 人)");
+                }
+            },
+            error: function(xhr, status, error){
+                console.error('请求失败:', {status: status, error: error, responseText: xhr.responseText});
+                $("#huiyuan_table tbody").html(
+                    '<tr><td colspan="6" style="text-align: center; padding: 20px; color: red;">加载失败</td></tr>'
+                );
             }
         });
     };
 
-    function getEnterKey(){
-        if(event.keyCode==13){
-            var keyword = $('#huiyuan_window').val()
+    // 修改分页更新函数
+    // 修复updatePagination函数
+    function updatePagination(result) {
+        if (!result) return;
+
+        const currentPage = result.page || 1;
+        const totalPages = result.pages || 1;
+        const total = result.total || 0;
+
+        console.log("分页信息:", { currentPage, totalPages, total });
+
+        // 清除现有的事件监听器
+        $("#last").off("click");
+        $("#next").off("click");
+
+        // 更新页码显示
+        $(".pagination li.active a").text(currentPage);
+
+        // 设置上一页按钮
+        if (currentPage > 1) {
+            $("#last").removeClass("disabled");
+            $("#last a").on("click", function() {
+                loadPage(currentPage - 1);
+            });
+        } else {
+            $("#last").addClass("disabled");
+        }
+
+        // 设置下一页按钮
+        if (currentPage < totalPages) {
+            $("#next").removeClass("disabled");
+            $("#next a").on("click", function() {
+                loadPage(currentPage + 1);
+            });
+        } else {
+            $("#next").addClass("disabled");
+        }
+
+        // 显示总记录数
+        $(".modal-title-left").text(`选择会员 (共 ${total} 人，第 ${currentPage}/${totalPages} 页)`);
+    }
+
+    // 修复会员选择页面的HTML输入框事件绑定
+    // 将原来的onkeypress="getEnterKey();"改为：
+    // onkeypress="getEnterKey(event);"
+
+    // 修改HTML中的输入框：
+    // <input id="huiyuan_window" type="text" class="form-control search_str" maxlength="11"
+    //        placeholder="手机号/卡号/姓名" onkeypress="getEnterKey(event);">
+
+    // 修改加载页面函数
+    function loadPage(page) {
+        console.log("加载第", page, "页");
+
+        $("#huiyuan_table tbody").html('<tr><td colspan="6" style="text-align: center; padding: 20px;">加载中...</td></tr>');
+
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/select_huiyuan_list',
+            dataType: 'json',
+            data: {
+                this_head: "",
+                page: page,
+                limit: 6  // ⭐⭐⭐ 这里也改成6 ⭐⭐⭐
+            },
+            success: function(res){
+                console.log("第", page, "页数据:", res);
+
+                if (res && res.success === true && res.datas && res.datas.length > 0) {
+                    var this_str = "";
+
+                    for(var i = 0; i < res.datas.length; i++) {
+                        var member = res.datas[i];
+
+                        this_str += '<tr ' +
+                            'data-username="' + member.username + '" ' +
+                            'data-name="' + member.name + '" ' +
+                            'data-points="' + (member.points || 0) + '" ' +
+                            'data-jibie="' + (member.jibie || '普通会员') + '" ' +
+                            'data-discount="' + (member.discount || 1) + '" ' +
+                            'style="cursor: pointer;">';
+
+                        this_str += '<td>' + (member.username || '') + '</td>';
+                        this_str += '<td>' + (member.name || '') + '</td>';
+                        this_str += '<td>' + (member.gender || '') + '</td>';
+                        this_str += '<td>' + (member.phone || '') + '</td>';
+                        this_str += '<td>' + (member.state || '') + '</td>';
+                        this_str += '<td>' + (parseFloat(member.points) || 0).toFixed(2) + '</td>';
+                        this_str += '</tr>';
+                    }
+
+                    $("#huiyuan_table tbody").html(this_str);
+
+                    // 更新分页
+                    updatePagination(res);
+
+                } else {
+                    $("#huiyuan_table tbody").html(
+                        '<tr><td colspan="6" style="text-align: center; padding: 20px;">暂无数据</td></tr>'
+                    );
+                }
+            },
+            error: function() {
+                $("#huiyuan_table tbody").html(
+                    '<tr><td colspan="6" style="text-align: center; padding: 20px; color: red;">加载失败</td></tr>'
+                );
+            }
+        });
+    }
+
+    // 搜索时也支持分页
+    // 合并并修复getEnterKey函数
+    function getEnterKey(event) {
+        // 确保event参数正确传递
+        event = event || window.event;
+
+        if (event.keyCode == 13) {
+            var keyword = $('#huiyuan_window').val();
+            console.log("搜索会员:", keyword);
+
+            // 显示加载状态
+            $("#huiyuan_table tbody").html('<tr><td colspan="6" style="text-align: center; padding: 20px;">搜索中...</td></tr>');
+
             $.ajax({
                 type: 'post',
                 url: '/order_panel/select_huiyuan_list',
-                async:false,
-                data:{
-                    this_head:keyword,
+                dataType: 'json',  // 关键：指定返回JSON格式
+                async: false,
+                data: {
+                    this_head: keyword,
+                    page: 1,
+                    limit: 6
                 },
                 timeout: 5000,
-                success: function(res){
-                    let result = JSON.parse(res)
-                    console.log('会员列表')
-                    console.log(result.datas)
-                    var this_str = ""
-                    for(var i = 0; i < result.datas.length; i++){
-                        this_str = this_str + "<tr>" +
-                            "<td>" + result.datas[i].username + "</td>" +
-                            "<td>" + result.datas[i].name + "</td>" +
-                            "<td>" + result.datas[i].gender + "</td>" +
-                            "<td>" + result.datas[i].phone + "</td>" +
-                            "<td>" + result.datas[i].state + "</td>" +
-                            "</tr>"
-                    }
-                    $("#huiyuan_table tbody tr").remove();
-                    $("#huiyuan_table tbody").append(this_str);
+                success: function(res) {
+                    console.log("搜索会员结果:", res);
 
-                },
-                error: function(res){
-                    if(res.status == "timeout"){
-                        alert("网络超时，请稍后再试")
-                    }else{
-                        alert("网络错误，请稍后再试")
+                    // 重要：res已经是JSON对象，不需要JSON.parse()
+                    var this_str = "";
+
+                    if (res && res.success === true && res.datas && res.datas.length > 0) {
+                        // 优化：使用数据属性存储会员信息
+                        for(var i = 0; i < res.datas.length; i++) {
+                            var member = res.datas[i];
+
+                            this_str += '<tr ' +
+                                'data-username="' + (member.username || '') + '" ' +
+                                'data-name="' + (member.name || '') + '" ' +
+                                'data-gender="' + (member.gender || '') + '" ' +
+                                'data-phone="' + (member.phone || '') + '" ' +
+                                'data-state="' + (member.state || '') + '" ' +
+                                'data-points="' + (parseFloat(member.points) || 0) + '" ' +
+                                'data-jibie="' + (member.jibie || '普通会员') + '" ' +
+                                'data-discount="' + (member.discount || 1) + '" ' +
+                                'style="cursor: pointer;">' +
+
+                                '<td>' + (member.username || '') + '</td>' +
+                                '<td>' + (member.name || '') + '</td>' +
+                                '<td>' + (member.gender || '') + '</td>' +
+                                '<td>' + (member.phone || '') + '</td>' +
+                                '<td>' + (member.state || '') + '</td>' +
+                                '<td>' + (parseFloat(member.points) || 0).toFixed(2) + '</td>' +
+                                '</tr>';
+                        }
+                    } else {
+                        this_str = '<tr><td colspan="6" style="text-align: center; padding: 20px;">未找到相关会员</td></tr>';
                     }
+
+                    $("#huiyuan_table tbody").html(this_str);
+
+                    // 更新分页信息
+                    if (res) {
+                        updatePagination(res);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('搜索会员失败:', {
+                        status: status,
+                        error: error,
+                        responseText: xhr.responseText
+                    });
+
+                    var errorMsg = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: red;">';
+                    if (status == "timeout") {
+                        errorMsg += '搜索超时，请稍后再试';
+                    } else {
+                        errorMsg += '搜索失败: ' + (error || '未知错误');
+                    }
+                    errorMsg += '</td></tr>';
+
+                    $("#huiyuan_table tbody").html(errorMsg);
                 }
             });
         }
@@ -3977,48 +5093,183 @@
     //改过了--------------
     //合计商品数量和价格
     //完成了
+    // function Table_sum(){
+    //
+    //     var _number = 0;
+    //     var _money = 0;
+    //     $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
+    //         var number = $(this).children().eq(2).children().eq(0).text();
+    //         var money = $(this).children().eq(3).text();
+    //         money = money.replace("￥","")
+    //         console.log(number)
+    //         console.log(money)
+    //         console.log(this)
+    //         console.log($(this).children().eq(3).children(".itemAmount").text())
+    //         _number += (number * 1);
+    //         _money += (money * 1);
+    //
+    //     })
+    //     console.log(_number)
+    //     console.log(_money)
+    //     // console.log('当前money='+_money);
+    //     $(".Lblock .end").children().eq(0).children(".count").text(_number);
+    //     $(".Lblock .end").children().eq(1).children().children(".price_total").text(_money);
+    //
+    // }
     function Table_sum(){
-
         var _number = 0;
         var _money = 0;
+
         $(".Lblock #empty_mask .cont .table tbody tr").each(function () {
-            var number = $(this).children().eq(2).children().eq(0).text();
-            var money = $(this).children().eq(3).text();
-            money = money.replace("￥","")
-            console.log(number)
-            console.log(money)
-            console.log(this)
-            console.log($(this).children().eq(3).children(".itemAmount").text())
-            _number += (number * 1);
-            _money += (money * 1);
+            // 获取数量
+            var countElement = $(this).find('.itemNum .count');
+            var number = countElement.text().trim();
+            number = parseFloat(number) || 0;
 
+            // 获取金额 - 这里已经是总价（单价×数量×折扣）
+            var priceElement = $(this).find('.itemAmount .price');
+            var money = priceElement.text().trim();
+            money = parseFloat(money) || 0;
+
+            console.log("Table_sum - 商品:", {
+                "数量": number,
+                "总价": money
+            });
+
+            _number += number;
+            _money += money;
         })
-        console.log(_number)
-        console.log(_money)
-        // console.log('当前money='+_money);
-        $(".Lblock .end").children().eq(0).children(".count").text(_number);
-        $(".Lblock .end").children().eq(1).children().children(".price_total").text(_money);
 
+        console.log("Table_sum - 总数量:", _number, "总金额:", _money);
+
+        // 更新显示
+        $(".counts").text(_number);
+        $(".price_total").text(_money.toFixed(2));
     }
+    // function huiyuan_sum(){
+    //
+    //     var _money = 0;
+    //     $("#table1 tbody tr").each(function () {
+    //         var num = $(this).children(".itemNum1").children().eq(0).text();
+    //         var this_money = $(this).children(".itemAmount1").children().eq(0).text();
+    //         this_money = this_money.replace("￥","")
+    //         var zheko = $(this).children(".itemzheko").children().eq(0).text();
+    //
+    //         _money = _money + (this_money * zheko);
+    //     })
+    //     console.log(_money)
+    //     $("#xiaofei_Sum").html(_money.toFixed(2))
+    //     $("#yingshou_Sum").html(_money.toFixed(2))
+    //
+    //
+    // }
+    // function huiyuan_sum() {
+    //     var _money = 0;
+    //     var _actual_money = 0; // 实际应付金额（折扣后）
+    //
+    //     $("#table1 tbody tr").each(function () {
+    //         // 获取数量
+    //         var num = $(this).find('.itemNum1 .count').text().trim();
+    //         num = parseFloat(num) || 0;
+    //
+    //         // 获取金额 - 注意：金额在 .price 中，是折扣后的价格
+    //         var priceElement = $(this).find('.itemAmount1 .price');
+    //         var priceText = priceElement.text().trim();
+    //         // 移除非数字字符，只保留数字
+    //         var this_money = parseFloat(priceText.replace(/[^\d.]/g, '')) || 0;
+    //
+    //         // 获取折扣值
+    //         var zhekoElement = $(this).find('.itemzheko .aa');
+    //         var zheko = zhekoElement.text().trim();
+    //         zheko = parseFloat(zheko) || 1;
+    //
+    //         console.log("商品数据:", {
+    //             "数量": num,
+    //             "金额": this_money,
+    //             "折扣": zheko,
+    //             "原始文本": priceText
+    //         });
+    //
+    //         // 消费总额 = 折扣后的金额 × 数量
+    //         // 因为折扣已经体现在 this_money 中
+    //         var itemTotal = this_money;
+    //         _money += itemTotal;
+    //     });
+    //
+    //     console.log("消费总额:", _money);
+    //
+    //     // 更新显示
+    //     $("#xiaofei_Sum").html(_money.toFixed(2));
+    //     $("#yingshou_Sum").html(_money.toFixed(2));
+    //
+    //     // 同时更新实际金额显示
+    //     var shijiElement = document.getElementById('shiji');
+    //     if (shijiElement) {
+    //         shijiElement.textContent = '￥ ' + _money.toFixed(2);
+    //     }
+    //
+    //     // 更新优惠金额相关的计算
+    //     var youhuiValue = parseFloat($('#youhui').val()) || 0;
+    //     var newShijiValue = _money - youhuiValue;
+    //     if (newShijiValue < 0) newShijiValue = 0;
+    //     $('#shiji').text('￥ ' + newShijiValue.toFixed(2));
+    // }
+    function huiyuan_sum() {
+        // 先检查结账窗口是否已经显示
+        var isJiezhangVisible = jQuery('#jiezhang').is(':visible');
+        var member_discount = p_zhekou || 1;
 
-    function huiyuan_sum(){
+        console.log("huiyuan_sum - 当前会员折扣:", member_discount, "弹窗显示状态:", isJiezhangVisible);
 
-        var _money = 0;
+        var _original_money = 0;
+        var _discount_money = 0;
+        var _final_money = 0;
+
+        // 计算所有商品金额
         $("#table1 tbody tr").each(function () {
-            var num = $(this).children(".itemNum1").children().eq(0).text();
-            var this_money = $(this).children(".itemAmount1").children().eq(0).text();
-            this_money = this_money.replace("￥","")
-            var zheko = $(this).children(".itemzheko").children().eq(0).text();
+            var productName = $(this).find('.itemName1').text().trim();
+            var num = parseFloat($(this).find('.itemNum1 .count').text().trim()) || 1;
+            var zheko = parseFloat($(this).find('.itemzheko .aa').text().trim()) || 1;
+            var originalPrice = 0;
 
-            _money = _money + (this_money * zheko);
-        })
-        console.log(_money)
-        $("#xiaofei_Sum").html(_money.toFixed(2))
-        $("#yingshou_Sum").html(_money.toFixed(2))
+            // 查找商品的原始单价
+            for(var i = 0; i < window.datas.length; i++) {
+                if(window.datas[i].product_name == productName) {
+                    var priceStr = window.datas[i].price.split(",")[0];
+                    originalPrice = parseFloat(priceStr) || 0;
+                    break;
+                }
+            }
 
+            if (originalPrice > 0) {
+                var originalTotal = originalPrice * num;
+                var finalDiscount = zheko * member_discount;
+                var finalPrice = originalTotal * finalDiscount;
 
+                _original_money += originalTotal;
+                _final_money += finalPrice;
+            }
+        });
+
+        _discount_money = _original_money - _final_money;
+
+        // 重要：确保金额不为负数
+        if (_final_money < 0) _final_money = 0;
+        if (_discount_money < 0) _discount_money = 0;
+        if (_original_money < 0) _original_money = 0;
+
+        console.log("huiyuan_sum 计算结果:", {
+            "原价": _original_money,
+            "折扣金额": _discount_money,
+            "最终金额": _final_money
+        });
+
+        return {
+            original: _original_money,
+            discount: _discount_money,
+            final: _final_money
+        };
     }
-
     function tableShow(){
         $.ajax({
             type: 'post',
@@ -4029,7 +5280,7 @@
                 //转成json
                 let result = JSON.parse(res)
                 console.log(result)
-                datas = result.datas
+                datas = window.datas = result.datas || [];
                 console.log(datas)
                 let users = result.users
                 console.log(users)
@@ -4563,65 +5814,94 @@
             document.removeEventListener('mousemove',move)
         })
     })
-    // 自动获取订单号
-    function orders_auto(){
-            var myDate = new Date();
-            var year = myDate.getFullYear();
-            var month = myDate.getMonth()+1;
-            var day = myDate.getDate();
-            var fixedvalue = 1;
-            if (month < 10){
-                month = '0' + month;
-            }
-            if(day <10){
-                day = '0' + day;
-            }
-            if(fixedvalue>=1000 && fixedvalue<=9999){
-                fixedvalue = fixedvalue;
-            }else if(fixedvalue>=100 && fixedvalue<=999){
-                fixedvalue = '0'+ fixedvalue;
-            }else if(fixedvalue>=10 && fixedvalue<=99){
-                fixedvalue = '0'+'0'+fixedvalue
-            }else if(fixedvalue>=1 && fixedvalue<=9){
-                fixedvalue = '0'+'0'+'0'+fixedvalue
-            }
-            orders_value = year.toString()+month.toString()+day.toString()+fixedvalue.toString()
+    // orders_auto 函数 - 自动生成订单号
+    function orders_auto() {
+        console.log("生成订单号");
+
+        // 如果有桌位订单号，就使用桌位的订单号
+        if (window.cachedTableNumber) {
             $.ajax({
                 type: 'post',
-                url: '/order_panel/select_order_number',
-                data: {
-                    this_head: orders_value,
-                },
-                async:false,
-                timeout: 5000,
-                success: function(res){
-                    let result = JSON.parse(res)
-                    if (result.datas.length>0){
-                        for (var i = 0 ;i<result.datas.length;i++){
-                            if( orders_value+""<=  result.datas[i].ddh){
-                                fixedvalue += 1
-                                orders_value = result.datas[i].ddh * 1 + 1;
-                                console.log(orders_value)
-                            }
-                        }
-
-                    }
-                },
-                error: function(res){
-                    if(res.status == "timeout"){
-                        alert("网络超时，请稍后再试")
-                    }else{
-                        alert("网络错误，请稍后再试")
+                url: '/order_table/selectsea',
+                async: false,
+                data: { zh: window.cachedTableNumber },
+                success: function(res) {
+                    if (res.success && res.data && res.data.length > 0 && res.data[0].bm) {
+                        var tableOrder = res.data[0].bm;
+                        console.log("使用桌位订单号:", tableOrder);
+                        $('#danhao').val(tableOrder);
+                        updatePeopleCount();
+                        return tableOrder;
+                    } else {
+                        generateNewOrder();
                     }
                 }
             });
+        } else {
+            generateNewOrder();
+        }
+    }
+
+    // 修改 generateNewOrder 函数
+    function generateNewOrder() {
+
+        var myDate = new Date();
+        var year = myDate.getFullYear();
+        var month = myDate.getMonth()+1;
+        var day = myDate.getDate();
+        var fixedvalue = 1;
+        if (month < 10){
+            month = '0' + month;
+        }
+        if(day <10){
+            day = '0' + day;
+        }
+        if(fixedvalue>=1000 && fixedvalue<=9999){
+            fixedvalue = fixedvalue;
+        }else if(fixedvalue>=100 && fixedvalue<=999){
+            fixedvalue = '0'+ fixedvalue;
+        }else if(fixedvalue>=10 && fixedvalue<=99){
+            fixedvalue = '0'+'0'+fixedvalue
+        }else if(fixedvalue>=1 && fixedvalue<=9){
+            fixedvalue = '0'+'0'+'0'+fixedvalue
+        }
+        orders_value = year.toString()+month.toString()+day.toString()+fixedvalue.toString()
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/select_order_number',
+            data: {
+                this_head: orders_value,
+            },
+            async:false,
+            timeout: 5000,
+            success: function(res){
+                let result = JSON.parse(res)
+                if (result.datas.length>0){
+                    for (var i = 0 ;i<result.datas.length;i++){
+                        if( orders_value+""<=  result.datas[i].ddh){
+                            fixedvalue += 1
+                            orders_value = result.datas[i].ddh * 1 + 1;
+                            console.log(orders_value)
+                        }
+                    }
+
+                }
+            },
+            error: function(res){
+                if(res.status == "timeout"){
+                    alert("网络超时，请稍后再试")
+                }else{
+                    alert("网络错误，请稍后再试")
+                }
+            }
+        });
 
         if (!$('#danhao').val()) {
             $('#danhao').val(orders_value);
         }
         //     $('#danhao').val(orders_value);
 
-        var danhao = $("#danhao").val().slice(-4);
+        var danhao = $("#danhao").val().slice(-3);
 
         // 找到第一个非零数字的起始位置
         var startIndex = 0;
@@ -4635,8 +5915,147 @@
         var finalCount = parseInt(validNumber) - 1;
         // 更新人数显示
         $("h3.renshu").text("累计结账：" + finalCount + "人");
+        // console.log("进入");
+        // // 获取当天日期
+        // var today = new Date();
+        // var year = today.getFullYear();
+        // var month = (today.getMonth() + 1).toString().padStart(2, '0');
+        // var day = today.getDate().toString().padStart(2, '0');
+        // var datePrefix = year.toString() + month.toString() + day.toString();
+        //
+        // console.log("发送请求开始");
+        // $.ajax({
+        //     type: 'post',
+        //     url: '/order_panel/select_order_number ',
+        //     async: false,
+        //     data: {
+        //         date: datePrefix
+        //     },
+        //     success: function(res) {
+        //         console.log("成功返回数据",res);
+        //         try {
+        //             var result = JSON.parse(res);
+        //             var maxOrderNumber = result.max_order_number || 0;
+        //             var nextNumber = 1;
+        //
+        //             if (maxOrderNumber) {
+        //                 // 从最大订单号中提取序号部分
+        //                 var lastNumber = parseInt(maxOrderNumber.slice(-3));
+        //                 console.log("从数据库获取最大单号为",lastNumber);
+        //
+        //                 if (!isNaN(lastNumber)) {
+        //                     nextNumber = lastNumber + 1;
+        //                 }
+        //             }
+        //
+        //             // 生成新的订单号：日期 + 3位序号（001开始）
+        //             var orderNumber = datePrefix + nextNumber.toString().padStart(3, '0');
+        //             console.log("生成新订单号:", orderNumber);
+        //             $('#danhao').val(orderNumber);
+        //
+        //             // 保存当前订单号用于人数统计
+        //             localStorage.setItem('currentOrderNumber', orderNumber);
+        //             localStorage.setItem('currentOrderDate', datePrefix);
+        //
+        //             // 更新人数统计
+        //             updatePeopleCount();
+        //
+        //         } catch (e) {
+        //             console.error("解析响应失败:", e);
+        //             generateDefaultOrder(datePrefix);
+        //         }
+        //     },
+        //     error: function() {
+        //         console.log("查询最大订单号失败，使用默认生成方式");
+        //         generateDefaultOrder(datePrefix);
+        //     }
+        // });
     }
 
+    // 默认订单号生成（备用）
+    function generateDefaultOrder(datePrefix) {
+        // 从本地存储获取当天最大的订单号
+        var storedMax = localStorage.getItem('maxOrder_' + datePrefix);
+        var nextNumber = 1;
+
+        if (storedMax) {
+            var lastNumber = parseInt(storedMax.slice(-3));
+            if (!isNaN(lastNumber)) {
+                nextNumber = lastNumber + 1;
+            }
+        }
+
+        var orderNumber = datePrefix + nextNumber.toString().padStart(3, '0');
+        console.log("使用默认方式生成订单号:", orderNumber);
+        $('#danhao').val(orderNumber);
+
+        // 保存到本地存储
+        localStorage.setItem('maxOrder_' + datePrefix, orderNumber);
+        localStorage.setItem('currentOrderNumber', orderNumber);
+        localStorage.setItem('currentOrderDate', datePrefix);
+
+        updatePeopleCount();
+    }
+
+    // 修改 updatePeopleCount 函数
+    function updatePeopleCount() {
+        try {
+            var today = new Date();
+            var todayDate = today.getFullYear().toString() +
+                (today.getMonth() + 1).toString().padStart(2, '0') +
+                today.getDate().toString().padStart(2, '0');
+
+            // 获取当前订单号
+            var currentOrderNumber = $('#danhao').val();
+            var orderDate = currentOrderNumber ? currentOrderNumber.substring(0, 8) : '';
+
+            // 只有在今天的订单才计算人数
+            var todayCount = 0;
+            if (orderDate === todayDate) {
+                // 从订单号中提取序号部分
+                var orderNumber = currentOrderNumber.substring(8);
+                var numberPart = parseInt(orderNumber);
+                if (!isNaN(numberPart)) {
+                    // 今天的累计结账人数 = 当前订单序号 - 1
+                    todayCount = numberPart - 1;
+                    if (todayCount < 0) todayCount = 0;
+                }
+            }
+
+            // 更新显示
+            // $("h3.renshu").text("今日累计结账：" + todayCount + "人");
+
+            // 保存今日累计人数到本地存储
+            localStorage.setItem('todayCount_' + todayDate, todayCount);
+
+        } catch (e) {
+            console.warn("更新人数统计时出错:", e);
+            $("h3.renshu").text("今日累计结账：0人");
+        }
+    }
+
+    // 新增：初始化今日人数统计
+    function initTodayCount() {
+        var today = new Date();
+        var todayDate = today.getFullYear().toString() +
+            (today.getMonth() + 1).toString().padStart(2, '0') +
+            today.getDate().toString().padStart(2, '0');
+
+        // 检查是否是今天第一次访问
+        var lastVisitDate = localStorage.getItem('lastVisitDate');
+        if (lastVisitDate !== todayDate) {
+            // 新的一天，重置今日累计
+            localStorage.setItem('lastVisitDate', todayDate);
+            localStorage.removeItem('todayCount_' + todayDate);
+            $("h3.renshu").text("今日累计结账：0人");
+        } else {
+            // 同一天，读取已有数据
+            var storedCount = localStorage.getItem('todayCount_' + todayDate);
+            if (storedCount) {
+                // $("h3.renshu").text("今日累计结账：" + storedCount + "人");
+            }
+        }
+    }
     // 点击商品弹出详情页
     $("body").on('click','.Rblock .block li',function(){
     // $('.Rblock .block li').click(function () {
@@ -4860,57 +6279,7 @@ console.log("被惦记")
         showSlide(currentSlide);
     }
 
-    // 初始化
-    document.addEventListener('DOMContentLoaded', function() {
-        // 创建轮播点
-        const dotsContainer = document.querySelector('.carousel-dots');
-        slides.forEach((_, index) => {
-            const dot = document.createElement('div');
-            dot.className = 'dot';
-            if (index === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => {
-                showSlide(index);
-                // 点击点时重置轮播计时
-                resetCarouselTimer();
-            });
-            dotsContainer.appendChild(dot);
-        });
 
-        // 事件监听
-        document.querySelector('.prev-btn').addEventListener('click', () => {
-            prevSlide();
-            resetCarouselTimer();
-        });
-
-        document.querySelector('.next-btn').addEventListener('click', () => {
-            nextSlide();
-            resetCarouselTimer();
-        });
-
-        document.querySelector('.close-overlay').addEventListener('click', hideOverlay);
-
-        // 点击覆盖层其他区域也可关闭
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                hideOverlay();
-            }
-        });
-
-        // 用户操作重置计时器
-        const userEvents = ['mousemove', 'keypress', 'click', 'scroll', 'touchstart'];
-        userEvents.forEach(event => {
-            document.addEventListener(event, resetInactivityTimer);
-        });
-
-        // 重置轮播定时器
-        function resetCarouselTimer() {
-            stopCarousel();
-            carouselInterval = setInterval(nextSlide, 3000);
-        }
-
-        // 启动计时器
-        resetInactivityTimer();
-    });
 
     // 添加页面可见性检测
     document.addEventListener('visibilitychange', function() {
@@ -4925,45 +6294,49 @@ console.log("被惦记")
 
 
     let cachedTableNumber = null;
+    // function huoqutable() {
+    //     const urlParams = new URLSearchParams(window.location.search);
+    //     const tableNumber = urlParams.get('table');
+    //
+    //     console.log("获取到的桌号参数:", tableNumber);
+    //
+    //     // 如果URL参数不存在，则从存储获取（作为备用方案）
+    //     if(!cachedTableNumber) {
+    //         cachedTableNumber = sessionStorage.getItem('currentTableNumber') ||
+    //             localStorage.getItem('currentTableNumber');
+    //     }
+    //
+    //
+    //
+    //     // 更新UI显示
+    //     const tableDisplay = document.getElementById('tableDisplay');
+    //
+    //     if(cachedTableNumber) {
+    //
+    //         sendSearchRequest(cachedTableNumber)
+    //         tableDisplay.textContent = cachedTableNumber;
+    //
+    //         sessionStorage.removeItem('currentTableNumber');
+    //         localStorage.removeItem('currentTableNumber');
+    //
+    //     } else {
+    //         tableDisplay.textContent = '未指定桌号';
+    //     }
+    //
+    // }
     function huoqutable() {
         const urlParams = new URLSearchParams(window.location.search);
         const tableNumber = urlParams.get('table');
 
-        console.log("获取到的桌号参数:", tableNumber);
+        cachedTableNumber = tableNumber ||
+            sessionStorage.getItem('currentTableNumber') ||
+            localStorage.getItem('currentTableNumber');
 
-        // 如果URL参数不存在，则从存储获取（作为备用方案）
-        if(!cachedTableNumber) {
-            cachedTableNumber = sessionStorage.getItem('currentTableNumber') ||
-                localStorage.getItem('currentTableNumber');
-        }
+        console.log("✅ 最终获取的桌号:", cachedTableNumber || '无桌位');
 
-
-
-        // 更新UI显示
-        const tableDisplay = document.getElementById('tableDisplay');
-
-        if(cachedTableNumber) {
-
-            sendSearchRequest(cachedTableNumber)
-            tableDisplay.textContent = cachedTableNumber;
-
-            sessionStorage.removeItem('currentTableNumber');
-            localStorage.removeItem('currentTableNumber');
-
-        } else {
-            tableDisplay.textContent = '未指定桌号';
-        }
-
+        return cachedTableNumber;
     }
 
-
-    document.addEventListener('DOMContentLoaded', function() {
-
-
-
-        huoqutable()
-
-    });
 
 
     // function sendSearchRequest(cachedTableNumber) {
@@ -5056,25 +6429,273 @@ console.log("被惦记")
     var globalTableBanhao;
     var zhuohao;
 
-    $('.jiesuan').on('click', function() {
-        uptableJS(globalTableBanhao)
-        uptableRequest1(zhuohao)
-        location.reload();
+    // $('.jiesuan').on('click', function() {
+    //     uptableJS(globalTableBanhao)
+    //     uptableRequest1(zhuohao)
+    //     location.reload();
+    //
+    // });
+    //
+    // function uptableJS(globalTableBanhao) {
+    //     $.ajax({
+    //         type: 'post',
+    //         url: '/order_table/updatejs',
+    //         async: false,
+    //         timeout: 5000,
+    //         data: {
+    //             ddid: globalTableBanhao
+    //         },
+    //         success: function(res) {
+    //             console.log("筛选请求结果", res);
+    //             selectAll()
+    //         },
+    //         error: function(res) {
+    //             if (res.status == "timeout") {
+    //                 alert("网络超时，请稍后再试");
+    //             } else {
+    //                 alert("网络错误，请稍后再试");
+    //             }
+    //             // 错误时显示提示
+    //             $('.tables-grid').html('<div class="no-data">数据加载失败</div>');
+    //         }
+    //     });
+    // }
 
+    // 结算挂账按钮点击事件
+    $('.jiesuan').on('click', function() {
+        console.log("=== 结算挂账按钮点击 ===");
+
+        // 获取当前订单号
+        var orderNumber = $("#danhao").val();
+        var tableNumber = window.cachedTableNumber ||
+            window.zhuohao ||
+            sessionStorage.getItem('currentTableNumber') ||
+            localStorage.getItem('currentTableNumber');
+
+        if (!orderNumber) {
+            alert("没有找到可结算的订单");
+            return;
+        }
+
+        // 先检查是否为挂账订单（原有逻辑）
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/checkGuazhangOrder',
+            async: false,
+            data: {
+                ddid: orderNumber
+            },
+            success: function(res) {
+                console.log("订单检查结果:", res);
+
+                if (res.isGuazhang) {
+                    // 显示确认对话框
+                    var confirmMsg = `确认要结算挂账订单吗？\n\n` +
+                        `订单号：${orderNumber}\n` +
+                        `桌号：${tableNumber || '无桌位'}\n` +
+                        `应收金额：￥${$('#yingshou_Sum').text() || '0.00'}\n\n` +
+                        `结算后该订单将变为已结账状态！`;
+
+                    if (confirm(confirmMsg)) {
+                        // 执行结算操作（原有逻辑）
+                        executeSettleGuazhang(orderNumber, tableNumber);
+                    }
+                } else {
+                    alert("该订单不是挂账订单，无法使用此功能结算");
+                }
+            },
+            error: function() {
+                alert("检查订单状态失败，请重试");
+            }
+        });
     });
 
-    function uptableJS(globalTableBanhao) {
+    // 执行结算操作（保持原有逻辑）
+    function executeSettleGuazhang(orderNumber, tableNumber) {
+        console.log("执行结算操作:", orderNumber, "桌号:", tableNumber);
+
+        // 显示加载提示（原有样式）
+        var loadingDiv = $('<div class="loading-overlay">').css({
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            background: 'rgba(0,0,0,0.7)',
+            color: 'white',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '18px',
+            zIndex: '9999'
+        }).text('正在结算挂账，请稍候...');
+
+        $('body').append(loadingDiv);
+
+        // 发送结算请求
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/settleGuazhang',
+            timeout: 15000,
+            data: {
+                ddid: orderNumber,
+                zh: tableNumber || '',
+                jyje: $('#yingshou_Sum').text() || '0'
+            },
+            success: function(res) {
+                loadingDiv.remove();
+                console.log("结算响应:", res);
+
+                if (res.code == 200) {
+                    // 结算成功
+                    alert("✅ " + res.msg + "\n\n订单号：" + orderNumber);
+
+                    // 原有逻辑：清空购物车
+                    $(".Lblock #empty_mask .cont table tr").remove();
+                    Table_sum();
+
+                    // 原有逻辑：清空结账窗口
+                    $("#table1 tbody tr").remove();
+
+                    // 原有逻辑：关闭结账窗口
+                    jQuery("#jiezhang").hide();
+                    jQuery(".jiezhang_mask").hide();
+
+                    // 原有逻辑：重新生成订单号
+                    setTimeout(function() {
+                        orders_auto();
+
+                        // 原有逻辑：如果有桌号，重新加载桌位状态
+                        if (tableNumber && tableNumber !== '未指定桌号') {
+                            console.log("重新加载桌位:", tableNumber);
+                            sendSearchRequest(tableNumber);
+                        }
+
+                        // 原有逻辑：刷新页面显示
+                        location.reload();
+                    }, 1000);
+
+                } else {
+                    alert("❌ " + (res.msg || '结算失败'));
+                }
+            },
+            error: function(xhr, status, error) {
+                loadingDiv.remove();
+                console.log("结算请求失败:", status, error);
+
+                var errorMsg = "结算请求失败！";
+                if (status === "timeout") {
+                    errorMsg += "\n请求超时，请稍后检查订单状态";
+                } else {
+                    errorMsg += "\n错误：" + error;
+                }
+
+                alert(errorMsg);
+            }
+        });
+    }
+    // 执行挂账结算的函数
+    function settleGuazhangOrder(orderNumber, tableNumber) {
+        console.log("开始结算挂账订单:", orderNumber, "桌号:", tableNumber);
+
+        // 显示加载提示
+        var loadingDiv = $('<div class="loading-overlay">').css({
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            background: 'rgba(0,0,0,0.7)',
+            color: 'white',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '18px',
+            zIndex: '9999'
+        }).text('正在结算挂账，请稍候...');
+
+        $('body').append(loadingDiv);
+
+        // 发送结算请求
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/settleGuazhang',
+            timeout: 15000,
+            data: {
+                ddid: orderNumber,
+                zh: tableNumber || '',
+                jyje: $('#yingshou_Sum').text() || '0'  // 交易金额
+            },
+            success: function(res) {
+                loadingDiv.remove();
+                console.log("结算响应:", res);
+
+                try {
+                    var response = res;
+
+                    if (response.code == 200) {
+                        // 结算成功
+                        alert("✅ " + response.msg + "\n\n订单号：" + orderNumber);
+
+                        // 清空购物车
+                        $(".Lblock #empty_mask .cont table tr").remove();
+                        Table_sum();
+
+                        // 清空结账窗口
+                        $("#table1 tbody tr").remove();
+
+                        // 关闭结账窗口
+                        jQuery("#jiezhang").hide();
+                        jQuery(".jiezhang_mask").hide();
+
+                        // 重置订单号
+                        setTimeout(function() {
+                            orders_auto();
+
+                            // 如果有桌号，重新加载桌位状态
+                            if (tableNumber && tableNumber !== '未指定桌号') {
+                                console.log("重新加载桌位:", tableNumber);
+                                sendSearchRequest(tableNumber);
+                            }
+
+                            // 刷新页面显示
+                            location.reload();
+                        }, 1000);
+
+                    } else {
+                        alert("❌ " + (response.msg || '结算失败'));
+                    }
+                } catch (e) {
+                    console.error("解析响应失败:", e);
+                    alert("结算完成！请刷新页面查看结果");
+                }
+            },
+            error: function(xhr, status, error) {
+                loadingDiv.remove();
+                console.log("结算请求失败:", status, error);
+
+                var errorMsg = "结算请求失败！";
+                if (status === "timeout") {
+                    errorMsg += "\n请求超时，请稍后检查订单状态";
+                } else {
+                    errorMsg += "\n错误：" + error;
+                }
+
+                alert(errorMsg);
+            }
+        });
+    }
+    function uptableJS(orderNumber) {
         $.ajax({
             type: 'post',
             url: '/order_table/updatejs',
             async: false,
             timeout: 5000,
             data: {
-                ddid: globalTableBanhao
+                ddid: orderNumber
             },
             success: function(res) {
-                console.log("筛选请求结果", res);
-                selectAll()
+                console.log("结算结果", res);
             },
             error: function(res) {
                 if (res.status == "timeout") {
@@ -5082,12 +6703,9 @@ console.log("被惦记")
                 } else {
                     alert("网络错误，请稍后再试");
                 }
-                // 错误时显示提示
-                $('.tables-grid').html('<div class="no-data">数据加载失败</div>');
             }
         });
     }
-
     function uptableRequest1(zhuohao) {
         $.ajax({
             type: 'post',
@@ -5112,9 +6730,58 @@ console.log("被惦记")
             }
         });
     }
-
+    // 修改 sendSearchRequest 函数
+    // function sendSearchRequest(cachedTableNumber) {
+    //     zhuohao = cachedTableNumber;
+    //
+    //     if (cachedTableNumber) {
+    //         window.cachedTableNumber = cachedTableNumber;
+    //         localStorage.setItem('currentTableNumber', cachedTableNumber);
+    //         console.log("✅ 设置桌号:", cachedTableNumber);
+    //     }
+    //
+    //     // 先查询桌位信息
+    //     $.ajax({
+    //         type: 'post',
+    //         url: '/order_table/selectsea',
+    //         async: false,
+    //         data: { zh: cachedTableNumber },
+    //         success: function(res) {
+    //             console.log("桌位查询结果:", res);
+    //
+    //             if (res.success && res.data && res.data.length > 0) {
+    //                 var tableData = res.data[0];
+    //                 console.log("桌位数据:", tableData);
+    //
+    //                 if(tableData.bm && tableData.bm !== 'null' && tableData.bm !== ''){
+    //                     console.log("桌位已有订单号:", tableData.bm);
+    //                     // 1. 如果桌位已经有订单号，直接使用
+    //                     $('#danhao').val(tableData.bm);
+    //                     console.log("✅ 使用桌位已有订单号:", tableData.bm);
+    //                 } else {
+    //                     console.log("桌位无订单号，等待自动生成");
+    //                     // 2. 等待 orders_auto() 自动生成订单号
+    //                     // 稍后绑定到桌位
+    //                 }
+    //             } else {
+    //                 console.log("未找到桌位数据");
+    //             }
+    //         },
+    //         error: function() {
+    //             console.log("查询桌位失败");
+    //         }
+    //     });
+    //
+    //     // 自动生成订单号（点单页面自带的逻辑）
+    //     orders_auto();
+    // }
     function sendSearchRequest(cachedTableNumber) {
+        console.log("🔄 发送搜索请求，桌号:", cachedTableNumber);
         zhuohao = cachedTableNumber;
+
+        // 先将桌号保存到全局变量
+        window.cachedTableNumber = cachedTableNumber;
+
         $.ajax({
             type: 'post',
             url: '/order_table/selectsea',
@@ -5124,182 +6791,1140 @@ console.log("被惦记")
                 zh: cachedTableNumber
             },
             success: function(res) {
+                console.log("桌位查询结果:", res);
+
                 sessionStorage.removeItem('currentTableNumber');
                 localStorage.removeItem('currentTableNumber');
 
-                jiezhangdanhao = res.data[0].bm;
+                // 检查桌位是否有绑定的订单号
+                if (res.success && res.data && res.data.length > 0 && res.data[0].bm) {
+                    var tableOrderNumber = res.data[0].bm;
+                    console.log("桌位绑定订单号:", tableOrderNumber);
 
-                if(jiezhangdanhao){
-                    // 页面完全加载后执行AJAX请求
+                    // 关键修改：使用桌位的订单号，而不是自动生成的
+                    $('#danhao').val(tableOrderNumber);
+                    console.log("✅ 使用桌位订单号:", tableOrderNumber);
+
+                    // 检查这个订单是否是挂账订单
                     $.ajax({
                         type: 'post',
-                        url: '/order_table/selectdanhao',
+                        url: '/order_panel/checkGuazhangOrder',
                         async: false,
-                        timeout: 5000,
                         data: {
-                            ddid: jiezhangdanhao
+                            ddid: tableOrderNumber
                         },
-                        success: function(res) {
-                            console.log("历史订单查询", res);
+                        success: function(checkRes) {
+                            console.log("订单状态检查:", checkRes);
 
-                            if (res.success && res.data && res.data.length > 0) {
-                                // 设置单号
-                                $('#danhao').val(res.data[0].ddid);
+                            if (checkRes.isGuazhang) {
+                                // 如果是挂账订单，加载挂账订单内容
+                                console.log("✅ 发现挂账订单:", tableOrderNumber);
+                                loadGuazhangOrder(tableOrderNumber, cachedTableNumber);
 
-                                globalTableBanhao = res.data[0].ddid;
-
-                                // 清空表格
-                                $('#table tbody').empty();
-
-                                // 遍历数据并构建表格行 - 与点击事件完全相同的格式
-                                $.each(res.data, function(index, item) {
-                                    // 新增商品的序号
-                                    var product_now_id = parseInt($(".index .Lblock #empty_mask .cont .table tbody tr").length + parseInt("1"));
-
-                                    // 使用与点击事件完全相同的格式构建行
-                                    var rowHtml = "" +
-                                        "<tr class=\"success\" ondblclick=\"ondblclick_f(this)\">" +
-                                        "<td class=\"itemOrderNo\">" + (index + 1) + "</td>" +
-                                        "<td class=\"itemName\">" + (item.cpmc || "") + "</td>" +
-                                        "<td class=\"itemNum\">" +
-                                        "<span class=\"count\">" + (item.gs || 1) + "</span>" +
-                                        "/" +
-                                        "<span class=\"unit\">" + (item.dw || "瓶") + "</span>" +
-                                        "</td>" +
-                                        "<td class=\"itemAmount\">" +
-                                        "￥" +
-                                        "<span class=\"price\">" + (parseFloat(item.zhje) || 0).toFixed(2) + "</span>" +
-                                        "</td>" +
-                                        "<td class=\"itemid\" style='visibility: hidden;width: 0px;margin: 0;padding: 0'>" +
-                                        "<span class=\"id\">" + (item.product_id || "") + "</span>" +
-                                        "</td>" +
-                                        "</tr>";
-
-                                    // 添加到表格
-                                    $('#table tbody').append(rowHtml);
-                                });
-
-                                // 调用表格汇总函数
+                                // 显示结算挂账按钮
+                                $('.jiesuan').css('display', 'inline-block');
+                            } else {
+                                // 如果不是挂账订单（已结账），清空购物车
+                                console.log("订单已结账或不是挂账");
+                                $(".Lblock #empty_mask .cont .table tbody tr").remove();
                                 Table_sum();
 
-                                // 添加这两行代码，确保与点击事件完全一致
-                                jQuery('#Product_detail').hide();
-                                jQuery('.jiezhang_mask').hide();
+                                // 隐藏结算挂账按钮
+                                $('.jiesuan').css('display', 'none');
                             }
                         },
-                        error: function(xhr, status, error) {
-                            console.error('请求失败:', error);
-                            if (status == "timeout") {
-                                alert("网络超时，请稍后再试");
-                            } else {
-                                alert("网络错误，请稍后再试");
-                            }
+                        error: function() {
+                            console.log("检查订单状态失败");
                         }
                     });
+                } else {
+                    // 桌位没有订单号，使用自动生成
+                    console.log("桌位无订单号，自动生成");
+                    var newOrder = orders_auto();
+                    console.log("新订单号:", newOrder);
+
+                    // 将新订单号保存到桌位
+                    saveOrderToTable(cachedTableNumber, newOrder);
                 }
             },
             error: function(xhr, status, error) {
                 console.error('请求失败:', error);
-                if (status == "timeout") {
-                    alert("网络超时，请稍后再试");
+                // 出错时生成新订单号
+                orders_auto();
+            }
+        });
+    }
+    // 加载挂账订单函数
+    // 加载挂账订单函数
+    function loadGuazhangOrder(orderNumber, tableNumber) {
+        console.log("📦 加载挂账订单:", orderNumber, "桌号:", tableNumber);
+
+        // 先设置订单号
+        $('#danhao').val(orderNumber);
+        window.currentGuazhangOrder = orderNumber; // 标记当前为挂账订单
+
+        // 先清空购物车
+        $('#table tbody').empty();
+
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/selectGuazhangOrder',
+            async: false,
+            timeout: 5000,
+            data: {
+                ddid: orderNumber,
+                zh: tableNumber
+            },
+            success: function(res) {
+                console.log("挂账订单数据:", res);
+
+                if (res.success && res.data && res.data.length > 0) {
+                    console.log("找到挂账商品数量:", res.data.length);
+
+                    // 添加商品到购物车
+                    $.each(res.data, function(index, item) {
+                        var product_now_id = index + 1;
+                        var rowHtml = "" +
+                            "<tr class=\"success\" ondblclick=\"ondblclick_f(this)\">" +
+                            "<td class=\"itemOrderNo\">" + product_now_id + "</td>" +
+                            "<td class=\"itemName\">" + (item.cpmc || "") + "</td>" +
+                            "<td class=\"itemNum\">" +
+                            "<span class=\"count\">" + (item.gs || 1) + "</span>" +
+                            "/" +
+                            "<span class=\"unit\">" + (item.unit || item.dw || "瓶") + "</span>" +
+                            "</td>" +
+                            "<td class=\"itemAmount\">" +
+                            "￥" +
+                            "<span class=\"price\">" + (parseFloat(item.zhje) || 0).toFixed(2) + "</span>" +
+                            "</td>" +
+                            "<td class=\"itemid\" style='visibility: hidden;width: 0px;margin: 0;padding: 0'>" +
+                            "<span class=\"id\">" + (item.product_id || "") + "</span>" +
+                            "</td>" +
+                            "</tr>";
+
+                        $('#table tbody').append(rowHtml);
+                    });
+
+                    // 更新汇总
+                    Table_sum();
+
+                    // 显示挂账提示
+                    showGuazhangNotice(res.orderInfo);
+
+                    // 更新结账窗口
+                    updateJiezhangFromCart();
+
+                    console.log("✅ 挂账订单加载完成");
                 } else {
-                    alert("网络错误，请稍后再试");
+                    console.log("无挂账数据，清空购物车");
+                    $(".Lblock #empty_mask .cont .table tbody tr").remove();
+                    Table_sum();
                 }
-                $('.tables-grid').html('<div class="no-data">数据加载失败</div>');
+            },
+            error: function() {
+                console.log("加载挂账订单失败");
+                $(".Lblock #empty_mask .cont .table tbody tr").remove();
+                Table_sum();
+            }
+        });
+    }
+
+    // 加载普通订单函数
+    function loadRegularOrder(orderNumber) {
+        console.log("加载普通订单:", orderNumber);
+
+        $.ajax({
+            type: 'post',
+            url: '/order_table/selectdanhao',
+            async: false,
+            timeout: 5000,
+            data: {
+                ddid: orderNumber
+            },
+            success: function(res) {
+                console.log("普通订单查询结果:", res);
+
+                if (res.success && res.data && res.data.length > 0) {
+                    // 设置单号
+                    $('#danhao').val(orderNumber);
+                    globalTableBanhao = orderNumber;
+
+                    console.log("普通订单号设置为:", orderNumber);
+
+                    // 清空表格
+                    $('#table tbody').empty();
+
+                    // 构建表格行
+                    $.each(res.data, function(index, item) {
+                        var product_now_id = index + 1;
+                        var rowHtml = "" +
+                            "<tr class=\"success\" ondblclick=\"ondblclick_f(this)\">" +
+                            "<td class=\"itemOrderNo\">" + product_now_id + "</td>" +
+                            "<td class=\"itemName\">" + (item.cpmc || "") + "</td>" +
+                            "<td class=\"itemNum\">" +
+                            "<span class=\"count\">" + (item.gs || 1) + "</span>" +
+                            "/" +
+                            "<span class=\"unit\">" + (item.dw || "瓶") + "</span>" +
+                            "</td>" +
+                            "<td class=\"itemAmount\">" +
+                            "￥" +
+                            "<span class=\"price\">" + (parseFloat(item.zhje) || 0).toFixed(2) + "</span>" +
+                            "</td>" +
+                            "<td class=\"itemid\" style='visibility: hidden;width: 0px;margin: 0;padding: 0'>" +
+                            "<span class=\"id\">" + (item.product_id || "") + "</span>" +
+                            "</td>" +
+                            "</tr>";
+
+                        $('#table tbody').append(rowHtml);
+                    });
+
+                    // 更新汇总
+                    Table_sum();
+
+                    console.log("普通订单加载完成，共", res.data.length, "条记录");
+                } else {
+                    console.log("没有找到订单数据");
+                    generateNewOrderNumber();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('普通订单查询失败:', error);
+                generateNewOrderNumber();
+            }
+        });
+    }
+
+    // 显示挂账提示
+    function showGuazhangNotice(orderInfo) {
+        var noticeHtml = `
+        <div class="guazhang-notice" style="
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border: 2px solid #ff7700;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            color: #333;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(255, 119, 0, 0.2);
+        ">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 20px; color: #ff5500;">⚠️</span>
+                <strong>挂账订单提醒</strong>
+            </div>
+            <div style="margin-top: 8px; font-size: 14px;">
+                <div>订单号：${orderInfo.ddh || $('#danhao').val()}</div>
+                <div>创建时间：${orderInfo.create_time || '未知'}</div>
+                ${orderInfo.remark ? `<div>备注：${orderInfo.remark}</div>` : ''}
+                <div style="color: #ff0000; font-weight: bold; margin-top: 5px;">
+                    当前为挂账状态，您可以继续添加商品到此订单！
+                </div>
+            </div>
+        </div>
+    `;
+
+        // 插入到订单号输入框后面
+        $('.room_info').after(noticeHtml);
+    }
+
+    // 生成新订单号的函数
+    function generateNewOrderNumber() {
+        console.log("生成新订单号...");
+
+        // 如果订单号已经存在，就不重新生成
+        if ($('#danhao').val() && $('#danhao').val().trim() !== '') {
+            console.log("已有订单号:", $('#danhao').val());
+            return;
+        }
+
+        // 调用自动生成订单号的函数
+        orders_auto();
+        console.log("新订单号已生成:", $('#danhao').val());
+    }
+
+    // 将订单号保存到桌位的函数
+    function saveOrderToTable(tableNumber, orderNumber) {
+        if (!tableNumber || !orderNumber) {
+            console.log("无法保存订单到桌位：缺少参数");
+            return;
+        }
+
+        console.log("将订单号保存到桌位:", tableNumber, "->", orderNumber);
+
+        $.ajax({
+            type: 'post',
+            url: '/order_table/uptabletables',
+            async: false,
+            timeout: 3000,
+            data: {
+                dh: orderNumber,
+                zh: tableNumber
+            },
+            success: function(res) {
+                console.log("桌位更新结果:", res);
+            },
+            error: function(err) {
+                console.log("桌位更新失败:", err);
             }
         });
     }
 
     // 获取当前桌号的公共方法
     function getCurrentTableNumber() {
-        return cachedTableNumber || '未指定桌号';
+        return window.cachedTableNumber ||
+            window.zhuohao ||
+            sessionStorage.getItem('currentTableNumber') ||
+            localStorage.getItem('currentTableNumber') ||
+            '未指定桌号';
     }
 
-
+    // 找到挂账按钮的点击事件（在结账按钮附近）
+    //挂账按钮点击事件 - 修改版
+    // $('#guazhang').on('click', function() {
+    //     console.log("挂账按钮点击");
+    //
+    //     // 获取当前桌号
+    //     var currentTableNumber = window.cachedTableNumber ||
+    //         zhuohao ||
+    //         sessionStorage.getItem('currentTableNumber') ||
+    //         localStorage.getItem('currentTableNumber');
+    //
+    //     if (!currentTableNumber || currentTableNumber === '未指定桌号') {
+    //         alert("请先选择桌位！");
+    //         return;
+    //     }
+    //
+    //     // 检查购物车是否为空
+    //     var cartItems = $(".Lblock #empty_mask .cont .table tbody tr").length;
+    //     if (cartItems === 0) {
+    //         alert("购物车为空，无法挂账！");
+    //         return;
+    //     }
+    //
+    //     // 获取订单号
+    //     var pro_num = $("#danhao").val();
+    //     if (!pro_num) {
+    //         alert("订单号为空，无法挂账！");
+    //         return;
+    //     }
+    //
+    //     // 如果是挂账订单，并且已经加载了之前的商品，提示用户是否追加
+    //     var isAppend = window.isGuazhangOrder;
+    //     if (isAppend) {
+    //         var confirmMsg = "当前是挂账订单，您是要追加新商品吗？\n\n" +
+    //             "订单号：" + pro_num + "\n" +
+    //             "桌号：" + currentTableNumber;
+    //
+    //         if (!confirm(confirmMsg)) {
+    //             return;
+    //         }
+    //     }
+    //
+    //     // 收集商品数据
+    //     var pro_list = [];
+    //     var member_name = p_name;
+    //     var member_username = p_username;
+    //     var yhje = parseFloat($('#youhui').val()) || 0;
+    //     var ssje = parseFloat($('#shiji').text().replace(/[^\d.-]/g, '')) || 0;
+    //     var xfje = parseFloat($('#yingshou_Sum').text()) || 0;
+    //     var member_discount = p_zhekou || 1;
+    //     var remark = window.currentRemark || '';
+    //
+    //     // 构建订单列表
+    //     $("#table1 tbody tr").each(function() {
+    //         var id = $(this).children().eq(0).text();
+    //         var jine = $(this).children(".itemAmount1").children().eq(0).text();
+    //         jine = parseFloat(jine.replace("￥", "")) || 0;
+    //         var shul = parseFloat($(this).children(".itemNum1").find('.count').text()) || 1;
+    //         var zhek = parseFloat($(this).children(".itemzheko").find('.aa').text()) || 1;
+    //
+    //         // 应用会员折扣
+    //         var finalDiscount = zhek * member_discount;
+    //         var finalPrice = jine * member_discount;
+    //
+    //         for(var i = 0; i < datas.length; i++) {
+    //             if(datas[i].product_name == id) {
+    //                 pro_list.push({
+    //                     member_name: member_name,
+    //                     member_username: member_username,
+    //                     cplx: datas[i].type,
+    //                     cpmc: datas[i].product_name,
+    //                     dw: datas[i].unit,
+    //                     dj: datas[i].price,
+    //                     dzbl: member_discount,
+    //                     zhdj: finalPrice / shul,
+    //                     zhje: finalPrice,
+    //                     gs: shul
+    //                 });
+    //                 break;
+    //             }
+    //         }
+    //     });
+    //
+    //     console.log("挂账数据:", {
+    //         orderNo: pro_num,
+    //         tableNo: currentTableNumber,
+    //         itemsCount: pro_list.length,
+    //         totalAmount: xfje,
+    //         isAppend: isAppend
+    //     });
+    //
+    //     // 发送挂账请求
+    //     $.ajax({
+    //         type: 'post',
+    //         url: '/order_panel/addguazhang',
+    //         timeout: 5000,
+    //         data: {
+    //             pro_list: JSON.stringify(pro_list),
+    //             pro_num: pro_num,
+    //             member_name: member_name,
+    //             member_username: member_username,
+    //             youhui: p_zhekou,
+    //             yhje: yhje,
+    //             ssje: ssje,
+    //             xfje: xfje,
+    //             remark: remark,
+    //             zhuohao: currentTableNumber
+    //         },
+    //         success: function(res) {
+    //             let result = JSON.parse(res);
+    //
+    //             if (result.code === 200) {
+    //                 // 挂账成功
+    //                 var successMsg = result.msg;
+    //                 if (isAppend) {
+    //                     successMsg += "\n\n✅ 成功追加商品到挂账订单！";
+    //                     successMsg += "\n\n订单号：" + pro_num;
+    //                     successMsg += "\n桌号：" + currentTableNumber;
+    //                     successMsg += "\n追加商品数量：" + pro_list.length + "个";
+    //                 }
+    //
+    //                 alert(successMsg);
+    //
+    //                 // 如果是首次挂账，清空购物车
+    //                 if (!isAppend) {
+    //                     $(".Lblock #empty_mask .cont table tr").remove();
+    //                     Table_sum();
+    //                     // 重新生成订单号（但桌位仍使用原订单号）
+    //                     orders_auto();
+    //                 } else {
+    //                     // 追加挂账，保留购物车中的商品
+    //                     console.log("追加挂账，购物车保留");
+    //                 }
+    //
+    //                 // 标记当前为挂账订单
+    //                 window.isGuazhangOrder = true;
+    //
+    //                 // 更新桌号存储
+    //                 if (currentTableNumber) {
+    //                     window.cachedTableNumber = currentTableNumber;
+    //                     sessionStorage.setItem('currentTableNumber', currentTableNumber);
+    //                     localStorage.setItem('currentTableNumber', currentTableNumber);
+    //                     window.zhuohao = currentTableNumber;
+    //                 }
+    //
+    //                 // 关闭结账窗口
+    //                 jQuery("#jiezhang").hide();
+    //                 jQuery(".jiezhang_mask").hide();
+    //
+    //                 // 重新加载该桌位数据
+    //                 setTimeout(function() {
+    //                     console.log("重新加载桌位数据:", currentTableNumber);
+    //                     sendSearchRequest(currentTableNumber);
+    //                 }, 800);
+    //             } else {
+    //                 alert(result.msg || "挂账失败！");
+    //             }
+    //         },
+    //         error: function(res) {
+    //             console.log("挂账请求失败:", res.status, res.statusText);
+    //             if(res.status == "timeout"){
+    //                 alert("网络超时，请稍后再试");
+    //             } else {
+    //                 alert("网络错误，请稍后再试");
+    //             }
+    //         }
+    //     });
+    // });
+    // 替换现有的挂账按钮点击事件
+    // 替换现有的挂账按钮点击事件，只保留这个
     $('#guazhang').on('click', function() {
+        console.log("=== 挂账按钮点击 ===");
 
-        console.log("add")
-        var pro_list = []
+        // 1. 获取必要数据
+        var currentTableNumber = getCurrentTableNumber();
         var pro_num = $("#danhao").val();
-        var member_name=p_name
-        var member_username=p_username
 
-        $("#table1 tbody tr").each(function () {
-            var id = $(this).children().eq(0).text();
-            var jine = $(this).children(".itemAmount1").children().eq(0).text();
-            jine = jine.replace("￥","")
-            var shul= $(this).children(".itemNum1").children().eq(0).text();
-            var zhek= $(this).children(".itemzheko").children().eq(0).text();
+        if (!pro_num) {
+            alert("请先生成订单号！");
+            return;
+        }
 
-            console.log(jine)
-            console.log(shul)
-            console.log(zhek)
-            for(var i=0; i<datas.length;i++){
-                if(datas[i].product_name == id){
-                    pro_list.push({
-                        member_name:member_name,
-                        member_username:member_username,
-                        cplx:datas[i].type,
-                        cpmc:datas[i].product_name,
-                        dw:datas[i].unit,
-                        dj:datas[i].price,
-                        dzbl:zhek,
-                        // zhdj:zhehou / num,
-                        zhdj:jine*zhek/shul,
-                        // zhje:zhehou,
-                        zhje:jine*zhek*shul/shul,
-                        gs:shul
-                    })
+        // 2. 验证购物车（去掉桌号验证）
+        var cartItems = $(".Lblock #empty_mask .cont .table tbody tr").length;
+        if (cartItems === 0) {
+            alert("购物车为空，无法挂账！");
+            return;
+        }
+
+        // 3. 收集商品数据（从主购物车table获取）
+        var pro_list = [];
+        var member_name = p_name || '';
+        var member_username = p_username || '';
+        var member_discount = p_zhekou || 1;
+        var youhui = p_zhekou || 1; // 优惠比例
+
+        console.log("收集商品数据...");
+
+        // 从主购物车收集数据（table）
+        $(".Lblock #empty_mask .cont .table tbody tr").each(function(index) {
+            var productName = $(this).find('.itemName').text().trim();
+            var countText = $(this).find('.itemNum .count').text().trim();
+            var priceText = $(this).find('.itemAmount .price').text().trim();
+            var productId = $(this).find('.itemid .id').text().trim();
+
+            // 解析数值
+            var count = parseFloat(countText) || 1;
+            var totalPrice = parseFloat(priceText) || 0;
+
+            // 查找商品信息
+            var productInfo = null;
+            for(var i = 0; i < window.datas.length; i++) {
+                if(window.datas[i].id == productId || window.datas[i].product_name == productName) {
+                    productInfo = window.datas[i];
+                    break;
+                }
+            }
+
+            if (productInfo) {
+                // 计算单价
+                var unitPrice = productInfo.price ?
+                    parseFloat(productInfo.price.split(",")[0]) || (totalPrice / count) :
+                    (totalPrice / count);
+
+                // 构建商品对象
+                var product = {
+                    cplx: productInfo.type || '',                    // 商品类型
+                    cpmc: productInfo.product_name || productName,   // 商品名称
+                    dw: productInfo.unit || '瓶',                    // 单位
+                    dj: unitPrice.toFixed(2),                        // 单价
+                    zhdj: (unitPrice * youhui).toFixed(2),           // 折扣后单价
+                    zhje: totalPrice.toFixed(2),                     // 折扣后总价
+                    gs: count                                        // 数量
+                };
+
+                console.log("添加商品:", product);
+                pro_list.push(product);
+            }
+        });
+
+        if (pro_list.length === 0) {
+            alert("没有有效的商品数据！");
+            return;
+        }
+
+        console.log("收集到的商品数据:", pro_list);
+
+        // 4. 获取其他数据
+        var yhjeInput = $('#youhui').val();
+        var yhje = parseFloat(yhjeInput) || 0;
+        var xfje = parseFloat($('#yingshou_Sum').text()) || 0;
+        var ssje = xfje - yhje;
+        if (ssje < 0) ssje = 0;
+        var remark = window.currentRemark || '';
+
+        // 5. 显示确认对话框（修改提示信息）
+        var confirmMsg = "确认挂账吗？\n\n" +
+            "订单号：" + pro_num + "\n";
+
+        // 如果有桌号才显示桌号
+        if (currentTableNumber && currentTableNumber !== '未指定桌号') {
+            confirmMsg += "桌号：" + currentTableNumber + "\n";
+        }
+
+        confirmMsg += "商品数量：" + pro_list.length + "\n" +
+            "总金额：￥" + xfje.toFixed(2) + "\n" +
+            "优惠金额：￥" + yhje.toFixed(2) + "\n" +
+            "实收金额：￥" + ssje.toFixed(2);
+
+        if (!confirm(confirmMsg)) {
+            return;
+        }
+
+        // 6. 显示加载中
+        var loadingDiv = $('<div class="loading-overlay">').css({
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            background: 'rgba(0,0,0,0.7)',
+            color: 'white',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '18px',
+            zIndex: '9999'
+        }).html('<div>正在处理挂账，请稍候...</div>');
+
+        $('body').append(loadingDiv);
+
+        // 7. 构建请求数据（桌号可选）
+        var requestData = {
+            pro_list: pro_list,  // 注意：这里直接传数组
+            pro_num: pro_num,
+            youhui: youhui,
+            yhje: yhje.toFixed(2),
+            ssje: ssje.toFixed(2),
+            xfje: xfje.toFixed(2),
+            member_name: member_name,
+            member_username: member_username,
+            remark: remark
+        };
+
+        // 如果有桌号才添加桌号
+        if (currentTableNumber && currentTableNumber !== '未指定桌号') {
+            requestData.zhuohao = currentTableNumber;
+        }
+
+        console.log("发送请求数据:", requestData);
+
+        // 8. 发送请求
+        $.ajax({
+            type: 'POST',
+            url: '/order_panel/addguazhang',
+            timeout: 30000,
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            dataType: 'json',
+            beforeSend: function() {
+                console.log("开始发送挂账请求...");
+            },
+            success: function(response) {
+                loadingDiv.remove();
+                console.log("挂账响应:", response);
+
+                if (response.code == 200) {
+                    alert("✅ " + response.msg);
+
+                    // 清空购物车
+                    $(".Lblock #empty_mask .cont table tr").remove();
+                    Table_sum();
+
+                    // 关闭结账窗口
+                    jQuery("#jiezhang").hide();
+                    jQuery(".jiezhang_mask").hide();
+
+                    // 重新生成订单号
+                    setTimeout(function() {
+                        orders_auto();
+
+                        // 如果有桌号，重新加载桌位数据
+                        if (currentTableNumber && currentTableNumber !== '未指定桌号') {
+                            console.log("重新加载桌位数据:", currentTableNumber);
+                            sendSearchRequest(currentTableNumber);
+                        }
+                    }, 1000);
+
+                } else {
+                    alert("❌ " + (response.msg || '挂账失败'));
+                }
+            },
+            error: function(xhr, status, error) {
+                loadingDiv.remove();
+                console.log("挂账请求失败:", {
+                    status: status,
+                    error: error,
+                    readyState: xhr.readyState,
+                    statusText: xhr.statusText
+                });
+
+                var errorMsg = "挂账失败！\n\n";
+                if (status === "timeout") {
+                    errorMsg += "请求超时（30秒），请稍后重试";
+                } else if (xhr.status === 0) {
+                    errorMsg += "网络连接失败，请检查网络连接";
+                } else if (xhr.status === 404) {
+                    errorMsg += "接口不存在（404），请检查URL路径";
+                } else if (xhr.status === 500) {
+                    errorMsg += "服务器内部错误（500），请联系管理员";
+                } else {
+                    errorMsg += "错误信息: " + error + "\n状态码: " + xhr.status;
                 }
 
+                alert(errorMsg);
+            },
+            complete: function() {
+                console.log("请求完成");
             }
-        })
-
-        jQuery("#jiezhang").hide()
-        jQuery(".jiezhang_mask").hide()
-        $(".Lblock #empty_mask .cont table tr").remove()
-        console.log(pro_list)
-        console.log(pro_num)
-        var yingshouValue = parseFloat($('#yingshou_Sum').text()) || 0;
-        var shijiValue = parseFloat($('#shiji').text()) || 0;
-        var youhuiValue = parseFloat($('#youhui').val()) || 0;
+        });
+    });
 
 
+    // 简化的挂账处理函数
+    // 修改 proceedWithGuazhang 函数中的商品数据构建部分
+    function proceedWithGuazhang(orderNumber, tableNumber, isAppend) {
+        console.log("处理挂账，订单号:", orderNumber, "桌号:", tableNumber, "是否追加:", isAppend);
 
+        // 收集商品数据 - 修复版
+        var pro_list = [];
+        var member_name = p_name || '';
+        var member_username = p_username || '';
+        var yhje = parseFloat($('#youhui').val()) || 0;
+        var ssje = parseFloat($('#shiji').text().replace(/[^\d.-]/g, '')) || 0;
+        var xfje = parseFloat($('#yingshou_Sum').text()) || 0;
+        var member_discount = p_zhekou || 1;
+        var remark = window.currentRemark || '';
+
+        console.log("收集商品数据...");
+
+        // 从结账窗口获取商品数据（table1）
+        $("#table1 tbody tr").each(function() {
+            var productName = $(this).find('.itemName1').text().trim();
+            var priceText = $(this).find('.itemAmount1 .price').text().trim();
+            var countText = $(this).find('.itemNum1 .count').text().trim();
+
+            // 解析价格和数量
+            var price = parseFloat(priceText.replace(/[^\d.-]/g, '')) || 0;
+            var count = parseFloat(countText) || 1;
+
+            // 查找商品信息
+            var productInfo = null;
+            for(var i = 0; i < window.datas.length; i++) {
+                if(window.datas[i].product_name == productName) {
+                    productInfo = window.datas[i];
+                    break;
+                }
+            }
+
+            if (productInfo) {
+                var item = {
+                    member_name: member_name,
+                    member_username: member_username,
+                    cplx: productInfo.type || '',
+                    cpmc: productInfo.product_name || '',
+                    dw: productInfo.unit || '瓶',
+                    dj: productInfo.price || '0',
+                    dzbl: member_discount,
+                    zhdj: price / count, // 单价
+                    zhje: price, // 总价
+                    gs: count // 数量
+                };
+
+                console.log("添加商品:", item.cpmc, "单价:", item.zhdj, "总价:", item.zhje);
+                pro_list.push(item);
+            }
+        });
+
+        console.log("✅ 商品数据收集完成，数量:", pro_list.length);
+        console.log("商品列表样例:", pro_list[0]);
+
+        // 验证 JSON 序列化
+        try {
+            var pro_list_json = JSON.stringify(pro_list);
+            console.log("JSON 序列化成功，长度:", pro_list_json.length);
+        } catch (e) {
+            console.error("JSON 序列化失败:", e);
+            alert("商品数据格式错误，请重新选择商品！");
+            return;
+        }
+
+        console.log("发送挂账请求...");
+
+        // 显示加载提示
+        var loadingDiv = $('<div class="loading-overlay">').css({
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            background: 'rgba(0,0,0,0.7)',
+            color: 'white',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '18px',
+            zIndex: '9999'
+        }).text('正在处理挂账，请稍候...');
+
+        $('body').append(loadingDiv);
+
+        // 发送挂账请求
         $.ajax({
             type: 'post',
             url: '/order_panel/addguazhang',
-            timeout: 5000,
+            timeout: 10000,
             data: {
                 pro_list: JSON.stringify(pro_list),
-                pro_num: pro_num,
-                member_name:member_name,
-                member_username,
+                pro_num: orderNumber,
+                member_name: member_name,
+                member_username: member_username,
                 youhui: p_zhekou,
-                yhje:youhuiValue,
-                ssje:shijiValue,
-                xfje:yingshouValue
+                yhje: yhje,
+                ssje: ssje,
+                xfje: xfje,
+                remark: remark,
+                zhuohao: tableNumber
             },
-            success: function(res){
-                let result = JSON.parse(res)
-                alert(result.msg)
-                tableShow();
-                orders_auto();
+            success: function(res) {
+                loadingDiv.remove();
+                console.log("挂账响应:", res);
+
+                // 尝试解析响应
+                try {
+                    var response;
+                    if (typeof res === 'string') {
+                        response = JSON.parse(res);
+                    } else {
+                        response = res;
+                    }
+
+                    if (response.code === 200) {
+                        // 挂账成功
+                        var successMsg = "✅ " + response.msg + "\n\n" +
+                            "订单号: " + orderNumber + "\n" +
+                            "桌号: " + tableNumber + "\n" +
+                            "商品数量: " + pro_list.length + "\n" +
+                            "总金额: ¥" + xfje.toFixed(2);
+
+                        alert(successMsg);
+
+                        // 清空购物车（如果不是追加模式）
+                        if (!isAppend) {
+                            $(".Lblock #empty_mask .cont table tr").remove();
+                            Table_sum();
+                        }
+
+                        // 标记为挂账订单
+                        window.currentGuazhangOrder = orderNumber;
+
+                        // 关闭结账窗口
+                        jQuery("#jiezhang").hide();
+                        jQuery(".jiezhang_mask").hide();
+
+                        // 重新生成订单号（用于新订单）
+                        setTimeout(function() {
+                            if (!isAppend) {
+                                orders_auto();
+                            }
+
+                            // 如果是桌位模式，重新加载数据
+                            if (tableNumber && tableNumber !== '未指定桌号') {
+                                console.log("重新加载桌位数据:", tableNumber);
+                                sendSearchRequest(tableNumber);
+                            }
+                        }, 500);
+
+                    } else {
+                        alert("❌ " + (response.msg || '挂账失败'));
+                    }
+                } catch (e) {
+                    console.error("解析响应失败:", e, "原始响应:", res);
+                    alert("服务器响应格式错误，但挂账可能已成功！");
+                }
             },
-            error: function(res){
-                if(res.status == "timeout"){
-                }else{
+            error: function(xhr, status, error) {
+                loadingDiv.remove();
+                console.log("挂账请求失败:", status, error);
+
+                var errorMsg = "挂账请求失败！\n\n";
+                if (status === "timeout") {
+                    errorMsg += "请求超时。\n" +
+                        "可能原因：\n" +
+                        "1. 网络连接问题\n" +
+                        "2. 服务器响应慢\n\n" +
+                        "建议稍后重试或联系管理员。";
+                } else {
+                    errorMsg += "错误信息: " + error + "\n" +
+                        "状态码: " + xhr.status;
+                }
+
+                alert(errorMsg);
+            }
+        });
+    }
+
+    // 检查订单是否存在的函数
+    function checkOrderExists(orderNumber, callback) {
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/check_order_exists',
+            timeout: 5000, // 5秒超时
+            data: {
+                ddid: orderNumber
+            },
+            success: function(res) {
+                var result = JSON.parse(res);
+                callback(result.exists);
+            },
+            error: function() {
+                console.log("检查订单存在失败，假设订单不存在");
+                callback(false);
+            }
+        });
+    }
+
+    // 执行挂账操作的函数
+    function proceedWithGuazhang(orderNumber, tableNumber) {
+        console.log("开始挂账处理，订单号:", orderNumber, "桌号:", tableNumber);
+
+        // 收集商品数据
+        var pro_list = [];
+        var member_name = p_name;
+        var member_username = p_username;
+        var yhje = parseFloat($('#youhui').val()) || 0;
+        var ssje = parseFloat($('#shiji').text().replace(/[^\d.-]/g, '')) || 0;
+        var xfje = parseFloat($('#yingshou_Sum').text()) || 0;
+        var member_discount = p_zhekou || 1;
+        var remark = window.currentRemark || '';
+
+        // 构建商品列表（从结账窗口获取）
+        $("#table1 tbody tr").each(function() {
+            var productName = $(this).children().eq(0).text();
+            var jine = $(this).children(".itemAmount1").children().eq(0).text();
+            jine = parseFloat(jine.replace("￥", "")) || 0;
+            var shul = parseFloat($(this).children(".itemNum1").find('.count').text()) || 1;
+            var zhek = parseFloat($(this).children(".itemzheko").find('.aa').text()) || 1;
+
+            // 查找商品信息
+            for(var i = 0; i < datas.length; i++) {
+                if(datas[i].product_name == productName) {
+                    pro_list.push({
+                        member_name: member_name,
+                        member_username: member_username,
+                        cplx: datas[i].type,
+                        cpmc: datas[i].product_name,
+                        dw: datas[i].unit,
+                        dj: datas[i].price,
+                        dzbl: member_discount,
+                        zhdj: jine / shul,
+                        zhje: jine,
+                        gs: shul
+                    });
+                    break;
                 }
             }
         });
-        location.replace(location.href);
-    })
 
+        console.log("发送挂账请求，商品数量:", pro_list.length);
 
+        // 发送挂账请求 - 设置较短的超时时间
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/addguazhang',
+            timeout: 10000, // 10秒超时
+            data: {
+                pro_list: JSON.stringify(pro_list),
+                pro_num: orderNumber,
+                member_name: member_name,
+                member_username: member_username,
+                youhui: p_zhekou,
+                yhje: yhje,
+                ssje: ssje,
+                xfje: xfje,
+                remark: remark,
+                zhuohao: tableNumber
+            },
+            success: function(res) {
+                console.log("挂账响应:", res);
 
-    // 初始化效果
-    window.addEventListener('DOMContentLoaded', () => {
-        createParticles();
+                if (res.code === 200) {
+                    // 挂账成功
+                    var successMsg = "✅ " + res.msg + "\n\n" +
+                        "订单号: " + orderNumber + "\n" +
+                        "桌号: " + tableNumber + "\n" +
+                        "商品数量: " + pro_list.length + "\n" +
+                        "总金额: ¥" + xfje.toFixed(2);
+
+                    alert(successMsg);
+
+                    // 清空购物车
+                    $(".Lblock #empty_mask .cont table tr").remove();
+                    Table_sum();
+
+                    // 关闭结账窗口
+                    jQuery("#jiezhang").hide();
+                    jQuery(".jiezhang_mask").hide();
+
+                    // 重新生成订单号
+                    setTimeout(function() {
+                        orders_auto();
+                        if (tableNumber && tableNumber !== '未指定桌号') {
+                            console.log("重新加载桌位数据:", tableNumber);
+                            sendSearchRequest(tableNumber);
+                        }
+                    }, 1000);
+
+                } else {
+                    alert("❌ " + res.msg);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log("挂账请求失败:", status, error);
+
+                var errorMsg = "挂账失败！\n\n";
+                if (status === "timeout") {
+                    errorMsg += "请求超时，可能是网络问题或服务器响应慢。\n" +
+                        "建议：\n" +
+                        "1. 检查网络连接\n" +
+                        "2. 稍后重试\n" +
+                        "3. 联系管理员";
+                } else {
+                    errorMsg += "错误信息: " + error + "\n" +
+                        "状态码: " + status;
+                }
+
+                alert(errorMsg);
+            }
+        });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('页面开始初始化...');
+
+        // ======== 1. 轮播图初始化（避免重复） ========
+        // 检查是否已经初始化过轮播图
+        if (!window.carouselInitialized) {
+            const dotsContainer = document.querySelector('.carousel-dots');
+            if (dotsContainer && typeof slides !== 'undefined') {
+                // 清空已有的点（防止重复添加）
+                dotsContainer.innerHTML = '';
+
+                // 创建轮播点
+                slides.forEach((_, index) => {
+                    const dot = document.createElement('div');
+                    dot.className = 'dot';
+                    if (index === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => {
+                        showSlide(index);
+                        resetCarouselTimer();
+                    });
+                    dotsContainer.appendChild(dot);
+                });
+
+                // 事件监听
+                document.querySelector('.prev-btn')?.addEventListener('click', () => {
+                    prevSlide();
+                    resetCarouselTimer();
+                });
+
+                document.querySelector('.next-btn')?.addEventListener('click', () => {
+                    nextSlide();
+                    resetCarouselTimer();
+                });
+
+                document.querySelector('.close-overlay')?.addEventListener('click', hideOverlay);
+
+                // 点击覆盖层其他区域也可关闭
+                overlay?.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        hideOverlay();
+                    }
+                });
+
+                // 用户操作重置计时器
+                const userEvents = ['mousemove', 'keypress', 'click', 'scroll', 'touchstart'];
+                userEvents.forEach(event => {
+                    document.addEventListener(event, resetInactivityTimer);
+                });
+
+                // 重置轮播定时器
+                function resetCarouselTimer() {
+                    stopCarousel();
+                    carouselInterval = setInterval(nextSlide, 3000);
+                }
+
+                // 启动计时器
+                resetInactivityTimer();
+
+                window.carouselInitialized = true;
+                console.log('✅ 轮播图初始化完成');
+            }
+        }
+
+        // ======== 2. 粒子效果和基本初始化 ========
+        try {
+            createParticles();
+            console.log('✅ 粒子效果创建完成');
+        } catch (e) {
+            console.warn('粒子效果创建失败:', e);
+        }
+
+        // ======== 3. 今日人数统计初始化 ========
+        try {
+            initTodayCount();
+            console.log('✅ 今日人数统计初始化完成');
+        } catch (e) {
+            console.warn('今日人数统计初始化失败:', e);
+        }
+
+        // ======== 4. 桌位相关初始化 ========
+        try {
+            // 获取桌号
+            var tableNumber = huoqutable();
+
+            // 如果有桌号，加载数据
+            if (tableNumber && tableNumber !== '未指定桌号') {
+                console.log("初始化时加载桌位数据:", tableNumber);
+                sendSearchRequest(tableNumber);
+            } else {
+                // 无桌位模式，生成新订单号
+                console.log("无桌位模式，生成新订单号");
+
+                generateNewOrder();
+
+            }
+            console.log('✅ 桌位初始化完成');
+        } catch (e) {
+            console.warn('桌位初始化失败:', e);
+        }
+
+        // ======== 5. 结算模式检查 ========
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isSettle = urlParams.get('isSettle') === 'true';
+            const settleOrder = urlParams.get('order');
+            const settleTable = urlParams.get('table');
+
+            console.log("页面加载参数:", { isSettle, settleOrder, settleTable });
+
+            if (isSettle && settleOrder && settleTable) {
+                console.log("结算模式，自动加载订单:", settleOrder);
+
+                // 设置订单号输入框的值
+                $('#danhao').val(settleOrder);
+
+                // 延迟执行查询，等待页面完全加载
+                setTimeout(function() {
+                    // 模拟点击查询按钮
+                    if ($('#queryBtn').length > 0) {
+                        $('#queryBtn').click();
+                    } else {
+                        // 如果查询按钮不存在，直接调用查询函数
+                        // 需要确保这个函数存在
+                        if (typeof checkAndLoadOrder === 'function') {
+                            checkAndLoadOrder(settleOrder, settleTable);
+                        } else {
+                            console.warn('checkAndLoadOrder 函数不存在');
+                        }
+                    }
+
+                    // 显示提示
+                    alert(`正在加载桌位 ${settleTable} 的挂账订单: ${settleOrder}`);
+                }, 1000);
+            }
+            console.log('✅ 结算模式检查完成');
+        } catch (e) {
+            console.warn('结算模式检查失败:', e);
+        }
+
+        // ======== 6. 时间显示初始化 ========
+        try {
+            updateDateTime();
+            console.log('✅ 时间显示初始化完成');
+        } catch (e) {
+            console.warn('时间显示初始化失败:', e);
+        }
+
+        console.log('✅ 页面初始化全部完成');
     });
 </script>
 </div>

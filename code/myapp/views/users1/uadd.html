@@ -10,6 +10,11 @@
             var formData = $('#formData').serialize();
             var params = JSON.parse(formToJson(decodeURIComponent(formData, true)))
             $("#checkFormCheckBox").attr('checked', checkForm(params));
+
+            // 如果表单验证通过，显示保存提示
+            if(checkForm(params)) {
+                alert("保存成功！");
+            }
         }
 
         function checkForm(params){
@@ -40,7 +45,6 @@
         line-height: 16px;
         background-color: rgba(8, 46, 84, 0.5);
         padding: 12px;
-        /* color: white; */
         background-color: #fff;
     }
 </style>

@@ -131,7 +131,28 @@
 
 </body>
 <script>
+    $(function () {
 
+        getList();
+
+        $("#select-btn").click(function () {
+            // 最简单直接的日期验证
+            var startDate = $('#start_date').val();
+            var stopDate = $('#stop_date').val();
+
+            if (startDate && stopDate) {
+                if (new Date(startDate) > new Date(stopDate)) {
+                    alert('错误：起始日期不能大于结束日期！');
+                    $('#start_date').val('');
+                    $('#stop_date').val('');
+                    return;
+                }
+            }
+
+            getList();
+        });
+
+    })
     $(function () {
 
         getList();

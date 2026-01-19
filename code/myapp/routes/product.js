@@ -80,48 +80,140 @@ router.get('/select', function (req, res, next) {
     //     res.render('me.html', {title: 'ExpressTitle', msg: '无权限查看'});
     // }
 });
+// router.all('/ass', function (req, res, next) {
+//     console.log("yuangong")
+//     let isSelect = req.query.pagenum == undefined;
+//     let token = localStorage.getItem("token")
+//     let key = '123456789abcdefg';
+//     //console.log('加密的key:', key);
+//     let iv = 'abcdefg123456789';
+//     //console.log('加密的iv:', iv);
+//     let data = JSON.parse(decrypt(key, iv, token));
+//     let value = Object.values(data);
+//     let company = value[0];
+//
+//     // if (data.table["5"].sel == 1) {
+//     //
+//     // } else {
+//     //     res.render('me.html', {title: 'ExpressTitle', msg: '无权限查看'});
+//     // }
+//
+//     // let account = req.cookies.account
+//     // console.log(account);
+//
+//     let selectParams = {
+//         product_name: '',
+//         type:''
+//     }
+//     if (isSelect) {
+//         selectParams.product_name = req.body.product_name;
+//         selectParams.type = req.body.type;
+//         //selectParams.uname = toLiteral(selectParams.uname)
+//         localStorage.setItem("selectParams", JSON.stringify(selectParams))
+//     } else {
+//         selectParams = JSON.parse(localStorage.getItem("selectParams"));
+//     }
+//     if (selectParams.product_name == undefined) {
+//         selectParams.product_name = "";
+//     }
+//     if (selectParams.type == undefined) {
+//         selectParams.type = "";
+//     }
+//     console.log("selectParams.product_name=>", selectParams.product_name)
+//     let whereSql = "where company = '" + company + "' and product_name like '%" + selectParams.product_name + "%' and type like '%" + selectParams.type + "%'"
+//     let sql1 = "select count(*) as count from product " + whereSql;
+//     db.query(sql1, function (err, rows) {
+//         try {
+//             if (err) {
+//                 console.log(err);
+//             } else {
+//                 let value = rows;
+//                 let result = {
+//                     datas: [],
+//                     rowcounts: 0,
+//                     pagecounts: 0,
+//                     pagenum: 0,
+//                     pageSize: 10,
+//                     product_name: selectParams.product_name,
+//                     type: selectParams.type
+//                 }
+//                 console.log("isSelect=>", isSelect)
+//                 if (isSelect) {
+//                     result.rowcounts = value[0].count
+//                     result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
+//                     result.pagenum = 1
+//                 } else {
+//                     result.rowcounts = value[0].count
+//                     result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
+//                     result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
+//                 }
+//                 let sql = "select * from product " + whereSql;
+//                 sql += " limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
+//                 console.log("sql=>", sql)
+//                 db.query(sql, function (err, rows) {
+//                     if (err) {
+//                         res.render('product.html', {title: 'Express', datas: []});
+//                     } else {
+//                         result.datas = rows
+//                         console.log("result=>", result)
+//                         res.render('product.html', {
+//                             title: 'Express',
+//                             ...result
+//                         });
+//                     }
+//                 });
+//             }
+//         } catch (e) {
+//             res.render("error.html", {error: '网络错误，请稍后再试！'})
+//         }
+//     });
+// });
 router.all('/ass', function (req, res, next) {
     console.log("yuangong")
     let isSelect = req.query.pagenum == undefined;
     let token = localStorage.getItem("token")
     let key = '123456789abcdefg';
-    //console.log('加密的key:', key);
     let iv = 'abcdefg123456789';
-    //console.log('加密的iv:', iv);
     let data = JSON.parse(decrypt(key, iv, token));
     let value = Object.values(data);
     let company = value[0];
 
-    // if (data.table["5"].sel == 1) {
-    //
-    // } else {
-    //     res.render('me.html', {title: 'ExpressTitle', msg: '无权限查看'});
-    // }
-
-    // let account = req.cookies.account
-    // console.log(account);
-
+    // 查询参数处理
     let selectParams = {
         product_name: '',
-        type:''
+        type: ''
     }
+
     if (isSelect) {
-        selectParams.product_name = req.body.product_name;
-        selectParams.type = req.body.type;
-        //selectParams.uname = toLiteral(selectParams.uname)
+        // 如果是查询提交（POST请求）
+        selectParams.product_name = req.body.product_name || '';
+        selectParams.type = req.body.type || '';
         localStorage.setItem("selectParams", JSON.stringify(selectParams))
     } else {
-        selectParams = JSON.parse(localStorage.getItem("selectParams"));
+        // 如果是分页或其他GET请求
+        let savedParams = localStorage.getItem("selectParams");
+        if (savedParams) {
+            selectParams = JSON.parse(savedParams);
+        }
+
+        // 如果是刷新页面后的查询，尝试从GET参数获取
+        if (req.query.product_name !== undefined) {
+            selectParams.product_name = req.query.product_name || '';
+        }
+        if (req.query.type !== undefined) {
+            selectParams.type = req.query.type || '';
+        }
     }
-    if (selectParams.product_name == undefined) {
-        selectParams.product_name = "";
-    }
-    if (selectParams.type == undefined) {
-        selectParams.type = "";
-    }
-    console.log("selectParams.product_name=>", selectParams.product_name)
+
+    // 确保参数不为undefined
+    selectParams.product_name = selectParams.product_name || "";
+    selectParams.type = selectParams.type || "";
+
+    console.log("查询参数 =>", selectParams)
+
     let whereSql = "where company = '" + company + "' and product_name like '%" + selectParams.product_name + "%' and type like '%" + selectParams.type + "%'"
     let sql1 = "select count(*) as count from product " + whereSql;
+
     db.query(sql1, function (err, rows) {
         try {
             if (err) {
@@ -134,8 +226,10 @@ router.all('/ass', function (req, res, next) {
                     pagecounts: 0,
                     pagenum: 0,
                     pageSize: 10,
-                    product_name: selectParams.product_name
+                    product_name: selectParams.product_name,
+                    type: selectParams.type  // 添加这行，将type传递给模板
                 }
+
                 console.log("isSelect=>", isSelect)
                 if (isSelect) {
                     result.rowcounts = value[0].count
@@ -146,18 +240,31 @@ router.all('/ass', function (req, res, next) {
                     result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
                     result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
                 }
+
                 let sql = "select * from product " + whereSql;
                 sql += " limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
                 console.log("sql=>", sql)
+
                 db.query(sql, function (err, rows) {
                     if (err) {
                         res.render('product.html', {title: 'Express', datas: []});
                     } else {
                         result.datas = rows
-                        console.log("result=>", result)
+                        console.log("返回的数据 =>", {
+                            product_name: result.product_name,
+                            type: result.type,
+                            datas_count: result.datas.length
+                        })
+
+                        // 确保正确传递所有参数给模板
                         res.render('product.html', {
                             title: 'Express',
-                            ...result
+                            datas: result.datas,
+                            rowcounts: result.rowcounts,
+                            pagecounts: result.pagecounts,
+                            pagenum: result.pagenum,
+                            product_name: result.product_name,
+                            type: result.type  // 这个很重要，确保type传递给模板
                         });
                     }
                 });
@@ -167,6 +274,7 @@ router.all('/ass', function (req, res, next) {
         }
     });
 });
+
 /**
  * 新增页面跳转
  */
@@ -614,73 +722,229 @@ router.post('/getTableMe', function (req, res) {
     });
 });
 
+// router.all('/update/:id', function (req, res) {
+//     if (req.body.checkForm) {
+//         let token = localStorage.getItem("token");
+//         let key = '123456789abcdefg';
+//         let iv = 'abcdefg123456789';
+//         let data = JSON.parse(decrypt(key, iv, token));
+//         //let id = req.body.id;
+//         let value = Object.values(data);
+//         console.log("value-->" + value)
+//         let id = req.params.id;
+//         console.log("id-->" + id);
+//         let result = {
+//             type: "",
+//             product_name: "",
+//             product_bianhao:'',
+//             unit:"" ,
+//             price: "",
+//             chengben: "",
+//             tingyong: "",
+//             xiangqing: "",
+//         }
+//         // let company = req.body.company;
+//         // company = toLiteral(company)
+//         let product_bianhao = req.body.product_bianhao;
+//         result.product_bianhao = product_bianhao;
+//
+//         let product_xiangqing = req.body.xiangqing;
+//         result.xiangqing = product_xiangqing;
+//
+//         let type = req.body.type;
+//         result.type = type;
+//         type = toLiteral(type);
+//         let product_name = req.body.product_name;
+//         result.product_name = product_name;
+//         product_name = toLiteral(product_name);
+//         let unit = req.body.unit;
+//         result.unit = unit;
+//         unit = toLiteral(unit);
+//         let price = req.body.price;
+//         result.price = price;
+//         price = toLiteral(price);
+//         let chengben = req.body.chengben;
+//         result.chengben = chengben;
+//         chengben = toLiteral(chengben);
+//         let tingyong = req.body.tingyong;
+//         result.tingyong = tingyong;
+//         tingyong = toLiteral(tingyong);
+//         let company = data.company;
+//         company = toLiteral(company);
+//
+//         let sql1 = "update product set type='" + type + "', product_name='" + product_name + "', product_bianhao='" + product_bianhao + "', unit='" + unit + "', price='" + price + "', chengben='" + chengben + "', tingyong='" + tingyong + "', xiangqing='" + product_xiangqing + "' where id=" + id;
+//         console.log("sql1->" + sql1)
+//         db.query(sql1, function (err, rows) {
+//             try {
+//                 if (err) {
+//                     res.end('修改失败：');
+//                 } else {
+//                     res.redirect('/product/ass');
+//                 }
+//             } catch (e) {
+//                 res.render("error.html", {error: '网络错误，请稍后再试'})
+//             }
+//         });
+//
+//
+//     }
+// });
 router.all('/update/:id', function (req, res) {
     if (req.body.checkForm) {
         let token = localStorage.getItem("token");
         let key = '123456789abcdefg';
         let iv = 'abcdefg123456789';
         let data = JSON.parse(decrypt(key, iv, token));
-        //let id = req.body.id;
-        let value = Object.values(data);
-        console.log("value-->" + value)
         let id = req.params.id;
         console.log("id-->" + id);
-        let result = {
-            type: "",
-            product_name: "",
-            product_bianhao:'',
-            unit:"" ,
-            price: "",
-            chengben: "",
-            tingyong: "",
-            xiangqing: "",
-        }
-        // let company = req.body.company;
-        // company = toLiteral(company)
-        let product_bianhao = req.body.product_bianhao;
-        result.product_bianhao = product_bianhao;
 
-        let product_xiangqing = req.body.xiangqing;
-        result.xiangqing = product_xiangqing;
+        // 获取所有表单字段
+        let product_bianhao = req.body.product_bianhao || '';
+        let product_xiangqing = req.body.xiangqing || '';
+        let type = req.body.type || '';
+        let product_name = req.body.product_name || '';
+        let unit = req.body.unit || '';
+        let price = req.body.price || '';
+        let chengben = req.body.chengben || '';
+        let tingyong = req.body.tingyong || '';
+        let specifications = req.body.specifications || '';  // 新增
+        let practice = req.body.practice || '';  // 新增
 
-        let type = req.body.type;
-        result.type = type;
+        // 转义特殊字符
+        product_bianhao = toLiteral(product_bianhao);
+        product_xiangqing = toLiteral(product_xiangqing);
         type = toLiteral(type);
-        let product_name = req.body.product_name;
-        result.product_name = product_name;
         product_name = toLiteral(product_name);
-        let unit = req.body.unit;
-        result.unit = unit;
         unit = toLiteral(unit);
-        let price = req.body.price;
-        result.price = price;
         price = toLiteral(price);
-        let chengben = req.body.chengben;
-        result.chengben = chengben;
         chengben = toLiteral(chengben);
-        let tingyong = req.body.tingyong;
-        result.tingyong = tingyong;
         tingyong = toLiteral(tingyong);
-        let company = data.company;
-        company = toLiteral(company);
+        specifications = toLiteral(specifications);  // 新增
+        practice = toLiteral(practice);  // 新增
 
-        let sql1 = "update product set type='" + type + "', product_name='" + product_name + "', product_bianhao='" + product_bianhao + "', unit='" + unit + "', price='" + price + "', chengben='" + chengben + "', tingyong='" + tingyong + "', xiangqing='" + product_xiangqing + "' where id=" + id;
-        console.log("sql1->" + sql1)
+        // 修复SQL语句，添加specifications和practice字段
+        let sql1 = "update product set " +
+            "type='" + type + "', " +
+            "product_name='" + product_name + "', " +
+            "product_bianhao='" + product_bianhao + "', " +
+            "unit='" + unit + "', " +
+            "price='" + price + "', " +
+            "chengben='" + chengben + "', " +
+            "tingyong='" + tingyong + "', " +
+            "specifications='" + specifications + "', " +  // 新增
+            "practice='" + practice + "', " +  // 新增
+            "xiangqing='" + product_xiangqing + "' " +
+            "where id=" + id;
+
+        console.log("更新SQL:", sql1);
+
         db.query(sql1, function (err, rows) {
             try {
                 if (err) {
-                    res.end('修改失败：');
+                    console.error("更新失败:", err);
+                    // 返回修改页面并显示错误信息
+                    db.query("select * from product where id= '" + id + "'", function (err, rows) {
+                        if (err) {
+                            res.render("error.html", {error: '更新失败：' + err.message});
+                        } else {
+                            res.render("product/productUpdate.html", {
+                                datas: rows,
+                                msg: '更新失败：' + err.message
+                            });
+                        }
+                    });
                 } else {
+                    console.log("更新成功，影响行数:", rows.affectedRows);
                     res.redirect('/product/ass');
                 }
             } catch (e) {
-                res.render("error.html", {error: '网络错误，请稍后再试'})
+                console.error("更新异常:", e);
+                res.render("error.html", {error: '网络错误，请稍后再试'});
             }
         });
-
-
+    } else {
+        // 表单验证失败，返回修改页面
+        let id = req.params.id;
+        db.query("select * from product where id= '" + id + "'", function (err, rows) {
+            if (err) {
+                res.render("error.html", {error: '获取数据失败'});
+            } else {
+                res.render("product/productUpdate.html", {
+                    datas: rows,
+                    msg: '表单验证失败，请检查输入'
+                });
+            }
+        });
     }
 });
+// router.all('/Excel', function (req, res, next) {
+//     let token = localStorage.getItem("token");
+//     let key = '123456789abcdefg';
+//     let iv = 'abcdefg123456789';
+//     let data = JSON.parse(decrypt(key, iv, token));
+//     selectParams = JSON.parse(localStorage.getItem("selectParams"));
+//     let sql = "select * from product where company = '" + data.company + "'";
+//     db.query(sql, function (err, rows) {
+//         try {
+//             if (err) {
+//                 console.log(err);
+//             } else {
+//                 let values = rows
+//                 //console.log("value=>",values)
+//             }
+//             let sql2 = JSON.stringify(sql);
+//             let sql3 = JSON.parse(sql2);
+//             //console.log(sql3);
+//             let conf = {};
+//             conf.stylesXmlFile = "styles.xml";
+//             conf.name = "mysheet";
+//             conf.cols = [
+//                 {
+//                     caption: '序号',
+//                     type: 'number'
+//                 }, {
+//                     caption: '商品类别',
+//                     type: 'string'
+//                 }, {
+//                     caption: '商品名称',
+//                     type: 'string'
+//                 }, {
+//                     caption: '单位',
+//                     type: 'string'
+//                 }, {
+//                     caption: '单价',
+//                     type: 'number'
+//                 }, {
+//                     caption: '成本',
+//                     type: 'number'
+//                 }, {
+//                     caption: '是否停用',
+//                     type: 'string'
+//                 }
+//             ];
+//             conf.rows = []
+//             for (let i = 0; i < rows.length; i++) {
+//                 let row = [];
+//                 row.push(rows[i].id)
+//                 row.push(rows[i].type)
+//                 row.push(rows[i].product_name)
+//                 row.push(rows[i].unit)
+//                 row.push(rows[i].price)
+//                 row.push(rows[i].chengben)
+//                 row.push(rows[i].tingyong)
+//                 conf.rows.push(row)
+//             }
+//             let result = nodeExcel.execute(conf);
+//             res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+//             res.setHeader("Content-Disposition", "attachment; filename=" + "product.xlsx");
+//             res.end(result, 'binary');
+//         } catch (e) {
+//             res.render("error.html", {error: '网络错误，请稍后再试'})
+//         }
+//     });
+//
+//
+// });
 router.all('/Excel', function (req, res, next) {
     let token = localStorage.getItem("token");
     let key = '123456789abcdefg';
@@ -705,25 +969,40 @@ router.all('/Excel', function (req, res, next) {
             conf.cols = [
                 {
                     caption: '序号',
-                    type: 'number'
+                    type: 'number',
+                    width: 10
                 }, {
                     caption: '商品类别',
-                    type: 'string'
+                    type: 'string',
+                    width: 15
                 }, {
                     caption: '商品名称',
-                    type: 'string'
+                    type: 'string',
+                    width: 25
+                }, {
+                    caption: '商品规格',
+                    type: 'string',
+                    width: 20
                 }, {
                     caption: '单位',
-                    type: 'string'
+                    type: 'string',
+                    width: 10
                 }, {
                     caption: '单价',
-                    type: 'number'
+                    type: 'string',  // 改为字符串类型，可以显示多种格式
+                    width: 20
                 }, {
                     caption: '成本',
-                    type: 'number'
+                    type: 'string',  // 改为字符串类型
+                    width: 20
+                }, {
+                    caption: '保存方式',
+                    type: 'string',
+                    width: 20
                 }, {
                     caption: '是否停用',
-                    type: 'string'
+                    type: 'string',
+                    width: 12
                 }
             ];
             conf.rows = []
@@ -732,9 +1011,50 @@ router.all('/Excel', function (req, res, next) {
                 row.push(rows[i].id)
                 row.push(rows[i].type)
                 row.push(rows[i].product_name)
+                row.push(rows[i].specifications || '')
                 row.push(rows[i].unit)
-                row.push(rows[i].price)
-                row.push(rows[i].chengben)
+
+                // 处理单价 - 更智能的格式化
+                let price = rows[i].price;
+                if (price) {
+                    // 如果包含多个价格（比如用逗号、分号、斜杠分隔）
+                    if (typeof price === 'string' && (price.includes(',') || price.includes(';') || price.includes('/') || price.includes('\\'))) {
+                        // 保持原样显示多个价格
+                        row.push(price.trim());
+                    } else {
+                        // 尝试解析为数字
+                        let priceNum = parseFloat(price);
+                        if (!isNaN(priceNum)) {
+                            row.push(priceNum.toFixed(2));
+                        } else {
+                            row.push(price); // 保持原样
+                        }
+                    }
+                } else {
+                    row.push('');
+                }
+
+                // 处理成本 - 更智能的格式化
+                let chengben = rows[i].chengben;
+                if (chengben) {
+                    // 如果包含多个成本（比如用逗号、分号、斜杠分隔）
+                    if (typeof chengben === 'string' && (chengben.includes(',') || chengben.includes(';') || chengben.includes('/') || chengben.includes('\\'))) {
+                        // 保持原样显示多个成本
+                        row.push(chengben.trim());
+                    } else {
+                        // 尝试解析为数字
+                        let costNum = parseFloat(chengben);
+                        if (!isNaN(costNum)) {
+                            row.push(costNum.toFixed(2));
+                        } else {
+                            row.push(chengben); // 保持原样
+                        }
+                    }
+                } else {
+                    row.push('');
+                }
+
+                row.push(rows[i].practice || '')
                 row.push(rows[i].tingyong)
                 conf.rows.push(row)
             }
@@ -746,7 +1066,5 @@ router.all('/Excel', function (req, res, next) {
             res.render("error.html", {error: '网络错误，请稍后再试'})
         }
     });
-
-
 });
 module.exports = router;

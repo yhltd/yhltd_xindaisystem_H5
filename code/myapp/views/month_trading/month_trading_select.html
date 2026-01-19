@@ -1,28 +1,152 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<!--<link rel="stylesheet" type="text/css" href="../../stylesheets/select.css"/>-->
 <link rel="stylesheet" type="text/css" href="../../stylesheets/table.css"/>
 <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
 <title>月交易记录</title>
-<script type="text/javascript">
-    function run(){
-        var  recipient = document.getElementById("recipient");
-        recipient.value ="";
-        var cardholder = document.getElementById("cardholder");
-        cardholder.value ="";
-        var drawee = document.getElementById("drawee");
-        drawee.value ="";
-        var date1 = document.getElementById("date1");
-        date1.value ="";
-        var date2 = document.getElementById("date2");
-        date2.value ="";
-    }
+
+<!-- 修复日期格式的脚本 -->
+<script>
+    // 立即执行的修复函数
+    (function() {
+        // 日期格式转换函数
+        function convertDateForDisplay(dateStr) {
+            if (!dateStr || typeof dateStr !== 'string') return dateStr;
+            // 将斜杠格式转为横杠格式用于显示
+            if (dateStr.includes('/')) {
+                var parts = dateStr.split('/');
+                if (parts.length >= 3) {
+                    var year = parts[0];
+                    var month = parts[1].padStart(2, '0');
+                    var day = parts[2].padStart(2, '0');
+                    return year + '-' + month + '-' + day;
+                }
+            }
+            return dateStr;
+        }
+
+        function convertDateForSubmit(dateStr) {
+            if (!dateStr || typeof dateStr !== 'string') return dateStr;
+            // 将横杠格式转为斜杠格式用于提交（匹配数据库）
+            if (dateStr.includes('-')) {
+                return dateStr.replace(/-/g, '/');
+            }
+            return dateStr;
+        }
+
+        // 页面加载完成后执行
+        function initDates() {
+            console.log('开始修复日期格式');
+
+            // 1. 修复表单输入框中的日期显示
+            var date1 = document.getElementById('date1');
+            var date2 = document.getElementById('date2');
+
+            if (date1 && date1.value) {
+                date1.value = convertDateForDisplay(date1.value);
+            }
+            if (date2 && date2.value) {
+                date2.value = convertDateForDisplay(date2.value);
+            }
+
+            // 2. 修复表格中的日期显示（账单日和还款日）
+            function fixTableDates() {
+                var table = document.getElementById('tableId');
+                if (!table) return;
+
+                var rows = table.getElementsByTagName('tr');
+                for (var i = 1; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName('td');
+                    if (cells.length >= 7) {
+                        // 账单日在第6列（索引5）
+                        var billDayCell = cells[5];
+                        if (billDayCell) {
+                            var original = billDayCell.textContent.trim();
+                            var converted = convertDateForDisplay(original);
+                            if (original !== converted) {
+                                billDayCell.textContent = converted;
+                            }
+                        }
+
+                        // 还款日在第7列（索引6）
+                        var repaymentCell = cells[6];
+                        if (repaymentCell) {
+                            var original = repaymentCell.textContent.trim();
+                            var converted = convertDateForDisplay(original);
+                            if (original !== converted) {
+                                repaymentCell.textContent = converted;
+                            }
+                        }
+                    }
+                }
+            }
+
+            fixTableDates();
+
+            // 3. 表单提交处理
+            var form = document.getElementById('searchForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    console.log('表单提交，处理日期格式...');
+
+                    // 提交前将日期转换为斜杠格式
+                    if (date1 && date1.value) {
+                        var originalValue = date1.value;
+                        var submitValue = convertDateForSubmit(originalValue);
+                        console.log('date1提交转换:', originalValue, '->', submitValue);
+                        // 创建隐藏字段存储转换后的值
+                        var hiddenInput1 = document.createElement('input');
+                        hiddenInput1.type = 'hidden';
+                        hiddenInput1.name = 'date1_sql';
+                        hiddenInput1.value = submitValue;
+                        this.appendChild(hiddenInput1);
+                    }
+
+                    if (date2 && date2.value) {
+                        var originalValue = date2.value;
+                        var submitValue = convertDateForSubmit(originalValue);
+                        console.log('date2提交转换:', originalValue, '->', submitValue);
+                        var hiddenInput2 = document.createElement('input');
+                        hiddenInput2.type = 'hidden';
+                        hiddenInput2.name = 'date2_sql';
+                        hiddenInput2.value = submitValue;
+                        this.appendChild(hiddenInput2);
+                    }
+
+                    // 调用原有的日期验证
+                    return checkDate();
+                });
+            }
+
+            // 4. 导出链接处理
+            var exportLink = document.querySelector('a[href="/month_trading/Excel"]');
+            if (exportLink) {
+                exportLink.addEventListener('click', function(e) {
+                    // 先转换日期格式再导出
+                    if (date1 && date1.value) {
+                        var originalValue = date1.value;
+                        var submitValue = convertDateForSubmit(originalValue);
+                        this.href = "/month_trading/Excel?date1=" + encodeURIComponent(submitValue) +
+                            "&date2=" + encodeURIComponent(convertDateForSubmit(date2.value)) +
+                            "&recipient=" + encodeURIComponent(document.getElementById('recipient').value) +
+                            "&cardholder=" + encodeURIComponent(document.getElementById('cardholder').value) +
+                            "&drawee=" + encodeURIComponent(document.getElementById('drawee').value);
+                    }
+                    return checkDateForExport();
+                });
+            }
+        }
+
+        // 执行初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDates);
+        } else {
+            setTimeout(initDates, 100);
+        }
+    })();
 </script>
+
 <head>
     <meta charset="UTF-8">
-
-
 </head>
 <style>
     .tablebox table td {
@@ -30,27 +154,24 @@
         text-align: center;
         line-height: 16px;
         background: #ffffff;
-        /* padding: 12px; */
         padding: 8px 10px;
     }
     .tablebox table th {
         height: 30px;
         line-height: 30px;
-        /* background: url(../images/title.png); */
         font-size: 16px;
         font-weight: bold;
-        /* color: #3872f6; */
         color: #000;
         border-left: 1px solid #EAEAEC;
         border-right: 1px solid #EAEAEC;
     }
 </style>
+
 <body class="bg-img">
 <div class="time-bar">
     <div class="time-display">
         <div class="time-text">当前页:月交易记录</div>
         <span class="time-text" id="current-date">2025年8月15日 星期五</span>
-
         <span class="time-text" id="current-time">14:31:33</span>
     </div>
 
@@ -59,74 +180,77 @@
         <span class="time-text">已使用: <span id="session-timer">00:00:00</span></span>
     </div>
 </div>
+
 <div class="select">
-    <form class="select_form" action="/month_trading/ass " method="post">
+    <form class="select_form" action="/month_trading/ass" method="post" id="searchForm">
         <input class="select_input right" type="text" name="recipient" id="recipient" placeholder="请输入收卡人" value="{{recipient}}" />
         <input class="select_input right" type="text" name="cardholder" id="cardholder" placeholder="请输入付款人" value="{{cardholder}}"/>
         <input class="select_input right" type="text" name="drawee" id="drawee" placeholder="请输入持卡人" value="{{drawee}}"/>
-        <input class="select_input right" type="date" name="date1" id="date1" value="{{date1}}" style="margin-right: 8px;"/>
+        <span style="color: white; font-size: 28px; font-weight: bold;">交易日期查询:</span><input class="select_input right" type="date" name="date1" id="date1" value="{{date1}}" style="margin-right: 8px;"/>
         <input class="select_input right" type="date" name="date2" id="date2" value="{{date2}}" style="margin-left: 8px;"/>
-        <input class="select_btn right" type="submit" value="查询" />
+
+        <input class="select_btn right" type="submit" value="查询"/>
         <input class="select_btn right" type="button" value="清空" onclick="run()" style="margin-left: 10px;"/>
 
         <div class="header-item">
-            <a href="/month_trading/Excel"><img class="header-icon" src="../../images/excel2.png" title="导出到excel"/></a>
+            <a href="/month_trading/Excel">
+                <img class="header-icon" src="../../images/excel2.png" title="导出到excel"/>
+            </a>
         </div>
     </form>
 </div>
+
 <input type="hidden" value="{{datas[0].id}}" name="id">
 <div class="" style="background: #39413699">
     <div style="overflow: auto;">
-    <table id="tableId"  class="gradient-table" >
-        <tr align="center" class="firsttr">
-            <th>序号</th>
-            <th>收卡人</th>
-            <th>付款人</th>
-            <th>持卡人</th>
-            <th>发卡行</th>
-            <th>账单日</th>
-            <th>还款日</th>
-            <th>总金额</th>
-            <th>应还款</th>
-            <th>剩余额</th>
-            <th>借款额</th>
-            <th>已还款</th>
-            <th>已刷额</th>
-            <th>未刷金额</th>
-            <th>总手续费</th>
-            <th>应收金额</th>
-            <th>利润</th>
-
-        </tr>
-        {% for item in datas %}
-        <tr align="center">
-            <td>{{item.id}}</td>
-            <td>{{item.recipient}}</td>
-            <td>{{item.cardholder}}</td>
-            <td>{{item.drawee}}</td>
-            <td>{{item.issuing_bank}}</td>
-            <td>{{item.bill_day}}</td>
-            <td>{{item.repayment_date}}</td>
-            <td>{{item.total}}</td>
-            <td>{{item.repayable}}</td>
-            <td>{{item.balance}}</td>
-            <td>{{item.loan}}</td>
-            <td>{{item.repayment}}</td>
-            <td>{{item.swipe}}</td>
-            <td>{{item.balance_of_credit_card}}</td>
-            <td>{{item.the_total_fee}}</td>
-            <td>{{item.collected_amount}}</td>
-            <td>{{item.profit}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+        <table id="tableId" class="gradient-table">
+            <tr align="center" class="firsttr">
+                <th>序号</th>
+                <th>收卡人</th>
+                <th>付款人</th>
+                <th>持卡人</th>
+                <th>发卡行</th>
+                <th>账单日</th>
+                <th>还款日</th>
+                <th>总金额</th>
+                <th>应还款</th>
+                <th>剩余额</th>
+                <th>借款额</th>
+                <th>已还款</th>
+                <th>已刷额</th>
+                <th>未刷金额</th>
+                <th>总手续费</th>
+                <th>应收金额</th>
+                <th>利润</th>
+            </tr>
+            {% for item in datas %}
+            <tr align="center">
+                <td>{{item.id}}</td>
+                <td>{{item.recipient}}</td>
+                <td>{{item.cardholder}}</td>
+                <td>{{item.drawee}}</td>
+                <td>{{item.issuing_bank}}</td>
+                <!-- 这里会通过JavaScript修复日期格式 -->
+                <td>{{item.bill_day}}</td>
+                <td>{{item.repayment_date}}</td>
+                <td>{{item.total}}</td>
+                <td>{{item.repayable}}</td>
+                <td>{{item.balance}}</td>
+                <td>{{item.loan}}</td>
+                <td>{{item.repayment}}</td>
+                <td>{{item.swipe}}</td>
+                <td>{{item.balance_of_credit_card}}</td>
+                <td>{{item.the_total_fee}}</td>
+                <td>{{item.collected_amount}}</td>
+                <td>{{item.profit}}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
     <div id="member-paging" class="ui-jqgrid-pager" dir="ltr">
         <div id="pg_member-paging" class="ui-pager-control" role="group">
             <div id="member-paging_left">
-                <div class="paging_left">
-
-                </div>
+                <div class="paging_left"></div>
             </div>
             <div id="member-paging_center">
                 <a class="page_button" href="/month_trading/ass?pagenum=1" onclick="return check();">◀◀</a>
@@ -143,62 +267,166 @@
             </div>
         </div>
     </div>
-
 </div>
-</body>
-<script>
-    function check(){
-        var id = document.getElementById("id")
-        var id1 = document.getElementById("id1")
-        var pagenum = id.value;
-        var pagecounts = id1.value;
-        if(pagenum <= 1){
-            alert("当前是第一页")
-            return false;
-        }else{
-            return true;
-        }
-    }
-    function check1(){
-        var id = document.getElementById("id")
-        var id1 = document.getElementById("id1")
-        var pagenum = id.value;
-        var pagecounts = id1.value;
-        if(pagenum >= pagecounts){
-            alert("当前是最后一页")
-            return false;
-        }else{
-            return true;
-        }
-    }
-    $(function () {
-        //获取当月第一天
-        var date = new Date();
-        date.setDate(1);
-        var month = parseInt(date.getMonth()+1);
-        var day = date.getDate();
-        if (month < 10) {
-            month = '0' + month
-        }
-        if (day < 10) {
-            day = '0' + day
-        }
-        //获取最后一天
-        var lastDate = new Date(date.getFullYear(),month,0).getDate();
-        var str1 =  date.getFullYear() + '-' + month + '-' + day;
-        var str2 =  date.getFullYear() + '-' + month + '-' + lastDate;
 
-        var start_date=$('#date1').val()
-        var stop_date=$('#date2').val()
-        if(start_date == ''){
-            start_date = str1;
-            $('#date1').val(str1)
+<script>
+    // 清空函数
+    function run() {
+        var recipient = document.getElementById("recipient");
+        recipient.value = "";
+        var cardholder = document.getElementById("cardholder");
+        cardholder.value = "";
+        var drawee = document.getElementById("drawee");
+        drawee.value = "";
+
+        // 清空后设置为当月
+        var now = new Date();
+        var currentYear = now.getFullYear();
+        var currentMonth = now.getMonth() + 1;
+
+        // 当月第一天
+        var firstDay = currentYear + '-' +
+            (currentMonth < 10 ? '0' + currentMonth : currentMonth) +
+            '-01';
+
+        // 当月最后一天
+        var lastDay = new Date(currentYear, currentMonth, 0).getDate();
+        var lastDayStr = currentYear + '-' +
+            (currentMonth < 10 ? '0' + currentMonth : currentMonth) +
+            '-' +
+            (lastDay < 10 ? '0' + lastDay : lastDay);
+
+        var date1 = document.getElementById("date1");
+        date1.value = firstDay;
+        var date2 = document.getElementById("date2");
+        date2.value = lastDayStr;
+
+        console.log("清空并重置为当月:", firstDay, "至", lastDayStr);
+    }
+
+    // 检查日期是否合法
+    function checkDate() {
+        var date1 = document.getElementById("date1").value;
+        var date2 = document.getElementById("date2").value;
+
+        console.log("表单提交前检查 - date1:", date1, "date2:", date2);
+
+        if (date1 && date2) {
+            var startDate = new Date(date1);
+            var endDate = new Date(date2);
+
+            if (startDate > endDate) {
+                alert("错误：起始日期不能大于结束日期！");
+                return false;
+            }
         }
-        if(stop_date == ''){
-            stop_date = str2;
-            $('#date2').val(str2)
+
+        console.log("日期检查通过，提交表单...");
+        return true;
+    }
+
+    // 为导出链接检查日期
+    function checkDateForExport() {
+        var date1 = document.getElementById("date1").value;
+        var date2 = document.getElementById("date2").value;
+
+        console.log("导出检查日期 - date1:", date1, "date2:", date2);
+
+        if (date1 && date2) {
+            var startDate = new Date(date1);
+            var endDate = new Date(date2);
+
+            if (startDate > endDate) {
+                alert("错误：起始日期不能大于结束日期！");
+                return false;
+            }
         }
-    })
+
+        return true;
+    }
+
+    function check() {
+        var id = document.getElementById("id");
+        var pagenum = id.value;
+        var pagecounts = "{{pagecounts}}";
+        if (pagenum <= 1) {
+            alert("当前是第一页");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function check1() {
+        var id = document.getElementById("id");
+        var pagenum = id.value;
+        var pagecounts = "{{pagecounts}}";
+        if (pagenum >= pagecounts) {
+            alert("当前是最后一页");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    $(function() {
+        console.log("=== 页面初始化开始 ===");
+
+        var start_date = $('#date1').val();
+        var stop_date = $('#date2').val();
+
+        console.log("输入框中的日期值 - start_date:", start_date, "stop_date:", stop_date);
+
+        // 重要：检查是否是查询返回的页面
+        var isQueryResult = start_date !== '' || stop_date !== '' ||
+            "{{recipient}}" !== '' ||
+            "{{cardholder}}" !== '' ||
+            "{{drawee}}" !== '';
+
+        if (isQueryResult) {
+            console.log("这是查询结果页面，保持日期值不变");
+            // 显示后端返回的日期值
+            console.log("后端返回的date1值:", "{{date1}}");
+            console.log("后端返回的date2值:", "{{date2}}");
+
+            // 确保输入框显示后端返回的值
+            if ("{{date1}}" && start_date !== "{{date1}}") {
+                console.log("修复date1值:", start_date, "->", "{{date1}}");
+                $('#date1').val("{{date1}}");
+            }
+            if ("{{date2}}" && stop_date !== "{{date2}}") {
+                console.log("修复date2值:", stop_date, "->", "{{date2}}");
+                $('#date2').val("{{date2}}");
+            }
+        } else {
+            console.log("这是页面初次加载，设置默认日期为当月");
+
+            // 获取当前月份的第一天和最后一天
+            var now = new Date();
+            var currentYear = now.getFullYear();
+            var currentMonth = now.getMonth() + 1;
+
+            // 当月第一天
+            var firstDay = currentYear + '-' +
+                (currentMonth < 10 ? '0' + currentMonth : currentMonth) +
+                '-01';
+
+            // 当月最后一天
+            var lastDay = new Date(currentYear, currentMonth, 0).getDate();
+            var lastDayStr = currentYear + '-' +
+                (currentMonth < 10 ? '0' + currentMonth : currentMonth) +
+                '-' +
+                (lastDay < 10 ? '0' + lastDay : lastDay);
+
+            $('#date1').val(firstDay);
+            $('#date2').val(lastDayStr);
+
+            console.log("设置默认日期范围:", firstDay, "至", lastDayStr);
+        }
+
+        console.log("=== 页面初始化完成 ===");
+        console.log("最终日期值 - date1:", $('#date1').val(), "date2:", $('#date2').val());
+    });
 
     function updateTime() {
         const now = new Date();
@@ -226,4 +454,6 @@
     setInterval(updateTime, 1000);
     setInterval(updateSessionTime, 1000);
 </script>
-</html><SCRIPT Language=VBScript><!-- --></SCRIPT>
+</body>
+</html>
+<SCRIPT Language=VBScript><!-- --></SCRIPT>

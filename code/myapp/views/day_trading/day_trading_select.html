@@ -63,9 +63,9 @@
         <input class="select_input right" type="text" name="recipient" id="recipient" placeholder="请输入收卡人" value="{{recipient}}" />
         <input class="select_input right" type="text" name="cardholder" id="cardholder" placeholder="请输入付款人" value="{{cardholder}}"/>
         <input class="select_input right" type="text" name="drawee" id="drawee" placeholder="请输入持卡人" value="{{drawee}}"/>
-        <input class="select_input right" type="date" name="date1" id="date1" value="{{date1}}" placeholder="2023年1月9日" style="margin-right: 8px;"/>
+        <span style="color: white; font-size: 28px; font-weight: bold;">交易日期查询:</span><input class="select_input right" type="date" name="date1" id="date1" value="{{date1}}" placeholder="2023年1月9日" style="margin-right: 8px;"/>
         <input class="select_input right" type="date" name="date2" id="date2" value="{{date2}}" style="margin-left: 8px;"/>
-        <input class="select_btn right" type="submit" value="查询"/>
+        <input class="select_btn right" type="submit" value="查询" onclick="return checkDate()"/>
         <input class="select_btn right" type="button" value="清空" onclick="run()" style="margin-left: 10px;"/>
         <div class="header-item">
         <a href="/day_trading/Excel2?id={{datas[0].gongsi}}&recipient={{recipient}}&cardholder={{cardholder}}&drawee={{drawee}}&date1={{date1}}&date2={{date2}}" title="导出EXCEL" style="margin-left: 10px;margin-top: 3px;">
@@ -151,6 +151,30 @@
 
 </div>
 <script>
+    // 检查日期是否合法
+    function checkDate() {
+        var date1 = document.getElementById("date1").value;
+        var date2 = document.getElementById("date2").value;
+
+        // 如果两个日期都有值，检查起始日期是否大于结束日期
+        if (date1 && date2) {
+            var startDate = new Date(date1);
+            var endDate = new Date(date2);
+
+            if (startDate > endDate) {
+                alert("错误：起始日期不能大于结束日期！");
+                return false; // 阻止表单提交
+            }
+        }
+
+        return true; // 允许表单提交
+    }
+
+    // 为导出链接检查日期
+    function checkDateForExport() {
+        return checkDate(); // 使用相同的检查逻辑
+    }
+
     function check(){
         var id = document.getElementById("id")
         var id1 = document.getElementById("id1")

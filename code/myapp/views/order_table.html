@@ -825,9 +825,18 @@
                 <button class="filter-btn">已占用</button>
                 <button class="filter-btn">已预订</button>
             </div>
-
-            <div class="filter-buttons2" style="margin-left: 20px;">
+            <div class="filter-buttons2" style="margin-left: 20px; display: flex; gap: 10px;">
                 <button class="filter-btn" id="clean">清空所有桌位</button>
+            </div>
+            <div>
+                <button class="filter-btn" id="addTable">
+                    <i class="fas fa-plus"></i> 添加桌位
+                </button>
+            </div>
+            <div>
+                <button class="filter-btn" id="deleteTable">
+                    <i class="fas fa-trash"></i> 删除桌位
+                </button>
             </div>
         </div>
         <div class="xinxi">
@@ -950,28 +959,185 @@
         </div>
     </div>
 </div>
-
-<div class="modal" id="reservationModal">
-    <div class="modal-content" style="max-width: 400px;">
+<!-- 添加桌位模态框 -->
+<div class="modal" id="addTableModal">
+    <div class="modal-content" style="max-width: 450px;">
         <div class="modal-header">
-            <h2 class="modal-title">预约时间</h2>
+            <h2 class="modal-title">添加新桌位</h2>
             <button class="close-modal">&times;</button>
         </div>
         <div class="modal-body">
             <div class="modal-details">
                 <div class="form-group">
-                    <label for="reservationTime">选择时间</label>
+                    <label for="tableNumber">桌位编号</label>
+                    <input type="text" id="tableNumber" class="form-control"
+                           placeholder="例如: A01, B02, C03" maxlength="10">
+                    <div class="form-hint">
+                        <i class="fas fa-info-circle"></i>
+                        桌位编号在同一个公司内必须唯一
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tableCapacity">桌位人数</label>
+                    <input type="number" id="tableCapacity" class="form-control"
+                           placeholder="请输入桌位容量" min="1" max="20" value="4">
+                    <div class="form-hint">
+                        <i class="fas fa-info-circle"></i>
+                        请输入1-20之间的数字
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-danger" id="cancelAdd">取消</button>
+            <button class="btn btn-success" id="confirmAdd">
+                <i class="fas fa-check"></i> 确认添加
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal" id="deleteTableModal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">
+            <h2 class="modal-title">
+                <i class="fas fa-exclamation-triangle"></i> 删除桌位
+            </h2>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-details">
+                <div class="warning-message" style="background: #ffebee; border-left: 4px solid #f44336; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <i class="fas fa-exclamation-circle" style="color: #f44336; font-size: 24px;"></i>
+                        <h3 style="margin: 0; color: #d32f2f;">警告</h3>
+                    </div>
+                    <p style="margin: 0; color: #666;">
+                        此操作将永久删除桌位，删除后无法恢复！
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="deleteTableSelect">选择要删除的桌位 *</label>
+                    <select id="deleteTableSelect" class="form-control" style="font-size: 16px; padding: 10px;">
+                        <option value="">请选择桌位...</option>
+                        <!-- 桌位选项将通过JavaScript动态填充 -->
+                    </select>
+                    <div class="form-hint">
+                        <i class="fas fa-info-circle"></i>
+                        只能删除空闲状态的桌位
+                    </div>
+                </div>
+
+                <div id="tableInfo" style="display: none; background: #f5f5f5; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <strong>桌位编号:</strong>
+                            <span id="deleteTableNumber">-</span>
+                        </div>
+                        <div>
+                            <strong>桌位人数:</strong>
+                            <span id="deleteTableCapacity">-</span>
+                        </div>
+                        <div>
+                            <strong>当前状态:</strong>
+                            <span id="deleteTableStatus">-</span>
+                        </div>
+                        <div>
+                            <strong>所属公司:</strong>
+                            <span id="deleteTableCompany">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-danger" id="cancelDelete">取消</button>
+            <button class="btn btn-warning" id="confirmDelete" style="background: #f44336; color: white;" disabled>
+                <i class="fas fa-trash"></i> 确认删除
+            </button>
+        </div>
+    </div>
+</div>
+<!--<div class="modal" id="reservationModal">-->
+    <!--<div class="modal-content" style="max-width: 400px;">-->
+        <!--<div class="modal-header">-->
+            <!--<h2 class="modal-title">预约时间</h2>-->
+            <!--<button class="close-modal">&times;</button>-->
+        <!--</div>-->
+        <!--<div class="modal-body">-->
+            <!--<div class="modal-details">-->
+                <!--<div class="form-group">-->
+                    <!--<label for="reservationTime">选择时间</label>-->
+                    <!--<input type="time" id="reservationTime" class="form-control">-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="modal-actions">-->
+            <!--<button class="btn btn-danger" id="cancelReservation">取消</button>-->
+            <!--<button class="btn " id="confirmReservation">确认预约</button>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<div class="modal" id="reservationModal">
+    <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-header">
+            <h2 class="modal-title">预约桌位</h2>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-details">
+                <div class="detail-item">
+                    <span class="detail-label">桌位编号</span>
+                    <span class="detail-value" id="reserveTableName"></span>
+                </div>
+                <div class="form-group">
+                    <label for="reservationDate">选择日期</label>
+                    <input type="date" id="reservationDate" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="reservationTime">选择时间 (至少2小时后)</label>
                     <input type="time" id="reservationTime" class="form-control">
                 </div>
             </div>
         </div>
         <div class="modal-actions">
             <button class="btn btn-danger" id="cancelReservation">取消</button>
-            <button class="btn " id="confirmReservation">确认预约</button>
+            <button class="btn btn-success" id="confirmReservation">确认预约</button>
+        </div>
+    </div>
+</div>
+<!-- 确认对话框 -->
+<div class="modal" id="confirmationModal">
+    <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-header">
+            <h2 class="modal-title">操作确认</h2>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p id="confirmationMessage">确认执行此操作吗？</p>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-danger" id="cancelAction">取消</button>
+            <button class="btn btn-success" id="confirmAction">确认</button>
         </div>
     </div>
 </div>
 
+<!-- 提示对话框 -->
+<div class="modal" id="alertModal">
+    <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-header">
+            <h2 class="modal-title">提示</h2>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p id="alertMessage"></p>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-primary" id="closeAlert">确定</button>
+        </div>
+    </div>
+</div>
 <script>
 
     // 分页相关变量
@@ -1026,6 +1192,54 @@
         $('#nextPage').prop('disabled', currentPage >= totalPages);
     }
 
+    function showAlert(message) {
+        $('#alertMessage').text(message);
+        $('#alertModal').css('display', 'block');
+    }
+//---------------------------------------------------
+    // 通用确认对话框函数
+    function showConfirmation(message, confirmCallback) {
+        $('#confirmationMessage').text(message);
+        $('#confirmationModal').css('display', 'block');
+
+        // 移除之前的事件绑定
+        $('#confirmAction').off('click');
+        $('#cancelAction').off('click');
+
+        // 确认按钮点击事件
+        $('#confirmAction').on('click', function() {
+            $('#confirmationModal').css('display', 'none');
+            if (typeof confirmCallback === 'function') {
+                confirmCallback();
+            }
+        });
+
+        // 取消按钮点击事件
+        $('#cancelAction').on('click', function() {
+            $('#confirmationModal').css('display', 'none');
+        });
+    }
+
+    // 关闭提示对话框
+    $('#closeAlert').on('click', function() {
+        $('#alertModal').css('display', 'none');
+    });
+
+    // 关闭所有模态框的通用事件
+    $(window).on('click', function(event) {
+        if ($(event.target).is('#confirmationModal')) {
+            $('#confirmationModal').css('display', 'none');
+        }
+        if ($(event.target).is('#alertModal')) {
+            $('#alertModal').css('display', 'none');
+        }
+    });
+
+    // 关闭按钮事件
+    $('.modal .close-modal').on('click', function() {
+        $(this).closest('.modal').css('display', 'none');
+    });
+   // --------------------------------------------------------------
     function renderTables() {
         const startIndex = (currentPage - 1) * pageSize;
         const endIndex = Math.min(startIndex + pageSize, filteredData.length);
@@ -1163,39 +1377,221 @@
     //     window.open('/order_panel/select', 'main');
     // });
 
+    // $('.btn-success').on('click', function() {
+    //     const tableNumber = getCurrentTableNumber();
+    //
+    //     uptableRequest(tableNumber);
+    //     alert(`已安排入座到桌位: ${tableNumber}`);
+    //     $('#tableModal').css('display', 'none');
+    //     localStorage.setItem('currentTableNumber', tableNumber);
+    //
+    //     // 通过URL参数传递，而不是localStorage
+    //     window.open('/order_panel/select', 'main');
+    //
+    // });
+    // 修改安排入座按钮的点击事件
     $('.btn-success').on('click', function() {
+        console.log("=== 安排入座按钮点击 ===");
+
         const tableNumber = getCurrentTableNumber();
+        const currentStatus = $('#tableModal').find('.detail-value').eq(2).text();
 
-        uptableRequest(tableNumber);
-        alert(`已安排入座到桌位: ${tableNumber}`);
-        $('#tableModal').css('display', 'none');
-        localStorage.setItem('currentTableNumber', tableNumber);
+        console.log("桌位号:", tableNumber);
+        console.log("当前状态:", currentStatus);
 
-        // 通过URL参数传递，而不是localStorage
-        window.open('/order_panel/select', 'main');
+        // ✅ 修改这里：只有空闲状态才能安排入座
+        if (currentStatus !== '空闲中') {
+            showAlert('该桌位不是空闲状态，无法安排入座');
+            return;
+        }
 
+        // 添加确认对话框
+        showConfirmation(`确认安排 ${tableNumber} 桌入座吗？`, function() {
+            console.log("用户确认安排入座:", tableNumber);
+
+            // 1. 先更新桌位状态为"已占用"
+            uptableRequest(tableNumber);
+
+            // 2. 保存桌号到localStorage
+            localStorage.setItem('currentTableNumber', tableNumber);
+            console.log("保存桌号到localStorage:", tableNumber);
+
+            // 3. 打开点单页面
+            console.log("打开点单页面，桌位:", tableNumber);
+            window.open('/order_panel/select?table=' + tableNumber, 'main');
+
+            $('#tableModal').css('display', 'none');
+            showAlert(`已安排入座到桌位: ${tableNumber}`);
+        });
     });
 
+    // 生成订单号的函数
+    function generateOrderNumber(callback) {
+        $.ajax({
+            type: 'post',
+            url: '/order_table/generateOrderForTable',
+            async: false,
+            timeout: 5000,
+            data: {},
+            success: function(res) {
+                console.log("生成订单号结果:", res);
+                if (res.success && res.orderNo) {
+                    callback(res.orderNo);
+                } else {
+                    callback(null);
+                }
+            },
+            error: function() {
+                callback(null);
+            }
+        });
+    }
 // 将所有桌位改为空桌
+//     $('#clean').on('click', function() {
+//         uptableRequestAll1()
+//     });
+    // 修改清空所有桌位点击事件
+    // 修改清空所有桌位点击事件
     $('#clean').on('click', function() {
-        uptableRequestAll1()
+        // 先检查所有桌位是否有未结算订单
+        checkAllTablesUnpaid(function(hasUnpaidTables) {
+            if (hasUnpaidTables) {
+                showConfirmation('检测到有桌位尚未结算，确认要强制清空所有桌位吗？\n（未结算订单将被标记为已结算）', function() {
+                    // 如果有未结算订单，先标记为已结算
+                    markAllOrdersAsPaid(function() {
+                        // 然后清空桌位
+                        uptableRequestAll1();
+                        showAlert('✅ 已清空所有桌位，未结算订单已标记为已结算');
+                    });
+                });
+            } else {
+                showConfirmation('确认要清空所有桌位吗？', function() {
+                    uptableRequestAll1();
+                    showAlert('✅ 已清空所有桌位');
+                });
+            }
+        });
     });
 
+    // 新增函数：标记所有订单为已结算
+    function markAllOrdersAsPaid(callback) {
+        $.ajax({
+            type: 'post',
+            url: '/order_table/markAllPaid',
+            async: false,
+            success: function(res) {
+                console.log("标记所有订单为已结算结果:", res);
+                if (callback) callback();
+            },
+            error: function() {
+                console.log("标记订单失败");
+                if (callback) callback();
+            }
+        });
+    }
 
+    // 检查所有桌位是否有未结算订单
+    function checkAllTablesUnpaid(callback) {
+        $.ajax({
+            type: 'post',
+            url: '/order_table/checkAllUnpaid',
+            async: false,
+            timeout: 5000,
+            success: function(res) {
+                console.log("检查所有桌位未结算结果", res);
+                if (res.success && res.hasUnpaid) {
+                    callback(true);
+                } else {
+                    callback(false);
+                }
+            },
+            error: function() {
+                // 如果API不存在，默认返回false
+                callback(false);
+            }
+        });
+    }
+
+    // 检查所有桌位是否有未结算订单
+    function checkAllTablesUnpaid(callback) {
+        $.ajax({
+            type: 'post',
+            url: '/order_table/checkAllUnpaid',
+            async: false,
+            timeout: 5000,
+            success: function(res) {
+                console.log("检查所有桌位未结算结果", res);
+                if (res.success && res.hasUnpaid) {
+                    callback(true);
+                } else {
+                    callback(false);
+                }
+            },
+            error: function() {
+                // 如果API不存在，默认返回false
+                callback(false);
+            }
+        });
+    }
+
+    // 修改结算按钮点击事件
+    // 修改结算按钮点击事件
     $('.jiesuan').on('click', function() {
         const tableNumber = getCurrentTableNumber();
+        const currentStatus = $('#tableModal').find('.detail-value').eq(2).text();
 
-        localStorage.setItem('currentTableNumber', tableNumber);
-        window.open('/order_panel/select', 'main');
-        // uptableRequest1(tableNumber);
-        // setTimeout(function() {
-        //     uptableRequest1(tableNumber);
-        // }, 10000); // 1秒延迟，可根据需要调整
+        console.log("结算按钮点击，桌位:", tableNumber, "状态:", currentStatus);
+
+        // 检查桌位是否有订单号
+        $.ajax({
+            type: 'post',
+            url: '/order_table/selectsea',
+            async: false,
+            data: { zh: tableNumber },
+            success: function(res) {
+                console.log("获取桌位信息结果:", res);
+
+                if (res.success && res.data && res.data.length > 0) {
+                    var tableData = res.data[0];
+
+                    // ✅ 关键修改：优先使用桌位已有的订单号
+                    if (tableData.bm && tableData.bm !== 'null' && tableData.bm !== '') {
+                        console.log("桌位已有订单号:", tableData.bm);
+
+                        // 打开点单面板并传递订单号和桌号
+                        openOrderPanelWithOrder(tableNumber, tableData.bm);
+                    } else {
+                        // 没有订单号，提示用户
+                        showAlert('该桌位没有订单，请先安排入座点单');
+                    }
+                } else {
+                    showAlert('未找到桌位信息');
+                }
+            },
+            error: function() {
+                showAlert('查询桌位信息失败');
+            }
+        });
 
         $('#tableModal').css('display', 'none');
-
     });
 
+
+    // 打开点单面板并加载订单的函数
+    function openOrderPanelWithOrder(tableNumber, orderNo) {
+        console.log("打开点单面板，桌位:", tableNumber, "订单:", orderNo);
+
+        // 保存到localStorage
+        localStorage.setItem('currentTableNumber', tableNumber);
+        localStorage.setItem('currentOrderNumber', orderNo);
+
+        // ✅ 关键修改：在URL中明确传递参数，禁用自动生成新订单
+        const url = `/order_panel/select?table=${tableNumber}&order=${orderNo}&disableAutoGenerate=true`;
+
+        window.open(url, 'main');
+
+        showAlert(`正在加载桌位 ${tableNumber} 的订单...`);
+    }
     // 更新模态框数据的函数
     function updateModalData(tableNumber, danhao, totalAmount) {
         // 存储数据到localStorage
@@ -1222,37 +1618,176 @@
         }
     });
 
+    // $('.btn-warning').on('click', function() {
+    //
+    //     const tableNumber = getCurrentTableNumber();
+    //     uptableRequest1(tableNumber)
+    //
+    //     alert(`已清空桌位: ${tableNumber}`);
+    //
+    //     $('#tableModal').css('display', 'none');
+    // });
+    // 修改取消状态点击事件
+    // 修改取消状态按钮点击事件
+    // 修改取消状态按钮点击事件
     $('.btn-warning').on('click', function() {
-
         const tableNumber = getCurrentTableNumber();
-        uptableRequest1(tableNumber)
+        const currentStatus = $('#tableModal').find('.detail-value').eq(2).text();
 
-        alert(`已清空桌位: ${tableNumber}`);
+        console.log("取消状态按钮点击，桌位:", tableNumber, "状态:", currentStatus);
 
-        $('#tableModal').css('display', 'none');
+        // ✅ 已占用状态且有未结算订单时，禁止取消
+        if (currentStatus === '已占用') {
+            // 检查是否有未结算订单
+            checkTableHasUnpaidOrder(tableNumber, function(hasUnpaid) {
+                if (hasUnpaid) {
+                    showAlert('该桌位有未结算订单，请先结算后再取消状态');
+                } else {
+                    // 没有未结算订单，可以取消
+                    showConfirmation(`确认取消 ${tableNumber} 桌的状态吗？`, function() {
+                        uptableRequest1(tableNumber);
+                        showAlert(`✅ 已清空桌位: ${tableNumber}`);
+                        $('#tableModal').css('display', 'none');
+                    });
+                }
+            });
+        } else {
+            // 其他状态可以直接取消
+            showConfirmation(`确认取消 ${tableNumber} 桌的状态吗？`, function() {
+                uptableRequest1(tableNumber);
+                showAlert(`✅ 已清空桌位: ${tableNumber}`);
+                $('#tableModal').css('display', 'none');
+            });
+        }
     });
 
+    // 检查桌位是否有未结算订单的函数
+    // function checkTableHasUnpaidOrder(tableNumber, callback) {
+    //     $.ajax({
+    //         type: 'post',
+    //         url: '/order_table/checkUnpaidOrder',
+    //         async: false,
+    //         timeout: 5000,
+    //         data: { zh: tableNumber },
+    //         success: function(res) {
+    //             console.log("检查未结算订单结果", res);
+    //             if (res.success && res.hasUnpaid) {
+    //                 callback(true);
+    //             } else {
+    //                 callback(false);
+    //             }
+    //         },
+    //         error: function() {
+    //             // 如果API不存在，默认返回false
+    //             callback(false);
+    //         }
+    //     });
+    // }
+    // 修改检查未结算订单的逻辑
+    // 替换原有的 checkTableHasUnpaidOrder 函数
+    // 简化检查函数
+    function checkTableHasUnpaidOrder(tableNumber, callback) {
+        console.log("检查桌位未结算订单:", tableNumber);
+
+        // 先查询桌位信息，获取订单号
+        $.ajax({
+            type: 'post',
+            url: '/order_table/checkUnpaidOrder',
+            async: false,
+            data: { zh: tableNumber },
+            success: function(res) {
+                console.log("未结算订单检查结果:", res);
+
+                if (res.success && res.hasUnpaid) {
+                    // 有未结算订单
+                    callback(true);
+                } else {
+                    // 没有未结算订单
+                    callback(false);
+                }
+            },
+            error: function() {
+                // 查询失败，默认允许取消
+                callback(false);
+            }
+        });
+    }
     // 存储预约信息的对象
     let reservationData = {};
 
     // 打开预约模态框
+    // function openReservationModal(tableNumber) {
+    //     $('#reserveTableName').text(tableNumber);
+    //
+    //
+    //     // 设置默认时间为当前时间+30分钟
+    //     const now = new Date();
+    //     now.setMinutes(now.getMinutes() + 30);
+    //
+    //     const dateString = now.toISOString().split('T')[0];
+    //     const timeString = now.toTimeString().substr(0, 5);
+    //
+    //     $('#reservationDate').val(dateString);
+    //     $('#reservationTime').val(timeString);
+    //
+    //     $('#reservationModal').css('display', 'block');
+    // }
+    // 打开预约模态框
     function openReservationModal(tableNumber) {
         $('#reserveTableName').text(tableNumber);
 
+        // 设置最小日期为今天
+        const today = new Date();
+        const todayString = today.toISOString().split('T')[0];
 
-        // 设置默认时间为当前时间+30分钟
-        const now = new Date();
-        now.setMinutes(now.getMinutes() + 30);
+        // 设置最小时间为当前时间+2小时
+        const minTime = new Date();
+        minTime.setHours(minTime.getHours() + 2);
+        const minTimeString = minTime.toTimeString().substr(0, 5);
 
-        const dateString = now.toISOString().split('T')[0];
-        const timeString = now.toTimeString().substr(0, 5);
+        // 设置日期选择器
+        $('#reservationDate').attr('min', todayString);
+        $('#reservationDate').val(todayString);
 
-        $('#reservationDate').val(dateString);
-        $('#reservationTime').val(timeString);
+        // 设置时间选择器
+        $('#reservationTime').attr('min', '10:00'); // 设置营业时间
+        $('#reservationTime').attr('max', '22:00');
+        $('#reservationTime').val(minTimeString);
 
         $('#reservationModal').css('display', 'block');
     }
 
+    // 修改预约确认逻辑
+    $('#confirmReservation').on('click', function() {
+        const tableNumber = $('#reserveTableName').text();
+        const reservationDate = $('#reservationDate').val();
+        const reservationTime = $('#reservationTime').val();
+
+        if (!reservationDate || !reservationTime) {
+            showAlert('请选择预约日期和时间');
+            return;
+        }
+
+        // 检查是否选择了至少2小时后的时间
+        const selectedDateTime = new Date(`${reservationDate}T${reservationTime}`);
+        const now = new Date();
+        const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+
+        if (selectedDateTime < twoHoursLater) {
+            showAlert('预约时间必须至少是2小时之后');
+            return;
+        }
+
+        const shijian = `${reservationDate} ${reservationTime}`;
+
+        showConfirmation(`确认预约桌位: ${tableNumber}, 时间: ${shijian}`, function() {
+            const tableNumber1 = getCurrentTableNumber();
+            uptableRequest2(tableNumber1, shijian);
+            $('#reservationModal').css('display', 'none');
+            selectAll();
+            showAlert(`已成功预约桌位: ${tableNumber}, 时间: ${shijian}`);
+        });
+    });
     // 确认预约
     $('#confirmReservation').on('click', function() {
         const tableNumber = $('#reserveTableName').text();
@@ -1514,64 +2049,240 @@
     //     });
     // }
 
-    function sendSearchRequest(filterValue) {
+    // 修改 sendSearchRequest 函数
+    function sendSearchRequest(cachedTableNumber) {
+        zhuohao = cachedTableNumber;
+
+        if (cachedTableNumber) {
+            window.cachedTableNumber = cachedTableNumber;
+            localStorage.setItem('currentTableNumber', cachedTableNumber);
+            console.log("✅ 设置桌号:", cachedTableNumber);
+        }
+
+        // 先查询桌位信息，包含公司信息
         $.ajax({
             type: 'post',
             url: '/order_table/selectsea',
             async: false,
-            timeout: 5000,
-            data: {
-                zh: filterValue
-            },
+            data: { zh: cachedTableNumber },
             success: function(res) {
-                console.log("搜索请求结果", res);
-                currentSearch = filterValue;
-                currentFilter = 'all';
+                console.log("桌位查询结果:", res);
 
                 if (res.success && res.data && res.data.length > 0) {
-                    filteredData = res.data;
-                    totalTables = filteredData.length;
-                    currentPage = 1;
-                    renderTables();
+                    var tableData = res.data[0];
+                    console.log("桌位数据:", tableData);
+
+                    if(tableData.bm && tableData.bm !== 'null' && tableData.bm !== ''){
+                        console.log("桌位已有订单号:", tableData.bm);
+                        // 如果桌位已经有订单号，直接使用并加载订单信息
+                        $('#danhao').val(tableData.bm);
+                        console.log("✅ 使用桌位已有订单号:", tableData.bm);
+
+                        // 检查并加载订单信息
+                        checkAndLoadOrder(tableData.bm, cachedTableNumber);
+                    } else {
+                        console.log("桌位无订单号，等待自动生成");
+                        // 等待 orders_auto() 自动生成订单号
+                    }
                 } else {
-                    filteredData = [];
-                    totalTables = 0;
-                    renderTables();
+                    console.log("未找到桌位数据");
                 }
             },
-            error: function(res) {
-                if (res.status == "timeout") {
-                    alert("网络超时，请稍后再试");
+            error: function() {
+                console.log("查询桌位失败");
+            }
+        });
+
+        // 自动生成订单号
+        orders_auto();
+    }
+    // 检查并加载订单信息的函数
+    function checkAndLoadOrder(orderNumber, tableNumber) {
+        console.log("检查并加载订单:", orderNumber, "桌号:", tableNumber);
+
+        // 1. 先检查是否为挂账订单
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/checkGuazhangOrder',
+            async: false,
+            data: { ddid: orderNumber },
+            success: function(res) {
+                console.log("挂账检查结果:", res);
+
+                if (res.isGuazhang) {
+                    console.log("✅ 发现挂账订单，加载订单内容");
+                    // 加载挂账订单内容
+                    loadGuazhangOrder(orderNumber, tableNumber);
                 } else {
-                    alert("网络错误，请稍后再试");
+                    console.log("普通订单，尝试加载");
+                    // 尝试加载普通订单
+                    loadRegularOrder(orderNumber, tableNumber);
                 }
-                // 错误时显示提示
-                $('.tables-grid').html('<div class="no-data">数据加载失败</div>');
+            },
+            error: function() {
+                console.log("挂账检查失败");
+                // 默认尝试加载普通订单
+                loadRegularOrder(orderNumber, tableNumber);
             }
         });
     }
+    function loadGuazhangOrder(orderNumber, tableNumber) {
+        console.log("加载挂账订单:", orderNumber, "桌号:", tableNumber);
 
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/selectGuazhangOrder',
+            async: false,
+            timeout: 5000,
+            data: {
+                ddid: orderNumber,
+                zh: tableNumber
+            },
+            success: function(res) {
+                console.log("挂账订单查询结果:", res);
+
+                if (res.success && res.data && res.data.length > 0) {
+                    // 设置单号
+                    $('#danhao').val(orderNumber);
+                    globalTableBanhao = orderNumber;
+
+                    console.log("挂账订单号设置为:", orderNumber);
+
+                    // 清空表格
+                    $('#table tbody').empty();
+
+                    // 构建表格行
+                    $.each(res.data, function(index, item) {
+                        var product_now_id = index + 1;
+                        var rowHtml = "" +
+                            "<tr class=\"success\" ondblclick=\"ondblclick_f(this)\">" +
+                            "<td class=\"itemOrderNo\">" + product_now_id + "</td>" +
+                            "<td class=\"itemName\">" + (item.cpmc || "") + "</td>" +
+                            "<td class=\"itemNum\">" +
+                            "<span class=\"count\">" + (item.gs || 1) + "</span>" +
+                            "/" +
+                            "<span class=\"unit\">" + (item.unit || "瓶") + "</span>" +
+                            "</td>" +
+                            "<td class=\"itemAmount\">" +
+                            "￥" +
+                            "<span class=\"price\">" + (parseFloat(item.zhje) || 0).toFixed(2) + "</span>" +
+                            "</td>" +
+                            "<td class=\"itemid\" style='visibility: hidden;width: 0px;margin: 0;padding: 0'>" +
+                            "<span class=\"id\">" + (item.product_id || "") + "</span>" +
+                            "</td>" +
+                            "</tr>";
+
+                        $('#table tbody').append(rowHtml);
+                    });
+
+                    // 更新汇总
+                    Table_sum();
+
+                    // 显示挂账提示
+                    showGuazhangNotice(res.orderInfo);
+
+                    console.log("挂账订单加载完成，共", res.data.length, "条记录");
+
+                    // 标记当前为挂账订单
+                    window.isGuazhangOrder = true;
+                } else {
+                    console.log("没有找到挂账订单数据");
+                    generateNewOrderNumber();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('挂账订单查询失败:', error);
+                generateNewOrderNumber();
+            }
+        });
+    }
+    function orders_auto() {
+        console.log("orders_auto 函数被调用");
+
+        // 如果已经有订单号，就不重新生成
+        if ($('#danhao') && $('#danhao').val() && $('#danhao').val().trim() !== '') {
+            console.log("已有订单号，不重新生成:", $('#danhao').val());
+            return;
+        }
+
+        // 这里添加生成订单号的逻辑
+        // 例如：
+        $.ajax({
+            type: 'post',
+            url: '/order/generateOrderNo', // 你的订单号生成接口
+            async: false,
+            success: function(res) {
+                if (res.success && res.orderNo) {
+                    // 如果有订单号输入框，就设置值
+                    if ($('#danhao')) {
+                        $('#danhao').val(res.orderNo);
+                        console.log("生成的订单号:", res.orderNo);
+                    }
+
+                    // 同时更新localStorage
+                    const tableNumber = localStorage.getItem('currentTableNumber') || window.cachedTableNumber;
+                    if (tableNumber) {
+                        localStorage.setItem('orderNo_' + tableNumber, res.orderNo);
+                    }
+                }
+            },
+            error: function() {
+                console.error("生成订单号失败");
+            }
+        });
+    }
     function uptableRequest(filterValue) {
+        console.log("=== uptableRequest 开始 ===");
+        console.log("桌位号:", filterValue);
+
+        if (!filterValue) {
+            console.error("错误：桌位号为空");
+            alert("错误：无法获取桌位号");
+            return;
+        }
+
+        // 改为异步请求
         $.ajax({
             type: 'post',
             url: '/order_table/updatetale',
-            async: false,
+            async: true, // 改为异步
             timeout: 5000,
             data: {
                 zh: filterValue
             },
-            success: function(res) {
-                console.log("筛选请求结果", res);
-                selectAll()
-            },
-            error: function(res) {
-                if (res.status == "timeout") {
-                    alert("网络超时，请稍后再试");
+            success: function(res, status, xhr) {
+                console.log("=== AJAX 请求成功 ===");
+                console.log("响应状态:", status);
+                console.log("响应数据:", res);
+                console.log("HTTP状态码:", xhr.status);
+
+                if (res && res.success) {
+                    console.log("安排入座成功:", res.message);
+                    // 刷新桌位列表
+                    selectAll();
                 } else {
-                    alert("网络错误，请稍后再试");
+                    console.error("服务器返回错误:", res ? res.message : "无响应数据");
+                    alert("操作失败: " + (res ? res.message : "未知错误"));
                 }
-                // 错误时显示提示
-                $('.tables-grid').html('<div class="no-data">数据加载失败</div>');
+            },
+            error: function(xhr, status, error) {
+                console.error("=== AJAX 请求失败 ===");
+                console.error("AJAX状态:", status);
+                console.error("错误信息:", error);
+                console.error("HTTP状态码:", xhr.status);
+                console.error("响应文本:", xhr.responseText);
+
+                if (status === "timeout") {
+                    alert("网络超时，请稍后再试");
+                } else if (xhr.status === 0) {
+                    alert("无法连接到服务器，请检查网络连接");
+                } else if (xhr.status === 404) {
+                    alert("服务器接口不存在 (404)");
+                } else if (xhr.status === 500) {
+                    alert("服务器内部错误 (500)");
+                } else {
+                    alert("网络错误: " + (xhr.responseText || error || "未知错误"));
+                }
             }
         });
     }
@@ -1841,6 +2552,651 @@
         initPagination();
         tableShow();
     });
+    // 在页面加载时检查是否有结算订单数据
+    $(document).ready(function() {
+        // 获取URL参数
+        const urlParams = new URLSearchParams(window.location.search);
+        const isSettle = urlParams.get('isSettle');
+        const orderNo = urlParams.get('order');
+        const tableNo = urlParams.get('table');
+
+        console.log("页面加载参数:", { isSettle, orderNo, tableNo });
+
+        // 如果有结算数据，加载挂账订单
+        if (isSettle && orderNo && tableNo) {
+            loadGuazhangOrder(orderNo, tableNo);
+        }
+    });
+
+    // 加载挂账订单的函数
+    function loadGuazhangOrder(orderNo, tableNo) {
+        console.log("加载挂账订单:", orderNo, "桌位:", tableNo);
+
+        $.ajax({
+            type: 'post',
+            url: '/order_panel/selectGuazhangOrder',
+            data: {
+                ddid: orderNo,
+                zh: tableNo
+            },
+            success: function(res) {
+                if (res.success && res.data && res.data.length > 0) {
+                    console.log("加载到挂账订单，商品数量:", res.data.length);
+
+                    // 设置订单号
+                    $('#danhao').val(orderNo);
+
+                    // 清空现有商品列表
+                    $('#table tbody').empty();
+
+                    // 添加挂账商品到列表
+                    $.each(res.data, function(index, item) {
+                        var product_now_id = index + 1;
+                        var rowHtml = "" +
+                            "<tr class=\"success\" ondblclick=\"ondblclick_f(this)\">" +
+                            "<td class=\"itemOrderNo\">" + product_now_id + "</td>" +
+                            "<td class=\"itemName\">" + (item.cpmc || "") + "</td>" +
+                            "<td class=\"itemNum\">" +
+                            "<span class=\"count\">" + (item.gs || 1) + "</span>" +
+                            "/" +
+                            "<span class=\"unit\">" + (item.unit || "瓶") + "</span>" +
+                            "</td>" +
+                            "<td class=\"itemAmount\">" +
+                            "￥" +
+                            "<span class=\"price\">" + (parseFloat(item.zhje) || 0).toFixed(2) + "</span>" +
+                            "</td>" +
+                            "<td class=\"itemid\" style='visibility: hidden;width: 0px;margin: 0;padding: 0'>" +
+                            "<span class=\"id\">" + (item.product_id || "") + "</span>" +
+                            "</td>" +
+                            "</tr>";
+
+                        $('#table tbody').append(rowHtml);
+                    });
+
+                    // 更新汇总金额
+                    Table_sum();
+
+                    // 显示提示
+                    alert(`已加载桌位 ${tableNo} 的挂账订单，共 ${res.data.length} 件商品`);
+                } else {
+                    console.log("没有找到挂账订单数据");
+                    alert('没有找到该桌位的挂账订单');
+                }
+            },
+            error: function() {
+                console.error('加载挂账订单失败');
+                alert('加载挂账订单失败');
+            }
+        });
+    }
+    // 在桌位管理页面的JavaScript中添加
+    $('.tables-grid').on('click', '.btn-jiesuan', function() {
+        console.log("点击结算按钮");
+
+        // 获取当前桌位的订单号
+        var tableNumber = $(this).closest('.table-item').find('.table-number').text().trim();
+        var orderNumber = $(this).closest('.table-item').find('.order-number').text().trim();
+
+        console.log("桌位:", tableNumber, "订单号:", orderNumber);
+
+        if (!orderNumber || orderNumber === '无') {
+            alert("该桌位没有可结算的订单");
+            return;
+        }
+
+        // 构建跳转URL，包含订单信息
+        var url = '/order_panel/select?isSettle=true&table=' + encodeURIComponent(tableNumber) + '&order=' + encodeURIComponent(orderNumber);
+
+        console.log("跳转URL:", url);
+
+        // 跳转到点单页面
+        window.location.href = url;
+    });
+
+    $(document).ready(function() {
+        // 打开添加桌位模态框
+        $('#addTable').on('click', function() {
+            // 清空表单
+            $('#tableNumber').val('');
+            $('#tableCapacity').val('4');
+            $('#tableType').val('普通桌');
+            $('#tableDescription').val('');
+
+            // 移除错误状态
+            $('.form-control').removeClass('error');
+            $('.error-message').hide();
+
+            // 显示模态框
+            $('#addTableModal').css('display', 'block');
+        });
+
+        // 关闭添加桌位模态框
+        $('#addTableModal .close-modal, #cancelAdd').on('click', function() {
+            $('#addTableModal').css('display', 'none');
+        });
+
+        // 点击模态框外部关闭
+        $(window).on('click', function(event) {
+            if ($(event.target).is('#addTableModal')) {
+                $('#addTableModal').css('display', 'none');
+            }
+        });
+// 更新表单验证函数
+        function validateAddTableForm(tableNumber, tableCapacity) {
+            let isValid = true;
+
+            // 验证桌位编号
+            if (!tableNumber) {
+                showError('#tableNumber', '请输入桌位编号');
+                isValid = false;
+            } else if (!/^[A-Za-z0-9_-]+$/.test(tableNumber)) {
+                showError('#tableNumber', '桌位编号只能包含字母、数字、下划线和横线');
+                isValid = false;
+            } else {
+                hideError('#tableNumber');
+            }
+
+            // 验证桌位人数
+            if (!tableCapacity) {
+                showError('#tableCapacity', '请输入桌位人数');
+                isValid = false;
+            } else if (parseInt(tableCapacity) < 1 || parseInt(tableCapacity) > 20) {
+                showError('#tableCapacity', '桌位人数必须在1-20之间');
+                isValid = false;
+            } else {
+                hideError('#tableCapacity');
+            }
+
+            return isValid;
+        }
+
+        // 确认添加桌位
+        $('#confirmAdd').on('click', function() {
+            const tableNumber = $('#tableNumber').val().trim();
+            const tableCapacity = $('#tableCapacity').val().trim();
+
+            // 验证输入
+            let isValid = validateAddTableForm(tableNumber, tableCapacity);
+
+            if (!isValid) {
+                return;
+            }
+
+            // 显示确认对话框
+            showConfirmation(`确认添加桌位：${tableNumber} (${tableCapacity}人桌)？`, function() {
+                addNewTable(tableNumber, tableCapacity);
+            });
+        });
+
+        // 输入框实时验证
+        $('#tableNumber').on('input', function() {
+            const value = $(this).val().trim();
+            if (value && !/^[A-Za-z0-9_-]+$/.test(value)) {
+                showError('#tableNumber', '桌位编号只能包含字母、数字、下划线和横线');
+            } else {
+                hideError('#tableNumber');
+            }
+        });
+
+        $('#tableCapacity').on('input', function() {
+            const value = $(this).val();
+            if (value && (parseInt(value) < 1 || parseInt(value) > 20)) {
+                showError('#tableCapacity', '桌位人数必须在1-20之间');
+            } else {
+                hideError('#tableCapacity');
+            }
+        });
+    });
+
+    // 显示错误信息
+    function showError(selector, message) {
+        $(selector).addClass('error');
+        $(selector).next('.error-message').text(message).show();
+    }
+
+    // 隐藏错误信息
+    function hideError(selector) {
+        $(selector).removeClass('error');
+        $(selector).next('.error-message').hide();
+    }
+
+    // 添加新桌位到数据库
+    function addNewTable(tableNumber, tableCapacity) {
+        console.log("添加新桌位:", {
+            zh: tableNumber,
+            zx: tableCapacity
+        });
+
+        // 获取当前公司 - 使用和页面其他部分相同的方式
+        let company = getCurrentCompany();
+        console.log("获取到的公司:", company);
+
+        // 显示加载状态
+        $('#confirmAdd').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> 添加中...');
+
+        $.ajax({
+            type: 'post',
+            url: '/order_table/addTable',
+            async: true,
+            timeout: 10000,
+            data: {
+                zh: tableNumber,
+                zx: tableCapacity,
+                company: company
+            },
+            success: function (res) {
+                console.log("添加桌位结果:", res);
+
+                // 恢复按钮状态
+                $('#confirmAdd').prop('disabled', false).html('确认添加');
+
+                if (res.success) {
+                    // 关闭模态框
+                    $('#addTableModal').css('display', 'none');
+
+                    // 显示成功提示
+                    showAlert(`✅ 成功添加桌位: ${tableNumber} (${tableCapacity}人桌)`);
+
+                    // 刷新桌位列表 - 使用selectAll()函数
+                    selectAll();
+
+                    // 稍后滚动到新添加的桌位
+                    setTimeout(function () {
+                        scrollToTable(tableNumber);
+                    }, 1000);
+                } else {
+                    showAlert(`❌ 添加失败: ${res.message}`);
+                    // 如果是因为重复，聚焦回输入框
+                    if (res.message.includes('已存在')) {
+                        $('#tableNumber').focus().select();
+                    }
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('添加桌位失败:', error);
+
+                // 恢复按钮状态
+                $('#confirmAdd').prop('disabled', false).html('确认添加');
+
+                if (status === "timeout") {
+                    showAlert('❌ 网络超时，请稍后再试');
+                } else {
+                    showAlert('❌ 网络错误，添加桌位失败');
+                }
+            }
+        });
+    }
+    // 滚动到指定桌位
+    function scrollToTable(tableNumber) {
+        const tableElement = $(`.table-name:contains('${tableNumber}')`).closest('.table-item');
+        if (tableElement.length > 0) {
+            // 添加高亮效果
+            tableElement.css({
+                'box-shadow': '0 0 20px rgba(76, 175, 80, 0.5)',
+                'border': '3px solid #4CAF50'
+            });
+
+            // 滚动到该元素
+            $('html, body').animate({
+                scrollTop: tableElement.offset().top - 100
+            }, 800);
+
+            // 3秒后移除高亮
+            setTimeout(function() {
+                tableElement.css({
+                    'box-shadow': '',
+                    'border': ''
+                });
+            }, 3000);
+        }
+    }
+
+    // 获取当前公司（复用已有逻辑）
+    // 正确的获取当前公司函数
+    function getCurrentCompany() {
+        console.log("=== getCurrentCompany 开始 ===");
+
+        let company = '';
+
+        // 方式1: 从URL参数获取（如果有）
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlCompany = urlParams.get('company');
+        if (urlCompany) {
+            console.log("从URL参数获取公司:", urlCompany);
+            return urlCompany;
+        }
+
+        // 方式2: 从现有桌位数据获取
+        if (filteredData && filteredData.length > 0) {
+            // 从第一条数据获取公司
+            company = filteredData[0].company || '';
+            console.log("从现有桌位数据获取公司:", company);
+
+            if (company && company.trim() !== '') {
+                return company;
+            }
+        }
+
+        // 方式3: 从localStorage的token解密获取
+        try {
+            let token = localStorage.getItem("token");
+            console.log("localStorage token:", token ? "存在" : "不存在");
+
+            if (token && token !== 'undefined' && token !== 'null') {
+                let key = '123456789abcdefg';
+                let iv = 'abcdefg123456789';
+
+                try {
+                    // 尝试解密token
+                    let decrypted = decrypt(key, iv, token);
+                    console.log("解密token成功，长度:", decrypted.length);
+
+                    // 解析JSON数据
+                    let data = JSON.parse(decrypted);
+                    console.log("解析token数据:", data);
+
+                    // 获取公司信息
+                    if (data && typeof data === 'object') {
+                        // 尝试不同的字段名
+                        company = data.company ||
+                            data.COMPANY ||
+                            data.Company ||
+                            (Array.isArray(data) ? data[0] : '');
+
+                        console.log("从token获取的公司:", company);
+
+                        if (company && company.trim() !== '') {
+                            return company;
+                        }
+                    }
+                } catch (decryptError) {
+                    console.error("解密token失败:", decryptError.message);
+                }
+            }
+        } catch (e) {
+            console.error("从localStorage获取token失败:", e);
+        }
+
+        // 方式4: 从页面元素获取
+        if (!company) {
+            // 查看页面是否有公司信息显示
+            const companyElement = $('.company-info, .header-title, [data-company]').first();
+            if (companyElement.length) {
+                company = companyElement.text().trim() ||
+                    companyElement.data('company') ||
+                    companyElement.attr('data-company');
+                console.log("从页面元素获取公司:", company);
+            }
+        }
+
+        // 注意：这里不能使用EJS语法，因为这是在JavaScript中
+
+        // 方式5: 如果都没有获取到，尝试从服务器查询（同步）
+        if (!company || company.trim() === '') {
+            console.log("尝试从服务器查询公司信息");
+            try {
+                $.ajax({
+                    type: 'post',
+                    url: '/order_table/getCurrentCompany',
+                    async: false,  // 同步请求
+                    timeout: 3000,
+                    success: function(res) {
+                        if (res.success && res.company) {
+                            company = res.company;
+                            console.log("从服务器API获取公司:", company);
+                        }
+                    },
+                    error: function() {
+                        console.log("服务器API调用失败");
+                    }
+                });
+            } catch (e) {
+                console.error("同步请求异常:", e);
+            }
+        }
+
+        // 最终检查
+        if (!company || company.trim() === '' || company === 'default_company') {
+            console.log("⚠️ 未获取到有效公司，使用默认值");
+
+            // 查看现有数据中的公司
+            if (filteredData && filteredData.length > 0) {
+                // 统计所有不同的公司
+                const companies = [...new Set(filteredData.map(item => item.company).filter(Boolean))];
+                console.log("现有数据中的公司列表:", companies);
+
+                if (companies.length > 0) {
+                    company = companies[0];
+                    console.log("使用现有数据中的第一个公司:", company);
+                }
+            }
+
+            if (!company || company.trim() === '') {
+                company = '默认公司';
+                console.log("使用默认公司名称:", company);
+            }
+        }
+
+        console.log("=== getCurrentCompany 结束，返回:", company);
+        return company;
+    }
+
+    $('#deleteTable').on('click', function() {
+        console.log("打开删除桌位模态框");
+
+        // 清空选择框
+        $('#deleteTableSelect').empty().append('<option value="">请选择桌位...</option>');
+        $('#tableInfo').hide();
+        $('#confirmDelete').prop('disabled', true);
+
+        // 填充桌位选项（只显示空闲桌位）
+        if (filteredData && filteredData.length > 0) {
+            let freeTables = filteredData.filter(table => table.zt === '1');
+
+            console.log(`找到 ${freeTables.length} 个空闲桌位`);
+
+            if (freeTables.length === 0) {
+                $('#deleteTableSelect').append(
+                    '<option value="" disabled>暂无空闲桌位可删除</option>'
+                );
+            } else {
+                // 按桌位编号排序
+                freeTables.sort((a, b) => a.zh.localeCompare(b.zh));
+
+                freeTables.forEach(table => {
+                    const optionText = `${table.zh} (${table.zx}人桌) - ${table.company || '未指定公司'}`;
+                    $('#deleteTableSelect').append(
+                        `<option value="${table.id}" data-table='${JSON.stringify(table)}'>
+                            ${optionText}
+                        </option>`
+                    );
+                });
+            }
+        } else {
+            $('#deleteTableSelect').append(
+                '<option value="" disabled>暂无桌位数据</option>'
+            );
+        }
+
+        // 显示模态框
+        $('#deleteTableModal').css('display', 'block');
+    });
+
+    // 关闭删除桌位模态框
+    $('#deleteTableModal .close-modal, #cancelDelete').on('click', function() {
+        $('#deleteTableModal').css('display', 'none');
+    });
+
+    // 点击模态框外部关闭
+    $(window).on('click', function(event) {
+        if ($(event.target).is('#deleteTableModal')) {
+            $('#deleteTableModal').css('display', 'none');
+        }
+    });
+
+    // 桌位选择变化事件
+    $('#deleteTableSelect').on('change', function() {
+        const selectedValue = $(this).val();
+
+        if (!selectedValue) {
+            $('#tableInfo').hide();
+            $('#confirmDelete').prop('disabled', true);
+            return;
+        }
+
+        // 获取选中的桌位数据
+        const selectedOption = $(this).find('option:selected');
+        let tableData = {};
+        try {
+            const tableDataStr = selectedOption.data('table');
+            if (tableDataStr && typeof tableDataStr === 'string') {
+                tableData = JSON.parse(tableDataStr);
+            } else if (tableDataStr && typeof tableDataStr === 'object') {
+                // 如果已经是对象，直接使用
+                tableData = tableDataStr;
+            }
+        } catch (e) {
+            console.error("解析桌位数据失败:", e);
+            tableData = {};
+        }
+
+        // 显示桌位信息
+        $('#deleteTableNumber').text(tableData.zh || '-');
+        $('#deleteTableCapacity').text(tableData.zx ? `${tableData.zx}人` : '-');
+
+        // 状态显示
+        let statusText = '未知';
+        let statusColor = '#999';
+        if (tableData.zt === '1') {
+            statusText = '空闲';
+            statusColor = '#4CAF50';
+        } else if (tableData.zt === '2') {
+            statusText = '已预订';
+            statusColor = '#FF9800';
+        } else if (tableData.zt === '3') {
+            statusText = '已占用';
+            statusColor = '#F44336';
+        }
+        $('#deleteTableStatus').html(`<span style="color: ${statusColor}; font-weight: bold;">${statusText}</span>`);
+
+        $('#deleteTableCompany').text(tableData.company || '未指定');
+
+        // 显示信息面板
+        $('#tableInfo').show();
+
+        // 只有空闲桌位可以删除
+        if (tableData.zt === '1') {
+            $('#confirmDelete').prop('disabled', false);
+
+            // 更新警告信息
+            $('.warning-message p').html(`
+                此操作将永久删除桌位 <strong>${tableData.zh}</strong> (${tableData.zx}人桌)。
+                删除后无法恢复！
+            `);
+        } else {
+            $('#confirmDelete').prop('disabled', true);
+
+            // 更新警告信息
+            $('.warning-message p').html(`
+                <span style="color: #f44336;">
+                    <i class="fas fa-ban"></i>
+                    桌位 <strong>${tableData.zh}</strong> 当前状态为"${statusText}"，无法删除。
+                    只能删除空闲状态的桌位！
+                </span>
+            `);
+        }
+    });
+
+    // 确认删除桌位
+    $('#confirmDelete').on('click', function() {
+        const selectedValue = $('#deleteTableSelect').val();
+        const selectedOption = $('#deleteTableSelect').find('option:selected');
+        let tableData = {};
+        try {
+            const tableDataStr = selectedOption.data('table');
+            if (tableDataStr && typeof tableDataStr === 'string') {
+                tableData = JSON.parse(tableDataStr);
+            } else if (tableDataStr && typeof tableDataStr === 'object') {
+                // 如果已经是对象，直接使用
+                tableData = tableDataStr;
+            }
+        } catch (e) {
+            console.error("解析桌位数据失败:", e);
+            tableData = {};
+        }
+
+        if (!selectedValue || !tableData.zh) {
+            showAlert('请选择要删除的桌位');
+            return;
+        }
+
+        // 再次确认
+        showConfirmation(
+            `确认永久删除桌位 ${tableData.zh}(${tableData.zx}人桌) 吗？
+
+                此操作不可撤销！
+            `,
+            function() {
+                deleteTable(tableData.id, tableData.zh);
+            }
+        );
+    });
+
+    // ==================== 删除桌位API函数 ====================
+
+    // 删除桌位函数
+    function deleteTable(tableId, tableNumber) {
+        console.log("删除桌位:", { id: tableId, zh: tableNumber });
+
+        // 显示加载状态
+        $('#confirmDelete').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> 删除中...');
+
+        $.ajax({
+            type: 'post',
+            url: '/order_table/deleteTable',
+            async: true,
+            timeout: 10000,
+            data: {
+                id: tableId,
+                zh: tableNumber,
+                company: getCurrentCompany()
+            },
+            success: function(res) {
+                console.log("删除桌位结果:", res);
+
+                // 恢复按钮状态
+                $('#confirmDelete').prop('disabled', false).html('<i class="fas fa-trash"></i> 确认删除');
+
+                if (res.success) {
+                    // 关闭模态框
+                    $('#deleteTableModal').css('display', 'none');
+
+                    // 显示成功提示
+                    showAlert(`✅ 成功删除桌位: ${tableNumber}`);
+
+                    // 刷新桌位列表
+                    selectAll();
+
+                    // 记录删除操作
+                    logTableDeletion(tableNumber);
+                } else {
+                    showAlert(`❌ 删除失败: ${res.message}`);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('删除桌位失败:', error);
+
+                // 恢复按钮状态
+                $('#confirmDelete').prop('disabled', false).html('<i class="fas fa-trash"></i> 确认删除');
+
+                if (status === "timeout") {
+                    showAlert('❌ 网络超时，请稍后再试');
+                } else {
+                    showAlert('❌ 网络错误，删除桌位失败');
+                }
+            }
+        });
+    }
 </script>
 </body>
 </html>

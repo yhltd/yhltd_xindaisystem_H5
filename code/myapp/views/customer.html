@@ -102,7 +102,12 @@
             content: '您确认要删除本记录吗？',
             buttons: {
                 确定: function () {
-                    window.location.href = "/customer/del/" + id
+                    // 先显示alert，然后延迟跳转
+                    alert("删除成功！");
+                    // 延迟500ms确保alert完全显示后再跳转
+                    setTimeout(function() {
+                        window.location.href = "/customer/del/" + id;
+                    }, 1000);
                 },
                 取消: function () {
                 },

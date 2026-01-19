@@ -202,6 +202,9 @@
             var formData = $('#formData').serialize();
             var params = JSON.parse(formToJson(decodeURIComponent(formData, true)))
             $("#checkFormCheckBox").attr('checked', checkForm(params));
+            if(checkForm(params)) {
+                alert("修改成功！");
+            }
         }
 
         function checkForm(params){
@@ -277,7 +280,10 @@
                 </td>
                 <td><p>商&nbsp品&nbsp类&nbsp别</p></td>
                 <td>
-                    <select class="form_input" name="type" value="{{type}}">
+                    <input type="hidden" id="currentType" value="{{type}}">
+                    <input type="hidden" id="currentTingyong" value="{{tingyong}}">
+
+                    <select class="form_input" name="type" id="typeSelect">
                         <option value="饮料">饮料</option>
                         <option value="糕点">糕点</option>
                         <option value="油炸">油炸</option>
@@ -415,7 +421,24 @@
             // })
         };
     });
+    // 简单直接的设置方法
+    window.onload = function() {
+        // 从隐藏字段获取值
+        var currentType = document.getElementById('currentType')?.value;
+        var currentTingyong = document.getElementById('currentTingyong')?.value;
 
+        // 设置类别
+        if (currentType) {
+            document.getElementById('typeSelect').value = currentType;
+        }
+
+        // 设置停用状态
+        if (currentTingyong) {
+            document.getElementById('tingyongSelect').value = currentTingyong;
+        }
+
+        console.log("设置完成 - 类型:", currentType, "停用:", currentTingyong);
+    };
 </script>
 </body>
 <SCRIPT Language=VBScript></SCRIPT>

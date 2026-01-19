@@ -144,7 +144,10 @@ router.all('/ass', function (req, res, next) {
                     result.pagecounts = Math.ceil(result.rowcounts / result.pageSize)
                     result.pagenum = parseInt(req.query.pagenum <= 0 ? 1 : req.query.pagenum >= result.pagecounts ? result.pagecounts : req.query.pagenum);
                 }
-                let sql = "select id,username,password,name,gender,state,phone,birthday,company,ifnull(jifen.points,0) as points from member_info left join(select hyxm,round(sum(zhje),2) as points from (select ddh,hyxm,ifnull(zhje,0) as zhje from orders left join orders_details on orders.ddh = orders_details.ddid) as o1 group by hyxm) as jifen on member_info.name = jifen.hyxm " + whereSql;
+                let sql = "select id,username,password,name,gender,state,phone,birthday,company,ifnull(jifen.points,0) as points, " +
+                    "(select jibie from member_jibie where company = member_info.company and ifnull(jifen.points,0) >= menkan order by menkan desc limit 1) as jibie " +
+                    "from member_info left join(select hyxm,round(sum(zhje),2) as points from (select ddh,hyxm,ifnull(zhje,0) as zhje from orders left join orders_details on orders.ddh = orders_details.ddid) as o1 group by hyxm) as jifen on member_info.name = jifen.hyxm " + whereSql;
+
                 sql += " limit " + (result.pagenum - 1) * result.pageSize + "," + result.pageSize;
                 console.log("sql=>", sql)
                 db.query(sql, function (err, rows) {
@@ -439,7 +442,9 @@ router.all('/Excel', function (req, res, next) {
     let iv = 'abcdefg123456789';
     let data = JSON.parse(decrypt(key, iv, token));
     selectParams = JSON.parse(localStorage.getItem("selectParams"));
-    let sql = "select id,username,password,name,gender,state,phone,birthday,company,ifnull(jifen.points,0) as points from member_info left join(select hyxm,round(sum(zhje),2) as points from (select ddh,hyxm,ifnull(zhje,0) as zhje from orders left join orders_details on orders.ddh = orders_details.ddid) as o1 group by hyxm) as jifen on member_info.name = jifen.hyxm where company = '" + data.company + "'";
+    let sql = "select id,username,password,name,gender,state,phone,birthday,company,ifnull(jifen.points,0) as points, " +
+        "(select jibie from member_jibie where company = member_info.company and ifnull(jifen.points,0) >= menkan order by menkan desc limit 1) as jibie " +
+        "from member_info left join(select hyxm,round(sum(zhje),2) as points from (select ddh,hyxm,ifnull(zhje,0) as zhje from orders left join orders_details on orders.ddh = orders_details.ddid) as o1 group by hyxm) as jifen on member_info.name = jifen.hyxm where company = '" + data.company + "'";
     db.query(sql, function (err, rows) {
         try {
             if (err) {
@@ -482,6 +487,9 @@ router.all('/Excel', function (req, res, next) {
                 },{
                     caption: '积分',
                     type: 'number'
+                }, {
+                    caption: '会员等级',  // 新增的列
+                    type: 'string'
                 }
             ];
             conf.rows = []
@@ -496,6 +504,7 @@ router.all('/Excel', function (req, res, next) {
                 row.push(rows[i].phone)
                 row.push(rows[i].birthday)
                 row.push(rows[i].points)
+                row.push(rows[i].jibie || '')
                 conf.rows.push(row)
             }
             console.log(conf)

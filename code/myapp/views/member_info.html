@@ -71,6 +71,7 @@
             <th>电话号</th>
             <th>生日</th>
             <th>积分</th>
+            <th>会员等级</th>
             <div>
                 <th colspan="2">操作</th>
             </div>
@@ -86,6 +87,7 @@
             <td >{{item.phone}}</td>
             <td >{{item.birthday}}</td>
             <td >{{item.points}}</td>
+            <td>{{item.jibie}}</td>
             <td style="width: 60px"><a href="#" onclick="queren({{item.id}})"><span class="label del">删除</span></a></td>
             <td style="width: 60px"><a href="/member_info/toUpdate/{{item.id}}"><span class="label upd">修改</span></a></td>
         </tr>

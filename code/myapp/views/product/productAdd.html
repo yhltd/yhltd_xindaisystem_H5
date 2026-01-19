@@ -11,6 +11,9 @@
             var params = JSON.parse(formToJson(decodeURIComponent(formData, true)))
             params.p_file = p_file
             $("#checkFormCheckBox").attr('checked', checkForm(params));
+            if(checkForm(params)) {
+                alert("保存成功！");
+            }
         }
 
         function checkForm(params){

@@ -304,6 +304,9 @@
             var formData = $('#formData').serialize();
             var params = JSON.parse(formToJson(decodeURIComponent(formData, true)))
             $("#checkFormCheckBox").attr('checked', checkForm(params));
+            if(checkForm(params)) {
+                alert("修改成功！");
+            }
         }
 
         function checkForm(params){
