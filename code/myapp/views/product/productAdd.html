@@ -165,24 +165,145 @@
 </body>
 <script>
     var p_file
+    var wenjian
 
     $("#image").click(function () {
         $('#file').trigger('click');
     })
+    // $('#file').change(function () {
+    //     var file = document.getElementById("file").files;
+    //     var oFReader = new FileReader();
+    //     var this_file = file[0];
+    //     var fileName = file[0].name;
+    //     var obj = [];
+    //     oFReader.readAsDataURL(this_file);
+    //     oFReader.onloadend = function (oFRevent) {
+    //         p_file = oFRevent.target.result;
+    //         console.log(p_file)
+    //         $('#image').attr('src',p_file)
+    //         $('#p_file').val(p_file)
+    //     };
+    // });
+
     $('#file').change(function () {
-        var file = document.getElementById("file").files;
-        var oFReader = new FileReader();
-        var this_file = file[0];
-        var fileName = file[0].name;
-        var obj = [];
-        oFReader.readAsDataURL(this_file);
-        oFReader.onloadend = function (oFRevent) {
-            p_file = oFRevent.target.result;
-            console.log(p_file)
-            $('#image').attr('src',p_file)
-            $('#p_file').val(p_file)
-        };
+
+        // var currentImageSrc = $('#image').attr('src');
+        // console.log('当前图片src值:', currentImageSrc);
+
+        if (wenjian && wenjian !== '{{photo}}') {
+            var fileName = wenjian.split('/').pop();
+            var fileNameWithoutExt = fileName.split('.')[0];
+
+            console.log('准备删除文件:', fileNameWithoutExt);
+
+            deleteFiles(fileNameWithoutExt)
+                .then(function(result) {
+                    console.log('删除成功:', result);
+                })
+                .catch(function(error) {
+                    console.error('删除失败:', error);
+                });
+        }
+
+
+
+        var file = document.getElementById("file").files[0];  // 获取文件
+        var fileName = file.name;  // 获取文件名
+
+        var localUrl = URL.createObjectURL(file);
+        $('#image').attr('src', localUrl);  // 显示预览
+
+        // 2. 创建FormData上传文件
+        var formData = new FormData();
+        formData.append('file', file);
+        formData.append('name', fileName);
+        formData.append('path', '/mendian/');
+        formData.append('kongjian', '3');
+
+        // 3. 上传到文件服务器
+        $.ajax({
+            url: "https://yhocn.cn:9097/file/upload",
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                if (res.code === 200) {
+                    // 4. 上传成功，生成文件URL
+                    var fileUrl = "http://yhocn.cn:9088/mendian/" + fileName;
+                    wenjian = fileUrl
+                    console.log('文件URL:', fileUrl);
+
+                    p_file = fileUrl;  // 保存到全局变量
+                    $('#p_file').val(fileUrl);  // 保存到隐藏字段
+
+                    alert('图片上传成功！');
+                } else {
+                    alert("上传失败：" + (res.msg || "未知错误"));
+                    // 恢复之前的图片
+                    $('#image').attr('src', '{{p_file}}');
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("上传失败：" + error);
+                // 恢复之前的图片
+                $('#image').attr('src', '{{p_file}}');
+            }
+        });
     });
+
+
+    function deleteFiles(orderNumber) {
+        var params = {
+            order_number: orderNumber,
+            path: "/mendian/"
+        };
+
+        var url = 'https://yhocn.cn:9097/file/delete';
+
+        console.log('准备删除文件，参数:', params);
+
+        // 返回一个 Promise
+        return new Promise(function(resolve, reject) {
+            // 先尝试POST
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: params,
+                success: function(data) {
+                    console.log('POST删除成功');
+                    resolve({
+                        success: true,
+                        result: data
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.log('POST失败，尝试GET');
+
+                    // POST失败，尝试GET
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        data: params,
+                        success: function(data) {
+                            console.log('GET删除成功');
+                            resolve({
+                                success: true,
+                                result: data
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('GET也失败');
+                            reject({
+                                success: false,
+                                error: '删除失败: ' + (xhr.statusText || error)
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    }
 </script>
 <SCRIPT Language=VBScript></script>
 </html>

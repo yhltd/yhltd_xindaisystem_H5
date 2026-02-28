@@ -363,42 +363,122 @@
     var p_file
 
     $("#image").click(function () {
+
         $('#file').trigger('click');
     })
 
     $('#file').change(function () {
+        var currentImageSrc = $('#image').attr('src');
+        console.log('当前图片src值:', currentImageSrc);
+
+        if (currentImageSrc && currentImageSrc !== '{{photo}}') {
+            var fileName = currentImageSrc.split('/').pop();
+            var fileNameWithoutExt = fileName.split('.')[0];
+
+            console.log('准备删除文件:', fileNameWithoutExt);
+
+            deleteFiles(fileNameWithoutExt)
+                .then(function(result) {
+                    console.log('删除成功:', result);
+                })
+                .catch(function(error) {
+                    console.error('删除失败:', error);
+                });
+        }
+
+
         var file = document.getElementById("file").files;
         var oFReader = new FileReader();
-        var this_file = file[0];
-        var fileName = file[0].name;
-        var obj = [];
-        oFReader.readAsDataURL(this_file);
-        oFReader.onloadend = function (oFRevent) {
-            this_file = oFRevent.target.result;
-            console.log(this_file)
-            var this_id = $("#user_id").val();
-            console.log(this_id)
-            $.ajax({
-                type: 'post',
-                url: '/product/updImg',
-                timeout: 50000,
-                data: {
-                    this_id: this_id,
-                    this_file: this_file,
-                },
-                success: function(res){
-                    let result = JSON.parse(res)
-                    alert(result.msg)
-                    history.back(-1)
-                },
-                error: function(res){
-                    if(res.status == "timeout"){
-                        alert("网络超时，请稍后再试")
-                    }else{
-                        alert("网络错误，请稍后再试")
-                    }
+        var this_file = file[0];  //获取文件
+        var fileName = file[0].name; //获取文件名
+
+        var formData = new FormData();
+        formData.append('file', this_file);
+        formData.append('name', fileName);
+        formData.append('path', '/mendian/');
+        formData.append('kongjian', '3');
+
+        $.ajax({
+            url: "https://yhocn.cn:9097/file/upload",
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                if (res.code === 200) {
+                    var fileUrl = "http://yhocn.cn:9088/mendian/" + fileName;
+
+                    var this_id = $("#user_id").val();
+
+                    $.ajax({
+                        type: 'post',
+                        url: '/product/updImg',
+                        timeout: 50000,
+                        data: {
+                            this_id: this_id,
+                            this_file: fileUrl,
+                        },
+                        success: function(res){
+                            let result = JSON.parse(res)
+                            alert(result.msg)
+                            history.back(-1)
+                        },
+                        error: function(res){
+                            if(res.status == "timeout"){
+                                alert("网络超时，请稍后再试")
+                            }else{
+                                alert("网络错误，请稍后再试")
+                            }
+                        }
+                    });
+
+                } else {
+                    alert("上传失败：" + (res.msg || "未知错误"));
                 }
-            });
+            },
+            error: function (xhr, status, error) {
+                alert("上传失败：" + error);
+            }
+        });
+
+
+    // // 原版商品图片上传功能因为改为接口上传所以注掉
+            // $('#file').change(function () {
+            //     var file = document.getElementById("file").files;
+            //     var oFReader = new FileReader();
+            //     var this_file = file[0];
+            //     var fileName = file[0].name;
+            //     var obj = [];
+            //     oFReader.readAsDataURL(this_file);
+            //     oFReader.onloadend = function (oFRevent) {
+            //         this_file = oFRevent.target.result;
+            //         console.log(this_file)
+            //         var this_id = $("#user_id").val();
+            //         console.log(this_id)
+            //         $.ajax({
+            //             type: 'post',
+            //             url: '/product/updImg',
+            //             timeout: 50000,
+            //             data: {
+            //                 this_id: this_id,
+            //                 this_file: this_file,
+            //             },
+            //             success: function(res){
+            //                 let result = JSON.parse(res)
+            //                 alert(result.msg)
+            //                 history.back(-1)
+            //             },
+            //             error: function(res){
+            //                 if(res.status == "timeout"){
+            //                     alert("网络超时，请稍后再试")
+            //                 }else{
+            //                     alert("网络错误，请稍后再试")
+            //                 }
+            //             }
+            //         });
+            //原版图片上传结束
+
+
 
             // $ajax({
             //     type: 'post',
@@ -419,8 +499,60 @@
             //     var fileInput = document.getElementById('file');
             //     fileInput.outerHTML = fileInput.outerHTML;
             // })
-        };
     });
+
+    function deleteFiles(orderNumber) {
+        var params = {
+            order_number: orderNumber,
+            path: "/mendian/"
+        };
+
+        var url = 'https://yhocn.cn:9097/file/delete';
+
+        console.log('准备删除文件，参数:', params);
+
+        // 返回一个 Promise
+        return new Promise(function(resolve, reject) {
+            // 先尝试POST
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: params,
+                success: function(data) {
+                    console.log('POST删除成功');
+                    resolve({
+                        success: true,
+                        result: data
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.log('POST失败，尝试GET');
+
+                    // POST失败，尝试GET
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        data: params,
+                        success: function(data) {
+                            console.log('GET删除成功');
+                            resolve({
+                                success: true,
+                                result: data
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('GET也失败');
+                            reject({
+                                success: false,
+                                error: '删除失败: ' + (xhr.statusText || error)
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    }
+
     // 简单直接的设置方法
     window.onload = function() {
         // 从隐藏字段获取值
