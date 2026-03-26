@@ -185,42 +185,284 @@
     //     };
     // });
 
-    $('#file').change(function () {
-
-        // var currentImageSrc = $('#image').attr('src');
-        // console.log('当前图片src值:', currentImageSrc);
-
-        if (wenjian && wenjian !== '{{photo}}') {
-            var fileName = wenjian.split('/').pop();
-            var fileNameWithoutExt = fileName.split('.')[0];
-
-            console.log('准备删除文件:', fileNameWithoutExt);
-
-            deleteFiles(fileNameWithoutExt)
-                .then(function(result) {
-                    console.log('删除成功:', result);
-                })
-                .catch(function(error) {
-                    console.error('删除失败:', error);
-                });
+    // $('#file').change(function () {
+    //
+    //     // var currentImageSrc = $('#image').attr('src');
+    //     // console.log('当前图片src值:', currentImageSrc);
+    //
+    //     if (wenjian && wenjian !== '{{photo}}') {
+    //         var fileName = wenjian.split('/').pop();
+    //         var fileNameWithoutExt = fileName.split('.')[0];
+    //
+    //         console.log('准备删除文件:', fileNameWithoutExt);
+    //
+    //         deleteFiles(fileNameWithoutExt)
+    //             .then(function(result) {
+    //                 console.log('删除成功:', result);
+    //             })
+    //             .catch(function(error) {
+    //                 console.error('删除失败:', error);
+    //             });
+    //     }
+    //
+    //
+    //
+    //     var file = document.getElementById("file").files[0];  // 获取文件
+    //     var fileName = file.name;  // 获取文件名
+    //
+    //     var localUrl = URL.createObjectURL(file);
+    //     $('#image').attr('src', localUrl);  // 显示预览
+    //
+    //     // 2. 创建FormData上传文件
+    //     var formData = new FormData();
+    //     formData.append('file', file);
+    //     formData.append('name', fileName);
+    //     formData.append('path', '/mendian/');
+    //     formData.append('kongjian', '3');
+    //
+    //     // 3. 上传到文件服务器
+    //     $.ajax({
+    //         url: "https://yhocn.cn:9097/file/upload",
+    //         type: 'POST',
+    //         data: formData,
+    //         processData: false,
+    //         contentType: false,
+    //         success: function (res) {
+    //             if (res.code === 200) {
+    //                 // 4. 上传成功，生成文件URL
+    //                 var fileUrl = "http://yhocn.cn:9088/mendian/" + fileName;
+    //                 wenjian = fileUrl
+    //                 console.log('文件URL:', fileUrl);
+    //
+    //                 p_file = fileUrl;  // 保存到全局变量
+    //                 $('#p_file').val(fileUrl);  // 保存到隐藏字段
+    //
+    //                 alert('图片上传成功！');
+    //             } else {
+    //                 alert("上传失败：" + (res.msg || "未知错误"));
+    //                 // 恢复之前的图片
+    //                 $('#image').attr('src', '{{p_file}}');
+    //             }
+    //         },
+    //         error: function (xhr, status, error) {
+    //             alert("上传失败：" + error);
+    //             // 恢复之前的图片
+    //             $('#image').attr('src', '{{p_file}}');
+    //         }
+    //     });
+    // });
+    //
+    //
+    // function deleteFiles(orderNumber) {
+    //     var params = {
+    //         order_number: orderNumber,
+    //         path: "/mendian/"
+    //     };
+    //
+    //     var url = 'https://yhocn.cn:9097/file/delete';
+    //
+    //     console.log('准备删除文件，参数:', params);
+    //
+    //     // 返回一个 Promise
+    //     return new Promise(function(resolve, reject) {
+    //         // 先尝试POST
+    //         $.ajax({
+    //             url: url,
+    //             type: 'POST',
+    //             data: params,
+    //             success: function(data) {
+    //                 console.log('POST删除成功');
+    //                 resolve({
+    //                     success: true,
+    //                     result: data
+    //                 });
+    //             },
+    //             error: function(xhr, status, error) {
+    //                 console.log('POST失败，尝试GET');
+    //
+    //                 // POST失败，尝试GET
+    //                 $.ajax({
+    //                     url: url,
+    //                     type: 'GET',
+    //                     data: params,
+    //                     success: function(data) {
+    //                         console.log('GET删除成功');
+    //                         resolve({
+    //                             success: true,
+    //                             result: data
+    //                         });
+    //                     },
+    //                     error: function(xhr, status, error) {
+    //                         console.log('GET也失败');
+    //                         reject({
+    //                             success: false,
+    //                             error: '删除失败: ' + (xhr.statusText || error)
+    //                         });
+    //                     }
+    //                 });
+    //             }
+    //         });
+    //     });
+    // }
+    // 文件上传处理
+    $('#file').change(async function () {
+        var file = this.files[0];
+        if (!file) {
+            return;
         }
 
+        // ========== 1. 获取公司信息 ==========
+        var savedCompany = localStorage.getItem('savedCompany');
+        var storageSpaceKB = localStorage.getItem('storageSpace');
 
+        if (!storageSpaceKB) {
+            storageSpaceKB = 3 * 1024 * 1024; // 默认 3GB
+        } else {
+            storageSpaceKB = parseFloat(storageSpaceKB);
+        }
 
-        var file = document.getElementById("file").files[0];  // 获取文件
-        var fileName = file.name;  // 获取文件名
+        if (!savedCompany) {
+            alert("未获取到公司信息，请重新登录");
+            $('#file').val('');
+            return;
+        }
 
+        console.log("公司名:", savedCompany);
+        console.log("存储空间限制(KB):", storageSpaceKB);
+        // ========== 获取公司信息结束 ==========
+
+        // ========== 2. 文件大小验证（不能超过 500MB） ==========
+        var maxSizeMB = 500;
+        var maxSizeBytes = maxSizeMB * 1024 * 1024;
+        var fileSizeMB = file.size / (1024 * 1024);
+
+        if (file.size > maxSizeBytes) {
+            alert("文件大小超过限制！\n当前文件: " + fileSizeMB.toFixed(2) + " MB\n最大允许: " + maxSizeMB + " MB");
+            $('#file').val('');
+            return;
+        }
+        console.log("文件大小验证通过:", fileSizeMB.toFixed(2), "MB /", maxSizeMB, "MB");
+        // ========== 文件大小验证结束 ==========
+
+        // ========== 4. 检查总空间（数据库 + 文件夹） ==========
+        function checkTotalSpace(companyName, limitKB, fileSizeBytes) {
+            return new Promise((resolve, reject) => {
+                // 并行请求数据库大小和文件夹大小
+                var dbRequest = $.ajax({
+                    url: "/product/getCompanyTableSizes",  // 根据实际接口路径调整
+                    type: "GET",
+                    data: { companyName: companyName }
+                });
+
+                var path = "/mendian/" + companyName + "/";
+                var folderRequest = $.ajax({
+                    url: "https://yhocn.cn:9097/file/getFolderSize",
+                    type: 'GET',
+                    data: { path: path }
+                });
+
+                $.when(dbRequest, folderRequest).done(function(dbRes, folderRes) {
+                    var dbData = dbRes[0];
+                    var folderData = folderRes[0];
+
+                    // 检查数据库请求
+                    if (dbData.code !== 200) {
+                        reject("获取数据库大小失败: " + (dbData.msg || "未知错误"));
+                        return;
+                    }
+
+                    var dbSizeKB = dbData.data.totalSizeKB;
+                    var folderSizeKB = 0;
+
+                    // 检查文件夹请求
+                    if (folderData.code === 200) {
+                        folderSizeKB = folderData.data.sizeBytes / 1024;
+                        console.log("文件夹大小:", folderSizeKB.toFixed(2), "KB");
+                    } else if (folderData.code === 500 && folderData.msg === "文件夹不存在") {
+                        folderSizeKB = 0;
+                        console.log("文件夹不存在，大小设为 0 KB");
+                    } else {
+                        console.warn("获取文件夹大小失败:", folderData.msg);
+                        folderSizeKB = 0;
+                    }
+
+                    var fileSizeKB = fileSizeBytes / 1024;
+                    var totalUsedKB = dbSizeKB + folderSizeKB + fileSizeKB;
+                    var usagePercent = (totalUsedKB / limitKB) * 100;
+
+                    console.log("数据库大小:", dbSizeKB, "KB");
+                    console.log("文件夹大小:", folderSizeKB.toFixed(2), "KB");
+                    console.log("当前文件大小:", fileSizeKB.toFixed(2), "KB");
+                    console.log("总使用(含新文件):", totalUsedKB.toFixed(2), "KB", "(", usagePercent.toFixed(2), "%)");
+                    console.log("限制:", limitKB, "KB", "(", (limitKB / 1024 / 1024).toFixed(2), "GB)");
+
+                    if (totalUsedKB >= limitKB * 1.1) {
+                        reject("空间使用已超100%（" + usagePercent.toFixed(2) + "%），无法上传！");
+                    } else if (totalUsedKB >= limitKB * 0.9) {
+                        alert("空间使用已超90%（" + usagePercent.toFixed(2) + "%），请注意清理！");
+                        resolve(true);
+                    } else {
+                        resolve(true);
+                    }
+
+                }).fail(function(err) {
+                    console.error("获取空间信息失败:", err);
+                    reject("请求失败");
+                });
+            });
+        }
+        // ========== 空间检查结束 ==========
+
+        // ========== 5. 执行空间检查 ==========
+        var canUpload = false;
+        try {
+            await checkTotalSpace(savedCompany, storageSpaceKB, file.size);
+            canUpload = true;
+        } catch (error) {
+            alert(error);
+            $('#file').val('');
+            return;
+        }
+
+        if (!canUpload) {
+            alert("空间不足，无法上传！");
+            $('#file').val('');
+            return;
+        }
+        // ========== 空间检查完成 ==========
+
+        // ========== 6. 删除旧文件 ==========
+        var wenjian = $('#p_file').val() || '{{p_file}}';
+        if (wenjian && wenjian !== '{{photo}}' && wenjian !== '') {
+            var fileName = wenjian.split('/').pop();
+            var fileNameWithoutExt = fileName.split('.')[0];
+            console.log('准备删除旧文件:', fileNameWithoutExt);
+
+            try {
+                await deleteFiles(fileNameWithoutExt, savedCompany);
+                console.log('旧文件删除成功');
+            } catch (error) {
+                console.error('旧文件删除失败:', error);
+                // 继续上传，不阻断
+            }
+        }
+        // ========== 删除旧文件结束 ==========
+
+        // ========== 7. 预览图片 ==========
+        var fileName = file.name;
         var localUrl = URL.createObjectURL(file);
-        $('#image').attr('src', localUrl);  // 显示预览
+        $('#image').attr('src', localUrl);
+        // ========== 预览结束 ==========
 
-        // 2. 创建FormData上传文件
+        // ========== 8. 上传新文件 ==========
+        var path = "/mendian/" + savedCompany + "/";
         var formData = new FormData();
         formData.append('file', file);
         formData.append('name', fileName);
-        formData.append('path', '/mendian/');
-        formData.append('kongjian', '3');
+        formData.append('path', path);
+        var storageSpaceGB = (storageSpaceKB / 1024 / 1024).toFixed(0);
+        formData.append('kongjian', storageSpaceGB);
 
-        // 3. 上传到文件服务器
         $.ajax({
             url: "https://yhocn.cn:9097/file/upload",
             type: 'POST',
@@ -229,15 +471,13 @@
             contentType: false,
             success: function (res) {
                 if (res.code === 200) {
-                    // 4. 上传成功，生成文件URL
-                    var fileUrl = "http://yhocn.cn:9088/mendian/" + fileName;
-                    wenjian = fileUrl
+                    var fileUrl = "http://yhocn.cn:9088" + path + fileName;
                     console.log('文件URL:', fileUrl);
 
-                    p_file = fileUrl;  // 保存到全局变量
-                    $('#p_file').val(fileUrl);  // 保存到隐藏字段
+                    wenjian = fileUrl;
+                    $('#p_file').val(fileUrl);
 
-                    alert('图片上传成功！');
+                    alert('文件上传成功！');
                 } else {
                     alert("上传失败：" + (res.msg || "未知错误"));
                     // 恢复之前的图片
@@ -250,54 +490,44 @@
                 $('#image').attr('src', '{{p_file}}');
             }
         });
+        // ========== 上传结束 ==========
     });
 
+    // 删除文件函数（带公司名）
+    function deleteFiles(orderNumber, companyName) {
+        var path = "/mendian/" + companyName + "/";
 
-    function deleteFiles(orderNumber) {
         var params = {
             order_number: orderNumber,
-            path: "/mendian/"
+            path: path
         };
 
         var url = 'https://yhocn.cn:9097/file/delete';
 
         console.log('准备删除文件，参数:', params);
 
-        // 返回一个 Promise
         return new Promise(function(resolve, reject) {
-            // 先尝试POST
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: params,
                 success: function(data) {
                     console.log('POST删除成功');
-                    resolve({
-                        success: true,
-                        result: data
-                    });
+                    resolve({ success: true, result: data });
                 },
                 error: function(xhr, status, error) {
                     console.log('POST失败，尝试GET');
-
-                    // POST失败，尝试GET
                     $.ajax({
                         url: url,
                         type: 'GET',
                         data: params,
                         success: function(data) {
                             console.log('GET删除成功');
-                            resolve({
-                                success: true,
-                                result: data
-                            });
+                            resolve({ success: true, result: data });
                         },
                         error: function(xhr, status, error) {
                             console.log('GET也失败');
-                            reject({
-                                success: false,
-                                error: '删除失败: ' + (xhr.statusText || error)
-                            });
+                            reject({ success: false, error: '删除失败: ' + (xhr.statusText || error) });
                         }
                     });
                 }

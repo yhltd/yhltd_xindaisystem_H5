@@ -112,6 +112,13 @@ router.post('/search', function (req, res) {
             console.log("验证3");
             // var mark3 = result.recordset[0].mark3.trim()
             var mark3 = result.recordset[0].mark3 ? result.recordset[0].mark3.trim() : "";
+            var mark5 = result.recordset[0].mark5 ? result.recordset[0].mark5.trim() : "";
+            var mark4 = result.recordset[0].mark4 ? result.recordset[0].mark4.trim() : "";
+
+            if(!mark5.includes("PC端")) {
+                res.render('users.html', {title: 'ExpressTitle', msg: '您没有当前使用端权限，请联系我公司续费或者购买系统。'});
+            }
+
             console.log("验证4");
             if(mark3 == ""){
 
@@ -122,6 +129,18 @@ router.post('/search', function (req, res) {
                 mark3 = mark3.replace("(","")
                 mark3 = mark3.replace(")","")
             }
+
+            var storageSpaceKB = 3 * 1024 * 1024; // 默认 3GB
+
+            if (mark4 != "" && mark4 != null) {
+                try {
+                    var storageSpaceGB = parseFloat(mark4);
+                    storageSpaceKB = storageSpaceGB
+                } catch (e) {
+                    console.log("mark4转换失败:", e);
+                }
+            }
+
             console.log("进入6");
             var thisdate = new Date();
             var endtime = new Date(endtime + " EST");
@@ -181,7 +200,8 @@ router.post('/search', function (req, res) {
                                 id: value[0].id,
                                 type: '商家',
                                 uname: value[0].uname,
-                                mark3: mark3
+                                mark3: mark3,
+                                storageSpace: storageSpaceKB
                             };
                             console.log(datas)
                             datas = encrypt(key, iv, JSON.stringify(datas));
@@ -192,7 +212,11 @@ router.post('/search', function (req, res) {
                             // if (isRem == undefined){
                             //     localStorage.removeItem("token")
                             // }
-                            res.render("index.html", {datas: rows});
+                            // res.render("index.html", {datas: rows});
+                            res.render("index.html", {
+                                datas: rows,
+                                storageSpace: storageSpaceKB
+                            });
                         }
                     } else {
                         res.render('users.html', {title: 'ExpressTitle', msg: '用户名密码错误'});

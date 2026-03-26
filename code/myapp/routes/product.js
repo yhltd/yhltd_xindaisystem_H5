@@ -945,6 +945,82 @@ router.all('/update/:id', function (req, res) {
 //
 //
 // });
+
+
+router.get('/getCompanyTableSizes', function(req, res) {
+    var companyName = req.query.companyName;
+    console.log("查询公司数据大小:", companyName);
+
+    // 转义公司名，防止SQL注入
+    var safeCompanyName = companyName.replace(/'/g, "\\'");
+
+    var sql = "SELECT " +
+        "    SUM(CASE WHEN table_name = 'product' THEN data_size ELSE 0 END) AS product_size, " +
+        "    SUM(CASE WHEN table_name = 'orders_details' THEN data_size ELSE 0 END) AS orders_details_size, " +
+        "    SUM(CASE WHEN table_name = 'users' THEN data_size ELSE 0 END) AS users_size, " +
+        "    SUM(CASE WHEN table_name = 'member_info' THEN data_size ELSE 0 END) AS member_info_size, " +
+        "    SUM(CASE WHEN table_name = 'member_jibie' THEN data_size ELSE 0 END) AS member_jibie_size, " +
+        "    SUM(data_size) AS total_size " +
+        "FROM ( " +
+        "    SELECT 'product' AS table_name, ROUND(SUM(LENGTH(IFNULL(company, ''))) / 1024, 2) AS data_size " +
+        "    FROM product " +
+        "    WHERE company = '" + safeCompanyName + "' " +
+        "    UNION ALL " +
+        "    SELECT 'orders_details' AS table_name, ROUND(SUM(LENGTH(IFNULL(company, ''))) / 1024, 2) AS data_size " +
+        "    FROM orders_details " +
+        "    WHERE company = '" + safeCompanyName + "' " +
+        "    UNION ALL " +
+        "    SELECT 'users' AS table_name, ROUND(SUM(LENGTH(IFNULL(company, ''))) / 1024, 2) AS data_size " +
+        "    FROM users " +
+        "    WHERE company = '" + safeCompanyName + "' " +
+        "    UNION ALL " +
+        "    SELECT 'member_info' AS table_name, ROUND(SUM(LENGTH(IFNULL(company, ''))) / 1024, 2) AS data_size " +
+        "    FROM member_info " +
+        "    WHERE company = '" + safeCompanyName + "' " +
+        "    UNION ALL " +
+        "    SELECT 'member_jibie' AS table_name, ROUND(SUM(LENGTH(IFNULL(company, ''))) / 1024, 2) AS data_size " +
+        "    FROM member_jibie " +
+        "    WHERE company = '" + safeCompanyName + "' " +
+        ") t";
+
+    console.log("执行SQL:", sql);
+
+    db.query(sql, function(err, rows) {
+        if (err) {
+            console.error("查询数据库大小失败:", err);
+            res.json({ code: 500, msg: err.message });
+            return;
+        }
+
+        if (rows && rows.length > 0) {
+            var totalSizeKB = parseFloat(rows[0].total_size) || 0;
+
+            res.json({
+                code: 200,
+                data: {
+                    totalSizeKB: totalSizeKB,
+                    totalSizeFormatted: formatSize(totalSizeKB * 1024)
+                }
+            });
+        } else {
+            res.json({
+                code: 200,
+                data: {
+                    totalSizeKB: 0,
+                    totalSizeFormatted: "0 B"
+                }
+            });
+        }
+    });
+});
+
+function formatSize(size) {
+    if (size <= 0) return "0 B";
+    var units = ["B", "KB", "MB", "GB", "TB"];
+    var digitGroups = Math.floor(Math.log10(size) / Math.log10(1024));
+    return (size / Math.pow(1024, digitGroups)).toFixed(2) + " " + units[digitGroups];
+}
+
 router.all('/Excel', function (req, res, next) {
     let token = localStorage.getItem("token");
     let key = '123456789abcdefg';

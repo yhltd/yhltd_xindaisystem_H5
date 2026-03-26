@@ -1255,6 +1255,14 @@
 <script>
     navList(12);
 
+    var storageSpace = '{{storageSpace}}';
+
+
+    if (storageSpace && storageSpace != '' && storageSpace != 'undefined') {
+        localStorage.setItem('storageSpace', storageSpace);
+        console.log("保存 storageSpace 到 localStorage:", storageSpace);
+    }
+
     $(function(){
         $("#content .left_menu #nav_dot li a").click(function(){
             $(this).addClass("on").parent().siblings().children().removeClass("on");
