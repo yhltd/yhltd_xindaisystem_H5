@@ -2769,7 +2769,7 @@
 
         // 获取当前公司 - 使用和页面其他部分相同的方式
         let company = getCurrentCompany();
-        console.log("获取到的公司:", company);
+        console.log("获取到的公司1:", company);
 
         // 显示加载状态
         $('#confirmAdd').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> 添加中...');
@@ -2851,14 +2851,154 @@
         }
     }
 
-    // 获取当前公司（复用已有逻辑）
     // 正确的获取当前公司函数
+    // function getCurrentCompany() {
+    //     console.log("=== getCurrentCompany 开始 ===");
+    //
+    //     let company = '';
+    //
+    //     // 方式1: 从URL参数获取（如果有）
+    //     const urlParams = new URLSearchParams(window.location.search);
+    //     const urlCompany = urlParams.get('company');
+    //     if (urlCompany) {
+    //         console.log("从URL参数获取公司:", urlCompany);
+    //         return urlCompany;
+    //     }
+    //
+    //     // 方式2: 从现有桌位数据获取
+    //     if (filteredData && filteredData.length > 0) {
+    //         // 从第一条数据获取公司
+    //         company = filteredData[0].company || '';
+    //         console.log("从现有桌位数据获取公司:", company);
+    //
+    //         if (company && company.trim() !== '') {
+    //             return company;
+    //         }
+    //     }
+    //
+    //     // 方式3: 从localStorage的token解密获取
+    //     try {
+    //         let token = localStorage.getItem("token");
+    //         console.log("localStorage token:", token ? "存在" : "不存在");
+    //
+    //         if (token && token !== 'undefined' && token !== 'null') {
+    //             let key = '123456789abcdefg';
+    //             let iv = 'abcdefg123456789';
+    //
+    //             try {
+    //                 // 尝试解密token
+    //                 let decrypted = decrypt(key, iv, token);
+    //                 console.log("解密token成功，长度:", decrypted.length);
+    //
+    //                 // 解析JSON数据
+    //                 let data = JSON.parse(decrypted);
+    //                 console.log("解析token数据:", data);
+    //
+    //                 // 获取公司信息
+    //                 if (data && typeof data === 'object') {
+    //                     // 尝试不同的字段名
+    //                     company = data.company ||
+    //                         data.COMPANY ||
+    //                         data.Company ||
+    //                         (Array.isArray(data) ? data[0] : '');
+    //
+    //                     console.log("从token获取的公司:", company);
+    //
+    //                     if (company && company.trim() !== '') {
+    //                         return company;
+    //                     }
+    //                 }
+    //             } catch (decryptError) {
+    //                 console.error("解密token失败:", decryptError.message);
+    //             }
+    //         }
+    //     } catch (e) {
+    //         console.error("从localStorage获取token失败:", e);
+    //     }
+    //
+    //     // 方式4: 从页面元素获取
+    //     if (!company) {
+    //         // 查看页面是否有公司信息显示
+    //         const companyElement = $('.company-info, .header-title, [data-company]').first();
+    //         if (companyElement.length) {
+    //             company = companyElement.text().trim() ||
+    //                 companyElement.data('company') ||
+    //                 companyElement.attr('data-company');
+    //             console.log("从页面元素获取公司:", company);
+    //         }
+    //     }
+    //
+    //     // 注意：这里不能使用EJS语法，因为这是在JavaScript中
+    //
+    //     // 方式5: 如果都没有获取到，尝试从服务器查询（同步）
+    //     if (!company || company.trim() === '') {
+    //         console.log("尝试从服务器查询公司信息");
+    //         try {
+    //             $.ajax({
+    //                 type: 'post',
+    //                 url: '/order_table/getCurrentCompany',
+    //                 async: false,  // 同步请求
+    //                 timeout: 3000,
+    //                 success: function(res) {
+    //                     if (res.success && res.company) {
+    //                         company = res.company;
+    //                         console.log("从服务器API获取公司:", company);
+    //                     }
+    //                 },
+    //                 error: function() {
+    //                     console.log("服务器API调用失败");
+    //                 }
+    //             });
+    //         } catch (e) {
+    //             console.error("同步请求异常:", e);
+    //         }
+    //     }
+    //
+    //     // 最终检查
+    //     if (!company || company.trim() === '' || company === 'default_company') {
+    //         console.log("⚠️ 未获取到有效公司，使用默认值");
+    //
+    //         // 查看现有数据中的公司
+    //         if (filteredData && filteredData.length > 0) {
+    //             // 统计所有不同的公司
+    //             const companies = [...new Set(filteredData.map(item => item.company).filter(Boolean))];
+    //             console.log("现有数据中的公司列表:", companies);
+    //
+    //             if (companies.length > 0) {
+    //                 company = companies[0];
+    //                 console.log("使用现有数据中的第一个公司:", company);
+    //             }
+    //         }
+    //
+    //         if (!company || company.trim() === '') {
+    //             company = '默认公司';
+    //             console.log("使用默认公司名称:", company);
+    //         }
+    //     }
+    //
+    //     console.log("=== getCurrentCompany 结束，返回:", company);
+    //     return company;
+    // }
     function getCurrentCompany() {
         console.log("=== getCurrentCompany 开始 ===");
 
         let company = '';
 
-        // 方式1: 从URL参数获取（如果有）
+        // 方式1: 从 localStorage 的 savedCompany 获取（新增，优先级最高）
+        try {
+            let savedCompany = localStorage.getItem("savedCompany");
+            console.log("从 localStorage 获取 savedCompany:", savedCompany);
+
+            if (savedCompany && savedCompany !== 'undefined' && savedCompany !== 'null' && savedCompany.trim() !== '') {
+                company = savedCompany;
+                console.log("✅ 从 savedCompany 获取公司:", company);
+                return company;
+            }
+        } catch (e) {
+            console.error("获取 savedCompany 失败:", e);
+        }
+
+        // 方式2: 从URL参数获取（如果有）
         const urlParams = new URLSearchParams(window.location.search);
         const urlCompany = urlParams.get('company');
         if (urlCompany) {
@@ -2866,7 +3006,7 @@
             return urlCompany;
         }
 
-        // 方式2: 从现有桌位数据获取
+        // 方式3: 从现有桌位数据获取
         if (filteredData && filteredData.length > 0) {
             // 从第一条数据获取公司
             company = filteredData[0].company || '';
@@ -2877,7 +3017,7 @@
             }
         }
 
-        // 方式3: 从localStorage的token解密获取
+        // 方式4: 从localStorage的token解密获取
         try {
             let token = localStorage.getItem("token");
             console.log("localStorage token:", token ? "存在" : "不存在");
@@ -2917,7 +3057,7 @@
             console.error("从localStorage获取token失败:", e);
         }
 
-        // 方式4: 从页面元素获取
+        // 方式5: 从页面元素获取
         if (!company) {
             // 查看页面是否有公司信息显示
             const companyElement = $('.company-info, .header-title, [data-company]').first();
@@ -2929,9 +3069,7 @@
             }
         }
 
-        // 注意：这里不能使用EJS语法，因为这是在JavaScript中
-
-        // 方式5: 如果都没有获取到，尝试从服务器查询（同步）
+        // 方式6: 如果都没有获取到，尝试从服务器查询（同步）
         if (!company || company.trim() === '') {
             console.log("尝试从服务器查询公司信息");
             try {
