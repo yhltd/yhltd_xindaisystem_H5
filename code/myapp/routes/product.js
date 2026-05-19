@@ -456,8 +456,10 @@ router.post('/add', function (req, res) {
 
         let sql1 = "insert into product(company,xiangqing,product_bianhao,type,product_name,unit,price,chengben,specifications,practice,tingyong,photo) " +
             "values('" + data.company + "','" + xiangqing + "','" + product_bianhao + "','"+ type + "','" + product_name + "','" + unit + "','" + price + "','" + chengben + "','" + specifications + "','" + practice + "','" + tingyong + "','" + p_file + "')";
-        let sql2 = "select * from product where product_name like '%"+ product_name +"%'";
-        let sql3 = "select * from product where product_bianhao like '%"+ product_bianhao +"%'";
+        // let sql2 = "select * from product where product_name like '%"+ product_name +"%'";
+        // let sql3 = "select * from product where product_bianhao like '%"+ product_bianhao +"%'";
+        let sql2 = "select * from product where product_name like '%"+ product_name +"%' and company = '"+ data.company +"'";
+        let sql3 = "select * from product where product_bianhao like '%"+ product_bianhao +"%' and company = '"+ data.company +"'";
 
         console.log("sql1:" + sql1);
         console.log("sql2:"+sql2);
