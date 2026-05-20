@@ -86,14 +86,23 @@ router.all('/ass', function (req, res, next) {
     // 将横杠格式转换为斜杠格式，以匹配数据库中的格式
     function convertDateForSQL(dateStr) {
         if (!dateStr) return dateStr;
-        // 如果是横杠格式，转为斜杠格式
-        if (dateStr.includes('-')) {
-            return dateStr.replace(/-/g, '/');
-        }
-        // 如果已经是斜杠格式，直接返回
-        return dateStr;
-    }
 
+        // 将所有分隔符（/、.）统一替换为横杠
+        let result = dateStr.replace(/[/.]/g, '-');
+
+        // 拆分日期
+        let parts = result.split('-');
+
+        // 确保年份、月份、日期都存在
+        if (parts.length === 3) {
+            let year = parts[0];
+            let month = parts[1].padStart(2, '0');  // 补零到两位
+            let day = parts[2].padStart(2, '0');    // 补零到两位
+            result = `${year}-${month}-${day}`;
+        }
+
+        return result;
+    }
     // 转换查询条件中的日期
     let sqlDate1 = convertDateForSQL(selectParams.date1);
     let sqlDate2 = convertDateForSQL(selectParams.date2);

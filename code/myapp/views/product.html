@@ -194,6 +194,11 @@
             `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
     }
 
+    updateTime();
+    updateSessionTime();
+    setInterval(updateTime, 1000);
+    setInterval(updateSessionTime, 1000);
+
 </script>
 </html>
 <SCRIPT Language=VBScript></SCRIPT>
